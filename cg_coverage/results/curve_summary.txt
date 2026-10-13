@@ -1,0 +1,27 @@
+== 1. Missing concepts vs number of Pile docs (pooled 9960 docs, no BOS) ==
+  docs | missing % (mean +- sd over draws) | Spearman of log coverage vs full pooled
+    100 |  18.06 +- 1.84 | 0.843
+    300 |   7.65 +- 0.65 | 0.925
+   1000 |   3.01 +- 0.14 | 0.972
+   3000 |   1.32 +- 0.04 | 0.991
+   6000 |   0.82 +- 0.02 | 0.997
+   9960 |   0.61 +- 0.00 | 1.000
+
+== 2. Are the flagged concepts stable? (20 random half-splits of the pooled Pile as reference) ==
+
+  -- mmlu: flagged in full pooled Pile = 2; flagged per half-split = 1.3 +- 0.6
+     all 2 flagged concepts: mean fraction of splits flagged = 0.65; flagged in every split: 0; in under half of splits: 1
+     concept 19912: flagged in 8/20 splits
+     concept 8855: flagged in 18/20 splits
+
+  -- arc_challenge: flagged in full pooled Pile = 1; flagged per half-split = 1.0 +- 0.6
+     all 1 flagged concepts: mean fraction of splits flagged = 0.55; flagged in every split: 0; in under half of splits: 0
+     concept 19912: flagged in 11/20 splits
+
+  -- humaneval: flagged in full pooled Pile = 5; flagged per half-split = 4.5 +- 0.8
+     all 5 flagged concepts: mean fraction of splits flagged = 0.85; flagged in every split: 2; in under half of splits: 0
+     concept 6243: flagged in 20/20 splits
+     concept 5613: flagged in 12/20 splits
+     concept 30989: flagged in 16/20 splits
+     concept 14089: flagged in 20/20 splits
+     concept 20490: flagged in 17/20 splits

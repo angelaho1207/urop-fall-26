@@ -1,0 +1,52 @@
+[check] rebuilt with-BOS tensor vs old: corr=1.000000, max|diff|=1.91e-06
+
+== 1. Missing concepts per source (chi<1e-5, share of 32,768) ==
+  pile docs: N in-stream=4984, held-out=4976
+  with BOS: in-stream 0.91%  held-out 0.91%  pooled 0.61%
+  no BOS  : in-stream 0.91%  held-out 0.91%  pooled 0.61%
+
+== 2. Split-half stability (in-stream docs, no BOS) ==
+  missing_pct_half_A: 1.4709
+  missing_pct_half_B: 1.4618
+  missing_set_jaccard: 0.4517
+  missing_in_A_also_in_B: 0.6203
+  spearman_logchi_both_alive: 0.9716
+
+== 3. Benchmark vs training coverage ==
+  baseline (held-out Pile treated as 'benchmark', in-stream as training ref):
+    mass on ref missing-or-under = 0.0005, spearman = 0.985
+
+  -- gsm8k: N=1319, mean tokens=57.5 --
+    [noBOS vs instream] bench missing 37.23% | ref missing 0.91% | mass on ref missing-or-under 0.0003 | bench-over & ref-poor 0/2057 | spearman 0.587
+    [noBOS vs heldout] bench missing 37.23% | ref missing 0.91% | mass on ref missing-or-under 0.0003 | bench-over & ref-poor 0/2057 | spearman 0.586
+    [noBOS vs pooled] bench missing 37.23% | ref missing 0.61% | mass on ref missing-or-under 0.0003 | bench-over & ref-poor 0/2057 | spearman 0.588
+    [BOS vs pooled] bench missing 37.06% | ref missing 0.61% | mass on ref missing-or-under 0.0003 | bench-over & ref-poor 0/2063 | spearman 0.592
+
+  -- mmlu: N=2000, mean tokens=103.3 --
+    [noBOS vs instream] bench missing 17.87% | ref missing 0.91% | mass on ref missing-or-under 0.0008 | bench-over & ref-poor 2/2692 | spearman 0.684
+    [noBOS vs heldout] bench missing 17.87% | ref missing 0.91% | mass on ref missing-or-under 0.0006 | bench-over & ref-poor 1/2692 | spearman 0.682
+    [noBOS vs pooled] bench missing 17.87% | ref missing 0.61% | mass on ref missing-or-under 0.0007 | bench-over & ref-poor 2/2692 | spearman 0.686
+    [BOS vs pooled] bench missing 17.84% | ref missing 0.61% | mass on ref missing-or-under 0.0007 | bench-over & ref-poor 2/2693 | spearman 0.687
+
+  -- arc_challenge: N=1172, mean tokens=62.4 --
+    [noBOS vs instream] bench missing 36.50% | ref missing 0.91% | mass on ref missing-or-under 0.0007 | bench-over & ref-poor 1/2081 | spearman 0.560
+    [noBOS vs heldout] bench missing 36.50% | ref missing 0.91% | mass on ref missing-or-under 0.0006 | bench-over & ref-poor 1/2081 | spearman 0.560
+    [noBOS vs pooled] bench missing 36.50% | ref missing 0.61% | mass on ref missing-or-under 0.0007 | bench-over & ref-poor 1/2081 | spearman 0.562
+    [BOS vs pooled] bench missing 36.37% | ref missing 0.61% | mass on ref missing-or-under 0.0007 | bench-over & ref-poor 1/2085 | spearman 0.566
+
+  -- humaneval: N=164, mean tokens=141.9 --
+    [noBOS vs instream] bench missing 58.31% | ref missing 0.91% | mass on ref missing-or-under 0.0014 | bench-over & ref-poor 4/1367 | spearman 0.332
+    [noBOS vs heldout] bench missing 58.31% | ref missing 0.91% | mass on ref missing-or-under 0.0018 | bench-over & ref-poor 5/1367 | spearman 0.335
+    [noBOS vs pooled] bench missing 58.31% | ref missing 0.61% | mass on ref missing-or-under 0.0017 | bench-over & ref-poor 5/1367 | spearman 0.334
+    [BOS vs pooled] bench missing 58.28% | ref missing 0.61% | mass on ref missing-or-under 0.0016 | bench-over & ref-poor 5/1368 | spearman 0.336
+
+== 4. Eq. 3 divisor (benchmarks combined, no BOS) ==
+  missing_pct_divide_by_all: 13.0371
+  missing_pct_divide_by_active: 13.0371
+  spearman_logchi_two_readings: 0.9878
+
+== 5. Flagged concepts written to flagged_concepts.json (top 25 per benchmark) ==
+  gsm8k: 0 flagged; first: -
+  mmlu: 2 flagged; first: 19912
+  arc_challenge: 1 flagged; first: 19912
+  humaneval: 5 flagged; first: 6243

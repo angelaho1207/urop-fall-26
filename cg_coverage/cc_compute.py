@@ -99,6 +99,7 @@ def main():
     ap.add_argument("--max_chars", type=int, default=4000)
     ap.add_argument("--min_tokens_pile", type=int, default=30)
     ap.add_argument("--min_tokens_bench", type=int, default=5)
+    ap.add_argument("--tag", default="")
     args = ap.parse_args()
 
     from sae_lens import SAE
@@ -130,7 +131,7 @@ def main():
                     return
         res = run(model, sae, limited(), args.min_tokens_pile, args.max_tokens, args.source)
         print(args.source, "items kept:", len(res["lengths"]), flush=True)
-        torch.save(res, f"cc_{args.source}.pt")
+        torch.save(res, f"cc_{args.source}{args.tag}.pt")
     print("done")
 
 

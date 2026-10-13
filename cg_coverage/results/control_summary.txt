@@ -1,0 +1,24 @@
+control len64: N=1993, mean tokens=63.6
+control len128: N=1993, mean tokens=121.3
+
+benchmark vs size/length-matched Pile control (mean +- sd over 20 draws)
+
+-- gsm8k: N=1319, mean tokens=57.5, control = Pile cut to 64 tokens, N=1319 --
+  missing_pct  bench 37.2253 | control 10.6699 +- 0.1849 | diff +26.5555
+  spearman     bench 0.5871 | control 0.8753 +- 0.0020 | diff -0.2882
+  mass_poor    bench 0.0003 | control 0.0006 +- 0.0000 | diff -0.0003
+
+-- mmlu: N=2000, mean tokens=103.3, control = Pile cut to 128 tokens, N=1993 --
+  missing_pct  bench 17.8741 | control 5.4138 +- 0.0000 | diff +12.4603
+  spearman     bench 0.6843 | control 0.9354 +- 0.0000 | diff -0.2511
+  mass_poor    bench 0.0008 | control 0.0005 +- 0.0000 | diff +0.0003
+
+-- arc_challenge: N=1172, mean tokens=62.4, control = Pile cut to 64 tokens, N=1172 --
+  missing_pct  bench 36.4960 | control 11.4409 +- 0.2076 | diff +25.0551
+  spearman     bench 0.5600 | control 0.8697 +- 0.0022 | diff -0.3097
+  mass_poor    bench 0.0007 | control 0.0006 +- 0.0000 | diff +0.0002
+
+-- humaneval: N=164, mean tokens=141.9, control = Pile cut to 128 tokens, N=164 --
+  missing_pct  bench 58.3069 | control 26.3000 +- 1.1542 | diff +32.0068
+  spearman     bench 0.3316 | control 0.7934 +- 0.0099 | diff -0.4617
+  mass_poor    bench 0.0014 | control 0.0005 +- 0.0001 | diff +0.0009

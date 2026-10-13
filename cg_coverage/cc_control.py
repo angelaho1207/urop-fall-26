@@ -5,12 +5,14 @@ missing%, Spearman vs the full in-stream reference, and mass on poorly covered c
 Needs cc_pile_len64.pt, cc_pile_len128.pt, cc_pile_instream.pt and the benchmark files.
 """
 import json
+import sys
 
 import numpy as np
 
 import cc_analysis as A
 
 REPS = 20
+SUFFIX = sys.argv[1] if len(sys.argv) > 1 else ""
 
 
 def metrics(chi_x, chi_ref):
@@ -28,7 +30,12 @@ def main():
 
     inst = A.load("cc_pile_instream.pt")
     ref = A.chi(A.tot(inst, False))
-    ctrl = {64: A.load("cc_pile_heldout_len64.pt"), 128: A.load("cc_pile_heldout_len128.pt")}
+    ctrl = {}
+    for L in (32, 64, 128):
+        try:
+            ctrl[L] = A.load(f"cc_pile_heldout_len{L}.pt")
+        except FileNotFoundError:
+            pass
     for L, d in ctrl.items():
         say(f"control len{L}: N={len(d['lengths'])}, mean tokens={d['lengths'].mean():.1f}")
     Xc = {L: A.s_tilde(d, False) for L, d in ctrl.items()}
@@ -37,11 +44,11 @@ def main():
     say("\nbenchmark vs size/length-matched Pile control (mean +- sd over %d draws)" % REPS)
     for b in A.BENCHES:
         try:
-            d = A.load(f"cc_{b}.pt")
+            d = A.load(f"cc_{b}{SUFFIX}.pt")
         except FileNotFoundError:
             continue
         n, mt = len(d["lengths"]), float(d["lengths"].mean())
-        L = 64 if mt < 90 else 128
+        L = min(ctrl, key=lambda k: abs(float(ctrl[k]["lengths"].mean()) - mt))  # closest mean length
         X = Xc[L]
         bm = metrics(A.chi(A.tot(d, False)), ref)
         reps = []
@@ -51,13 +58,13 @@ def main():
         R[b] = {"n": n, "mean_tokens": mt, "control_len": L, "bench": bm,
                 "control_mean": {k: float(np.mean([r[k] for r in reps])) for k in bm},
                 "control_sd": {k: float(np.std([r[k] for r in reps])) for k in bm}}
-        say(f"\n-- {b}: N={n}, mean tokens={mt:.1f}, control = Pile cut to {L} tokens, N={min(n, X.shape[0])} --")
+        say(f"\n-- {b}: N={n}, mean tokens={mt:.1f}, control = Pile cut to {L} tokens (mean {ctrl[L]['lengths'].mean():.1f}), N={min(n, X.shape[0])} --")
         for k in bm:
             c, s = R[b]["control_mean"][k], R[b]["control_sd"][k]
             say(f"  {k:12s} bench {bm[k]:.4f} | control {c:.4f} +- {s:.4f} | diff {bm[k]-c:+.4f}")
-    json.dump(R, open("control_results.json", "w"), indent=1)
-    open("control_summary.txt", "w").write("\n".join(lines))
-    print("\nwrote control_summary.txt, control_results.json")
+    json.dump(R, open(f"control_results{SUFFIX}.json", "w"), indent=1)
+    open(f"control_summary{SUFFIX}.txt", "w").write("\n".join(lines))
+    print(f"\nwrote control_summary{SUFFIX}.txt")
 
 
 if __name__ == "__main__":

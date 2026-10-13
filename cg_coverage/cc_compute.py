@@ -25,7 +25,7 @@ SAE_PATH = "pythia70m_layer4_topk32_sae"
 MODEL = "pythia-70m-deduped"
 
 
-def get_benchmarks(seed=0, n_mmlu=2000):
+def get_benchmarks(seed=0, n_mmlu=2000, qonly=False):
     from datasets import load_dataset
 
     out = {}
@@ -40,14 +40,14 @@ def get_benchmarks(seed=0, n_mmlu=2000):
     for i in idx[:n_mmlu]:
         r = ds[i]
         opts = "\n".join(f"{l}. {c}" for l, c in zip("ABCD", r["choices"]))
-        texts.append(f"{r['question']}\n{opts}")
+        texts.append(r["question"] if qonly else f"{r['question']}\n{opts}")
     out["mmlu"] = texts
 
     ds = load_dataset("allenai/ai2_arc", "ARC-Challenge", split="test")
     texts = []
     for r in ds:
         opts = "\n".join(f"{l}. {c}" for l, c in zip(r["choices"]["label"], r["choices"]["text"]))
-        texts.append(f"{r['question']}\n{opts}")
+        texts.append(r["question"] if qonly else f"{r['question']}\n{opts}")
     out["arc_challenge"] = texts
 
     ds = load_dataset("openai/openai_humaneval", split="test")
@@ -100,6 +100,7 @@ def main():
     ap.add_argument("--min_tokens_pile", type=int, default=30)
     ap.add_argument("--min_tokens_bench", type=int, default=5)
     ap.add_argument("--tag", default="")
+    ap.add_argument("--qonly", action="store_true")
     args = ap.parse_args()
 
     from sae_lens import SAE
@@ -113,11 +114,13 @@ def main():
     print("device", device, "d_sae", sae.cfg.d_sae, flush=True)
 
     if args.source == "benchmarks":
-        for name, texts in get_benchmarks().items():
+        for name, texts in get_benchmarks(qonly=args.qonly).items():
+            if args.qonly and name not in ("mmlu", "arc_challenge"):
+                continue
             res = run(model, sae, texts, args.min_tokens_bench, args.max_tokens, name)
             print(name, "items kept:", len(res["lengths"]), "of", len(texts),
                   "mean tokens:", res["lengths"].float().mean().item(), flush=True)
-            torch.save(res, f"cc_{name}.pt")
+            torch.save(res, f"cc_{name}{args.tag}.pt")
     else:
         skip = 0 if args.source == "pile_instream" else args.skip
         gen = pile_texts(args.n_docs, skip, args.max_chars)

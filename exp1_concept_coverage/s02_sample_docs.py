@@ -15,7 +15,9 @@ from pathlib import Path
 import config  # first: sets HF_HOME
 import numpy as np
 import pandas as pd
+import tiktoken
 import zstandard
+from datasketch import MinHash, MinHashLSH
 from huggingface_hub import hf_hub_download
 
 SPARE_SHARDS = 20  # P5: extra candidate shards per source for refills; the run stops if they run out
@@ -107,6 +109,48 @@ def text_hash(text):
     return hashlib.sha1(" ".join(text.split()).encode("utf-8")).hexdigest()
 
 
+def ngram_set(tokens, n):
+    """Set of token n-grams, each as the bytes of n int32 ids. A doc shorter than n is one n-gram (T16)."""
+    if len(tokens) <= n:
+        return {tokens.tobytes()}
+    windows = np.lib.stride_tricks.sliding_window_view(tokens, n)
+    return {w.tobytes() for w in windows}
+
+
+def near_duplicate_drops(docs):
+    """Row 7: Olmo 3's MinHash settings. Returns masks of V docs near a train doc and T2 docs near a T1 doc."""
+    enc = tiktoken.get_encoding(config.DEDUP_TOKENIZER)
+    # disallowed_special=() treats a literal '<|endoftext|>' in a doc as ordinary text
+    tokens = [np.array(enc.encode(t, disallowed_special=()), dtype=np.int32) for t in docs["text"]]
+    num_perm = config.DEDUP_BANDS * config.DEDUP_ROWS
+    signatures = []
+    for toks in tokens:
+        m = MinHash(num_perm=num_perm, seed=config.SEED)
+        m.update_batch(list(ngram_set(toks, config.DEDUP_NGRAM)))
+        signatures.append(m)
+
+    def drops(query, reference):
+        # Index the reference docs; each query doc is a candidate if it shares a band with one of them
+        lsh = MinHashLSH(num_perm=num_perm, params=(config.DEDUP_BANDS, config.DEDUP_ROWS))
+        for j in np.flatnonzero(reference):
+            lsh.insert(int(j), signatures[j])
+        dropped, n_candidates = np.zeros(len(docs), dtype=bool), 0
+        for i in np.flatnonzero(query):
+            for j in lsh.query(signatures[i]):
+                n_candidates += 1
+                # Verification on exact 3-gram Jaccard removes MinHash false positives
+                a = ngram_set(tokens[i], config.DEDUP_VERIFY_NGRAM)
+                b = ngram_set(tokens[j], config.DEDUP_VERIFY_NGRAM)
+                if len(a & b) / len(a | b) >= config.DEDUP_JACCARD:
+                    dropped[i] = True
+                    break
+        return dropped, n_candidates
+
+    drop_val, cand_val = drops((docs["split"] == "val").to_numpy(), (docs["split"] == "train").to_numpy())
+    drop_t2, cand_t2 = drops((docs["subset"] == "T2").to_numpy(), (docs["subset"] == "T1").to_numpy())
+    return drop_val, drop_t2, {"candidate_pairs_val_vs_train": cand_val, "candidate_pairs_t2_vs_t1": cand_t2}
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--run", required=True, help="name of the output folder, e.g. pilot")
@@ -164,6 +208,9 @@ def main():
     drop_val = (docs["split"] == "val") & docs["hash"].isin(set(docs.loc[docs["split"] == "train", "hash"]))
     drop_t2 = (docs["subset"] == "T2") & docs["hash"].isin(set(docs.loc[docs["subset"] == "T1", "hash"]))
     docs = docs[~(drop_val | drop_t2)].reset_index(drop=True)
+    # Row 7: near-duplicates across the same split pairs, after exact copies are gone
+    near_val, near_t2, near_counts = near_duplicate_drops(docs)
+    docs = docs[~(near_val | near_t2)].reset_index(drop=True)
     # P22: the mix repeats docs, so the sample can hold two copies of one doc. Keep the first drawn copy
     drop_repeat = docs["hash"].duplicated(keep="first")
     docs = docs[~drop_repeat].reset_index(drop=True)
@@ -181,7 +228,8 @@ def main():
         "shards_by_source_and_subset": used.assign(subset=used["path"].map(lambda p: split_of[p][1]))
             .groupby(["source", "subset"]).size().unstack(fill_value=0).to_dict("index"),
         "duplicates": {"dropped_val_matching_train": int(drop_val.sum()), "dropped_t2_matching_t1": int(drop_t2.sum()),
-                       "dropped_later_repeats_any_split": int(drop_repeat.sum())},
+                       "dropped_val_near_train": int(near_val.sum()), "dropped_t2_near_t1": int(near_t2.sum()),
+                       **near_counts, "dropped_later_repeats_any_split": int(drop_repeat.sum())},
         "repetition_by_source": {  # P22: lines per distinct id in the shards read; 1.0 = no repeats
             s: round(float(g["n_docs"].sum() / g["n_distinct_ids"].sum()), 3) for s, g in stats.groupby("source")
         },

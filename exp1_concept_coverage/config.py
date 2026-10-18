@@ -41,6 +41,14 @@ SEED = 0
 VAL_FRACTION = 0.2  # row 6: 20% of shards go to V
 SUBSET_FRACTION_OF_TRAIN = 0.25  # T1 and T2 are each 25% of train = 20% of all, the size of V
 
+# Row 7: near-duplicates, Olmo 3 report App. A.2.2 (web text)
+os.environ.setdefault("TIKTOKEN_CACHE_DIR", str(HF_CACHE / "tiktoken"))  # T15
+DEDUP_TOKENIZER = "p50k_base"
+DEDUP_NGRAM = 5
+DEDUP_BANDS, DEDUP_ROWS = 26, 11  # 26 bands of 11 = 286 permutations
+DEDUP_VERIFY_NGRAM = 3
+DEDUP_JACCARD = 0.80
+
 # Row 9
 CONTEXT = 1024
 

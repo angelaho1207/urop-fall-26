@@ -7,6 +7,7 @@ Saves DATA/<run>/examples/<concept>.json and results/<run>_examples_summary.json
 """
 import argparse
 import json
+import re
 import time
 
 import config  # first: sets HF_HOME
@@ -26,12 +27,19 @@ SUBSETS = ["T1", "T2", "V"]
 QUIZ_SUBSETS = ["T2", "V"]  # E3: only the T1 name is quizzed
 PURPOSES = {"naming": 0, "quiz_firing": 1, "quiz_nonfiring": 2}  # E6
 CLASSES = ["missing", "under", "over", "middle"]  # E8
+CLASSES_VS_PILE = ["over", "under", "rare_in_dolma_present_in_pile", "rare_in_pile_present_in_dolma"]  # E11
 
 
 def pick_concepts(spec, run_dir):
-    """E8: a range 'a-b', 'prefix', or 'classes:n' (n per train class, seeded)."""
+    """E8, E11: a range 'a-b', 'prefix', 'classes:n' (paper classes) or 'vs_pile:n' (classes vs the Pile)."""
     if spec == "prefix":
         return np.arange(config.PREFIX_WIDTH)
+    if spec.startswith("vs_pile:"):
+        n = int(spec.split(":")[1])
+        cls = pd.read_parquet(run_dir / "coverage_vs_pile.parquet", columns=["class_vs_pile"])["class_vs_pile"].to_numpy()
+        chosen = [np.random.default_rng([config.SEED, 2000 + k]).choice(np.flatnonzero(cls == c), size=n, replace=False)
+                  for k, c in enumerate(CLASSES_VS_PILE)]
+        return np.sort(np.concatenate(chosen))
     if spec.startswith("classes:"):
         n = int(spec.split(":")[1])
         cls = pd.read_parquet(run_dir / "coverage.parquet", columns=["class_train"])["class_train"].to_numpy()
@@ -175,6 +183,8 @@ def main():
         return piece[i]
 
     coverage = pd.read_parquet(run_dir / "coverage.parquet") if (run_dir / "coverage.parquet").exists() else None
+    vs_pile_path = run_dir / "coverage_vs_pile.parquet"
+    vs_pile = pd.read_parquet(vs_pile_path, columns=["class_vs_pile", "log_ratio"]) if vs_pile_path.exists() else None
     summary = {"run": args.run, "concepts_spec": args.concepts, "concepts": int(len(concepts)),
                "short": {f"{p}_{s}": 0 for (p, s) in [("naming", s) for s in SUBSETS]
                          + [(p, s) for p in ("quiz_firing", "quiz_nonfiring") for s in QUIZ_SUBSETS]}}
@@ -183,6 +193,10 @@ def main():
         if coverage is not None:
             out["class_train"] = coverage.at[c, "class_train"]
             out["chi_train"] = float(coverage.at[c, "chi_train"])
+        if vs_pile is not None:  # E11
+            out["class_vs_pile"] = vs_pile.at[c, "class_vs_pile"]
+            ratio = vs_pile.at[c, "log_ratio"]
+            out["log_ratio_vs_pile"] = None if pd.isna(ratio) else round(float(ratio), 4)
         for (purpose, s), items in plan[c].items():
             if items is None:
                 summary["short"][f"{purpose}_{s}"] += 1
@@ -201,7 +215,8 @@ def main():
     summary["n_firing_quantiles_10_50_90"] = {
         s: np.quantile([n_firing[c][s] for c in concepts], [0.1, 0.5, 0.9]).round(0).tolist() for s in SUBSETS}
     summary["seconds"] = round(time.time() - t_start, 1)
-    (config.RESULTS / f"{args.run}_examples_summary.json").write_text(json.dumps(summary, indent=2))
+    spec = re.sub(r"[^0-9a-zA-Z]+", "", args.concepts)  # E7: one summary per concept selection, e.g. vs_pile:5 -> vspile5
+    (config.RESULTS / f"{args.run}_examples_summary_{spec}.json").write_text(json.dumps(summary, indent=2))
     print(json.dumps(summary, indent=2))
 
 

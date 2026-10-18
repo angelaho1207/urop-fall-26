@@ -27,8 +27,12 @@ def render(texts, acts):
     return "".join(out)
 
 
-def train_wide(run_dir, concept, tokenizer):
-    """Rare concepts: strongest and weakest windows over all train docs, cut with s06's rule (E1)."""
+def train_wide(run_dir, concept, tokenizer, split="train"):
+    """Strongest and weakest windows over all docs of one split, cut with s06's rule (E1).
+
+    split="train" for Dolma concepts too rare to name (E10); split="pile" with the Pile run for concepts
+    rare in Dolma but present in the Pile (E11).
+    """
     docs = pd.read_parquet(run_dir / "docs.parquet", columns=["doc_id", "split", "text"])
     hits = []  # (doc, max, argmax)
     for k, path in enumerate(sorted(run_dir.glob("acts/part_?????.npz"))):
@@ -40,7 +44,7 @@ def train_wide(run_dir, concept, tokenizer):
             doc_of_entry = np.searchsorted(np.cumsum(z["doc_active"]), where, side="right")
             for e, j in zip(where, doc_of_entry):
                 d = k * PART_SIZE + int(j)
-                if docs.at[d, "split"] == "train":
+                if docs.at[d, "split"] == split:
                     hits.append((d, float(doc_max[e]), int(doc_argmax[e]), k, int(j)))
     hits.sort(key=lambda h: h[1])
     chosen = hits[-N_SHOW:][::-1] + hits[:N_SHOW] if len(hits) > 2 * N_SHOW else hits[::-1]
@@ -67,17 +71,21 @@ def train_wide(run_dir, concept, tokenizer):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--run", required=True)
-    parser.add_argument("--cls", required=True, choices=["missing", "under", "over", "middle"])
+    parser.add_argument("--classes", choices=["paper", "vs_pile"], default="paper", help="E10 (paper) or E11 (vs Pile)")
+    parser.add_argument("--cls", required=True, help="class name, e.g. under, or rare_in_dolma_present_in_pile")
+    parser.add_argument("--pile-run", default="pile")
     args = parser.parse_args()
     run_dir = config.DATA / args.run
+    key = "class_train" if args.classes == "paper" else "class_vs_pile"
     tokenizer = AutoTokenizer.from_pretrained(config.MODEL_ID, revision=config.MODEL_REVISION)
     for path in sorted((run_dir / "examples").glob("*.json"), key=lambda p: int(p.stem)):
         ex = json.loads(path.read_text())
-        if ex.get("class_train") != args.cls:
+        if ex.get(key) != args.cls:
             continue
         nf = ex["n_firing"]
-        print(f"\n=== concept {ex['concept']} | class {ex['class_train']} | chi_train {ex['chi_train']:.5f} | "
-              f"firing docs T1/T2/V {nf['T1']}/{nf['T2']}/{nf['V']}")
+        ratio = ex.get("log_ratio_vs_pile")
+        print(f"\n=== concept {ex['concept']} | vs Pile: {ex.get('class_vs_pile')} (log ratio {ratio}) | "
+              f"paper class: {ex.get('class_train')} | firing docs T1/T2/V {nf['T1']}/{nf['T2']}/{nf['V']}")
         t1 = (ex.get("naming") or {}).get("T1")
         if t1:
             strongest = [w for w in t1 if w["group"] == 9][:N_SHOW]
@@ -89,6 +97,11 @@ def main():
         else:
             n_train, windows = train_wide(run_dir, ex["concept"], tokenizer)
             print(f"  (too rare to name; {n_train} firing train docs; strongest then weakest over all train)")
+            for mx, texts, acts in windows:
+                print(f"  [max {mx:.2f}] {render(texts, acts)}")
+        if ex.get("class_vs_pile") == "rare_in_dolma_present_in_pile":  # E11: where the concept is common
+            n_pile, windows = train_wide(config.DATA / args.pile_run, ex["concept"], tokenizer, split="pile")
+            print(f"  -- Pile ({n_pile} firing docs; strongest then weakest)")
             for mx, texts, acts in windows:
                 print(f"  [max {mx:.2f}] {render(texts, acts)}")
 

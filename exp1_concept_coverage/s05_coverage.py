@@ -57,21 +57,23 @@ def main():
     parts = sorted(run_dir.glob("acts/part_?????.npz"))  # the ? pattern skips unfinished .tmp files (T12)
     for path in parts:
         with np.load(path, allow_pickle=True) as z:
-            offsets = np.concatenate([[0], np.cumsum(z["doc_active"])])
             rows = meta.loc[z["doc_id"]]
-            for i in range(len(z["doc_id"])):
-                ids = z["doc_latent_ids"][offsets[i]:offsets[i + 1]].astype(np.int64)
-                means = z["doc_mean"][offsets[i]:offsets[i + 1]].astype(np.float64)  # Eq. 1 per doc
-                split, subset, source = rows.iloc[i][["split", "subset", "source"]]
-                targets = [subset] if subset in ("T1", "T2", "V") else []
-                if split == "train":
-                    targets.append("train")
-                    by_source[source][ids] += means
-                    if z["doc_tokens"][i] >= MIN_TOKENS:
-                        targets.append("train_min30")
-                for g in targets:
-                    sums[g][ids] += means  # ids are distinct within a doc, so += adds each once
-                    n_docs[g] += 1
+            # C7: one membership mask per doc for each group, then one weighted bincount per group and part
+            is_train = (rows["split"] == "train").to_numpy()
+            doc_masks = {"train": is_train,
+                         "train_min30": is_train & (z["doc_tokens"] >= MIN_TOKENS),
+                         **{s: (rows["subset"] == s).to_numpy() for s in ("T1", "T2", "V")}}
+            doc_of_entry = np.repeat(np.arange(len(rows)), z["doc_active"])  # which doc each (doc, concept) entry is from
+            ids = z["doc_latent_ids"].astype(np.int64)
+            means = z["doc_mean"].astype(np.float64)  # Eq. 1 per doc and concept
+            for g, mask in doc_masks.items():
+                keep = mask[doc_of_entry]
+                sums[g] += np.bincount(ids[keep], weights=means[keep], minlength=D_SAE)
+                n_docs[g] += int(mask.sum())
+            sources = rows["source"].to_numpy()
+            for s in by_source:
+                keep = (is_train & (sources == s))[doc_of_entry]
+                by_source[s] += np.bincount(ids[keep], weights=means[keep], minlength=D_SAE)
     if sum(n_docs[g] for g in ("train", "V")) != len(docs):
         raise RuntimeError(f"activations cover {n_docs['train'] + n_docs['V']} of {len(docs)} docs")
 

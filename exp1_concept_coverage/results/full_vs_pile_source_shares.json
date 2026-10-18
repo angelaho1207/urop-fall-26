@@ -1,0 +1,635 @@
+{
+  "dolma_run": "full",
+  "pile_run": "pile",
+  "pile_doc_share": {
+    "ArXiv": 0.013,
+    "DM Mathematics": 0.0106,
+    "Enron Emails": 0.0047,
+    "EuroParl": 0.0009,
+    "FreeLaw": 0.0279,
+    "Github": 0.0996,
+    "Gutenberg (PG-19)": 0.0003,
+    "HackerNews": 0.0093,
+    "NIH ExPorter": 0.0109,
+    "PhilPapers": 0.0002,
+    "Pile-CC": 0.294,
+    "PubMed Abstracts": 0.1672,
+    "PubMed Central": 0.032,
+    "StackExchange": 0.1682,
+    "USPTO Backgrounds": 0.0619,
+    "Ubuntu IRC": 0.0001,
+    "Wikipedia (en)": 0.0993
+  },
+  "by_class": {
+    "over": {
+      "concepts": 6135,
+      "pile": {
+        "Pile-CC": {
+          "share": 0.6279,
+          "doc_share": 0.294,
+          "enrichment": 2.14
+        },
+        "StackExchange": {
+          "share": 0.079,
+          "doc_share": 0.1681,
+          "enrichment": 0.47
+        },
+        "Wikipedia (en)": {
+          "share": 0.0758,
+          "doc_share": 0.0993,
+          "enrichment": 0.76
+        },
+        "PubMed Abstracts": {
+          "share": 0.0647,
+          "doc_share": 0.1672,
+          "enrichment": 0.39
+        },
+        "Github": {
+          "share": 0.0445,
+          "doc_share": 0.0996,
+          "enrichment": 0.45
+        },
+        "USPTO Backgrounds": {
+          "share": 0.0313,
+          "doc_share": 0.0619,
+          "enrichment": 0.5
+        },
+        "PubMed Central": {
+          "share": 0.0202,
+          "doc_share": 0.0319,
+          "enrichment": 0.63
+        },
+        "ArXiv": {
+          "share": 0.0138,
+          "doc_share": 0.0129,
+          "enrichment": 1.07
+        },
+        "HackerNews": {
+          "share": 0.0138,
+          "doc_share": 0.0093,
+          "enrichment": 1.49
+        },
+        "FreeLaw": {
+          "share": 0.0122,
+          "doc_share": 0.0279,
+          "enrichment": 0.44
+        },
+        "NIH ExPorter": {
+          "share": 0.0072,
+          "doc_share": 0.0109,
+          "enrichment": 0.66
+        },
+        "Enron Emails": {
+          "share": 0.0053,
+          "doc_share": 0.0047,
+          "enrichment": 1.12
+        },
+        "EuroParl": {
+          "share": 0.0016,
+          "doc_share": 0.0009,
+          "enrichment": 1.73
+        },
+        "Gutenberg (PG-19)": {
+          "share": 0.0009,
+          "doc_share": 0.0003,
+          "enrichment": 3.27
+        },
+        "DM Mathematics": {
+          "share": 0.0009,
+          "doc_share": 0.0106,
+          "enrichment": 0.08
+        },
+        "PhilPapers": {
+          "share": 0.0005,
+          "doc_share": 0.0002,
+          "enrichment": 2.62
+        },
+        "Ubuntu IRC": {
+          "share": 0.0004,
+          "doc_share": 0.0001,
+          "enrichment": 2.35
+        }
+      },
+      "dolma_train": {
+        "common_crawl": {
+          "share": 0.8677,
+          "doc_share": 0.7614,
+          "enrichment": 1.14
+        },
+        "olmocr_science_pdfs": {
+          "share": 0.0823,
+          "doc_share": 0.1352,
+          "enrichment": 0.61
+        },
+        "stack_edu": {
+          "share": 0.0266,
+          "doc_share": 0.0688,
+          "enrichment": 0.39
+        },
+        "finemath-3plus": {
+          "share": 0.0195,
+          "doc_share": 0.0258,
+          "enrichment": 0.76
+        },
+        "rpj-proofpile-arxiv": {
+          "share": 0.0037,
+          "doc_share": 0.0083,
+          "enrichment": 0.44
+        },
+        "dolma1_7-wiki-en": {
+          "share": 0.0002,
+          "doc_share": 0.0005,
+          "enrichment": 0.39
+        }
+      }
+    },
+    "under": {
+      "concepts": 6135,
+      "pile": {
+        "StackExchange": {
+          "share": 0.234,
+          "doc_share": 0.1681,
+          "enrichment": 1.39
+        },
+        "Wikipedia (en)": {
+          "share": 0.183,
+          "doc_share": 0.0993,
+          "enrichment": 1.84
+        },
+        "USPTO Backgrounds": {
+          "share": 0.1411,
+          "doc_share": 0.0619,
+          "enrichment": 2.28
+        },
+        "Github": {
+          "share": 0.1382,
+          "doc_share": 0.0996,
+          "enrichment": 1.39
+        },
+        "PubMed Abstracts": {
+          "share": 0.1034,
+          "doc_share": 0.1672,
+          "enrichment": 0.62
+        },
+        "DM Mathematics": {
+          "share": 0.0783,
+          "doc_share": 0.0106,
+          "enrichment": 7.42
+        },
+        "FreeLaw": {
+          "share": 0.062,
+          "doc_share": 0.0279,
+          "enrichment": 2.22
+        },
+        "PubMed Central": {
+          "share": 0.0314,
+          "doc_share": 0.0319,
+          "enrichment": 0.98
+        },
+        "Pile-CC": {
+          "share": 0.0161,
+          "doc_share": 0.294,
+          "enrichment": 0.05
+        },
+        "NIH ExPorter": {
+          "share": 0.0051,
+          "doc_share": 0.0109,
+          "enrichment": 0.47
+        },
+        "HackerNews": {
+          "share": 0.003,
+          "doc_share": 0.0093,
+          "enrichment": 0.33
+        },
+        "ArXiv": {
+          "share": 0.0023,
+          "doc_share": 0.0129,
+          "enrichment": 0.18
+        },
+        "Enron Emails": {
+          "share": 0.0021,
+          "doc_share": 0.0047,
+          "enrichment": 0.45
+        },
+        "EuroParl": {
+          "share": 0.0,
+          "doc_share": 0.0009,
+          "enrichment": 0.04
+        },
+        "Gutenberg (PG-19)": {
+          "share": 0.0,
+          "doc_share": 0.0003,
+          "enrichment": 0.12
+        },
+        "Ubuntu IRC": {
+          "share": 0.0,
+          "doc_share": 0.0001,
+          "enrichment": 0.11
+        },
+        "PhilPapers": {
+          "share": 0.0,
+          "doc_share": 0.0002,
+          "enrichment": 0.05
+        }
+      },
+      "dolma_train": {
+        "common_crawl": {
+          "share": 0.5395,
+          "doc_share": 0.7614,
+          "enrichment": 0.71
+        },
+        "olmocr_science_pdfs": {
+          "share": 0.2198,
+          "doc_share": 0.1352,
+          "enrichment": 1.63
+        },
+        "stack_edu": {
+          "share": 0.1554,
+          "doc_share": 0.0688,
+          "enrichment": 2.26
+        },
+        "finemath-3plus": {
+          "share": 0.0697,
+          "doc_share": 0.0258,
+          "enrichment": 2.7
+        },
+        "rpj-proofpile-arxiv": {
+          "share": 0.0117,
+          "doc_share": 0.0083,
+          "enrichment": 1.42
+        },
+        "dolma1_7-wiki-en": {
+          "share": 0.0039,
+          "doc_share": 0.0005,
+          "enrichment": 7.76
+        }
+      }
+    },
+    "middle": {
+      "concepts": 49078,
+      "pile": {
+        "Pile-CC": {
+          "share": 0.2935,
+          "doc_share": 0.294,
+          "enrichment": 1.0
+        },
+        "PubMed Abstracts": {
+          "share": 0.1741,
+          "doc_share": 0.1672,
+          "enrichment": 1.04
+        },
+        "StackExchange": {
+          "share": 0.1723,
+          "doc_share": 0.1681,
+          "enrichment": 1.02
+        },
+        "Github": {
+          "share": 0.0988,
+          "doc_share": 0.0996,
+          "enrichment": 0.99
+        },
+        "Wikipedia (en)": {
+          "share": 0.0967,
+          "doc_share": 0.0993,
+          "enrichment": 0.97
+        },
+        "USPTO Backgrounds": {
+          "share": 0.0608,
+          "doc_share": 0.0619,
+          "enrichment": 0.98
+        },
+        "PubMed Central": {
+          "share": 0.0314,
+          "doc_share": 0.0319,
+          "enrichment": 0.98
+        },
+        "FreeLaw": {
+          "share": 0.0254,
+          "doc_share": 0.0279,
+          "enrichment": 0.91
+        },
+        "ArXiv": {
+          "share": 0.0132,
+          "doc_share": 0.0129,
+          "enrichment": 1.02
+        },
+        "NIH ExPorter": {
+          "share": 0.0114,
+          "doc_share": 0.0109,
+          "enrichment": 1.05
+        },
+        "HackerNews": {
+          "share": 0.0095,
+          "doc_share": 0.0093,
+          "enrichment": 1.03
+        },
+        "DM Mathematics": {
+          "share": 0.0067,
+          "doc_share": 0.0106,
+          "enrichment": 0.63
+        },
+        "Enron Emails": {
+          "share": 0.0046,
+          "doc_share": 0.0047,
+          "enrichment": 0.98
+        },
+        "EuroParl": {
+          "share": 0.0008,
+          "doc_share": 0.0009,
+          "enrichment": 0.9
+        },
+        "Gutenberg (PG-19)": {
+          "share": 0.0003,
+          "doc_share": 0.0003,
+          "enrichment": 0.92
+        },
+        "PhilPapers": {
+          "share": 0.0002,
+          "doc_share": 0.0002,
+          "enrichment": 0.99
+        },
+        "Ubuntu IRC": {
+          "share": 0.0001,
+          "doc_share": 0.0001,
+          "enrichment": 0.95
+        }
+      },
+      "dolma_train": {
+        "common_crawl": {
+          "share": 0.7565,
+          "doc_share": 0.7614,
+          "enrichment": 0.99
+        },
+        "olmocr_science_pdfs": {
+          "share": 0.138,
+          "doc_share": 0.1352,
+          "enrichment": 1.02
+        },
+        "stack_edu": {
+          "share": 0.0707,
+          "doc_share": 0.0688,
+          "enrichment": 1.03
+        },
+        "finemath-3plus": {
+          "share": 0.0257,
+          "doc_share": 0.0258,
+          "enrichment": 1.0
+        },
+        "rpj-proofpile-arxiv": {
+          "share": 0.0086,
+          "doc_share": 0.0083,
+          "enrichment": 1.04
+        },
+        "dolma1_7-wiki-en": {
+          "share": 0.0005,
+          "doc_share": 0.0005,
+          "enrichment": 1.01
+        }
+      }
+    },
+    "rare_in_dolma_present_in_pile": {
+      "concepts": 2151,
+      "pile": {
+        "Github": {
+          "share": 0.4811,
+          "doc_share": 0.0996,
+          "enrichment": 4.83
+        },
+        "StackExchange": {
+          "share": 0.1793,
+          "doc_share": 0.1681,
+          "enrichment": 1.07
+        },
+        "FreeLaw": {
+          "share": 0.1169,
+          "doc_share": 0.0279,
+          "enrichment": 4.19
+        },
+        "DM Mathematics": {
+          "share": 0.0859,
+          "doc_share": 0.0106,
+          "enrichment": 8.14
+        },
+        "PubMed Central": {
+          "share": 0.0721,
+          "doc_share": 0.0319,
+          "enrichment": 2.26
+        },
+        "Wikipedia (en)": {
+          "share": 0.0277,
+          "doc_share": 0.0993,
+          "enrichment": 0.28
+        },
+        "HackerNews": {
+          "share": 0.0094,
+          "doc_share": 0.0093,
+          "enrichment": 1.01
+        },
+        "ArXiv": {
+          "share": 0.0073,
+          "doc_share": 0.0129,
+          "enrichment": 0.56
+        },
+        "USPTO Backgrounds": {
+          "share": 0.0072,
+          "doc_share": 0.0619,
+          "enrichment": 0.12
+        },
+        "Pile-CC": {
+          "share": 0.0061,
+          "doc_share": 0.294,
+          "enrichment": 0.02
+        },
+        "Enron Emails": {
+          "share": 0.0043,
+          "doc_share": 0.0047,
+          "enrichment": 0.91
+        },
+        "PubMed Abstracts": {
+          "share": 0.0025,
+          "doc_share": 0.1672,
+          "enrichment": 0.01
+        },
+        "NIH ExPorter": {
+          "share": 0.0002,
+          "doc_share": 0.0109,
+          "enrichment": 0.02
+        },
+        "EuroParl": {
+          "share": 0.0,
+          "doc_share": 0.0009,
+          "enrichment": 0.02
+        },
+        "Gutenberg (PG-19)": {
+          "share": 0.0,
+          "doc_share": 0.0003,
+          "enrichment": 0.02
+        },
+        "Ubuntu IRC": {
+          "share": 0.0,
+          "doc_share": 0.0001,
+          "enrichment": 0.02
+        },
+        "PhilPapers": {
+          "share": 0.0,
+          "doc_share": 0.0002,
+          "enrichment": 0.01
+        }
+      },
+      "dolma_train": {
+        "stack_edu": {
+          "share": 0.4678,
+          "doc_share": 0.0688,
+          "enrichment": 6.8
+        },
+        "common_crawl": {
+          "share": 0.4212,
+          "doc_share": 0.7614,
+          "enrichment": 0.55
+        },
+        "olmocr_science_pdfs": {
+          "share": 0.0626,
+          "doc_share": 0.1352,
+          "enrichment": 0.46
+        },
+        "finemath-3plus": {
+          "share": 0.0437,
+          "doc_share": 0.0258,
+          "enrichment": 1.7
+        },
+        "rpj-proofpile-arxiv": {
+          "share": 0.0047,
+          "doc_share": 0.0083,
+          "enrichment": 0.57
+        },
+        "dolma1_7-wiki-en": {
+          "share": 0.0001,
+          "doc_share": 0.0005,
+          "enrichment": 0.12
+        }
+      }
+    },
+    "rare_in_pile_present_in_dolma": {
+      "concepts": 1024,
+      "pile": {
+        "DM Mathematics": {
+          "share": 0.3584,
+          "doc_share": 0.0106,
+          "enrichment": 33.97
+        },
+        "Github": {
+          "share": 0.2459,
+          "doc_share": 0.0996,
+          "enrichment": 2.47
+        },
+        "StackExchange": {
+          "share": 0.1049,
+          "doc_share": 0.1681,
+          "enrichment": 0.62
+        },
+        "Pile-CC": {
+          "share": 0.0856,
+          "doc_share": 0.294,
+          "enrichment": 0.29
+        },
+        "PubMed Central": {
+          "share": 0.0645,
+          "doc_share": 0.0319,
+          "enrichment": 2.02
+        },
+        "Wikipedia (en)": {
+          "share": 0.0444,
+          "doc_share": 0.0993,
+          "enrichment": 0.45
+        },
+        "FreeLaw": {
+          "share": 0.0277,
+          "doc_share": 0.0279,
+          "enrichment": 0.99
+        },
+        "ArXiv": {
+          "share": 0.027,
+          "doc_share": 0.0129,
+          "enrichment": 2.09
+        },
+        "PubMed Abstracts": {
+          "share": 0.0252,
+          "doc_share": 0.1672,
+          "enrichment": 0.15
+        },
+        "USPTO Backgrounds": {
+          "share": 0.0045,
+          "doc_share": 0.0619,
+          "enrichment": 0.07
+        },
+        "Ubuntu IRC": {
+          "share": 0.0039,
+          "doc_share": 0.0001,
+          "enrichment": 25.73
+        },
+        "Enron Emails": {
+          "share": 0.0033,
+          "doc_share": 0.0047,
+          "enrichment": 0.71
+        },
+        "HackerNews": {
+          "share": 0.0023,
+          "doc_share": 0.0093,
+          "enrichment": 0.25
+        },
+        "NIH ExPorter": {
+          "share": 0.0013,
+          "doc_share": 0.0109,
+          "enrichment": 0.12
+        },
+        "Gutenberg (PG-19)": {
+          "share": 0.0009,
+          "doc_share": 0.0003,
+          "enrichment": 3.36
+        },
+        "EuroParl": {
+          "share": 0.0001,
+          "doc_share": 0.0009,
+          "enrichment": 0.11
+        },
+        "PhilPapers": {
+          "share": 0.0,
+          "doc_share": 0.0002,
+          "enrichment": 0.24
+        }
+      },
+      "dolma_train": {
+        "common_crawl": {
+          "share": 0.4767,
+          "doc_share": 0.7614,
+          "enrichment": 0.63
+        },
+        "olmocr_science_pdfs": {
+          "share": 0.3377,
+          "doc_share": 0.1352,
+          "enrichment": 2.5
+        },
+        "stack_edu": {
+          "share": 0.1239,
+          "doc_share": 0.0688,
+          "enrichment": 1.8
+        },
+        "finemath-3plus": {
+          "share": 0.0498,
+          "doc_share": 0.0258,
+          "enrichment": 1.93
+        },
+        "rpj-proofpile-arxiv": {
+          "share": 0.0118,
+          "doc_share": 0.0083,
+          "enrichment": 1.43
+        },
+        "dolma1_7-wiki-en": {
+          "share": 0.0,
+          "doc_share": 0.0005,
+          "enrichment": 0.05
+        }
+      }
+    }
+  }
+}

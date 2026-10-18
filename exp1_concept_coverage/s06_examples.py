@@ -27,19 +27,22 @@ SUBSETS = ["T1", "T2", "V"]
 QUIZ_SUBSETS = ["T2", "V"]  # E3: only the T1 name is quizzed
 PURPOSES = {"naming": 0, "quiz_firing": 1, "quiz_nonfiring": 2}  # E6
 CLASSES = ["missing", "under", "over", "middle"]  # E8
-CLASSES_VS_PILE = ["over", "under", "rare_in_dolma_present_in_pile", "rare_in_pile_present_in_dolma"]  # E11
+CLASSES_VS_PILE = ["over", "under", "rare_in_dolma_present_in_pile", "rare_in_pile_present_in_dolma"]  # E11, E12
 
 
 def pick_concepts(spec, run_dir):
-    """E8, E11: a range 'a-b', 'prefix', 'classes:n' (paper classes) or 'vs_pile:n' (classes vs the Pile)."""
+    """E8, E11, E12: 'a-b', 'prefix', 'classes:n' (paper), 'vs_pile:n' (R4) or 'web:n' (web-only, R8)."""
     if spec == "prefix":
         return np.arange(config.PREFIX_WIDTH)
-    if spec.startswith("vs_pile:"):
-        n = int(spec.split(":")[1])
-        cls = pd.read_parquet(run_dir / "coverage_vs_pile.parquet", columns=["class_vs_pile"])["class_vs_pile"].to_numpy()
-        chosen = [np.random.default_rng([config.SEED, 2000 + k]).choice(np.flatnonzero(cls == c), size=n, replace=False)
-                  for k, c in enumerate(CLASSES_VS_PILE)]
-        return np.sort(np.concatenate(chosen))
+    for prefix, file, column, offset in (("vs_pile:", "coverage_vs_pile.parquet", "class_vs_pile", 2000),
+                                         ("web:", "coverage_vs_pile_web.parquet", "class_web", 4000)):
+        if spec.startswith(prefix):
+            n = int(spec.split(":")[1])
+            cls = pd.read_parquet(run_dir / file, columns=[column])[column].to_numpy()
+            chosen = [np.random.default_rng([config.SEED, offset + k]).choice(np.flatnonzero(cls == c), size=n,
+                                                                             replace=False)
+                      for k, c in enumerate(CLASSES_VS_PILE)]
+            return np.sort(np.concatenate(chosen))
     if spec.startswith("classes:"):
         n = int(spec.split(":")[1])
         cls = pd.read_parquet(run_dir / "coverage.parquet", columns=["class_train"])["class_train"].to_numpy()
@@ -185,6 +188,8 @@ def main():
     coverage = pd.read_parquet(run_dir / "coverage.parquet") if (run_dir / "coverage.parquet").exists() else None
     vs_pile_path = run_dir / "coverage_vs_pile.parquet"
     vs_pile = pd.read_parquet(vs_pile_path, columns=["class_vs_pile", "log_ratio"]) if vs_pile_path.exists() else None
+    web_path = run_dir / "coverage_vs_pile_web.parquet"
+    web = pd.read_parquet(web_path, columns=["class_web", "log_ratio_web"]) if web_path.exists() else None
     summary = {"run": args.run, "concepts_spec": args.concepts, "concepts": int(len(concepts)),
                "short": {f"{p}_{s}": 0 for (p, s) in [("naming", s) for s in SUBSETS]
                          + [(p, s) for p in ("quiz_firing", "quiz_nonfiring") for s in QUIZ_SUBSETS]}}
@@ -197,6 +202,10 @@ def main():
             out["class_vs_pile"] = vs_pile.at[c, "class_vs_pile"]
             ratio = vs_pile.at[c, "log_ratio"]
             out["log_ratio_vs_pile"] = None if pd.isna(ratio) else round(float(ratio), 4)
+        if web is not None:  # E12
+            out["class_web"] = web.at[c, "class_web"]
+            ratio = web.at[c, "log_ratio_web"]
+            out["log_ratio_web"] = None if pd.isna(ratio) else round(float(ratio), 4)
         for (purpose, s), items in plan[c].items():
             if items is None:
                 summary["short"][f"{purpose}_{s}"] += 1

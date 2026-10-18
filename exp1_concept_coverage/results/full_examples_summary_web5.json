@@ -1,0 +1,32 @@
+{
+  "run": "full",
+  "concepts_spec": "web:5",
+  "concepts": 20,
+  "short": {
+    "naming_T1": 4,
+    "naming_T2": 3,
+    "naming_V": 3,
+    "quiz_firing_T2": 4,
+    "quiz_firing_V": 5,
+    "quiz_nonfiring_T2": 0,
+    "quiz_nonfiring_V": 0
+  },
+  "n_firing_quantiles_10_50_90": {
+    "T1": [
+      30.0,
+      103.0,
+      1387.0
+    ],
+    "T2": [
+      37.0,
+      101.0,
+      1387.0
+    ],
+    "V": [
+      37.0,
+      112.0,
+      1375.0
+    ]
+  },
+  "seconds": 45.1
+}

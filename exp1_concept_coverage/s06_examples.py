@@ -128,14 +128,16 @@ def main():
         return by_concept[np.searchsorted(sorted_concepts, c, "left"):np.searchsorted(sorted_concepts, c, "right")]
 
     # Selection (E2-E4, E6, E9): which doc and window each example uses; activations are filled in pass 2
-    plan, n_firing = {}, {}
+    plan, n_firing, max_by_subset = {}, {}, {}
     requests = []  # (doc, concept, start, key into plan)
     for c in concepts:
         idx = entries_of(c)
-        plan[c], n_firing[c] = {}, {}
+        plan[c], n_firing[c], max_by_subset[c] = {}, {}, {}
         for s_i, s in enumerate(SUBSETS):
             mine = idx[subset_code[e_doc[idx]] == s_i]
             n_firing[c][s] = int(len(mine))
+            # N4: the 0-10 activation scale divides by the concept's max over all of the subset's firing docs
+            max_by_subset[c][s] = round(float(e_max[mine].max()), 4) if len(mine) else 0.0
             order = mine[np.lexsort((e_doc[mine], e_max[mine]))]  # sorted by max; ties by doc index
             jobs = [("naming", N_NAMING, NAMING_PER_GROUP)]
             if s in QUIZ_SUBSETS:
@@ -206,7 +208,7 @@ def main():
             kept = [it for it in plan[c][key] if not it["acts"].any()][:N_QUIZ]
             plan[c][key] = kept if len(kept) == N_QUIZ else None
 
-    # Text (E5): re-tokenize only the docs used, exactly as s04 did, and decode one token at a time
+    # Text (E5): re-tokenize only the docs used, the same way s04 did, and decode one token at a time
     tokenizer = AutoTokenizer.from_pretrained(config.MODEL_ID, revision=config.MODEL_REVISION)
     used = sorted({it["doc"] for c in concepts for v in plan[c].values() if v for it in v})
     ids_of = {}
@@ -231,7 +233,7 @@ def main():
                "short": {f"{p}_{s}": 0 for (p, s) in [("naming", s) for s in SUBSETS]
                          + [(p, s) for p in ("quiz_firing", "quiz_nonfiring") for s in QUIZ_SUBSETS]}}
     for c in concepts:
-        out = {"concept": int(c), "run": args.run, "n_firing": n_firing[c]}
+        out = {"concept": int(c), "run": args.run, "n_firing": n_firing[c], "max_by_subset": max_by_subset[c]}
         if int(c) in neighbour:
             out["neighbour"] = {"concept": neighbour[int(c)][0], "cosine": round(neighbour[int(c)][1], 4)}
         if coverage is not None:

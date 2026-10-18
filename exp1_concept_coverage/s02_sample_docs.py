@@ -10,6 +10,8 @@ import io
 import json
 import math
 import time
+from collections import deque
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 import config  # first: sets HF_HOME
@@ -89,14 +91,29 @@ def sample_shard(path, repo_path, quota, rng, source):
             usable.append(i)
 
     k = min(quota, len(usable))
-    chosen = set(rng.choice(usable, size=k, replace=False).tolist()) if k else set()
+    # T19: chosen lines in random order, so taking the first m of them is still a uniform draw
+    chosen = rng.choice(usable, size=k, replace=False).tolist() if k else []
+    rank = {line: r for r, line in enumerate(chosen)}
     # Pass 2 holds only the chosen docs in memory; an arxiv shard is 1.4 GB compressed
     # P21: our doc id is shard path + line number, unique across sources (dataset ids differ in form and name)
     docs = [{"doc_id": f"{repo_path}:{i}", "source_id": str(source_id(doc)), "line": i, "text": doc["text"]}
-            for i, doc in enumerate(read_docs(path)) if i in chosen]
+            for i, doc in enumerate(read_docs(path)) if i in rank]
+    docs.sort(key=lambda d: rank[d["line"]])
     stats = {"n_docs": n_docs, "n_distinct_ids": len(ids), "n_usable": len(usable), "n_whole_removed": n_whole,
              "n_partial_removed": n_partial, "n_empty": n_empty}
     return docs, stats
+
+
+def process_shard(task):
+    """T19: one worker's job: download a shard, sample up to docs_per_shard docs with the shard's own seed, delete it."""
+    repo_path, docs_per_shard, seed, source, scratch = task
+    t0 = time.time()
+    local = download(repo_path, scratch)
+    t1 = time.time()
+    docs, stats = sample_shard(local, repo_path, docs_per_shard, np.random.default_rng(seed), source)
+    t2 = time.time()
+    Path(local).unlink()
+    return docs, {**stats, "download_s": round(t1 - t0, 2), "read_s": round(t2 - t1, 2)}
 
 
 def assign_splits(shard_paths_by_source, rng):
@@ -172,6 +189,7 @@ def main():
     parser.add_argument("--n-docs", type=int, default=config.PILOT_N_DOCS)
     parser.add_argument("--docs-per-shard", type=int, default=config.PILOT_DOCS_PER_SHARD)
     parser.add_argument("--min-one-per-source", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--workers", type=int, default=6, help="T19: shards read in parallel")
     args = parser.parse_args()
 
     rng = np.random.default_rng(config.SEED)
@@ -181,34 +199,42 @@ def main():
 
     scratch = config.SCRATCH / "shards"
     scratch.mkdir(parents=True, exist_ok=True)
-    all_docs, shard_stats = [], []
-    for source, quota in quotas.items():
-        pool = shards[shards["source"] == source].reset_index(drop=True)
-        weights = (pool["bytes"] / pool["bytes"].sum()).to_numpy()
-        n_needed = math.ceil(quota / args.docs_per_shard)
-        # P4: a size-weighted random order of shards without replacement; we walk it until the quota is met
-        order = rng.choice(len(pool), size=min(len(pool), n_needed + SPARE_SHARDS), replace=False, p=weights)
-        got = 0
-        for idx in order:
-            if got == quota:
-                break
-            shard = pool.loc[idx]
-            t0 = time.time()
-            local = download(shard["path"], scratch)
-            t1 = time.time()
-            docs, stats = sample_shard(local, shard["path"], min(args.docs_per_shard, quota - got), rng, source)
-            t2 = time.time()
-            Path(local).unlink()
-            for d in docs:
-                d.update(source=source, folder=shard["folder"], shard=shard["path"])
-            all_docs += docs
-            got += len(docs)
-            shard_stats.append({**stats, "path": shard["path"], "source": source, "folder": shard["folder"],
-                                "bytes": int(shard["bytes"]), "download_s": round(t1 - t0, 2),
-                                "read_s": round(t2 - t1, 2), "n_sampled": len(docs)})
-            print(f"{source}: {got}/{quota} docs after {shard['path']} ({t1 - t0:.1f}s download, {t2 - t1:.1f}s read)")
-        if got < quota:
-            raise RuntimeError(f"{source}: only {got} of {quota} docs after {len(order)} shards")
+    all_docs, shard_stats, n_unused = [], [], 0
+    with ProcessPoolExecutor(max_workers=args.workers) as executor:
+        for s_idx, (source, quota) in enumerate(quotas.items()):
+            pool = shards[shards["source"] == source].reset_index(drop=True)
+            weights = (pool["bytes"] / pool["bytes"].sum()).to_numpy()
+            n_needed = math.ceil(quota / args.docs_per_shard)
+            # P4: a size-weighted random order of shards without replacement; we walk it until the quota is met
+            order = rng.choice(len(pool), size=min(len(pool), n_needed + SPARE_SHARDS), replace=False, p=weights)
+            # T19: each shard's sampling seed is (seed, source index, shard row), so results do not depend on
+            # which worker finishes first
+            tasks = [(pool.loc[i, "path"], args.docs_per_shard, (config.SEED, s_idx, int(i)), source, scratch)
+                     for i in order]
+            got, pending, next_task = 0, deque(), 0
+            while got < quota and (pending or next_task < len(tasks)):
+                # Keep up to 2 shards per worker in flight, in draw order, but no more than the quota still needs
+                while (next_task < len(tasks) and len(pending) < 2 * args.workers
+                       and got + args.docs_per_shard * len(pending) < quota):
+                    pending.append((order[next_task], executor.submit(process_shard, tasks[next_task])))
+                    next_task += 1
+                idx, future = pending.popleft()  # results are used in draw order, as in the sequential version
+                docs, stats = future.result()
+                docs = docs[: quota - got]  # the last shard gives only what the quota still needs (T19)
+                shard = pool.loc[idx]
+                for d in docs:
+                    d.update(source=source, folder=shard["folder"], shard=shard["path"])
+                all_docs += docs
+                got += len(docs)
+                shard_stats.append({**stats, "path": shard["path"], "source": source, "folder": shard["folder"],
+                                    "bytes": int(shard["bytes"]), "n_sampled": len(docs)})
+                print(f"{source}: {got}/{quota} docs after {shard['path']} "
+                      f"({stats['download_s']:.1f}s download, {stats['read_s']:.1f}s read)", flush=True)
+            for _, future in pending:
+                future.cancel()  # shards fetched beyond the quota are not used; running ones finish and are dropped
+            n_unused += len(pending)
+            if got < quota:
+                raise RuntimeError(f"{source}: only {got} of {quota} docs after {len(order)} shards")
 
     docs = pd.DataFrame(all_docs)
     stats = pd.DataFrame(shard_stats)
@@ -237,6 +263,7 @@ def main():
     olmocr = stats[stats["source"] == config.REDACTED_SOURCE]
     summary = {
         "run": args.run, "seed": config.SEED, "dataset_revision": config.DATASET_REVISION,
+        "workers": args.workers, "shards_fetched_but_unused": n_unused,
         "n_docs_requested": args.n_docs, "docs_per_shard": args.docs_per_shard, "quotas": quotas,
         "docs_by_source_and_subset": docs.groupby(["source", "subset"]).size().unstack(fill_value=0).to_dict("index"),
         "shards_by_source_and_subset": used.assign(subset=used["path"].map(lambda p: split_of[p][1]))

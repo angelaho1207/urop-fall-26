@@ -1,0 +1,18 @@
+{
+  "run": "full",
+  "tag": "pilot",
+  "concepts": "pilot:20",
+  "requests": 60,
+  "usage": {
+    "naming": {
+      "requests": 60,
+      "statuses": {
+        "ok": 60
+      },
+      "input_tokens": 278274,
+      "output_tokens": 8416,
+      "usd": 0.6407,
+      "usd_per_request": 0.010678
+    }
+  }
+}

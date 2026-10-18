@@ -1,0 +1,148 @@
+{
+  "run": "full",
+  "tag": "pilot",
+  "concepts": "pilot:20",
+  "setting": "quiz_T1T2_neighbour",
+  "skipped": {
+    "no_name": [],
+    "short_nonfiring": [
+      14698,
+      43385,
+      46995
+    ]
+  },
+  "usage": {
+    "detection_neighbour": {
+      "requests": 340,
+      "statuses": {
+        "ok": 340
+      },
+      "input_tokens": 514038,
+      "output_tokens": 8525,
+      "usd": 0.5567,
+      "usd_per_request": 0.001637
+    }
+  },
+  "failed_prompts": {},
+  "scores": {
+    "2736": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.65
+      }
+    },
+    "5743": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.59
+      }
+    },
+    "5840": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.67
+      }
+    },
+    "6203": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.67
+      }
+    },
+    "19927": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.63
+      }
+    },
+    "27065": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.76
+      }
+    },
+    "27886": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.84
+      }
+    },
+    "29454": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.55
+      }
+    },
+    "31048": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.72
+      }
+    },
+    "31149": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.68
+      }
+    },
+    "37629": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.77
+      }
+    },
+    "47545": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.47
+      }
+    },
+    "48147": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.48
+      }
+    },
+    "48631": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.76
+      }
+    },
+    "58251": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.89
+      }
+    },
+    "59830": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.64
+      }
+    },
+    "65400": {
+      "detection_neighbour": {
+        "windows": 100,
+        "answered": 100,
+        "balanced_accuracy": 0.68
+      }
+    }
+  }
+}

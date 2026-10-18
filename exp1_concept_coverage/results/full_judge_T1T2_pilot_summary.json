@@ -1,0 +1,27 @@
+{
+  "run": "full",
+  "tag": "pilot",
+  "concepts": "pilot:20",
+  "setting": "judge_T1T2",
+  "skipped": {
+    "no_name": [],
+    "short_nonfiring": []
+  },
+  "usage": {
+    "judge": {
+      "requests": 20,
+      "statuses": {
+        "ok": 20
+      },
+      "input_tokens": 12150,
+      "output_tokens": 551,
+      "usd": 0.0298,
+      "usd_per_request": 0.00149
+    }
+  },
+  "judge": {
+    "pairs": 20,
+    "answered": 20,
+    "same": 20
+  }
+}

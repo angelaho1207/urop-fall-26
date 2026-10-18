@@ -21,6 +21,21 @@ from datasketch import MinHash, MinHashLSH
 from huggingface_hub import hf_hub_download
 
 SPARE_SHARDS = 20  # P5: extra candidate shards per source for refills; the run stops if they run out
+DOWNLOAD_ATTEMPTS = 5  # T17
+
+
+def download(path_in_repo, local_dir):
+    """T17: retry a shard download with waits of 30, 60, 120, 240 s; give up (and stop the run) after 5 tries."""
+    for attempt in range(DOWNLOAD_ATTEMPTS):
+        try:
+            return hf_hub_download(config.DATASET_ID, path_in_repo, repo_type="dataset",
+                                   revision=config.DATASET_REVISION, local_dir=local_dir)
+        except Exception as error:
+            if attempt == DOWNLOAD_ATTEMPTS - 1:
+                raise
+            wait = 30 * 2 ** attempt
+            print(f"download failed ({error!r}); retry {attempt + 1} in {wait}s", flush=True)
+            time.sleep(wait)
 
 
 def allocate(n_docs, shares, min_one):
@@ -179,8 +194,7 @@ def main():
                 break
             shard = pool.loc[idx]
             t0 = time.time()
-            local = hf_hub_download(config.DATASET_ID, shard["path"], repo_type="dataset",
-                                    revision=config.DATASET_REVISION, local_dir=scratch)
+            local = download(shard["path"], scratch)
             t1 = time.time()
             docs, stats = sample_shard(local, shard["path"], min(args.docs_per_shard, quota - got), rng, source)
             t2 = time.time()

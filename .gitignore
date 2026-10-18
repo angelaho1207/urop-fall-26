@@ -5,3 +5,7 @@
 *.b64
 logs/
 __pycache__/
+*.jsonl
+*.zst
+.env
+*.key

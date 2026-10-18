@@ -19,16 +19,17 @@ MIN_DOCS = 40  # R4: enough firing docs to name a concept (row 17)
 TIERS = pd.cut(np.arange(D_SAE), [-1, 2047, 16383, D_SAE - 1], labels=["0-2047", "2048-16383", "16384-65535"])
 
 
-def accumulate(run_dir, groups, doc_filter=None):
-    """Per group: Eq. 2 numerator (sum of per-doc means) and the number of docs where each concept fires.
+def accumulate(run_dir, groups):
+    """Per group: Eq. 2 numerator (sum of per-doc means), the number of docs where each concept fires,
+    and the number of docs in the group (R8 needs it for the rate minimum).
 
     groups maps a name to {docs.parquet column: required value}; a doc is in the group if it matches every
     condition, and an empty dict means every doc (R7 uses two conditions: split and source).
-    doc_filter, if given, is a set of doc ids; docs outside it are left out of every group (R7 subsample).
     """
     docs = pd.read_parquet(run_dir / "docs.parquet", columns=["doc_id", "split", "subset", "source"]).set_index("doc_id")
     sums = {g: np.zeros(D_SAE) for g in groups}
     fires = {g: np.zeros(D_SAE, dtype=np.int64) for g in groups}
+    n_docs = {g: 0 for g in groups}
     for path in sorted(run_dir.glob("acts/part_?????.npz")):
         with np.load(path, allow_pickle=True) as z:
             rows = docs.loc[z["doc_id"]]
@@ -36,18 +37,25 @@ def accumulate(run_dir, groups, doc_filter=None):
             ids = z["doc_latent_ids"].astype(np.int64)
             means = z["doc_mean"].astype(np.float64)
         for g, conditions in groups.items():
-            mask = np.ones(len(rows), dtype=bool) if doc_filter is None else rows.index.isin(doc_filter)
+            mask = np.ones(len(rows), dtype=bool)
             for column, value in conditions.items():
                 mask &= (rows[column] == value).to_numpy()
             keep = mask[doc_of_entry]
             sums[g] += np.bincount(ids[keep], weights=means[keep], minlength=D_SAE)
             fires[g] += np.bincount(ids[keep], minlength=D_SAE)  # a doc lists each active concept once
-    return sums, fires
+            n_docs[g] += int(mask.sum())
+    return sums, fires, n_docs
 
 
-def ratio_classes(chi_dolma, chi_pile, n_dolma, n_pile):
-    """R4: r = log(chi_dolma / chi_pile) where both have >= 40 firing docs; percentile classes; one-sided lists."""
-    both = (n_dolma >= MIN_DOCS) & (n_pile >= MIN_DOCS)
+def ratio_classes(chi_dolma, chi_pile, n_dolma, n_pile, size_dolma, size_pile):
+    """R4, R8: r = log(chi_dolma / chi_pile) where a concept qualifies on both sides; percentile classes; lists.
+
+    A side qualifies if the concept fires in at least 40 / min(size_dolma, size_pile) of that side's docs (R8),
+    i.e. the 40-doc minimum of the smaller sample, equally hard to reach on both sides.
+    """
+    rate = MIN_DOCS / min(size_dolma, size_pile)
+    ok_dolma, ok_pile = n_dolma / size_dolma >= rate, n_pile / size_pile >= rate
+    both = ok_dolma & ok_pile
     r = np.full(D_SAE, np.nan)
     r[both] = np.log(chi_dolma[both] / chi_pile[both])
     low, high = np.quantile(r[both], [0.1, 0.9])
@@ -56,8 +64,8 @@ def ratio_classes(chi_dolma, chi_pile, n_dolma, n_pile):
     cls[both] = "middle"
     cls[both & (rr <= low)] = "under"
     cls[both & (rr >= high)] = "over"
-    cls[(n_pile >= MIN_DOCS) & (n_dolma < MIN_DOCS)] = "rare_in_dolma_present_in_pile"
-    cls[(n_dolma >= MIN_DOCS) & (n_pile < MIN_DOCS)] = "rare_in_pile_present_in_dolma"
+    cls[ok_pile & ~ok_dolma] = "rare_in_dolma_present_in_pile"
+    cls[ok_dolma & ~ok_pile] = "rare_in_pile_present_in_dolma"
     return r, cls
 
 
@@ -68,13 +76,16 @@ def main():
     args = parser.parse_args()
     dolma_dir, pile_dir = config.DATA / args.dolma, config.DATA / args.pile
 
-    d_sums, d_fires = accumulate(dolma_dir, {"train": {"split": "train"}, "T1": {"subset": "T1"}, "T2": {"subset": "T2"}})
-    p_sums, p_fires = accumulate(pile_dir, {"all": {}, "A": {"subset": "A"}, "B": {"subset": "B"}})
+    d_sums, d_fires, d_n = accumulate(dolma_dir, {"train": {"split": "train"}, "T1": {"subset": "T1"}, "T2": {"subset": "T2"}})
+    p_sums, p_fires, p_n = accumulate(pile_dir, {"all": {}, "A": {"subset": "A"}, "B": {"subset": "B"}})
 
-    r, cls = ratio_classes(chi(d_sums["train"]), chi(p_sums["all"]), d_fires["train"], p_fires["all"])
+    r, cls = ratio_classes(chi(d_sums["train"]), chi(p_sums["all"]), d_fires["train"], p_fires["all"],
+                           d_n["train"], p_n["all"])
     # R5: the same rules on two disjoint half pairs
-    r1, cls1 = ratio_classes(chi(d_sums["T1"]), chi(p_sums["A"]), d_fires["T1"], p_fires["A"])
-    r2, cls2 = ratio_classes(chi(d_sums["T2"]), chi(p_sums["B"]), d_fires["T2"], p_fires["B"])
+    r1, cls1 = ratio_classes(chi(d_sums["T1"]), chi(p_sums["A"]), d_fires["T1"], p_fires["A"],
+                             d_n["T1"], p_n["A"])
+    r2, cls2 = ratio_classes(chi(d_sums["T2"]), chi(p_sums["B"]), d_fires["T2"], p_fires["B"],
+                             d_n["T2"], p_n["B"])
     eligible = np.isfinite(r1) & np.isfinite(r2)
 
     paper = pd.read_parquet(dolma_dir / "coverage.parquet", columns=["class_train"])["class_train"].to_numpy()
@@ -89,7 +100,8 @@ def main():
 
     tier_mix = pd.crosstab(table["class_vs_pile"], table["tier"], normalize="index").round(3)
     summary = {
-        "dolma_run": args.dolma, "pile_run": args.pile, "min_docs": MIN_DOCS,
+        "dolma_run": args.dolma, "pile_run": args.pile, "min_docs_of_smaller_sample": MIN_DOCS,
+        "sample_sizes": {"dolma": {g: d_n[g] for g in d_n}, "pile": {g: p_n[g] for g in p_n}},
         "classes_vs_pile": table["class_vs_pile"].value_counts().to_dict(),
         "tier_share_by_class": tier_mix.to_dict("index"),
         "noise_floor_half1_vs_half2": {

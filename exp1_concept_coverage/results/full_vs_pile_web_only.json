@@ -1,78 +1,125 @@
 {
   "dolma_run": "full",
   "pile_run": "pile",
-  "docs": {
-    "dolma_train_common_crawl_available": 30418,
-    "dolma_web_subsample": 11761,
-    "pile_cc": 11761
+  "sample_sizes": {
+    "dolma_web": {
+      "web": 30418,
+      "T1": 7593,
+      "T2": 7593
+    },
+    "pile_cc": {
+      "web": 11761,
+      "A": 5873,
+      "B": 5888
+    }
   },
   "classes_web": {
-    "middle": 37073,
-    "too_rare_to_compare": 12917,
-    "rare_in_pile_present_in_dolma": 6146,
-    "under": 4635,
-    "over": 4635,
-    "rare_in_dolma_present_in_pile": 130
+    "middle": 37088,
+    "too_rare_to_compare": 13034,
+    "rare_in_pile_present_in_dolma": 6029,
+    "under": 4636,
+    "over": 4636,
+    "rare_in_dolma_present_in_pile": 113
   },
-  "spearman_log_ratio_full_vs_web": -0.1042,
-  "concepts_eligible_in_both": 46343,
-  "same_class_in_web_only_by_r4_class": {
-    "over": {
-      "concepts": 6135,
-      "same_class_share": 0.1529,
-      "web_class_counts": {
-        "middle": 4460,
-        "over": 938,
-        "rare_in_pile_present_in_dolma": 453,
-        "too_rare_to_compare": 248,
-        "under": 36
-      }
-    },
-    "under": {
-      "concepts": 6135,
-      "same_class_share": 0.0244,
-      "web_class_counts": {
-        "too_rare_to_compare": 4022,
-        "rare_in_pile_present_in_dolma": 1069,
-        "middle": 664,
-        "over": 193,
-        "under": 150,
-        "rare_in_dolma_present_in_pile": 37
-      }
-    },
+  "tier_share_by_web_class": {
     "middle": {
-      "concepts": 49078,
-      "same_class_share": 0.651,
-      "web_class_counts": {
-        "middle": 31949,
-        "too_rare_to_compare": 4571,
-        "rare_in_pile_present_in_dolma": 4513,
-        "under": 4449,
-        "over": 3504,
-        "rare_in_dolma_present_in_pile": 92
-      }
+      "0-2047": 0.05,
+      "16384-65535": 0.647,
+      "2048-16383": 0.303
+    },
+    "over": {
+      "0-2047": 0.025,
+      "16384-65535": 0.67,
+      "2048-16383": 0.305
     },
     "rare_in_dolma_present_in_pile": {
-      "concepts": 2151,
-      "same_class_share": 0.0005,
-      "web_class_counts": {
-        "too_rare_to_compare": 2150,
-        "rare_in_dolma_present_in_pile": 1
-      }
+      "0-2047": 0.0,
+      "16384-65535": 0.982,
+      "2048-16383": 0.018
     },
     "rare_in_pile_present_in_dolma": {
-      "concepts": 1024,
-      "same_class_share": 0.1084,
-      "web_class_counts": {
-        "too_rare_to_compare": 913,
-        "rare_in_pile_present_in_dolma": 111
-      }
+      "0-2047": 0.0,
+      "16384-65535": 0.915,
+      "2048-16383": 0.085
     },
     "too_rare_to_compare": {
-      "concepts": 1013,
-      "same_class_share": 1.0,
-      "web_class_counts": {
-        "too_rare_to_compare": 1013
+      "0-2047": 0.0,
+      "16384-65535": 0.971,
+      "2048-16383": 0.029
+    },
+    "under": {
+      "0-2047": 0.016,
+      "16384-65535": 0.812,
+      "2048-16383": 0.173
+    }
+  },
+  "noise_floor_web_half1_vs_half2": {
+    "concepts_eligible_in_both": 41911,
+    "spearman_log_ratio": 0.8586,
+    "same_class_share_eligible": 0.8767,
+    "same_class_share_all_concepts": 0.8887
+  },
+  "vs_whole_dataset_r4": {
+    "concepts_eligible_in_both": 46360,
+    "spearman_log_ratio": -0.1039,
+    "same_class_by_r4_class": {
+      "over": {
+        "concepts": 6129,
+        "same_class_share": 0.1535,
+        "web_class_counts": {
+          "middle": 4466,
+          "over": 941,
+          "rare_in_pile_present_in_dolma": 456,
+          "too_rare_to_compare": 238,
+          "under": 28
+        }
+      },
+      "under": {
+        "concepts": 6129,
+        "same_class_share": 0.0227,
+        "web_class_counts": {
+          "too_rare_to_compare": 4074,
+          "rare_in_pile_present_in_dolma": 1008,
+          "middle": 694,
+          "over": 180,
+          "under": 139,
+          "rare_in_dolma_present_in_pile": 34
+        }
+      },
+      "middle": {
+        "concepts": 49032,
+        "same_class_share": 0.6512,
+        "web_class_counts": {
+          "middle": 31928,
+          "too_rare_to_compare": 4582,
+          "under": 4469,
+          "rare_in_pile_present_in_dolma": 4460,
+          "over": 3515,
+          "rare_in_dolma_present_in_pile": 78
+        }
+      },
+      "rare_in_dolma_present_in_pile": {
+        "concepts": 2113,
+        "same_class_share": 0.0005,
+        "web_class_counts": {
+          "too_rare_to_compare": 2112,
+          "rare_in_dolma_present_in_pile": 1
+        }
+      },
+      "rare_in_pile_present_in_dolma": {
+        "concepts": 1082,
+        "same_class_share": 0.097,
+        "web_class_counts": {
+          "too_rare_to_compare": 977,
+          "rare_in_pile_present_in_dolma": 105
+        }
+      },
+      "too_rare_to_compare": {
+        "concepts": 1051,
+        "same_class_share": 1.0,
+        "web_class_counts": {
+          "too_rare_to_compare": 1051
+        }
       }
     }
   }

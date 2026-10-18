@@ -1,14 +1,26 @@
 {
   "dolma_run": "full",
   "pile_run": "pile",
-  "min_docs": 40,
+  "min_docs_of_smaller_sample": 40,
+  "sample_sizes": {
+    "dolma": {
+      "train": 39949,
+      "T1": 10007,
+      "T2": 10021
+    },
+    "pile": {
+      "all": 40000,
+      "A": 20000,
+      "B": 20000
+    }
+  },
   "classes_vs_pile": {
-    "middle": 49078,
-    "under": 6135,
-    "over": 6135,
-    "rare_in_dolma_present_in_pile": 2151,
-    "rare_in_pile_present_in_dolma": 1024,
-    "too_rare_to_compare": 1013
+    "middle": 49032,
+    "under": 6129,
+    "over": 6129,
+    "rare_in_dolma_present_in_pile": 2113,
+    "rare_in_pile_present_in_dolma": 1082,
+    "too_rare_to_compare": 1051
   },
   "tier_share_by_class": {
     "middle": {
@@ -18,8 +30,8 @@
     },
     "over": {
       "0-2047": 0.009,
-      "16384-65535": 0.819,
-      "2048-16383": 0.172
+      "16384-65535": 0.818,
+      "2048-16383": 0.173
     },
     "rare_in_dolma_present_in_pile": {
       "0-2047": 0.0,
@@ -43,43 +55,43 @@
     }
   },
   "noise_floor_half1_vs_half2": {
-    "concepts_eligible_in_both": 53215,
-    "spearman_log_ratio": 0.9167,
-    "same_class_share_eligible": 0.9139,
-    "same_class_share_all_concepts": 0.8926
+    "concepts_eligible_in_both": 51983,
+    "spearman_log_ratio": 0.9231,
+    "same_class_share_eligible": 0.9158,
+    "same_class_share_all_concepts": 0.8996
   },
   "paper_class_vs_new_class": {
     "middle": {
-      "middle": 38244,
-      "over": 5257,
+      "middle": 38241,
+      "over": 5256,
       "rare_in_dolma_present_in_pile": 0,
-      "rare_in_pile_present_in_dolma": 82,
+      "rare_in_pile_present_in_dolma": 83,
       "too_rare_to_compare": 1,
-      "under": 871
+      "under": 874
     },
     "missing": {
-      "middle": 2022,
-      "over": 7,
-      "rare_in_dolma_present_in_pile": 2136,
-      "rare_in_pile_present_in_dolma": 779,
-      "too_rare_to_compare": 991,
-      "under": 4032
+      "middle": 1993,
+      "over": 6,
+      "rare_in_dolma_present_in_pile": 2098,
+      "rare_in_pile_present_in_dolma": 820,
+      "too_rare_to_compare": 1029,
+      "under": 4021
     },
     "over": {
-      "middle": 4798,
-      "over": 753,
+      "middle": 4797,
+      "over": 754,
       "rare_in_dolma_present_in_pile": 0,
       "rare_in_pile_present_in_dolma": 0,
       "too_rare_to_compare": 0,
       "under": 6
     },
     "under": {
-      "middle": 4014,
-      "over": 118,
+      "middle": 4001,
+      "over": 113,
       "rare_in_dolma_present_in_pile": 15,
-      "rare_in_pile_present_in_dolma": 163,
+      "rare_in_pile_present_in_dolma": 179,
       "too_rare_to_compare": 21,
-      "under": 1226
+      "under": 1228
     }
   }
 }

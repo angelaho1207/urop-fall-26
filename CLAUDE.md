@@ -27,7 +27,8 @@ Research questions (Sheng-Yu's plan):
   Matryoshka BatchTopK, k=100, d_in 4096, d_sae 65,536, nested prefixes 2,048 / 16,384 / 65,536.
   Saved as JumpReLU for inference (cfg.json "architecture": "jumprelu").
   Hook `model.layers.N` = output of decoder layer N = HF `hidden_states[N+1]`.
-  Trained on 1B tokens of `chanind/pile-uncopyrighted-olmo-3-1024-abbrv-2B` (the Pile, not Dolma), context 1024, BOS prepended, special tokens excluded from training.
+  Trained on 1B tokens of `chanind/pile-uncopyrighted-olmo-3-1024-abbrv-2B` (the Pile, not Dolma), context 1024, special tokens excluded from training.
+  `prepend_bos: true` in config, but the Olmo 3 tokenizer has no BOS, so none was added (checked `sae_lens.json` and 100 training rows, 2026-10-17).
   Load: `SAE.from_pretrained("decoderesearch/olmo-3-saes", "<sae_id>")`.
 - Training data of Olmo-3-1025-7B: stage 1 `allenai/dolma3_mix-6T-1025-7B` (5.93T tokens, 97.5% of all tokens), stage 2 `allenai/dolma3_dolmino_mix-100B-1025`, stage 3 `allenai/dolma3_longmino_mix-50B-1025`.
   Stage 1 token shares: common_crawl 76.07%, olmocr_science_pdfs 13.57%, stack_edu 6.89%, finemath-3plus 2.56%, rpj-proofpile-arxiv 0.86%, dolma1_7-wiki-en 0.04%.

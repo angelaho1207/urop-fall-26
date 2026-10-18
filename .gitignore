@@ -9,3 +9,4 @@ __pycache__/
 *.zst
 .env
 *.key
+space/data/

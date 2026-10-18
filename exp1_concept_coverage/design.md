@@ -15,7 +15,8 @@ Train and val are random shard-level splits of one distribution. The faithfulnes
 | Train (80%, by shard) | Coverage (Eq. 1-2), top documents, decile samples. Contains T1 and T2 | Scoring a name on the docs it was written from |
 | T1, T2 (two disjoint val-sized shard subsets of train) | One name written from each. T1 vs T2 name agreement = baseline from labeler and sampling noise. T1 name quizzed on T2 for pilot tuning only. Coverage noise floor | Scoring a name on the docs it was written from |
 | V (20%, by shard) | One name written from V, shown next to T1's. T1 name quizzed on V (the reported score). Coverage comparison with train | Quizzing the V name; any pilot tuning |
-| Pile (SAE training data, `chanind/pile-uncopyrighted-olmo-3-1024-abbrv-2B`) | Names for concepts missing from our sample | Any score or coverage number |
+| Pile, SAE training data (`chanind/pile-uncopyrighted-olmo-3-1024-abbrv-2B`, built from `monology/pile-uncopyrighted` files `train/00`-`01`) | Names for concepts missing from our sample | Any score, coverage number or SAE metric |
+| Pile, held out from the SAE (`monology/pile-uncopyrighted` file `train/02`) | Baseline for SAE metrics in the pilot (row 22) | Names, coverage, quiz scores |
 
 Rule: a name is never quizzed on the docs it was written from.
 
@@ -45,6 +46,7 @@ All Dolma splits are held out from the SAE (trained on the Pile) and from the na
 | 19 | Names, quiz and name-match judge via the Anthropic API (Message Batches). A stronger model writes the names and a different model takes the quiz. Model ids fixed after the 20-concept cost pilot and kept for the whole run; prompts, raw outputs, temperature and run date saved | One model in both roles could score its own phrasing higher, and the design could not separate that out. The quiz-taker's ability affects T1→T2 and T1→V equally, so their comparison holds | One model for both. Claude Code agents (not reproducible). Open model on GPU (weaker names, more setup) | Cost pilot |
 | 20 | N set in the pilot so that most named concepts have at least k firing docs in each of T1, T2 and V (k = examples needed by row 17); report how many fall short. Cap: one job within the `mit_normal_gpu` time limit. Shard downloads run in a separate CPU job on `mit_normal` | T1, T2 and V are each 20% of N, so N must leave enough firing docs per subset to write names from | Largest N in a fixed 2 GPU-hours (no reason for 2 hours). Guessing N | Pilot; `sinfo -p mit_normal_gpu` for the time limit |
 | 21 | Name match: Angela judges a seeded random sample of 50 concepts by eye ("same concept?" for T1 vs T2 and T1 vs V). A third model, different from the labeler and the quiz-taker, judges all named concepts; its numbers are reported only if it agrees with Angela's 50 calls, at an agreement threshold written here before the judge runs | Judging by eye does not scale to thousands of concepts. Checking the judge against hand calls tells us whether its numbers can be used | By eye only, with the quiz as the only number at scale | Sheng-Yu's outline (visual check of train vs val names) |
+| 22 | Pilot baseline: run the same SAE metrics (fraction of variance explained, active concepts per token) on 50 seeded random docs from `monology/pile-uncopyrighted` file `train/02`, truncated to 1,024 tokens with no BOS, as for Dolma (rows 9, 10) | The SAE was trained on the Pile, so its numbers there show how well it works in its own domain. A drop on Dolma relative to this baseline is SAE error from the domain change, which is one of the gaps RQ3 asks us to separate from the concept gap. File `train/02` is held out because the SAE's training data was built only from files `train/00` and `train/01` | Rows of the SAE's own training data: the SAE was fit on them, so they would overstate its quality (CLAUDE.md: never evaluate on data used to fit). No baseline: Dolma numbers would have no reference | Angela, tutorial commit `5421f4a`; training data `sae_lens.json` `original_data_files: ["train/00.jsonl.zst", "train/01.jsonl.zst"]`; `monology/pile-uncopyrighted` revision `3be90335b66f24456a5d6659d9c8d208c0357119` |
 
 ### Doc length by source (row 4)
 | Source | Avg tokens/doc | Token share | Doc share |
@@ -91,7 +93,7 @@ New technical choices made while writing code get a row here before the code run
 | `config.py` | – | – | Constants with their row: model, SAE and dataset ids + revisions, seeds, split fractions, N, docs per shard, k, paths |
 | `s01_list_shards.py` | CPU sbatch | HF API | `DATA/shards.parquet` (path, source, folder, bytes); `results/shards_summary.json` |
 | `s02_sample_docs.py` | CPU sbatch | shards | Size-weighted shard draw, `[REMOVED]` filter + refill, shard → split (train/V; T1, T2 inside train), exact + MinHash dedup → `DATA/docs.parquet` (doc_id, source, folder, shard, split, subset, text); `results/sample_summary.json` (counts per source and split, removed, duplicates, lengths) |
-| `s03_pilot.py` | GPU, interactive | 200 + 200 docs | `results/pilot_checks.json` |
+| `s03_pilot.py` | GPU, interactive | 200 + 200 Dolma docs, 50 held-out Pile docs | `results/pilot_checks.json` (Dolma and Pile metrics side by side) |
 | `s04_activations.py` | GPU sbatch | docs, plus a Pile sample for missing concepts | `DATA/acts/part_*.npz` (sparse token activations); `DATA/doc_stats.parquet` (per-doc mean, max and argmax position per latent); `results/activation_summary.json` |
 | `s05_coverage.py` | CPU | doc_stats | `DATA/coverage.parquet` (χ per concept for train, T1, T2, V; classes; noise floor; <30-token check); `results/coverage_summary.json` |
 | `s06_examples.py` | CPU | acts, docs | `DATA/examples/` (per named concept and subset: top-k windows and decile samples with tokens and activations) |
@@ -135,3 +137,4 @@ Rejected: generating pages with SAEDashboard. It produces this layout but has no
 8. Naming settings and non-firing doc choice, tested as T1 names quizzed on T2 (rows 17, 18).
 9. Firing docs per concept in each subset, to set N (row 20).
 10. 20-concept cost pilot for model choice and scope (rows 16, 19).
+11. Pile baseline: checks 2 and 4 on 50 held-out Pile docs, reported next to the Dolma numbers (row 22).

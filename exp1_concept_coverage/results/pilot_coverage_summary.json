@@ -1,0 +1,58 @@
+{
+  "run": "pilot",
+  "docs": {
+    "train": 329,
+    "T1": 80,
+    "T2": 80,
+    "V": 71,
+    "train_min30": 322
+  },
+  "parts": 1,
+  "missing_counts": {
+    "train": {
+      "never_fires": 7470,
+      "below_1e-5": 7470,
+      "below_e^-5": 13697
+    },
+    "T1": {
+      "never_fires": 17433,
+      "below_1e-5": 17433,
+      "below_e^-5": 19438
+    },
+    "T2": {
+      "never_fires": 16594,
+      "below_1e-5": 16594,
+      "below_e^-5": 18901
+    },
+    "V": {
+      "never_fires": 17195,
+      "below_1e-5": 17195,
+      "below_e^-5": 19354
+    },
+    "train_min30": {
+      "never_fires": 7471,
+      "below_1e-5": 7471,
+      "below_e^-5": 13638
+    }
+  },
+  "train_classes": {
+    "middle": 41471,
+    "missing": 13697,
+    "over": 5184,
+    "under": 5184
+  },
+  "agreement_T1_vs_T2_noise_floor": {
+    "concepts_nonmissing_in_both": 41948,
+    "spearman_log_chi": 0.8108,
+    "same_class_share": 0.7692
+  },
+  "agreement_T1_vs_V_test": {
+    "concepts_nonmissing_in_both": 40885,
+    "spearman_log_chi": 0.7501,
+    "same_class_share": 0.7327
+  },
+  "row11_check": {
+    "train_docs_under_30_tokens": 7,
+    "concepts_changing_class": 373
+  }
+}

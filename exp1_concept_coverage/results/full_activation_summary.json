@@ -1,0 +1,11 @@
+{
+  "run": "full",
+  "docs": 49904,
+  "parts": 50,
+  "tokens": 36438071,
+  "mean_active_per_token": 109.87,
+  "gb_on_disk": 22.58,
+  "model_dtype": "bfloat16",
+  "exclude_position_0": false,
+  "seconds_per_doc_this_session": 0.09
+}

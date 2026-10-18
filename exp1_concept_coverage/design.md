@@ -85,6 +85,12 @@ HfApi `list_repo_tree` on `allenai/dolma3_mix-6T-1025-7B`, revision `2ca900fbe14
 | T8 | Static JSON site with one file per concept and per doc | The page loads one concept at a time; static hosting needs no server | One large JSON file | HF Space Static SDK (tutorial Chunk 9) |
 | T9 | Pin revisions: model `a81bae42db3975be1671e27b9c9a56da1a9f980f`, SAE repo `ad1f790dd36d44b5b77b1d08ace6a6f48d121649`, dataset `2ca900fbe14e86c5c83d064d9f0882f1c0b8c05b` | A later push to any of these repos would otherwise change results silently | Loading `main` | HF API, 2026-10-17 |
 
+| T10 | Batch size 1 in `s04` (one doc per forward pass) | 50,000 docs × 0.09 s/doc (pilot, bf16) ≈ 75 min, well inside one job. Batch 1 needs no padding, and the full run reproduces the conditions the pilot measured | Batching with right padding and an attention mask: faster, but padded batches change bf16 kernel shapes, so activations would need a new check against batch 1 | Pilot check 5; `sinfo` (`mit_normal_gpu` MaxTime 6:00:00) |
+| T11 | `s04` stores activations sparse, in CSR form: per token, the number of active concepts (uint16); then each active concept's id (uint16) and value (float16). Per doc, for each concept active in it: id, mean over the doc's tokens (float32, Eq. 1), max (float32) and position of the max (uint16) | About 110 active concepts per token (pilot) × 4 B ≈ 440 B per token. Measured: 0.17 GB for the 400 pilot docs (277,584 tokens), so about 21 GB for 50,000 docs, on the 1 TB pool. Dense per-doc mean and max for all 65,536 concepts would be 26 GB and mostly zeros. Max is kept in float32 so top-doc rankings do not tie from rounding | Dense per-doc arrays (the pilot's `doc_stats.npz` format). Token positions stored per entry (+2 B per entry; derivable from the per-token counts) | Pilot check 2 (L0 109.4); T2 |
+| T12 | `s04` writes one file per 1,000 docs (`acts/part_<k>.npz`), first to a temporary name and then renamed. A rerun skips parts already on disk | A job that hits its time limit or dies loses at most 1,000 docs, and a half-written file is never mistaken for a finished one | One file at the end | – |
+| T13 | Pile activations for naming missing concepts (row 16) go in a later script, `s04b`, run after `s05` finds which concepts are missing | The set of missing concepts, and so how many Pile docs are needed, is known only after coverage | Running a fixed Pile sample in `s04` now | Row 16 |
+| T14 | Full-run jobs set `-t` explicitly: `mit_normal_gpu` defaults to 2 h and allows at most 6 h; `mit_normal` allows 12 h | A job without `-t` on the GPU partition would be killed at 2 h | – | `scontrol show partition mit_normal_gpu` (DefaultTime 02:00:00, MaxTime 06:00:00), 2026-10-18 |
+
 New technical choices made while writing code get a row here before the code runs.
 
 ## Code structure
@@ -174,6 +180,7 @@ Files: `results/shards_summary.json`, `results/pilot_sample_summary.json`, `resu
 | Repetition (P22) | Lines per distinct doc id in the shards read: common_crawl 3.18, finemath 4.27, stack_edu 3.11, arxiv 2.21, olmocr 1.80, wiki 1.06. The mix repeats docs; line sampling keeps the model's exposure. Cross-split and within-sample duplicates in the pilot: 0 |
 | Splits | Shards by subset: common_crawl T1 6, T2 6, V 6, rest 13; olmocr 1/1/1/3; stack_edu 1/1/1/0. Finemath, arxiv and wiki each had 1 shard, all in train. At N = 50,000 and 50 docs per shard, wiki (20 docs) still fits in 1 shard, so wiki has no V docs |
 | Empty docs | 11,187 of 2,921,982 common_crawl lines read are empty (0.4%); dropped (row 11) |
+| `s04` test on the pilot docs (bf16, batch 1) | 0.086 s/doc; 109.4 active concepts per token; 0.17 GB. Doc ids and lengths match `s03`. Rebuilding doc 0's mean from the token-level CSR matches the stored per-doc mean to 4e-5 (float16 values). Per-doc means vs `s03` setup 1, all 400 docs: correlation median 0.99999, min 0.9994; 99.7% of each doc's top-10 concepts shared (`logs/pilot_s04_2026-10-18.log`, `results/pilot_activation_summary.json`) |
 
 ## Pilot checks (before the full run)
 1. `torch.equal(hook output, hidden_states[17])` (row 13).

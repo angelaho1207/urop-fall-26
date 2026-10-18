@@ -1,0 +1,11 @@
+{
+  "run": "pilot",
+  "docs": 400,
+  "parts": 1,
+  "tokens": 277584,
+  "mean_active_per_token": 109.39,
+  "gb_on_disk": 0.17,
+  "model_dtype": "bfloat16",
+  "exclude_position_0": false,
+  "seconds_per_doc_this_session": 0.086
+}

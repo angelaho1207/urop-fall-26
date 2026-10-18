@@ -1,0 +1,32 @@
+{
+  "run": "pilot",
+  "concepts_spec": "0-19",
+  "concepts": 20,
+  "short": {
+    "naming_T1": 2,
+    "naming_T2": 1,
+    "naming_V": 2,
+    "quiz_firing_T2": 3,
+    "quiz_firing_V": 4,
+    "quiz_nonfiring_T2": 7,
+    "quiz_nonfiring_V": 7
+  },
+  "n_firing_quantiles_10_50_90": {
+    "T1": [
+      42.0,
+      60.0,
+      70.0
+    ],
+    "T2": [
+      48.0,
+      67.0,
+      79.0
+    ],
+    "V": [
+      44.0,
+      62.0,
+      71.0
+    ]
+  },
+  "seconds": 1.8
+}

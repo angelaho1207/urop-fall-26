@@ -1,0 +1,209 @@
+"""Example windows per concept for naming (s07) and the quiz (s08) (rows 17, 18, E1-E9). CPU only.
+
+Usage: python s06_examples.py --run pilot --concepts 0-19
+       python s06_examples.py --run full --concepts classes:5   (or: prefix)
+Reads DATA/<run>/docs.parquet, DATA/<run>/acts/part_?????.npz and, if present, DATA/<run>/coverage.parquet.
+Saves DATA/<run>/examples/<concept>.json and results/<run>_examples_summary.json.
+"""
+import argparse
+import json
+import time
+
+import config  # first: sets HF_HOME
+import numpy as np
+import pandas as pd
+from transformers import AutoTokenizer
+
+from s03_pilot import tokenize
+
+D_SAE = 65_536
+PART_SIZE = 1000  # s04 writes 1,000 docs per part (T12)
+WINDOW, BEFORE = 32, 16  # E1
+GROUPS, NAMING_PER_GROUP, QUIZ_PER_GROUP = 10, 4, 5  # E2
+N_NAMING, N_QUIZ = GROUPS * NAMING_PER_GROUP, GROUPS * QUIZ_PER_GROUP
+N_NONFIRING_CANDIDATES = 200  # E9
+SUBSETS = ["T1", "T2", "V"]
+QUIZ_SUBSETS = ["T2", "V"]  # E3: only the T1 name is quizzed
+PURPOSES = {"naming": 0, "quiz_firing": 1, "quiz_nonfiring": 2}  # E6
+CLASSES = ["missing", "under", "over", "middle"]  # E8
+
+
+def pick_concepts(spec, run_dir):
+    """E8: a range 'a-b', 'prefix', or 'classes:n' (n per train class, seeded)."""
+    if spec == "prefix":
+        return np.arange(config.PREFIX_WIDTH)
+    if spec.startswith("classes:"):
+        n = int(spec.split(":")[1])
+        cls = pd.read_parquet(run_dir / "coverage.parquet", columns=["class_train"])["class_train"].to_numpy()
+        chosen = [np.random.default_rng([config.SEED, 1000 + k]).choice(np.flatnonzero(cls == c), size=n, replace=False)
+                  for k, c in enumerate(CLASSES)]
+        return np.sort(np.concatenate(chosen))
+    lo, hi = map(int, spec.split("-"))
+    return np.arange(lo, hi + 1)
+
+
+def window_start(center, length):
+    """E1: 16 tokens before the center, shifted to stay inside the doc; 0 for docs shorter than 32 tokens."""
+    return int(min(max(center - BEFORE, 0), max(length - WINDOW, 0)))
+
+
+def rank_groups(order, per_group, rng):
+    """E2: split docs (sorted by max) into 10 equal-size rank groups and draw per_group from each."""
+    picks = []
+    for g, members in enumerate(np.array_split(order, GROUPS)):
+        for d in rng.choice(members, size=per_group, replace=False):
+            picks.append((int(d), g))
+    return picks
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--run", required=True)
+    parser.add_argument("--concepts", required=True, help="'0-19', 'prefix' or 'classes:5' (E8)")
+    args = parser.parse_args()
+    t_start = time.time()
+    run_dir = config.DATA / args.run
+    out_dir = run_dir / "examples"
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    concepts = pick_concepts(args.concepts, run_dir)
+    selected = np.zeros(D_SAE, dtype=bool)
+    selected[concepts] = True
+    docs = pd.read_parquet(run_dir / "docs.parquet", columns=["doc_id", "source", "subset", "text"])
+    subset_code = docs["subset"].map({s: i for i, s in enumerate(SUBSETS)}).fillna(-1).to_numpy(dtype=np.int8)
+    parts = sorted(run_dir.glob("acts/part_?????.npz"))
+
+    # Pass 1 (doc level): every (doc, concept) entry for the selected concepts, with the doc's max and its position
+    doc_len = np.zeros(len(docs), dtype=np.int32)
+    e_doc, e_concept, e_max, e_argmax = [], [], [], []
+    for k, path in enumerate(parts):
+        with np.load(path, allow_pickle=True) as z:
+            base = k * PART_SIZE
+            doc_len[base:base + len(z["doc_id"])] = z["doc_tokens"]
+            doc_of_entry = np.repeat(np.arange(len(z["doc_id"])), z["doc_active"]) + base
+            keep = selected[z["doc_latent_ids"]]
+            e_doc.append(doc_of_entry[keep].astype(np.int32))
+            e_concept.append(z["doc_latent_ids"][keep])
+            e_max.append(z["doc_max"][keep])
+            e_argmax.append(z["doc_argmax"][keep].astype(np.int32))
+    e_doc, e_concept = np.concatenate(e_doc), np.concatenate(e_concept)
+    e_max, e_argmax = np.concatenate(e_max), np.concatenate(e_argmax)
+    by_concept = np.argsort(e_concept, kind="stable")
+    bounds = np.searchsorted(e_concept[by_concept], [concepts, concepts + 1])
+
+    # Selection (E2-E4, E6, E9): which doc and window each example uses; activations are filled in pass 2
+    plan, n_firing = {}, {}
+    requests = []  # (doc, concept, start, key into plan)
+    for j, c in enumerate(concepts):
+        idx = by_concept[bounds[0, j]:bounds[1, j]]
+        plan[c], n_firing[c] = {}, {}
+        for s_i, s in enumerate(SUBSETS):
+            mine = idx[subset_code[e_doc[idx]] == s_i]
+            n_firing[c][s] = int(len(mine))
+            order = mine[np.lexsort((e_doc[mine], e_max[mine]))]  # sorted by max; ties by doc index
+            jobs = [("naming", N_NAMING, NAMING_PER_GROUP)]
+            if s in QUIZ_SUBSETS:
+                jobs.append(("quiz_firing", N_QUIZ, QUIZ_PER_GROUP))
+            for purpose, needed, per_group in jobs:
+                key = (purpose, s)
+                if len(order) < needed:
+                    plan[c][key] = None  # short (rows 17, 18)
+                    continue
+                rng = np.random.default_rng([config.SEED, int(c), s_i, PURPOSES[purpose]])
+                plan[c][key] = []
+                for e, g in rank_groups(order, per_group, rng):
+                    d = int(e_doc[e])
+                    item = {"doc": d, "group": g, "max": float(e_max[e]),
+                            "start": window_start(int(e_argmax[e]), int(doc_len[d]))}
+                    plan[c][key].append(item)
+                    requests.append((d, int(c), item))
+            if s in QUIZ_SUBSETS:
+                # E4, E9: random docs of the subset and a random window in each; kept later if all zero
+                rng = np.random.default_rng([config.SEED, int(c), s_i, PURPOSES["quiz_nonfiring"]])
+                pool = np.flatnonzero(subset_code == s_i)
+                cands = rng.choice(pool, size=min(N_NONFIRING_CANDIDATES, len(pool)), replace=False)
+                plan[c][("quiz_nonfiring", s)] = []
+                for d in cands:
+                    item = {"doc": int(d), "group": None, "max": 0.0,
+                            "start": int(rng.integers(0, max(int(doc_len[d]) - WINDOW, 0) + 1))}
+                    plan[c][("quiz_nonfiring", s)].append(item)
+                    requests.append((int(d), int(c), item))
+
+    # Pass 2 (token level, per part): the concept's activation at each of the window's tokens (E5)
+    requests.sort(key=lambda r: r[0])
+    r = 0
+    for k, path in enumerate(parts):
+        base, end = k * PART_SIZE, (k + 1) * PART_SIZE
+        if r >= len(requests) or requests[r][0] >= end:
+            continue
+        with np.load(path, allow_pickle=True) as z:
+            tok_start = np.concatenate([[0], np.cumsum(z["doc_tokens"])])
+            entry_start = np.concatenate([[0], np.cumsum(z["tok_counts"], dtype=np.int64)])
+            latent_ids, values, tok_counts = z["latent_ids"], z["values"], z["tok_counts"]
+            while r < len(requests) and requests[r][0] < end:
+                d, c, item = requests[r]
+                t0 = tok_start[d - base] + item["start"]
+                t1 = min(t0 + WINDOW, tok_start[d - base + 1])
+                e0, e1 = entry_start[t0], entry_start[t1]
+                token_of_entry = np.repeat(np.arange(t1 - t0), tok_counts[t0:t1])
+                hit = latent_ids[e0:e1] == c
+                acts = np.zeros(t1 - t0, dtype=np.float32)
+                acts[token_of_entry[hit]] = values[e0:e1][hit]
+                item["acts"] = acts
+                r += 1
+
+    # Non-firing: keep the first 50 all-zero windows in candidate order (E4, E9)
+    for c in concepts:
+        for s in QUIZ_SUBSETS:
+            kept = [it for it in plan[c][("quiz_nonfiring", s)] if not it["acts"].any()][:N_QUIZ]
+            plan[c][("quiz_nonfiring", s)] = kept if len(kept) == N_QUIZ else None
+
+    # Text (E5): re-tokenize only the docs used, exactly as s04 did, and decode one token at a time
+    tokenizer = AutoTokenizer.from_pretrained(config.MODEL_ID, revision=config.MODEL_REVISION)
+    used = sorted({it["doc"] for c in concepts for v in plan[c].values() if v for it in v})
+    ids_of = {}
+    for d in used:
+        ids = tokenize(tokenizer, docs.at[d, "text"])[0]
+        if len(ids) != doc_len[d]:
+            raise RuntimeError(f"doc {d}: {len(ids)} tokens now vs {doc_len[d]} in s04")
+        ids_of[d] = ids
+    piece = {}
+
+    def text_of(i):
+        if i not in piece:
+            piece[i] = tokenizer.decode([i])
+        return piece[i]
+
+    coverage = pd.read_parquet(run_dir / "coverage.parquet") if (run_dir / "coverage.parquet").exists() else None
+    summary = {"run": args.run, "concepts_spec": args.concepts, "concepts": int(len(concepts)),
+               "short": {f"{p}_{s}": 0 for (p, s) in [("naming", s) for s in SUBSETS]
+                         + [(p, s) for p in ("quiz_firing", "quiz_nonfiring") for s in QUIZ_SUBSETS]}}
+    for c in concepts:
+        out = {"concept": int(c), "run": args.run, "n_firing": n_firing[c]}
+        if coverage is not None:
+            out["class_train"] = coverage.at[c, "class_train"]
+            out["chi_train"] = float(coverage.at[c, "chi_train"])
+        for (purpose, s), items in plan[c].items():
+            if items is None:
+                summary["short"][f"{purpose}_{s}"] += 1
+                out.setdefault(purpose, {})[s] = None
+                continue
+            windows = []
+            for it in items:
+                ids = ids_of[it["doc"]][it["start"]:it["start"] + WINDOW]
+                windows.append({"doc_id": docs.at[it["doc"], "doc_id"], "source": docs.at[it["doc"], "source"],
+                                "start": it["start"], "group": it["group"], "max": round(it["max"], 4),
+                                "ids": [int(i) for i in ids], "texts": [text_of(int(i)) for i in ids],
+                                "acts": [round(float(a), 4) for a in it["acts"]]})
+            out.setdefault(purpose, {})[s] = windows
+        (out_dir / f"{int(c)}.json").write_text(json.dumps(out, ensure_ascii=False))
+
+    summary["n_firing_quantiles_10_50_90"] = {
+        s: np.quantile([n_firing[c][s] for c in concepts], [0.1, 0.5, 0.9]).round(0).tolist() for s in SUBSETS}
+    summary["seconds"] = round(time.time() - t_start, 1)
+    (config.RESULTS / f"{args.run}_examples_summary.json").write_text(json.dumps(summary, indent=2))
+    print(json.dumps(summary, indent=2))
+
+
+if __name__ == "__main__":
+    main()

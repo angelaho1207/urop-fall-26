@@ -19,12 +19,14 @@ MIN_DOCS = 40  # R4: enough firing docs to name a concept (row 17)
 TIERS = pd.cut(np.arange(D_SAE), [-1, 2047, 16383, D_SAE - 1], labels=["0-2047", "2048-16383", "16384-65535"])
 
 
-def accumulate(run_dir, groups):
+def accumulate(run_dir, groups, doc_filter=None):
     """Per group: Eq. 2 numerator (sum of per-doc means) and the number of docs where each concept fires.
 
-    groups maps a name to (docs.parquet column, value); value None means every doc.
+    groups maps a name to {docs.parquet column: required value}; a doc is in the group if it matches every
+    condition, and an empty dict means every doc (R7 uses two conditions: split and source).
+    doc_filter, if given, is a set of doc ids; docs outside it are left out of every group (R7 subsample).
     """
-    docs = pd.read_parquet(run_dir / "docs.parquet", columns=["doc_id", "split", "subset"]).set_index("doc_id")
+    docs = pd.read_parquet(run_dir / "docs.parquet", columns=["doc_id", "split", "subset", "source"]).set_index("doc_id")
     sums = {g: np.zeros(D_SAE) for g in groups}
     fires = {g: np.zeros(D_SAE, dtype=np.int64) for g in groups}
     for path in sorted(run_dir.glob("acts/part_?????.npz")):
@@ -33,8 +35,10 @@ def accumulate(run_dir, groups):
             doc_of_entry = np.repeat(np.arange(len(rows)), z["doc_active"])
             ids = z["doc_latent_ids"].astype(np.int64)
             means = z["doc_mean"].astype(np.float64)
-        for g, (column, value) in groups.items():
-            mask = np.ones(len(rows), dtype=bool) if value is None else (rows[column] == value).to_numpy()
+        for g, conditions in groups.items():
+            mask = np.ones(len(rows), dtype=bool) if doc_filter is None else rows.index.isin(doc_filter)
+            for column, value in conditions.items():
+                mask &= (rows[column] == value).to_numpy()
             keep = mask[doc_of_entry]
             sums[g] += np.bincount(ids[keep], weights=means[keep], minlength=D_SAE)
             fires[g] += np.bincount(ids[keep], minlength=D_SAE)  # a doc lists each active concept once
@@ -64,8 +68,8 @@ def main():
     args = parser.parse_args()
     dolma_dir, pile_dir = config.DATA / args.dolma, config.DATA / args.pile
 
-    d_sums, d_fires = accumulate(dolma_dir, {"train": ("split", "train"), "T1": ("subset", "T1"), "T2": ("subset", "T2")})
-    p_sums, p_fires = accumulate(pile_dir, {"all": ("subset", None), "A": ("subset", "A"), "B": ("subset", "B")})
+    d_sums, d_fires = accumulate(dolma_dir, {"train": {"split": "train"}, "T1": {"subset": "T1"}, "T2": {"subset": "T2"}})
+    p_sums, p_fires = accumulate(pile_dir, {"all": {}, "A": {"subset": "A"}, "B": {"subset": "B"}})
 
     r, cls = ratio_classes(chi(d_sums["train"]), chi(p_sums["all"]), d_fires["train"], p_fires["all"])
     # R5: the same rules on two disjoint half pairs

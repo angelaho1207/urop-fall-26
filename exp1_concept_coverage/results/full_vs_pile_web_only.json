@@ -1,0 +1,79 @@
+{
+  "dolma_run": "full",
+  "pile_run": "pile",
+  "docs": {
+    "dolma_train_common_crawl_available": 30418,
+    "dolma_web_subsample": 11761,
+    "pile_cc": 11761
+  },
+  "classes_web": {
+    "middle": 37073,
+    "too_rare_to_compare": 12917,
+    "rare_in_pile_present_in_dolma": 6146,
+    "under": 4635,
+    "over": 4635,
+    "rare_in_dolma_present_in_pile": 130
+  },
+  "spearman_log_ratio_full_vs_web": -0.1042,
+  "concepts_eligible_in_both": 46343,
+  "same_class_in_web_only_by_r4_class": {
+    "over": {
+      "concepts": 6135,
+      "same_class_share": 0.1529,
+      "web_class_counts": {
+        "middle": 4460,
+        "over": 938,
+        "rare_in_pile_present_in_dolma": 453,
+        "too_rare_to_compare": 248,
+        "under": 36
+      }
+    },
+    "under": {
+      "concepts": 6135,
+      "same_class_share": 0.0244,
+      "web_class_counts": {
+        "too_rare_to_compare": 4022,
+        "rare_in_pile_present_in_dolma": 1069,
+        "middle": 664,
+        "over": 193,
+        "under": 150,
+        "rare_in_dolma_present_in_pile": 37
+      }
+    },
+    "middle": {
+      "concepts": 49078,
+      "same_class_share": 0.651,
+      "web_class_counts": {
+        "middle": 31949,
+        "too_rare_to_compare": 4571,
+        "rare_in_pile_present_in_dolma": 4513,
+        "under": 4449,
+        "over": 3504,
+        "rare_in_dolma_present_in_pile": 92
+      }
+    },
+    "rare_in_dolma_present_in_pile": {
+      "concepts": 2151,
+      "same_class_share": 0.0005,
+      "web_class_counts": {
+        "too_rare_to_compare": 2150,
+        "rare_in_dolma_present_in_pile": 1
+      }
+    },
+    "rare_in_pile_present_in_dolma": {
+      "concepts": 1024,
+      "same_class_share": 0.1084,
+      "web_class_counts": {
+        "too_rare_to_compare": 913,
+        "rare_in_pile_present_in_dolma": 111
+      }
+    },
+    "too_rare_to_compare": {
+      "concepts": 1013,
+      "same_class_share": 1.0,
+      "web_class_counts": {
+        "too_rare_to_compare": 1013
+      }
+    }
+  }
+}

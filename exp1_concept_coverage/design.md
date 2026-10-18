@@ -22,6 +22,23 @@ Rule: a name is never quizzed on the docs it was written from.
 
 All Dolma splits are held out from the SAE (trained on the Pile) and from the names written from other splits. None is held out from the model, which trained on the whole stage 1 mix.
 
+### How V is protected (added 2026-10-18 at Angela's request)
+Rule: **V decides nothing until the final quiz.** No class, threshold, concept selection, naming setting or quiz setting is chosen from V. Settings are tuned on T1 → T2 (rows 17, 18); V is read only to (a) write the V name, which is shown and never scored, (b) report descriptive comparisons that feed no decision, and (c) run the final quiz of the T1 name.
+
+| Step | Train side (T1, T2, train_rest) | V | Why this is not contamination |
+|---|---|---|---|
+| `s02` split | 80% of shards, by source | 20% of shards, by source | Split by shard (row 6), so near-neighbor docs from one shard sit on one side only |
+| Duplicate removal (row 7) | – | V docs matching a train doc exactly or at Jaccard ≥ 0.80 (3-gram) are dropped | Full run: 0 exact and 0 near duplicates across the split (3 MinHash candidates, none confirmed); 96 later repeats within the sample dropped (P22) |
+| `s05` paper classes | Classes from train | χ_V computed only for the T1 vs V agreement report | Descriptive only. The one V-derived number seen so far (T1 vs V: Spearman 0.992, 93.4% same class, 2026-10-18 04:07) drove no decision |
+| Switch to the Pile reference (R1-R5) | Decided from train classes, the tier table and train windows (`show_examples.py` reads T1 naming windows and train-wide docs) | Not read | – |
+| `s05b` classes vs the Pile | Train vs Pile; noise floor T1 vs T2 | Not read (the script reads only `split == "train"`, `T1`, `T2`) | – |
+| Concepts chosen for naming (row 16) | From train classes | Not read | – |
+| `s06` examples | Naming windows from T1, T2 | Naming windows (V name) and quiz windows (T1-name quiz) | E3: the V name is never scored; T1 docs never enter a quiz of the T1 name |
+| Tuning (pilot checks 8, 10) | T1 name quizzed on the full run's T2 | Not read | Rows 17, 18 |
+| Final quiz | T1 name, written from T1 only | 50 firing + 50 non-firing V windows | The reported faithfulness number |
+
+Pilot overlap check (2026-10-18): none of the 400 pilot docs is in the full sample by doc id; by text hash, one pilot doc matches a full-run T2 doc (train side) and none matches a V doc. The settings chosen on the pilot (rows 10, 12, 20; docs per shard, row 5) were therefore not tuned on V documents.
+
 ## Decisions
 | # | Choice | Reason | Alternatives rejected | Source |
 |---|---|---|---|---|

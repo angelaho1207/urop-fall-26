@@ -1,0 +1,41 @@
+{
+  "run": "pile",
+  "dataset": "monology/pile-uncopyrighted",
+  "revision": "3be90335b66f24456a5d6659d9c8d208c0357119",
+  "docs": 40000,
+  "per_file": {
+    "train/02.jsonl.zst": 4000,
+    "train/03.jsonl.zst": 4000,
+    "train/04.jsonl.zst": 4000,
+    "train/05.jsonl.zst": 4000,
+    "train/06.jsonl.zst": 4000,
+    "train/07.jsonl.zst": 4000,
+    "train/08.jsonl.zst": 4000,
+    "train/09.jsonl.zst": 4000,
+    "train/10.jsonl.zst": 4000,
+    "train/11.jsonl.zst": 4000
+  },
+  "by_subset": {
+    "A": 20000,
+    "B": 20000
+  },
+  "by_pile_set": {
+    "Pile-CC": 11761,
+    "StackExchange": 6726,
+    "PubMed Abstracts": 6689,
+    "Github": 3985,
+    "Wikipedia (en)": 3972,
+    "USPTO Backgrounds": 2476,
+    "PubMed Central": 1278,
+    "FreeLaw": 1117,
+    "ArXiv": 518,
+    "NIH ExPorter": 435,
+    "DM Mathematics": 422,
+    "HackerNews": 371,
+    "Enron Emails": 188,
+    "EuroParl": 37,
+    "Gutenberg (PG-19)": 11,
+    "PhilPapers": 8,
+    "Ubuntu IRC": 6
+  }
+}

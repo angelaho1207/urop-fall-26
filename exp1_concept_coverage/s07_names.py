@@ -15,7 +15,7 @@ import numpy as np
 
 import claude_batch
 import prompts
-from s06_examples import SUBSETS, pick_concepts
+from s06_examples import ALL_SUBSETS, SUBSETS, pick_concepts
 
 LABELER = "claude-opus-5-5"  # N2
 THRESHOLD = 0.3  # N4: tokens above 0.3 x the window's max are marked (delphi explainer)
@@ -62,13 +62,13 @@ def naming_example(number, window, subset_max):
     return f"Example {number}: {text}\n{line}"
 
 
-def naming_request(concept, subset, ex):
+def naming_request(concept, subset, ex, max_tokens=claude_batch.MAX_TOKENS):
     """The 40 windows in a seeded random order (N4), formatted and wrapped in the delphi prompt."""
     windows = ex["naming"][subset]
-    order = np.random.default_rng([config.SEED, concept, SUBSETS.index(subset), 10]).permutation(len(windows))
+    order = np.random.default_rng([config.SEED, concept, ALL_SUBSETS.index(subset), 10]).permutation(len(windows))
     examples = "\n".join(naming_example(k + 1, windows[j], ex["max_by_subset"][subset]) for k, j in enumerate(order))
     system, messages = prompts.naming_messages(examples)
-    return claude_batch.params(LABELER, system, messages, prompts.EXPLANATION_SCHEMA)
+    return claude_batch.params(LABELER, system, messages, prompts.EXPLANATION_SCHEMA, max_tokens=max_tokens)
 
 
 def main():

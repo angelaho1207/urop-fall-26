@@ -29,10 +29,11 @@ def client():
     return anthropic.Anthropic(api_key=key)
 
 
-def params(model, system, messages, schema, effort="high"):
-    """N3: adaptive thinking (the default on these models), explicit effort, no temperature; JSON answers (N4-N6)."""
+def params(model, system, messages, schema, effort="high", max_tokens=MAX_TOKENS):
+    """N3: adaptive thinking (the default on these models), explicit effort, no temperature; JSON answers (N4-N6).
+    F7: the F run passes a lower max_tokens per request type."""
     return MessageCreateParamsNonStreaming(
-        model=model, max_tokens=MAX_TOKENS, system=system, messages=messages,
+        model=model, max_tokens=max_tokens, system=system, messages=messages,
         output_config={"effort": effort, "format": {"type": "json_schema", "schema": schema}})
 
 
@@ -40,6 +41,11 @@ def cost(model, input_tokens, output_tokens):
     key = next(k for k in PRICES if model.startswith(k))  # tolerate a longer reported id
     price_in, price_out = PRICES[key]
     return BATCH_DISCOUNT * (input_tokens * price_in + output_tokens * price_out) / 1e6
+
+
+def worst_case(p, input_tokens):
+    """F7: the most one request can cost: its input counted x1.1 plus the full output cap, at batch prices."""
+    return cost(p["model"], 1.1 * input_tokens, p["max_tokens"])
 
 
 def _outcome(result):
@@ -87,8 +93,9 @@ def _run_once(api, requests, out_dir, tag):
     return outcomes
 
 
-def send(requests, out_dir, tag):
-    """N8: save requests, run the batches, resubmit errored or expired requests once, return {custom_id: outcome}."""
+def send(requests, out_dir, tag, guard=None):
+    """N8: save requests, run the batches, resubmit errored or expired requests once, return {custom_id: outcome}.
+    F7: guard(requests), if given, is called before each submission and raises to stop it."""
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     ids = [cid for cid, _ in requests]
@@ -100,10 +107,14 @@ def send(requests, out_dir, tag):
         for cid, p in requests:
             f.write(json.dumps({"custom_id": cid, "params": p}) + "\n")
     api = client()
+    if guard:
+        guard(requests)
     outcomes = _run_once(api, requests, out_dir, tag)
     retry = [(cid, p) for cid, p in requests if outcomes.get(cid, {}).get("status") in ("errored", "expired", None)]
     if retry:
         print(f"[{tag}] resubmitting {len(retry)} errored or expired requests once", flush=True)
+        if guard:
+            guard(retry)
         outcomes.update(_run_once(api, retry, out_dir, f"{tag}_retry"))
     return outcomes
 

@@ -2,6 +2,8 @@
 
 Usage: python s06_examples.py --run pilot --concepts 0-19
        python s06_examples.py --run full --concepts classes:5   (or: prefix)
+       F run (F2): --run full --concepts faith --source common_crawl --naming-subsets T1 --quiz-subsets V --out-name examples_F
+                   --run pile --concepts faith --source Pile-CC --pool-all PileCC --naming-subsets PileCC --quiz-subsets "" --out-name examples_F
 Reads DATA/<run>/docs.parquet, DATA/<run>/acts/part_?????.npz and, if present, DATA/<run>/coverage.parquet.
 Saves DATA/<run>/examples/<concept>.json and results/<run>_examples_summary.json.
 """
@@ -26,6 +28,7 @@ GROUPS, NAMING_PER_GROUP, QUIZ_PER_GROUP = 10, 4, 5  # E2
 N_NAMING, N_QUIZ = GROUPS * NAMING_PER_GROUP, GROUPS * QUIZ_PER_GROUP
 N_NONFIRING_CANDIDATES = 200  # E9
 SUBSETS = ["T1", "T2", "V"]
+ALL_SUBSETS = SUBSETS + ["PileCC"]  # seed index of each subset; T1, T2, V keep their pilot indices (F2)
 QUIZ_SUBSETS = ["T2", "V"]  # E3: only the T1 name is quizzed
 PURPOSES = {"naming": 0, "quiz_firing": 1, "quiz_nonfiring": 2}  # E6
 CLASSES = ["missing", "under", "over", "middle"]  # E8
@@ -45,6 +48,8 @@ def pick_concepts(spec, run_dir):
                                                                              replace=False)
                       for k, c in enumerate(CLASSES_VS_PILE)]
             return np.sort(np.concatenate(chosen))
+    if spec == "faith":  # F3: the sample drawn by s06c, for the Dolma and the Pile runs alike
+        return np.sort(pd.read_parquet(config.DATA / "full" / "faith_sample.parquet")["concept"].to_numpy())
     if spec.startswith("pilot:"):  # N14: uniform draw from testable concepts in the web-only flagged classes
         n = int(spec.split(":")[1])
         tested = pd.read_parquet(run_dir / "firing_counts.parquet", columns=["tested"])["tested"].to_numpy()
@@ -80,10 +85,17 @@ def main():
     parser.add_argument("--run", required=True)
     parser.add_argument("--concepts", required=True, help="'0-19', 'prefix', 'classes:5', 'vs_pile:5', 'web:5', 'pilot:20'")
     parser.add_argument("--neighbours", action="store_true", help="N15: also build neighbour non-firing windows in T2")
+    parser.add_argument("--source", default=None, help="F2: only docs of this source are used, e.g. common_crawl")
+    parser.add_argument("--pool-all", default=None, help="F2: treat every (source-filtered) doc as this subset")
+    parser.add_argument("--naming-subsets", default="T1,T2,V")
+    parser.add_argument("--quiz-subsets", default=",".join(QUIZ_SUBSETS))
+    parser.add_argument("--out-name", default="examples", help="folder under DATA/<run>/")
     args = parser.parse_args()
+    naming_subsets = [x for x in args.naming_subsets.split(",") if x]
+    quiz_subsets = [x for x in args.quiz_subsets.split(",") if x]
     t_start = time.time()
     run_dir = config.DATA / args.run
-    out_dir = run_dir / "examples"
+    out_dir = run_dir / args.out_name
     out_dir.mkdir(parents=True, exist_ok=True)
 
     concepts = pick_concepts(args.concepts, run_dir)
@@ -102,7 +114,10 @@ def main():
             neighbour[int(c)] = (nb, float(row[nb]))
             selected[nb] = True  # pass 1 must also collect the neighbour's doc-level entries
     docs = pd.read_parquet(run_dir / "docs.parquet", columns=["doc_id", "source", "subset", "text"])
-    subset_code = docs["subset"].map({s: i for i, s in enumerate(SUBSETS)}).fillna(-1).to_numpy(dtype=np.int8)
+    labels = docs["subset"] if args.pool_all is None else pd.Series(args.pool_all, index=docs.index)
+    subset_code = labels.map({s: i for i, s in enumerate(ALL_SUBSETS)}).fillna(-1).to_numpy(dtype=np.int8)
+    if args.source is not None:
+        subset_code[(docs["source"] != args.source).to_numpy()] = -1
     parts = sorted(run_dir.glob("acts/part_?????.npz"))
 
     # Pass 1 (doc level): every (doc, concept) entry for the selected concepts, with the doc's max and its position
@@ -133,14 +148,15 @@ def main():
     for c in concepts:
         idx = entries_of(c)
         plan[c], n_firing[c], max_by_subset[c] = {}, {}, {}
-        for s_i, s in enumerate(SUBSETS):
+        for s in dict.fromkeys(naming_subsets + quiz_subsets):
+            s_i = ALL_SUBSETS.index(s)
             mine = idx[subset_code[e_doc[idx]] == s_i]
             n_firing[c][s] = int(len(mine))
             # N4: the 0-10 activation scale divides by the concept's max over all of the subset's firing docs
             max_by_subset[c][s] = round(float(e_max[mine].max()), 4) if len(mine) else 0.0
             order = mine[np.lexsort((e_doc[mine], e_max[mine]))]  # sorted by max; ties by doc index
-            jobs = [("naming", N_NAMING, NAMING_PER_GROUP)]
-            if s in QUIZ_SUBSETS:
+            jobs = [("naming", N_NAMING, NAMING_PER_GROUP)] if s in naming_subsets else []
+            if s in quiz_subsets:
                 jobs.append(("quiz_firing", N_QUIZ, QUIZ_PER_GROUP))
             for purpose, needed, per_group in jobs:
                 key = (purpose, s)
@@ -155,7 +171,7 @@ def main():
                             "start": window_start(int(e_argmax[e]), int(doc_len[d]))}
                     plan[c][key].append(item)
                     requests.append((d, int(c), item))
-            if s in QUIZ_SUBSETS:
+            if s in quiz_subsets:
                 # E4, E9: random docs of the subset and a random window in each; kept later if all zero
                 rng = np.random.default_rng([config.SEED, int(c), s_i, PURPOSES["quiz_nonfiring"]])
                 pool = np.flatnonzero(subset_code == s_i)
@@ -230,8 +246,9 @@ def main():
     web_path = run_dir / "coverage_vs_pile_web.parquet"
     web = pd.read_parquet(web_path, columns=["class_web", "log_ratio_web"]) if web_path.exists() else None
     summary = {"run": args.run, "concepts_spec": args.concepts, "concepts": int(len(concepts)),
-               "short": {f"{p}_{s}": 0 for (p, s) in [("naming", s) for s in SUBSETS]
-                         + [(p, s) for p in ("quiz_firing", "quiz_nonfiring") for s in QUIZ_SUBSETS]}}
+               "source": args.source, "pool_all": args.pool_all, "out_name": args.out_name,
+               "short": {f"{p}_{s}": 0 for (p, s) in [("naming", s) for s in naming_subsets]
+                         + [(p, s) for p in ("quiz_firing", "quiz_nonfiring") for s in quiz_subsets]}}
     for c in concepts:
         out = {"concept": int(c), "run": args.run, "n_firing": n_firing[c], "max_by_subset": max_by_subset[c]}
         if int(c) in neighbour:
@@ -263,10 +280,11 @@ def main():
         (out_dir / f"{int(c)}.json").write_text(json.dumps(out, ensure_ascii=False))
 
     summary["n_firing_quantiles_10_50_90"] = {
-        s: np.quantile([n_firing[c][s] for c in concepts], [0.1, 0.5, 0.9]).round(0).tolist() for s in SUBSETS}
+        s: np.quantile([n_firing[c][s] for c in concepts], [0.1, 0.5, 0.9]).round(0).tolist() for s in n_firing[concepts[0]]}
     summary["seconds"] = round(time.time() - t_start, 1)
     spec = re.sub(r"[^0-9a-zA-Z]+", "", args.concepts)  # E7: one summary per concept selection, e.g. vs_pile:5 -> vspile5
-    (config.RESULTS / f"{args.run}_examples_summary_{spec}.json").write_text(json.dumps(summary, indent=2))
+    suffix = "" if args.out_name == "examples" else f"_{args.out_name}"
+    (config.RESULTS / f"{args.run}_examples_summary_{spec}{suffix}.json").write_text(json.dumps(summary, indent=2))
     print(json.dumps(summary, indent=2))
 
 

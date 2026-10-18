@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Olmo 3 Concept Coverage</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.3/plotly.min.js"></script>
+</head>
+<body>
+<header>
+  <h1>Concept coverage of Olmo 3 pretraining web text</h1>
+  <p class="sub">SAE <code>decoderesearch/olmo-3-saes</code> layer 16 on <code>allenai/Olmo-3-1025-7B</code>. Each SAE concept's coverage in Dolma 3 web text (common_crawl, train split) is compared with the Pile's web text (Pile-CC). Exp 1, Torralba lab.</p>
+  <nav>
+    <a href="#overview" data-tab="overview">Overview</a>
+    <a href="#noise" data-tab="noise">Noise floor</a>
+    <a href="#concepts" data-tab="concepts">Sampled concepts</a>
+  </nav>
+</header>
+<main>
+  <section id="tab-overview" class="tab">
+    <p class="note">One dot per concept that fires often enough in both web samples to compare. The y axis is the log ratio of the concept's coverage in Dolma web to Pile web (CG paper Eq. 2); the dashed lines are the 10th and 90th percentiles that define <b>under</b> and <b>over</b>. Ringed dots are the 240 sampled concepts; click one to open its page.</p>
+    <div id="overview-plot" class="plot"></div>
+    <h2>Concepts per class</h2>
+    <div id="class-bars" class="plot short"></div>
+  </section>
+  <section id="tab-noise" class="tab">
+    <p class="note">Each concept's log ratio measured on two disjoint halves of both samples. Points far from the diagonal are concepts whose ratio depends on which documents were drawn; class labels near the cut lines can flip between halves.</p>
+    <p id="noise-stats" class="stats"></p>
+    <div id="noise-plot" class="plot"></div>
+  </section>
+  <section id="tab-concepts" class="tab">
+    <p class="note">80 concepts drawn at random from each of over, under and middle (row F3). Names and quiz scores appear after the faithfulness run. Click a column header to sort, a row to open the concept.</p>
+    <label>Class <select id="class-filter"><option value="">all</option><option>over</option><option>under</option><option>middle</option></select></label>
+    <div class="table-wrap"><table id="concept-table"><thead></thead><tbody></tbody></table></div>
+  </section>
+  <section id="tab-concept" class="tab">
+    <p><a href="#concepts">← all sampled concepts</a></p>
+    <div id="concept-detail"></div>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

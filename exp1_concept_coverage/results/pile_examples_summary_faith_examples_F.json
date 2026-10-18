@@ -1,0 +1,19 @@
+{
+  "run": "pile",
+  "concepts_spec": "faith",
+  "concepts": 240,
+  "source": "Pile-CC",
+  "pool_all": "PileCC",
+  "out_name": "examples_F",
+  "short": {
+    "naming_PileCC": 0
+  },
+  "n_firing_quantiles_10_50_90": {
+    "PileCC": [
+      64.0,
+      614.0,
+      4339.0
+    ]
+  },
+  "seconds": 37.8
+}

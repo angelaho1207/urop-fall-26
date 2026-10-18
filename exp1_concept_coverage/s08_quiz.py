@@ -42,8 +42,9 @@ def quiz_text(kind, window, n_random, rng):
     return mark(pieces, lambda i: i in chosen)
 
 
-def quiz_requests(c, subset, kind, explanation, ex, neighbour):
-    """20 prompts of 5 windows for one concept, subset and quiz kind; returns requests and the window key."""
+def quiz_requests(c, subset, kind, explanation, ex, neighbour, purpose=None, max_tokens=claude_batch.MAX_TOKENS):
+    """20 prompts of 5 windows for one concept, subset and quiz kind; returns requests and the window key.
+    F4: the F run quizzes two names on the same windows (same seed) and labels them with its own purpose."""
     firing = ex["quiz_firing"][subset]
     nonfiring = ex["quiz_nonfiring_neighbour" if neighbour else "quiz_nonfiring"][subset]
     windows = [(w, 1) for w in firing] + [(w, 0) for w in nonfiring]
@@ -52,14 +53,14 @@ def quiz_requests(c, subset, kind, explanation, ex, neighbour):
     order = np.random.default_rng(seed).permutation(len(windows))
     mark_rng = np.random.default_rng(seed + [1])
     texts = [quiz_text(kind, windows[j][0], n_random, mark_rng) for j in order]
-    purpose = kind + ("_neighbour" if neighbour else "")
+    purpose = purpose or kind + ("_neighbour" if neighbour else "")
     requests, key = [], {}
     for k in range(math.ceil(len(order) / PER_PROMPT)):
         idx = range(k * PER_PROMPT, min((k + 1) * PER_PROMPT, len(order)))
         examples = "\n".join(f"Example {i}: {texts[j]}" for i, j in enumerate(idx))  # N13d: numbered from 0
         system, messages = prompts.quiz_messages(kind, explanation, examples)
         cid = f"{purpose}-{c}-{subset}-{k}"
-        requests.append((cid, claude_batch.params(SCORER, system, messages, prompts.ANSWERS_SCHEMA)))
+        requests.append((cid, claude_batch.params(SCORER, system, messages, prompts.ANSWERS_SCHEMA, max_tokens=max_tokens)))
         key[cid] = [{"doc_id": windows[order[j]][0]["doc_id"], "start": windows[order[j]][0]["start"],
                      "fires": windows[order[j]][1]} for j in idx]
     return requests, key

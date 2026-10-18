@@ -1,0 +1,26 @@
+{
+  "run": "full",
+  "concepts_spec": "faith",
+  "concepts": 240,
+  "source": "common_crawl",
+  "pool_all": null,
+  "out_name": "examples_F",
+  "short": {
+    "naming_T1": 0,
+    "quiz_firing_V": 0,
+    "quiz_nonfiring_V": 0
+  },
+  "n_firing_quantiles_10_50_90": {
+    "T1": [
+      103.0,
+      528.0,
+      3152.0
+    ],
+    "V": [
+      106.0,
+      508.0,
+      3154.0
+    ]
+  },
+  "seconds": 51.8
+}

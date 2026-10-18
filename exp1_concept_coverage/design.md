@@ -28,7 +28,7 @@ Rule: **V decides nothing until the final quiz.** No class, threshold, concept s
 | Step | Train side (T1, T2, train_rest) | V | Why this is not contamination |
 |---|---|---|---|
 | `s02` split | 80% of shards, by source | 20% of shards, by source | Split by shard (row 6), so near-neighbor docs from one shard sit on one side only |
-| Duplicate removal (row 7) | – | V docs matching a train doc exactly or at Jaccard ≥ 0.80 (3-gram) are dropped | Full run: 0 exact and 0 near duplicates across the split (3 MinHash candidates, none confirmed); 96 later repeats within the sample dropped (P22) |
+| Duplicate removal (row 7) | – | V docs whose normalized text hash equals a train doc's, or whose 3-gram Jaccard with a train doc is ≥ 0.80, are dropped | Full run: 0 exact and 0 near duplicates across the split (3 MinHash candidates, none confirmed); 96 later repeats within the sample dropped (P22) |
 | `s05` paper classes | Classes from train | χ_V computed only for the T1 vs V agreement report | Descriptive only. The one V-derived number seen so far (T1 vs V: Spearman 0.992, 93.4% same class, 2026-10-18 04:07) drove no decision |
 | Switch to the Pile reference (R1-R5) | Decided from train classes, the tier table and train windows (`show_examples.py` reads T1 naming windows and train-wide docs) | Not read | – |
 | `s05b` classes vs the Pile | Train vs Pile; noise floor T1 vs T2 | Not read (the script reads only `split == "train"`, `T1`, `T2`) | – |

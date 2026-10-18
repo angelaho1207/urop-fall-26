@@ -30,6 +30,7 @@ from s08_quiz import JUDGE, MIN_ANSWERED, balanced_accuracy, quiz_requests
 LIMIT_USD = 30.0  # F7: Angela's hard limit for the whole F run
 CAPS = {"name": 1_000, "quiz": 200, "judge": 300}  # F7: max output tokens per request type
 QUIZ_CHUNK = 1_600  # F7: quiz requests per submission (40 concepts x 2 names x 20 prompts)
+SLACK_TOKENS = 300  # F7b: added to each quiz and judge input bound
 OUT = config.DATA / "full" / "labels" / "faith"
 NAME_SOURCES = {"pile": ("pile", "PileCC"), "dolma": ("full", "T1")}  # F2: run and subset each name is written from
 
@@ -124,6 +125,28 @@ def count_tokens(requests):
     return cache
 
 
+def input_bounds(requests, key, stage):
+    """F7b: an upper bound on each quiz or judge request's input tokens without counting all 9,600 quiz prompts.
+    Input = fixed prompt text and windows (largest count over the placeholder sample from `count`) + the name(s),
+    and a name has at most as many tokens as its naming response's output tokens; plus SLACK_TOKENS."""
+    counted = json.loads((OUT / "token_counts.json").read_text())
+    base = max(n for cid, n in counted.items() if cid.startswith(f"placeholder_{stage}"))
+    name_out = json.loads((OUT / "name_output_tokens.json").read_text())
+
+    def name_tokens(c, src):
+        sub = NAME_SOURCES[src][1]
+        return name_out[f"name{src}-{c}-{sub}-0"]
+    out = {}
+    for cid, _ in requests:
+        if stage == "quiz":
+            src, c = cid.split("-")[0][len("quiz"):], cid.split("-")[1]
+            out[cid] = base + name_tokens(c, src) + SLACK_TOKENS
+        else:
+            k = key[cid]
+            out[cid] = base + name_tokens(k["concept"], "pile") + name_tokens(k["other"], "dolma") + SLACK_TOKENS
+    return out
+
+
 def spent():
     path = OUT / "ledger.jsonl"
     return sum(json.loads(line)["usd"] for line in open(path)) if path.exists() else 0.0
@@ -168,8 +191,8 @@ def main():
         judge_r, _ = judge_request_list({}, placeholder=True)
         counts = count_tokens(names_r)  # names are final; quiz and judge counts use placeholder names, see F7b
         sample_q = [quiz_r[i] for i in np.random.default_rng([config.SEED, 6200]).choice(len(quiz_r), 200, replace=False)]
-        counts_q = count_tokens([(f"placeholder_{cid}", p) for cid, p in sample_q])
-        counts_j = count_tokens([(f"placeholder_{cid}", p) for cid, p in judge_r[:20]])
+        counts_q = count_tokens([(f"placeholder_{cid}", p) for cid, p in sample_q])  # keys placeholder_quiz...
+        counts_j = count_tokens([(f"placeholder_{cid}", p) for cid, p in judge_r[:20]])  # keys placeholder_judge...
         q = np.array([counts_q[f"placeholder_{cid}"] for cid, _ in sample_q])
         j = np.array([counts_j[f"placeholder_{cid}"] for cid, _ in judge_r[:20]])
         n = np.array([counts[cid] for cid, _ in names_r])
@@ -191,6 +214,8 @@ def main():
             purpose, c, subset, _ = cid.split("-")
             names.setdefault(c, {})[purpose[len("name"):]] = (o["answer"] or {}).get("explanation")
         (OUT / "names.json").write_text(json.dumps(names, indent=1, ensure_ascii=False))
+        (OUT / "name_output_tokens.json").write_text(json.dumps(  # F7b: bounds a name's length in later prompts
+            {cid: (o["usage"] or {}).get("output_tokens", CAPS["name"]) for cid, o in outcomes.items()}))
         statuses = {s: sum(o["status"] == s for o in outcomes.values()) for s in {o["status"] for o in outcomes.values()}}
         write_summary("names", {"requests": len(requests), "statuses": statuses, "usage": usage, "spent_total": spent()})
         return
@@ -198,7 +223,7 @@ def main():
     names = load_names()
     if args.stage in ("quiz", "judge"):
         requests, key = (quiz_request_list if args.stage == "quiz" else judge_request_list)(names)
-        counts = count_tokens(requests)  # now with the final names
+        counts = input_bounds(requests, key, args.stage)  # F7b
         chunk = QUIZ_CHUNK if args.stage == "quiz" else len(requests)
         outcomes, usage = {}, {}
         for i in range(0, len(requests), chunk):

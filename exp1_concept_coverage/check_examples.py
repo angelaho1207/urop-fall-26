@@ -24,15 +24,17 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--run", required=True)
     parser.add_argument("--key", default=None, help="only check example files that contain this field")
+    parser.add_argument("--dir", default="examples", help="examples folder under DATA/<run>/ (F run: examples_F)")
+    parser.add_argument("--source", default=None, help="F2: every window's doc must have this source")
     args = parser.parse_args()
     t0 = time.time()
     run_dir = config.DATA / args.run
-    docs = pd.read_parquet(run_dir / "docs.parquet", columns=["doc_id", "subset", "text"])
+    docs = pd.read_parquet(run_dir / "docs.parquet", columns=["doc_id", "subset", "source", "text"])
     row = {d: i for i, d in enumerate(docs["doc_id"])}
     tokenizer = AutoTokenizer.from_pretrained(config.MODEL_ID, revision=config.MODEL_REVISION)
 
     by_part, bad, n = defaultdict(list), Counter(), Counter()
-    for path in sorted((run_dir / "examples").glob("*.json")):
+    for path in sorted((run_dir / args.dir).glob("*.json")):
         ex = json.loads(path.read_text())
         if args.key and args.key not in ex:
             continue
@@ -48,7 +50,10 @@ def main():
                 bad["one_window_per_doc"] += len({w["doc_id"] for w in wins}) != len(wins)
                 for w in wins:
                     i = row[w["doc_id"]]
-                    bad["wrong_subset"] += docs.at[i, "subset"] != subset
+                    if subset != "PileCC":  # F2: the Pile run pools all Pile-CC docs under one name
+                        bad["wrong_subset"] += docs.at[i, "subset"] != subset
+                    if args.source:
+                        bad["wrong_source"] += docs.at[i, "source"] != args.source
                     by_part[i // PART_SIZE].append((i, c, purpose, w))
 
     for k in sorted(by_part):

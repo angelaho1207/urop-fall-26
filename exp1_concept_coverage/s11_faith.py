@@ -147,6 +147,47 @@ def input_bounds(requests, key, stage):
     return out
 
 
+DONE = ("ok", "refusal", "max_tokens", "bad_json")  # outcomes that are final (billed); others are resent
+
+
+def saved_outcomes(stage, wait=True):
+    """Resume after an interruption: every result already saved for this stage, keyed by custom_id (later files win).
+    Batches that were submitted but never saved (the run stopped while they were processing) are fetched first,
+    and the dollars they used are added to the ledger once."""
+    from anthropic.types.messages import MessageBatchIndividualResponse
+    api = claude_batch.client()
+    logged = {json.loads(line)["tag"] for line in open(OUT / "ledger.jsonl")} if (OUT / "ledger.jsonl").exists() else set()
+    for line in open(OUT / "batches.jsonl") if (OUT / "batches.jsonl").exists() else []:
+        b = json.loads(line)
+        raw = OUT / f"raw_{b['tag']}.jsonl"
+        if not b["tag"].startswith(stage) or raw.exists():
+            continue
+        while (batch := api.messages.batches.retrieve(b["batch_id"])).processing_status != "ended":
+            if not wait:
+                print(f"[{b['tag']}] unsaved batch {b['batch_id']} still {batch.processing_status}", flush=True)
+                break
+            print(f"[{b['tag']}] waiting for unsaved batch {b['batch_id']}: {batch.request_counts}", flush=True)
+            time.sleep(claude_batch.POLL_SECONDS)
+        if batch.processing_status != "ended":
+            continue
+        outcomes = {}
+        with open(raw, "w") as f:
+            for result in api.messages.batches.results(b["batch_id"]):
+                f.write(result.model_dump_json() + "\n")
+                outcomes[result.custom_id] = claude_batch._outcome(result)
+        print(f"[{b['tag']}] fetched unsaved batch: {batch.request_counts}", flush=True)
+        if b["tag"] not in logged:
+            usage = claude_batch.usage_summary(outcomes, lambda cid: cid.split("-")[0])
+            with open(OUT / "ledger.jsonl", "a") as f:
+                f.write(json.dumps({"tag": b["tag"], "usd": sum(u["usd"] for u in usage.values()), "time": time.time()}) + "\n")
+    saved = {}
+    for raw in sorted(OUT.glob(f"raw_{stage}_*.jsonl"), key=lambda p: p.stat().st_mtime):
+        for line in open(raw):
+            r = MessageBatchIndividualResponse.model_validate_json(line)
+            saved[r.custom_id] = claude_batch._outcome(r)
+    return saved
+
+
 def spent():
     path = OUT / "ledger.jsonl"
     return sum(json.loads(line)["usd"] for line in open(path)) if path.exists() else 0.0
@@ -182,6 +223,7 @@ def write_summary(name, data):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("stage", choices=["count", "names", "quiz", "judge", "analyze"])
+    parser.add_argument("--plan", action="store_true", help="quiz/judge: show what is saved and what would be sent")
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
 
@@ -225,12 +267,23 @@ def main():
         requests, key = (quiz_request_list if args.stage == "quiz" else judge_request_list)(names)
         counts = input_bounds(requests, key, args.stage)  # F7b
         chunk = QUIZ_CHUNK if args.stage == "quiz" else len(requests)
-        outcomes, usage = {}, {}
+        saved = saved_outcomes(args.stage, wait=not args.plan)
+        outcomes = {cid: saved[cid] for cid, _ in requests if cid in saved and saved[cid]["status"] in DONE}
         for i in range(0, len(requests), chunk):
-            o, u = send(requests[i:i + chunk], f"{args.stage}_{i // chunk}", counts)
+            todo = [(cid, p) for cid, p in requests[i:i + chunk] if cid not in outcomes]
+            print(f"[{args.stage}_{i // chunk}] {chunk - len(todo) if len(requests) - i >= chunk else len(requests) - i - len(todo)} "
+                  f"saved, {len(todo)} to send", flush=True)
+            if not todo or args.plan:
+                if todo:
+                    print(f"  plan only: worst case ${sum(claude_batch.worst_case(p, counts[cid]) for cid, p in todo):.2f}")
+                continue
+            attempt = sum(1 for _ in OUT.glob(f"requests_{args.stage}_{i // chunk}*.jsonl"))
+            o, _ = send(todo, f"{args.stage}_{i // chunk}" + (f"_r{attempt}" if attempt else ""), counts)
             outcomes.update(o)
-            for t, v in u.items():
-                usage.setdefault(t, []).append(v)
+        if args.plan:
+            print(f"plan: {len(outcomes)} of {len(requests)} saved; spent ${spent():.2f}")
+            return
+        usage = claude_batch.usage_summary(outcomes, lambda cid: cid.split("-")[0])
         rows = []
         for cid, o in outcomes.items():
             if args.stage == "judge":

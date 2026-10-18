@@ -1,0 +1,64 @@
+{
+  "dataset": "chanind/pile-uncopyrighted-olmo-3-1024-abbrv-2B",
+  "revision": "e66fd5df0ef96d3a687e7addc1e77b1835fc5bcd",
+  "rows_per_group": 2500,
+  "seen_files": [
+    0,
+    24
+  ],
+  "unseen_files": [
+    40,
+    63
+  ],
+  "special_token_share": {
+    "seen_A": 0.0,
+    "seen_B": 0.0,
+    "unseen_A": 0.0,
+    "unseen_B": 0.0
+  },
+  "metrics": {
+    "seen_A": {
+      "tokens": 2560000,
+      "fve": 0.74705,
+      "l0": 100.37
+    },
+    "seen_B": {
+      "tokens": 2560000,
+      "fve": 0.74854,
+      "l0": 100.03
+    },
+    "unseen_A": {
+      "tokens": 2560000,
+      "fve": 0.74699,
+      "l0": 100.23
+    },
+    "unseen_B": {
+      "tokens": 2560000,
+      "fve": 0.74643,
+      "l0": 100.55
+    }
+  },
+  "floor_seen_A_vs_seen_B": {
+    "concepts": 57316,
+    "spearman": 0.9856,
+    "abs_log_ratio_p95": 0.6064
+  },
+  "comparisons": {
+    "seen_A_vs_unseen_A": {
+      "concepts": 57231,
+      "spearman": 0.9862,
+      "share_beyond_floor": 0.0499
+    },
+    "seen_B_vs_unseen_B": {
+      "concepts": 57255,
+      "spearman": 0.9857,
+      "share_beyond_floor": 0.0514
+    },
+    "unseen_A_vs_unseen_B": {
+      "concepts": 57293,
+      "spearman": 0.9865,
+      "share_beyond_floor": 0.0487
+    }
+  },
+  "seconds": 1271
+}

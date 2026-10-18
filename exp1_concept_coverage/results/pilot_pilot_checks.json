@@ -1,0 +1,183 @@
+{
+  "run": "pilot",
+  "versions": {
+    "python": "3.12.12",
+    "torch": "2.14.1+cu130",
+    "transformers": "5.20.1",
+    "sae_lens": "6.54.5",
+    "gpu": "NVIDIA L40S"
+  },
+  "tokens": {
+    "special_ids": [
+      100257,
+      100277
+    ],
+    "docs_with_special_ids": 0,
+    "by_source": {
+      "common_crawl": {
+        "docs": 303,
+        "truncated_share": 0.353,
+        "under_30_tokens": 7,
+        "n_tokens_quantiles_10_50_90": [
+          224.0,
+          625.0,
+          2453.0
+        ]
+      },
+      "dolma1_7-wiki-en": {
+        "docs": 1,
+        "truncated_share": 1.0,
+        "under_30_tokens": 0,
+        "n_tokens_quantiles_10_50_90": [
+          2115.0,
+          2115.0,
+          2115.0
+        ]
+      },
+      "finemath-3plus": {
+        "docs": 10,
+        "truncated_share": 0.3,
+        "under_30_tokens": 0,
+        "n_tokens_quantiles_10_50_90": [
+          355.0,
+          678.0,
+          1604.0
+        ]
+      },
+      "olmocr_science_pdfs": {
+        "docs": 54,
+        "truncated_share": 0.741,
+        "under_30_tokens": 0,
+        "n_tokens_quantiles_10_50_90": [
+          483.0,
+          5616.0,
+          20441.0
+        ]
+      },
+      "rpj-proofpile-arxiv": {
+        "docs": 4,
+        "truncated_share": 0.0,
+        "under_30_tokens": 0,
+        "n_tokens_quantiles_10_50_90": [
+          480.0,
+          624.0,
+          910.0
+        ]
+      },
+      "stack_edu": {
+        "docs": 28,
+        "truncated_share": 0.179,
+        "under_30_tokens": 0,
+        "n_tokens_quantiles_10_50_90": [
+          93.0,
+          418.0,
+          1276.0
+        ]
+      }
+    }
+  },
+  "check1_hook_equals_hidden_states_17": true,
+  "check2_4_5_dolma_setup1": {
+    "all_tokens": {
+      "tokens": 277584,
+      "fve": 0.71341,
+      "l0": 109.41
+    },
+    "position_0": {
+      "tokens": 400,
+      "fve": 0.79058,
+      "l0": 9.04
+    },
+    "positions_1_on": {
+      "tokens": 277184,
+      "fve": 0.71326,
+      "l0": 109.55
+    },
+    "pos0_norm_over_median_norm": [
+      0.34,
+      0.41,
+      0.51
+    ],
+    "seconds_per_doc": 0.138
+  },
+  "check11_pile_setup1": {
+    "all_tokens": {
+      "tokens": 25141,
+      "fve": 0.74828,
+      "l0": 99.63
+    },
+    "position_0": {
+      "tokens": 50,
+      "fve": 0.61921,
+      "l0": 8.04
+    },
+    "positions_1_on": {
+      "tokens": 25091,
+      "fve": 0.74811,
+      "l0": 99.81
+    },
+    "pos0_norm_over_median_norm": [
+      0.33,
+      0.41,
+      0.51
+    ],
+    "seconds_per_doc": 0.118
+  },
+  "check3_precision_vs_setup1": {
+    "docs": 20,
+    "setup2_bf16_weights": {
+      "tokens": 14668,
+      "fve": 0.71071,
+      "l0": 110.05,
+      "mean_rel_diff_residual": 0.01113,
+      "mean_rel_diff_latents": 0.03782,
+      "mean_top10_overlap": 0.9941,
+      "seconds_per_doc": 0.09
+    },
+    "setup3_full_fp32": {
+      "tokens": 14668,
+      "fve": 0.71072,
+      "l0": 110.07,
+      "mean_rel_diff_residual": 0.00614,
+      "mean_rel_diff_latents": 0.02428,
+      "mean_top10_overlap": 0.9968,
+      "seconds_per_doc": 0.401
+    }
+  },
+  "check4_concepts_peaking_at_position_0": 0.0002,
+  "check7_lengths": {
+    "sample_length_quantiles_10_50_90": [
+      227.0,
+      724.0,
+      1024.0
+    ],
+    "top_doc_length_quantiles_10_50_90": [
+      408.0,
+      1024.0,
+      1024.0
+    ]
+  },
+  "check9_firing": {
+    "concepts_never_firing_in_pilot": 6624,
+    "prefix_never_firing_in_pilot": 0,
+    "prefix_rate_quantiles_10_50_90": [
+      0.355,
+      0.8375,
+      0.9675
+    ],
+    "prefix_share_with_k_docs_per_subset": {
+      "k=20": {
+        "N=10000": 1.0,
+        "N=20000": 1.0,
+        "N=50000": 1.0,
+        "N=100000": 1.0
+      },
+      "k=40": {
+        "N=10000": 1.0,
+        "N=20000": 1.0,
+        "N=50000": 1.0,
+        "N=100000": 1.0
+      }
+    }
+  }
+}

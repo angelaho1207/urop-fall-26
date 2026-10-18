@@ -1,0 +1,61 @@
+{
+  "dataset": "allenai/dolma3_mix-6T-1025-7B",
+  "revision": "2ca900fbe14e86c5c83d064d9f0882f1c0b8c05b",
+  "n_shards": 65718,
+  "by_source": {
+    "common_crawl": {
+      "shards": 36936,
+      "share_of_shards": 0.562,
+      "gb": 3057.1,
+      "min_mb": 6.262,
+      "median_mb": 82.6,
+      "max_mb": 102.9,
+      "folders": 124
+    },
+    "dolma1_7-wiki-en": {
+      "shards": 42,
+      "share_of_shards": 0.0006,
+      "gb": 3.4,
+      "min_mb": 78.221,
+      "median_mb": 80.26,
+      "max_mb": 85.3,
+      "folders": 1
+    },
+    "finemath-3plus": {
+      "shards": 128,
+      "share_of_shards": 0.0019,
+      "gb": 47.6,
+      "min_mb": 364.665,
+      "median_mb": 371.0,
+      "max_mb": 378.3,
+      "folders": 1
+    },
+    "olmocr_science_pdfs": {
+      "shards": 26615,
+      "share_of_shards": 0.405,
+      "gb": 599.4,
+      "min_mb": 0.002,
+      "median_mb": 26.84,
+      "max_mb": 71.4,
+      "folders": 8
+    },
+    "rpj-proofpile-arxiv": {
+      "shards": 20,
+      "share_of_shards": 0.0003,
+      "gb": 22.4,
+      "min_mb": 40.232,
+      "median_mb": 1327.13,
+      "max_mb": 1452.8,
+      "folders": 1
+    },
+    "stack_edu": {
+      "shards": 1977,
+      "share_of_shards": 0.0301,
+      "gb": 170.7,
+      "min_mb": 0.122,
+      "median_mb": 85.26,
+      "max_mb": 208.6,
+      "folders": 15
+    }
+  }
+}

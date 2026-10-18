@@ -1,0 +1,871 @@
+{
+  "run": "pilot",
+  "seed": 0,
+  "dataset_revision": "2ca900fbe14e86c5c83d064d9f0882f1c0b8c05b",
+  "n_docs_requested": 400,
+  "docs_per_shard": 10,
+  "quotas": {
+    "common_crawl": 303,
+    "olmocr_science_pdfs": 54,
+    "stack_edu": 28,
+    "finemath-3plus": 10,
+    "rpj-proofpile-arxiv": 4,
+    "dolma1_7-wiki-en": 1
+  },
+  "docs_by_source_and_subset": {
+    "common_crawl": {
+      "T1": 60,
+      "T2": 60,
+      "V": 53,
+      "train_rest": 130
+    },
+    "dolma1_7-wiki-en": {
+      "T1": 0,
+      "T2": 0,
+      "V": 0,
+      "train_rest": 1
+    },
+    "finemath-3plus": {
+      "T1": 0,
+      "T2": 0,
+      "V": 0,
+      "train_rest": 10
+    },
+    "olmocr_science_pdfs": {
+      "T1": 10,
+      "T2": 10,
+      "V": 10,
+      "train_rest": 24
+    },
+    "rpj-proofpile-arxiv": {
+      "T1": 0,
+      "T2": 0,
+      "V": 0,
+      "train_rest": 4
+    },
+    "stack_edu": {
+      "T1": 10,
+      "T2": 10,
+      "V": 8,
+      "train_rest": 0
+    }
+  },
+  "shards_by_source_and_subset": {
+    "common_crawl": {
+      "T1": 6,
+      "T2": 6,
+      "V": 6,
+      "train_rest": 13
+    },
+    "dolma1_7-wiki-en": {
+      "T1": 0,
+      "T2": 0,
+      "V": 0,
+      "train_rest": 1
+    },
+    "finemath-3plus": {
+      "T1": 0,
+      "T2": 0,
+      "V": 0,
+      "train_rest": 1
+    },
+    "olmocr_science_pdfs": {
+      "T1": 1,
+      "T2": 1,
+      "V": 1,
+      "train_rest": 3
+    },
+    "rpj-proofpile-arxiv": {
+      "T1": 0,
+      "T2": 0,
+      "V": 0,
+      "train_rest": 1
+    },
+    "stack_edu": {
+      "T1": 1,
+      "T2": 1,
+      "V": 1,
+      "train_rest": 0
+    }
+  },
+  "duplicates": {
+    "dropped_val_matching_train": 0,
+    "dropped_t2_matching_t1": 0,
+    "dropped_later_repeats_any_split": 0
+  },
+  "repetition_by_source": {
+    "common_crawl": 3.18,
+    "dolma1_7-wiki-en": 1.064,
+    "finemath-3plus": 4.271,
+    "olmocr_science_pdfs": 1.804,
+    "rpj-proofpile-arxiv": 2.206,
+    "stack_edu": 3.11
+  },
+  "removed_by_olmocr_folder": {
+    "olmocr_science_pdfs-crime_and_law": {
+      "n_docs": 3304,
+      "n_whole_removed": 37,
+      "n_partial_removed": 0
+    },
+    "olmocr_science_pdfs-science_math_and_technology-part1": {
+      "n_docs": 19052,
+      "n_whole_removed": 2157,
+      "n_partial_removed": 0
+    }
+  },
+  "removed_and_empty_by_source": {
+    "common_crawl": {
+      "n_docs": 2921982,
+      "n_whole_removed": 0,
+      "n_partial_removed": 9,
+      "n_empty": 11187
+    },
+    "dolma1_7-wiki-en": {
+      "n_docs": 54176,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0
+    },
+    "finemath-3plus": {
+      "n_docs": 714119,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0
+    },
+    "olmocr_science_pdfs": {
+      "n_docs": 22356,
+      "n_whole_removed": 2194,
+      "n_partial_removed": 0,
+      "n_empty": 5
+    },
+    "rpj-proofpile-arxiv": {
+      "n_docs": 1098035,
+      "n_whole_removed": 0,
+      "n_partial_removed": 2,
+      "n_empty": 0
+    },
+    "stack_edu": {
+      "n_docs": 739631,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0
+    }
+  },
+  "timing_by_source": {
+    "common_crawl": {
+      "shards": 31,
+      "median_download_s": 2.32,
+      "median_read_s": 3.95,
+      "median_mb": 82.818948
+    },
+    "dolma1_7-wiki-en": {
+      "shards": 1,
+      "median_download_s": 2.15,
+      "median_read_s": 1.59,
+      "median_mb": 82.717995
+    },
+    "finemath-3plus": {
+      "shards": 1,
+      "median_download_s": 3.11,
+      "median_read_s": 29.24,
+      "median_mb": 371.848252
+    },
+    "olmocr_science_pdfs": {
+      "shards": 6,
+      "median_download_s": 1.28,
+      "median_read_s": 1.02,
+      "median_mb": 27.8651495
+    },
+    "rpj-proofpile-arxiv": {
+      "shards": 1,
+      "median_download_s": 9.95,
+      "median_read_s": 64.51,
+      "median_mb": 1427.900326
+    },
+    "stack_edu": {
+      "shards": 3,
+      "median_download_s": 2.03,
+      "median_read_s": 5.9,
+      "median_mb": 76.326491
+    }
+  },
+  "n_chars_quantiles": {
+    "common_crawl": {
+      "0.1": 999.2,
+      "0.5": 3081.0,
+      "0.9": 11573.2
+    },
+    "dolma1_7-wiki-en": {
+      "0.1": 9134.0,
+      "0.5": 9134.0,
+      "0.9": 9134.0
+    },
+    "finemath-3plus": {
+      "0.1": 1111.9,
+      "0.5": 1982.5,
+      "0.9": 6452.2
+    },
+    "olmocr_science_pdfs": {
+      "0.1": 2181.7,
+      "0.5": 22272.5,
+      "0.9": 82788.90000000002
+    },
+    "rpj-proofpile-arxiv": {
+      "0.1": 1487.0,
+      "0.5": 2032.5,
+      "0.9": 2615.8
+    },
+    "stack_edu": {
+      "0.1": 302.20000000000005,
+      "0.5": 1550.5,
+      "0.9": 5370.200000000001
+    }
+  },
+  "shards": [
+    {
+      "n_docs": 84074,
+      "n_distinct_ids": 23143,
+      "n_usable": 84074,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-religion-0019/shard_00000095.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-religion-0019",
+      "bytes": 86902647,
+      "download_s": 2.97,
+      "read_s": 5.45,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 106210,
+      "n_distinct_ids": 31235,
+      "n_usable": 106210,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-finance_and_business-0019/shard_00001006.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-finance_and_business-0019",
+      "bytes": 76461624,
+      "download_s": 2.57,
+      "read_s": 5.45,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 230260,
+      "n_distinct_ids": 32897,
+      "n_usable": 230260,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-crime_and_law-0019/shard_00000191.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-crime_and_law-0019",
+      "bytes": 84253871,
+      "download_s": 2.61,
+      "read_s": 10.49,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 165207,
+      "n_distinct_ids": 37422,
+      "n_usable": 165207,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-art_and_design-0019/shard_00000201.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-art_and_design-0019",
+      "bytes": 79304784,
+      "download_s": 2.88,
+      "read_s": 7.18,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 205436,
+      "n_distinct_ids": 29348,
+      "n_usable": 205436,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-science_math_and_technology-0019/shard_00000614.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-science_math_and_technology-0019",
+      "bytes": 83478957,
+      "download_s": 2.81,
+      "read_s": 10.21,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 156545,
+      "n_distinct_ids": 27773,
+      "n_usable": 156545,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-software_development-0016/shard_00000195.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-software_development-0016",
+      "bytes": 82818948,
+      "download_s": 2.6,
+      "read_s": 8.49,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 31581,
+      "n_distinct_ids": 26464,
+      "n_usable": 31581,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-politics-0019/shard_00000453.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-politics-0019",
+      "bytes": 83153221,
+      "download_s": 2.87,
+      "read_s": 2.22,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 83423,
+      "n_distinct_ids": 22910,
+      "n_usable": 83423,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-science_math_and_technology-0016/shard_00000522.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-science_math_and_technology-0016",
+      "bytes": 87292740,
+      "download_s": 2.28,
+      "read_s": 5.45,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 22917,
+      "n_distinct_ids": 16742,
+      "n_usable": 22917,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-literature-0018/shard_00000397.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-literature-0018",
+      "bytes": 98246031,
+      "download_s": 2.49,
+      "read_s": 2.44,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 183106,
+      "n_distinct_ids": 26267,
+      "n_usable": 183106,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-software_development-0018/shard_00000264.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-software_development-0018",
+      "bytes": 83892914,
+      "download_s": 2.81,
+      "read_s": 9.99,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 30734,
+      "n_distinct_ids": 25557,
+      "n_usable": 30734,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-social_life-0017/shard_00000486.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-social_life-0017",
+      "bytes": 82507276,
+      "download_s": 1.83,
+      "read_s": 2.23,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 62954,
+      "n_distinct_ids": 61324,
+      "n_usable": 51767,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 11187,
+      "path": "data/common_crawl-adult_content-0019/shard_00000001.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-adult_content-0019",
+      "bytes": 30857250,
+      "download_s": 1.1,
+      "read_s": 1.69,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 153566,
+      "n_distinct_ids": 33955,
+      "n_usable": 153566,
+      "n_whole_removed": 0,
+      "n_partial_removed": 9,
+      "n_empty": 0,
+      "path": "data/common_crawl-software-0018/shard_00000097.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-software-0018",
+      "bytes": 82994562,
+      "download_s": 1.57,
+      "read_s": 7.35,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 34051,
+      "n_distinct_ids": 29107,
+      "n_usable": 34051,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-crime_and_law-0018/shard_00000415.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-crime_and_law-0018",
+      "bytes": 79080436,
+      "download_s": 2.05,
+      "read_s": 2.16,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 82284,
+      "n_distinct_ids": 22591,
+      "n_usable": 82284,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-science_math_and_technology-0016/shard_00000527.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-science_math_and_technology-0016",
+      "bytes": 85881226,
+      "download_s": 2.15,
+      "read_s": 5.38,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 195656,
+      "n_distinct_ids": 30130,
+      "n_usable": 195656,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-entertainment-0019/shard_00000029.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-entertainment-0019",
+      "bytes": 91265792,
+      "download_s": 2.1,
+      "read_s": 9.6,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 153060,
+      "n_distinct_ids": 33961,
+      "n_usable": 153060,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-software-0018/shard_00000318.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-software-0018",
+      "bytes": 80073549,
+      "download_s": 2.33,
+      "read_s": 7.16,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 22617,
+      "n_distinct_ids": 16450,
+      "n_usable": 22617,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-literature-0018/shard_00000329.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-literature-0018",
+      "bytes": 98031593,
+      "download_s": 2.83,
+      "read_s": 2.47,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 133342,
+      "n_distinct_ids": 40027,
+      "n_usable": 133342,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-food_and_dining-0019/shard_00000360.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-food_and_dining-0019",
+      "bytes": 79244826,
+      "download_s": 2.6,
+      "read_s": 5.88,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 61701,
+      "n_distinct_ids": 25503,
+      "n_usable": 61701,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-health-0018/shard_00001082.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-health-0018",
+      "bytes": 86658029,
+      "download_s": 2.37,
+      "read_s": 3.95,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 34143,
+      "n_distinct_ids": 29126,
+      "n_usable": 34143,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-crime_and_law-0018/shard_00000213.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-crime_and_law-0018",
+      "bytes": 80492780,
+      "download_s": 2.32,
+      "read_s": 2.22,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 263409,
+      "n_distinct_ids": 37632,
+      "n_usable": 263409,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-electronics_and_hardware-0019/shard_00000330.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-electronics_and_hardware-0019",
+      "bytes": 84180262,
+      "download_s": 2.15,
+      "read_s": 11.02,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 34946,
+      "n_distinct_ids": 30076,
+      "n_usable": 34946,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-science_math_and_technology-0013/shard_00000701.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-science_math_and_technology-0013",
+      "bytes": 79998703,
+      "download_s": 2.32,
+      "read_s": 2.18,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 118323,
+      "n_distinct_ids": 25255,
+      "n_usable": 118323,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-religion-0019/shard_00000455.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-religion-0019",
+      "bytes": 89331400,
+      "download_s": 2.29,
+      "read_s": 7.03,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 64188,
+      "n_distinct_ids": 27214,
+      "n_usable": 64188,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-politics-0019/shard_00000773.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-politics-0019",
+      "bytes": 84960222,
+      "download_s": 2.26,
+      "read_s": 3.87,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 28799,
+      "n_distinct_ids": 23584,
+      "n_usable": 28799,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-health-0017/shard_00000697.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-health-0017",
+      "bytes": 80311594,
+      "download_s": 2.36,
+      "read_s": 2.16,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 39102,
+      "n_distinct_ids": 33136,
+      "n_usable": 39102,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-travel_and_tourism-0019/shard_00000189.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-travel_and_tourism-0019",
+      "bytes": 72441634,
+      "download_s": 2.06,
+      "read_s": 2.21,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 39750,
+      "n_distinct_ids": 33930,
+      "n_usable": 39750,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-transportation-0018/shard_00000177.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-transportation-0018",
+      "bytes": 75170677,
+      "download_s": 1.58,
+      "read_s": 2.2,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 31739,
+      "n_distinct_ids": 26839,
+      "n_usable": 31739,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-science_math_and_technology-0014/shard_00000547.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-science_math_and_technology-0014",
+      "bytes": 79217046,
+      "download_s": 1.81,
+      "read_s": 2.1,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 36943,
+      "n_distinct_ids": 32165,
+      "n_usable": 36943,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-science_math_and_technology-0012/shard_00000188.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-science_math_and_technology-0012",
+      "bytes": 80365114,
+      "download_s": 2.35,
+      "read_s": 2.2,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 31916,
+      "n_distinct_ids": 27027,
+      "n_usable": 31916,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/common_crawl-science_math_and_technology-0014/shard_00000656.jsonl.zst",
+      "source": "common_crawl",
+      "folder": "common_crawl-science_math_and_technology-0014",
+      "bytes": 80263935,
+      "download_s": 2.04,
+      "read_s": 2.12,
+      "n_sampled": 3
+    },
+    {
+      "n_docs": 3990,
+      "n_distinct_ids": 2277,
+      "n_usable": 3410,
+      "n_whole_removed": 580,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/olmocr_science_pdfs-science_math_and_technology-part1/shard_00029099.jsonl.zst",
+      "source": "olmocr_science_pdfs",
+      "folder": "olmocr_science_pdfs-science_math_and_technology-part1",
+      "bytes": 24990869,
+      "download_s": 1.3,
+      "read_s": 0.94,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 3304,
+      "n_distinct_ids": 1833,
+      "n_usable": 3267,
+      "n_whole_removed": 37,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/olmocr_science_pdfs-crime_and_law/shard_00009183.jsonl.zst",
+      "source": "olmocr_science_pdfs",
+      "folder": "olmocr_science_pdfs-crime_and_law",
+      "bytes": 30896717,
+      "download_s": 1.42,
+      "read_s": 1.07,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 4022,
+      "n_distinct_ids": 2213,
+      "n_usable": 3602,
+      "n_whole_removed": 416,
+      "n_partial_removed": 0,
+      "n_empty": 4,
+      "path": "data/olmocr_science_pdfs-science_math_and_technology-part1/shard_00032553.jsonl.zst",
+      "source": "olmocr_science_pdfs",
+      "folder": "olmocr_science_pdfs-science_math_and_technology-part1",
+      "bytes": 27773094,
+      "download_s": 1.26,
+      "read_s": 1.04,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 3458,
+      "n_distinct_ids": 1863,
+      "n_usable": 3104,
+      "n_whole_removed": 354,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/olmocr_science_pdfs-science_math_and_technology-part1/shard_00032633.jsonl.zst",
+      "source": "olmocr_science_pdfs",
+      "folder": "olmocr_science_pdfs-science_math_and_technology-part1",
+      "bytes": 32357751,
+      "download_s": 1.45,
+      "read_s": 1.12,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 3874,
+      "n_distinct_ids": 2147,
+      "n_usable": 3474,
+      "n_whole_removed": 399,
+      "n_partial_removed": 0,
+      "n_empty": 1,
+      "path": "data/olmocr_science_pdfs-science_math_and_technology-part1/shard_00031132.jsonl.zst",
+      "source": "olmocr_science_pdfs",
+      "folder": "olmocr_science_pdfs-science_math_and_technology-part1",
+      "bytes": 26835842,
+      "download_s": 1.22,
+      "read_s": 1.0,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 3708,
+      "n_distinct_ids": 2057,
+      "n_usable": 3300,
+      "n_whole_removed": 408,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/olmocr_science_pdfs-science_math_and_technology-part1/shard_00030400.jsonl.zst",
+      "source": "olmocr_science_pdfs",
+      "folder": "olmocr_science_pdfs-science_math_and_technology-part1",
+      "bytes": 27957205,
+      "download_s": 1.25,
+      "read_s": 0.92,
+      "n_sampled": 4
+    },
+    {
+      "n_docs": 289614,
+      "n_distinct_ids": 84113,
+      "n_usable": 289614,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/stack_edu-Python/part-000000030.jsonl.zst",
+      "source": "stack_edu",
+      "folder": "stack_edu-Python",
+      "bytes": 76223134,
+      "download_s": 1.28,
+      "read_s": 5.88,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 291438,
+      "n_distinct_ids": 84155,
+      "n_usable": 291438,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/stack_edu-Python/part-000000276.jsonl.zst",
+      "source": "stack_edu",
+      "folder": "stack_edu-Python",
+      "bytes": 76326491,
+      "download_s": 2.03,
+      "read_s": 5.9,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 158579,
+      "n_distinct_ids": 69535,
+      "n_usable": 158579,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/stack_edu-Markdown/shard_00000246.jsonl.zst",
+      "source": "stack_edu",
+      "folder": "stack_edu-Markdown",
+      "bytes": 143934640,
+      "download_s": 2.69,
+      "read_s": 6.76,
+      "n_sampled": 8
+    },
+    {
+      "n_docs": 714119,
+      "n_distinct_ids": 167215,
+      "n_usable": 714119,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/finemath-3plus/train-00077-of-00128.jsonl.zst",
+      "source": "finemath-3plus",
+      "folder": "finemath-3plus",
+      "bytes": 371848252,
+      "download_s": 3.11,
+      "read_s": 29.24,
+      "n_sampled": 10
+    },
+    {
+      "n_docs": 1098035,
+      "n_distinct_ids": 497709,
+      "n_usable": 1098035,
+      "n_whole_removed": 0,
+      "n_partial_removed": 2,
+      "n_empty": 0,
+      "path": "data/rpj-proofpile-arxiv/arxiv-train-0019.jsonl.zst",
+      "source": "rpj-proofpile-arxiv",
+      "folder": "rpj-proofpile-arxiv",
+      "bytes": 1427900326,
+      "download_s": 9.95,
+      "read_s": 64.51,
+      "n_sampled": 4
+    },
+    {
+      "n_docs": 54176,
+      "n_distinct_ids": 50901,
+      "n_usable": 54176,
+      "n_whole_removed": 0,
+      "n_partial_removed": 0,
+      "n_empty": 0,
+      "path": "data/dolma1_7-wiki-en/00022.jsonl.zst",
+      "source": "dolma1_7-wiki-en",
+      "folder": "dolma1_7-wiki-en",
+      "bytes": 82717995,
+      "download_s": 2.15,
+      "read_s": 1.59,
+      "n_sampled": 1
+    }
+  ]
+}

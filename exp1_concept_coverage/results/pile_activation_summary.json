@@ -1,0 +1,11 @@
+{
+  "run": "pile",
+  "docs": 40000,
+  "parts": 40,
+  "tokens": 20099469,
+  "mean_active_per_token": 102.47,
+  "gb_on_disk": 12.08,
+  "model_dtype": "bfloat16",
+  "exclude_position_0": false,
+  "seconds_per_doc_this_session": 0.066
+}

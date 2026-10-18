@@ -1,0 +1,85 @@
+{
+  "dolma_run": "full",
+  "pile_run": "pile",
+  "min_docs": 40,
+  "classes_vs_pile": {
+    "middle": 49078,
+    "under": 6135,
+    "over": 6135,
+    "rare_in_dolma_present_in_pile": 2151,
+    "rare_in_pile_present_in_dolma": 1024,
+    "too_rare_to_compare": 1013
+  },
+  "tier_share_by_class": {
+    "middle": {
+      "0-2047": 0.04,
+      "16384-65535": 0.708,
+      "2048-16383": 0.251
+    },
+    "over": {
+      "0-2047": 0.009,
+      "16384-65535": 0.819,
+      "2048-16383": 0.172
+    },
+    "rare_in_dolma_present_in_pile": {
+      "0-2047": 0.0,
+      "16384-65535": 0.966,
+      "2048-16383": 0.034
+    },
+    "rare_in_pile_present_in_dolma": {
+      "0-2047": 0.0,
+      "16384-65535": 0.987,
+      "2048-16383": 0.013
+    },
+    "too_rare_to_compare": {
+      "0-2047": 0.0,
+      "16384-65535": 0.985,
+      "2048-16383": 0.015
+    },
+    "under": {
+      "0-2047": 0.003,
+      "16384-65535": 0.859,
+      "2048-16383": 0.138
+    }
+  },
+  "noise_floor_half1_vs_half2": {
+    "concepts_eligible_in_both": 53215,
+    "spearman_log_ratio": 0.9167,
+    "same_class_share_eligible": 0.9139,
+    "same_class_share_all_concepts": 0.8926
+  },
+  "paper_class_vs_new_class": {
+    "middle": {
+      "middle": 38244,
+      "over": 5257,
+      "rare_in_dolma_present_in_pile": 0,
+      "rare_in_pile_present_in_dolma": 82,
+      "too_rare_to_compare": 1,
+      "under": 871
+    },
+    "missing": {
+      "middle": 2022,
+      "over": 7,
+      "rare_in_dolma_present_in_pile": 2136,
+      "rare_in_pile_present_in_dolma": 779,
+      "too_rare_to_compare": 991,
+      "under": 4032
+    },
+    "over": {
+      "middle": 4798,
+      "over": 753,
+      "rare_in_dolma_present_in_pile": 0,
+      "rare_in_pile_present_in_dolma": 0,
+      "too_rare_to_compare": 0,
+      "under": 6
+    },
+    "under": {
+      "middle": 4014,
+      "over": 118,
+      "rare_in_dolma_present_in_pile": 15,
+      "rare_in_pile_present_in_dolma": 163,
+      "too_rare_to_compare": 21,
+      "under": 1226
+    }
+  }
+}

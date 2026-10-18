@@ -1,0 +1,75 @@
+{
+  "run": "full",
+  "min_naming": 40,
+  "min_quiz": 50,
+  "tested_all_concepts": 52473,
+  "tested_by_web_only_class": {
+    "middle": {
+      "concepts": 37088,
+      "tested": 36956,
+      "tested_share": 0.9964
+    },
+    "over": {
+      "concepts": 4636,
+      "tested": 4636,
+      "tested_share": 1.0
+    },
+    "rare_in_dolma_present_in_pile": {
+      "concepts": 113,
+      "tested": 8,
+      "tested_share": 0.0708
+    },
+    "rare_in_pile_present_in_dolma": {
+      "concepts": 6029,
+      "tested": 5021,
+      "tested_share": 0.8328
+    },
+    "too_rare_to_compare": {
+      "concepts": 13034,
+      "tested": 1382,
+      "tested_share": 0.106
+    },
+    "under": {
+      "concepts": 4636,
+      "tested": 4470,
+      "tested_share": 0.9642
+    }
+  },
+  "tested_by_whole_dataset_class": {
+    "middle": {
+      "concepts": 49032,
+      "tested": 44449,
+      "tested_share": 0.9065
+    },
+    "over": {
+      "concepts": 6129,
+      "tested": 5980,
+      "tested_share": 0.9757
+    },
+    "rare_in_dolma_present_in_pile": {
+      "concepts": 2113,
+      "tested": 0,
+      "tested_share": 0.0
+    },
+    "rare_in_pile_present_in_dolma": {
+      "concepts": 1082,
+      "tested": 81,
+      "tested_share": 0.0749
+    },
+    "too_rare_to_compare": {
+      "concepts": 1051,
+      "tested": 0,
+      "tested_share": 0.0
+    },
+    "under": {
+      "concepts": 6129,
+      "tested": 1963,
+      "tested_share": 0.3203
+    }
+  },
+  "to_name": {
+    "concepts": 29775,
+    "tested": 21412,
+    "untested": 8363
+  }
+}

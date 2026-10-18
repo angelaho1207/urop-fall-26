@@ -13,6 +13,8 @@ import time
 import config  # first: sets HF_HOME
 import numpy as np
 import pandas as pd
+from huggingface_hub import snapshot_download
+from safetensors import safe_open
 from transformers import AutoTokenizer
 
 from s03_pilot import tokenize
@@ -43,6 +45,12 @@ def pick_concepts(spec, run_dir):
                                                                              replace=False)
                       for k, c in enumerate(CLASSES_VS_PILE)]
             return np.sort(np.concatenate(chosen))
+    if spec.startswith("pilot:"):  # N14: uniform draw from testable concepts in the web-only flagged classes
+        n = int(spec.split(":")[1])
+        tested = pd.read_parquet(run_dir / "firing_counts.parquet", columns=["tested"])["tested"].to_numpy()
+        cls = pd.read_parquet(run_dir / "coverage_vs_pile_web.parquet", columns=["class_web"])["class_web"].to_numpy()
+        pool = np.flatnonzero(tested & np.isin(cls, CLASSES_VS_PILE))
+        return np.sort(np.random.default_rng([config.SEED, 5000]).choice(pool, size=n, replace=False))
     if spec.startswith("classes:"):
         n = int(spec.split(":")[1])
         cls = pd.read_parquet(run_dir / "coverage.parquet", columns=["class_train"])["class_train"].to_numpy()
@@ -70,7 +78,8 @@ def rank_groups(order, per_group, rng):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--run", required=True)
-    parser.add_argument("--concepts", required=True, help="'0-19', 'prefix' or 'classes:5' (E8)")
+    parser.add_argument("--concepts", required=True, help="'0-19', 'prefix', 'classes:5', 'vs_pile:5', 'web:5', 'pilot:20'")
+    parser.add_argument("--neighbours", action="store_true", help="N15: also build neighbour non-firing windows in T2")
     args = parser.parse_args()
     t_start = time.time()
     run_dir = config.DATA / args.run
@@ -80,6 +89,18 @@ def main():
     concepts = pick_concepts(args.concepts, run_dir)
     selected = np.zeros(D_SAE, dtype=bool)
     selected[concepts] = True
+    neighbour = {}
+    if args.neighbours:  # N15: nearest other concept by cosine of SAE decoder directions
+        root = snapshot_download(config.SAE_REPO, revision=config.SAE_REVISION, allow_patterns=[f"{config.SAE_ID}/*"])
+        with safe_open(f"{root}/{config.SAE_ID}/sae_weights.safetensors", "np") as f:
+            w_dec = f.get_tensor("W_dec")  # (65,536 concepts, 4,096)
+        w_dec /= np.linalg.norm(w_dec, axis=1, keepdims=True)
+        cos = w_dec[concepts] @ w_dec.T  # (n concepts, 65,536)
+        cos[np.arange(len(concepts)), concepts] = -np.inf  # a concept is not its own neighbour
+        for c, row in zip(concepts, cos):
+            nb = int(np.argmax(row))
+            neighbour[int(c)] = (nb, float(row[nb]))
+            selected[nb] = True  # pass 1 must also collect the neighbour's doc-level entries
     docs = pd.read_parquet(run_dir / "docs.parquet", columns=["doc_id", "source", "subset", "text"])
     subset_code = docs["subset"].map({s: i for i, s in enumerate(SUBSETS)}).fillna(-1).to_numpy(dtype=np.int8)
     parts = sorted(run_dir.glob("acts/part_?????.npz"))
@@ -100,13 +121,17 @@ def main():
     e_doc, e_concept = np.concatenate(e_doc), np.concatenate(e_concept)
     e_max, e_argmax = np.concatenate(e_max), np.concatenate(e_argmax)
     by_concept = np.argsort(e_concept, kind="stable")
-    bounds = np.searchsorted(e_concept[by_concept], [concepts, concepts + 1])
+    sorted_concepts = e_concept[by_concept]
+
+    def entries_of(c):
+        """Indices (into the e_* arrays) of every (doc, concept) entry for concept c."""
+        return by_concept[np.searchsorted(sorted_concepts, c, "left"):np.searchsorted(sorted_concepts, c, "right")]
 
     # Selection (E2-E4, E6, E9): which doc and window each example uses; activations are filled in pass 2
     plan, n_firing = {}, {}
     requests = []  # (doc, concept, start, key into plan)
-    for j, c in enumerate(concepts):
-        idx = by_concept[bounds[0, j]:bounds[1, j]]
+    for c in concepts:
+        idx = entries_of(c)
         plan[c], n_firing[c] = {}, {}
         for s_i, s in enumerate(SUBSETS):
             mine = idx[subset_code[e_doc[idx]] == s_i]
@@ -139,6 +164,18 @@ def main():
                             "start": int(rng.integers(0, max(int(doc_len[d]) - WINDOW, 0) + 1))}
                     plan[c][("quiz_nonfiring", s)].append(item)
                     requests.append((int(d), int(c), item))
+            if s == "T2" and args.neighbours:
+                # N15: T2 docs where the neighbour fires, window on the neighbour's max token; kept later if all zero
+                nb_idx = entries_of(neighbour[int(c)][0])
+                nb_idx = nb_idx[subset_code[e_doc[nb_idx]] == s_i]
+                rng = np.random.default_rng([config.SEED, int(c), s_i, 3])
+                plan[c][("quiz_nonfiring_neighbour", s)] = []
+                for e in rng.choice(nb_idx, size=min(N_NONFIRING_CANDIDATES, len(nb_idx)), replace=False):
+                    d = int(e_doc[e])
+                    item = {"doc": d, "group": None, "max": 0.0,
+                            "start": window_start(int(e_argmax[e]), int(doc_len[d]))}
+                    plan[c][("quiz_nonfiring_neighbour", s)].append(item)
+                    requests.append((d, int(c), item))
 
     # Pass 2 (token level, per part): the concept's activation at each of the window's tokens (E5)
     requests.sort(key=lambda r: r[0])
@@ -165,9 +202,9 @@ def main():
 
     # Non-firing: keep the first 50 all-zero windows in candidate order (E4, E9)
     for c in concepts:
-        for s in QUIZ_SUBSETS:
-            kept = [it for it in plan[c][("quiz_nonfiring", s)] if not it["acts"].any()][:N_QUIZ]
-            plan[c][("quiz_nonfiring", s)] = kept if len(kept) == N_QUIZ else None
+        for key in [k for k in plan[c] if k[0].startswith("quiz_nonfiring")]:
+            kept = [it for it in plan[c][key] if not it["acts"].any()][:N_QUIZ]
+            plan[c][key] = kept if len(kept) == N_QUIZ else None
 
     # Text (E5): re-tokenize only the docs used, exactly as s04 did, and decode one token at a time
     tokenizer = AutoTokenizer.from_pretrained(config.MODEL_ID, revision=config.MODEL_REVISION)
@@ -195,6 +232,8 @@ def main():
                          + [(p, s) for p in ("quiz_firing", "quiz_nonfiring") for s in QUIZ_SUBSETS]}}
     for c in concepts:
         out = {"concept": int(c), "run": args.run, "n_firing": n_firing[c]}
+        if int(c) in neighbour:
+            out["neighbour"] = {"concept": neighbour[int(c)][0], "cosine": round(neighbour[int(c)][1], 4)}
         if coverage is not None:
             out["class_train"] = coverage.at[c, "class_train"]
             out["chi_train"] = float(coverage.at[c, "chi_train"])
@@ -208,7 +247,7 @@ def main():
             out["log_ratio_web"] = None if pd.isna(ratio) else round(float(ratio), 4)
         for (purpose, s), items in plan[c].items():
             if items is None:
-                summary["short"][f"{purpose}_{s}"] += 1
+                summary["short"][f"{purpose}_{s}"] = summary["short"].get(f"{purpose}_{s}", 0) + 1
                 out.setdefault(purpose, {})[s] = None
                 continue
             windows = []

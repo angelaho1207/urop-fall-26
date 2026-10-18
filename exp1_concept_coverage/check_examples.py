@@ -37,11 +37,12 @@ def main():
         if args.key and args.key not in ex:
             continue
         c = ex["concept"]
-        for purpose in ("naming", "quiz_firing", "quiz_nonfiring"):
+        purposes = ["naming", "quiz_firing"] + sorted(k for k in ex if k.startswith("quiz_nonfiring"))  # incl. N15
+        for purpose in purposes:
             for subset, wins in ex.get(purpose, {}).items():
                 if wins is None:
                     continue
-                if purpose != "quiz_nonfiring":
+                if not purpose.startswith("quiz_nonfiring"):
                     groups, per = Counter(w["group"] for w in wins), 4 if purpose == "naming" else 5
                     bad["group_counts"] += len(groups) != 10 or any(v != per for v in groups.values())
                 bad["one_window_per_doc"] += len({w["doc_id"] for w in wins}) != len(wins)
@@ -69,7 +70,7 @@ def main():
             bad["acts_vs_rebuild"] += not np.allclose(full[w["start"]:w["start"] + WINDOW], w["acts"], atol=1e-3)
             bad["ids_vs_tokenizer"] += tokenize(tokenizer, docs.at[i, "text"])[0][w["start"]:w["start"] + WINDOW] != w["ids"]
             bad["texts_length"] += len(w["texts"]) != len(w["ids"])
-            if purpose == "quiz_nonfiring":
+            if purpose.startswith("quiz_nonfiring"):
                 bad["nonfiring_not_zero"] += any(w["acts"])
             else:
                 e = off[j] + int(np.flatnonzero(z["doc_latent_ids"][off[j]:off[j + 1]] == c)[0])

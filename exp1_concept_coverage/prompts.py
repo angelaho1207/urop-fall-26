@@ -244,3 +244,45 @@ def token_pieces(byte_tokens):
     earlier tokens get ""); bytes cut off at the window's edges are dropped. Newlines show as ⏎ (N4b)."""
     decoder = codecs.getincrementaldecoder("utf-8")(errors="ignore")
     return [decoder.decode(bytes(_BYTE_OF[ch] for ch in t)).replace("\n", NEWLINE) for t in byte_tokens]
+
+
+# --- Topic categories of named concepts (Q2, Q3, our own prompts) ------------------------------------------------
+UNCLEAR = "Diffuse or unclear"
+TOPIC_SCHEME_SCHEMA = {"type": "object", "properties": {"categories": {"type": "array", "items": {
+    "type": "object", "properties": {"name": {"type": "string"}, "definition": {"type": "string"}},
+    "required": ["name", "definition"], "additionalProperties": False}}},
+    "required": ["categories"], "additionalProperties": False}
+
+TOPIC_SCHEME_SYSTEM = """You organize descriptions of features found by a sparse autoencoder trained on a language model. Each numbered item describes one feature, using two descriptions written independently from different text samples."""
+
+TOPIC_SCHEME_USER = """Here are {n} features:
+
+{items}
+
+Propose between 8 and 12 categories that together cover these features, grouping them by what they respond to: the subject matter of the text, or the role the tokens play in it. The categories must not overlap, and each needs a one-sentence definition precise enough that someone could place a new feature in it without seeing the others. Include one category, using the name "{unclear}" word for word, for features whose descriptions say they are diffuse, weak, or without a clear theme. Give the categories in the "categories" field of your JSON answer."""
+
+TOPIC_ASSIGN_SYSTEM = """You assign a feature of a language model to one category. The feature is described by two descriptions written independently from different text samples."""
+
+TOPIC_ASSIGN_USER = """Categories:
+{categories}
+
+Feature:
+Description A: {a}
+Description B: {b}
+
+Choose the single category that fits the feature best, and give its name in the "category" field of your JSON answer."""
+
+
+def topic_scheme_messages(items):
+    text = "\n".join(f"{i}. A: {a}\n   B: {b}" for i, (a, b) in enumerate(items, 1))
+    return TOPIC_SCHEME_SYSTEM, [{"role": "user", "content": TOPIC_SCHEME_USER.format(n=len(items), items=text, unclear=UNCLEAR)}]
+
+
+def topic_assign_messages(categories, a, b):
+    cats = "\n".join(f"- {c['name']}: {c['definition']}" for c in categories)
+    return TOPIC_ASSIGN_SYSTEM, [{"role": "user", "content": TOPIC_ASSIGN_USER.format(categories=cats, a=a, b=b)}]
+
+
+def topic_assign_schema(categories):
+    return {"type": "object", "properties": {"category": {"type": "string", "enum": [c["name"] for c in categories]}},
+            "required": ["category"], "additionalProperties": False}

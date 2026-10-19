@@ -18,12 +18,14 @@ import pandas as pd
 
 import claude_batch
 import prompts
-from s11_faith import count_tokens
+import s11_faith
 
 LIMIT_USD = 3.00  # Q5
 CAPS = {"scheme": 8_000, "assign": 300}  # Q2, Q3
 MODELS = {"sonnet": "claude-sonnet-5-5", "opus": "claude-opus-5-5"}  # Q3; Opus is primary
 OUT = config.DATA / "full" / "labels" / "topics"
+s11_faith.OUT = OUT  # the shared token counter caches its counts under plan B's own folder
+count_tokens = s11_faith.count_tokens
 NAMES = config.DATA / "full" / "labels" / "faith" / "names.json"
 
 
@@ -154,7 +156,10 @@ def main():
         (OUT / "scheme.json").write_text(json.dumps({"categories": cats, "problems": problems}, indent=1, ensure_ascii=False))
         return
     if args.stage == "assign":
-        cats = json.loads((OUT / "scheme.json").read_text())["categories"]
+        scheme = json.loads((OUT / "scheme.json").read_text())
+        if scheme["problems"]:
+            raise RuntimeError(f"scheme failed its checks: {scheme['problems']}; nothing sent")
+        cats = scheme["categories"]
         reqs, outcomes, usage = assign_requests(cats), {}, {}
         for model in MODELS:  # Q5: one submission per model, so the guard checks the spend in between
             o, u = send([(cid, p) for cid, p in reqs if cid.startswith(f"assign{model}-")], f"assign_{model}")

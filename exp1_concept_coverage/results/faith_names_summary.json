@@ -1,0 +1,29 @@
+{
+  "requests": 480,
+  "statuses": {
+    "ok": 480
+  },
+  "usage": {
+    "namedolma": {
+      "requests": 240,
+      "statuses": {
+        "ok": 240
+      },
+      "input_tokens": 1099488,
+      "output_tokens": 42226,
+      "usd": 2.6212,
+      "usd_per_request": 0.010922
+    },
+    "namepile": {
+      "requests": 240,
+      "statuses": {
+        "ok": 240
+      },
+      "input_tokens": 1098103,
+      "output_tokens": 44696,
+      "usd": 2.6432,
+      "usd_per_request": 0.011013
+    }
+  },
+  "spent_total": 5.2644
+}

@@ -1,0 +1,1485 @@
+{
+  "classes": {
+    "middle": {
+      "concepts_scored": 73,
+      "pile_name_mean": 0.7454,
+      "dolma_name_mean": 0.7474,
+      "gap_mean": 0.002,
+      "gap_ci95": [
+        -0.0115,
+        0.0156
+      ]
+    },
+    "over": {
+      "concepts_scored": 77,
+      "pile_name_mean": 0.7298,
+      "dolma_name_mean": 0.7461,
+      "gap_mean": 0.0163,
+      "gap_ci95": [
+        0.0023,
+        0.0309
+      ]
+    },
+    "under": {
+      "concepts_scored": 77,
+      "pile_name_mean": 0.7688,
+      "dolma_name_mean": 0.7831,
+      "gap_mean": 0.0142,
+      "gap_ci95": [
+        0.0002,
+        0.0282
+      ]
+    }
+  },
+  "judge_same_rate": {
+    "middle_control": 0.0,
+    "middle_true": 1.0,
+    "over_control": 0.0,
+    "over_true": 0.9241,
+    "under_control": 0.0125,
+    "under_true": 0.975
+  },
+  "judge_note": "used only if the judge passes N10 (Angela's 100 labels, kappa >= 0.6)",
+  "scores": [
+    {
+      "concept": 245,
+      "class": "over",
+      "pile": 0.67,
+      "dolma": 0.71
+    },
+    {
+      "concept": 254,
+      "class": "over",
+      "pile": 0.75,
+      "dolma": 0.74
+    },
+    {
+      "concept": 409,
+      "class": "under",
+      "pile": 0.5700000000000001,
+      "dolma": 0.55
+    },
+    {
+      "concept": 544,
+      "class": "over",
+      "pile": 0.69,
+      "dolma": 0.75
+    },
+    {
+      "concept": 991,
+      "class": "under",
+      "pile": 0.69,
+      "dolma": 0.72
+    },
+    {
+      "concept": 999,
+      "class": "middle",
+      "pile": 0.51,
+      "dolma": NaN
+    },
+    {
+      "concept": 1969,
+      "class": "middle",
+      "pile": 0.71,
+      "dolma": 0.75
+    },
+    {
+      "concept": 2162,
+      "class": "under",
+      "pile": 0.88,
+      "dolma": 0.8899999999999999
+    },
+    {
+      "concept": 2726,
+      "class": "under",
+      "pile": 0.48,
+      "dolma": 0.6333333333333333
+    },
+    {
+      "concept": 3419,
+      "class": "over",
+      "pile": 0.66,
+      "dolma": 0.71
+    },
+    {
+      "concept": 3630,
+      "class": "under",
+      "pile": 0.55,
+      "dolma": 0.58
+    },
+    {
+      "concept": 3710,
+      "class": "over",
+      "pile": 0.74,
+      "dolma": 0.8
+    },
+    {
+      "concept": 3730,
+      "class": "over",
+      "pile": 0.8,
+      "dolma": 0.8300000000000001
+    },
+    {
+      "concept": 4085,
+      "class": "under",
+      "pile": 0.6664450354609929,
+      "dolma": 0.8
+    },
+    {
+      "concept": 4217,
+      "class": "middle",
+      "pile": 0.72,
+      "dolma": 0.74
+    },
+    {
+      "concept": 4236,
+      "class": "middle",
+      "pile": 0.52,
+      "dolma": 0.55
+    },
+    {
+      "concept": 4394,
+      "class": "under",
+      "pile": 0.76,
+      "dolma": 0.61
+    },
+    {
+      "concept": 4443,
+      "class": "under",
+      "pile": 0.71,
+      "dolma": 0.72
+    },
+    {
+      "concept": 4453,
+      "class": "middle",
+      "pile": 0.8122783687943262,
+      "dolma": 0.892627412172192
+    },
+    {
+      "concept": 4969,
+      "class": "over",
+      "pile": 0.53,
+      "dolma": 0.7
+    },
+    {
+      "concept": 5200,
+      "class": "middle",
+      "pile": 0.8,
+      "dolma": 0.62
+    },
+    {
+      "concept": 5476,
+      "class": "over",
+      "pile": 0.55,
+      "dolma": 0.69
+    },
+    {
+      "concept": 5553,
+      "class": "middle",
+      "pile": 0.71,
+      "dolma": 0.73
+    },
+    {
+      "concept": 5802,
+      "class": "middle",
+      "pile": 0.72,
+      "dolma": 0.77
+    },
+    {
+      "concept": 5847,
+      "class": "under",
+      "pile": 0.79,
+      "dolma": 0.75
+    },
+    {
+      "concept": 5879,
+      "class": "middle",
+      "pile": 0.66,
+      "dolma": 0.69
+    },
+    {
+      "concept": 6036,
+      "class": "middle",
+      "pile": 0.75,
+      "dolma": 0.73
+    },
+    {
+      "concept": 6038,
+      "class": "under",
+      "pile": 0.65,
+      "dolma": 0.58
+    },
+    {
+      "concept": 6132,
+      "class": "over",
+      "pile": 0.6799999999999999,
+      "dolma": 0.6799999999999999
+    },
+    {
+      "concept": 6283,
+      "class": "middle",
+      "pile": 0.7358156028368794,
+      "dolma": NaN
+    },
+    {
+      "concept": 6314,
+      "class": "under",
+      "pile": 0.81,
+      "dolma": 0.75
+    },
+    {
+      "concept": 6647,
+      "class": "over",
+      "pile": 0.71,
+      "dolma": 0.71
+    },
+    {
+      "concept": 6780,
+      "class": "middle",
+      "pile": 0.61,
+      "dolma": 0.5599999999999999
+    },
+    {
+      "concept": 6887,
+      "class": "middle",
+      "pile": 0.72,
+      "dolma": 0.69
+    },
+    {
+      "concept": 6889,
+      "class": "middle",
+      "pile": 0.75,
+      "dolma": 0.76
+    },
+    {
+      "concept": 7555,
+      "class": "under",
+      "pile": 0.71,
+      "dolma": 0.74
+    },
+    {
+      "concept": 7700,
+      "class": "over",
+      "pile": NaN,
+      "dolma": 0.69
+    },
+    {
+      "concept": 8207,
+      "class": "over",
+      "pile": 0.63,
+      "dolma": 0.66
+    },
+    {
+      "concept": 8846,
+      "class": "over",
+      "pile": 0.6699999999999999,
+      "dolma": 0.66
+    },
+    {
+      "concept": 9416,
+      "class": "over",
+      "pile": 0.62,
+      "dolma": 0.58
+    },
+    {
+      "concept": 9590,
+      "class": "over",
+      "pile": 0.38,
+      "dolma": 0.69
+    },
+    {
+      "concept": 9807,
+      "class": "middle",
+      "pile": 0.61,
+      "dolma": 0.68
+    },
+    {
+      "concept": 9895,
+      "class": "over",
+      "pile": 0.55,
+      "dolma": 0.5700000000000001
+    },
+    {
+      "concept": 10376,
+      "class": "middle",
+      "pile": 0.63,
+      "dolma": 0.65
+    },
+    {
+      "concept": 10378,
+      "class": "middle",
+      "pile": 0.54,
+      "dolma": 0.6717641843971631
+    },
+    {
+      "concept": 11014,
+      "class": "over",
+      "pile": 0.8200000000000001,
+      "dolma": 0.9099999999999999
+    },
+    {
+      "concept": 11422,
+      "class": "middle",
+      "pile": 0.570509648688768,
+      "dolma": 0.6
+    },
+    {
+      "concept": 11487,
+      "class": "under",
+      "pile": 0.77,
+      "dolma": 0.8300000000000001
+    },
+    {
+      "concept": 11696,
+      "class": "over",
+      "pile": 0.59,
+      "dolma": 0.6
+    },
+    {
+      "concept": 11879,
+      "class": "middle",
+      "pile": 0.87,
+      "dolma": 0.8617021276595744
+    },
+    {
+      "concept": 11938,
+      "class": "over",
+      "pile": 0.81,
+      "dolma": 0.78
+    },
+    {
+      "concept": 12313,
+      "class": "under",
+      "pile": 0.7,
+      "dolma": 0.73
+    },
+    {
+      "concept": 12578,
+      "class": "over",
+      "pile": 0.59,
+      "dolma": 0.5222222222222223
+    },
+    {
+      "concept": 12824,
+      "class": "over",
+      "pile": 0.6000000000000001,
+      "dolma": NaN
+    },
+    {
+      "concept": 13058,
+      "class": "under",
+      "pile": 0.76,
+      "dolma": 0.79
+    },
+    {
+      "concept": 13106,
+      "class": "over",
+      "pile": 0.81,
+      "dolma": 0.78
+    },
+    {
+      "concept": 13388,
+      "class": "under",
+      "pile": 0.6,
+      "dolma": 0.64
+    },
+    {
+      "concept": 13483,
+      "class": "middle",
+      "pile": 0.71,
+      "dolma": 0.64
+    },
+    {
+      "concept": 13835,
+      "class": "over",
+      "pile": 0.73,
+      "dolma": 0.67
+    },
+    {
+      "concept": 13848,
+      "class": "middle",
+      "pile": 0.69,
+      "dolma": 0.53
+    },
+    {
+      "concept": 14030,
+      "class": "middle",
+      "pile": 0.6399999999999999,
+      "dolma": 0.56
+    },
+    {
+      "concept": 14095,
+      "class": "middle",
+      "pile": NaN,
+      "dolma": NaN
+    },
+    {
+      "concept": 14603,
+      "class": "over",
+      "pile": 0.86,
+      "dolma": 0.8
+    },
+    {
+      "concept": 14858,
+      "class": "under",
+      "pile": 0.83,
+      "dolma": 0.8200000000000001
+    },
+    {
+      "concept": 14893,
+      "class": "middle",
+      "pile": 0.47000000000000003,
+      "dolma": 0.4773735581188997
+    },
+    {
+      "concept": 15095,
+      "class": "over",
+      "pile": 0.8400000000000001,
+      "dolma": 0.8400000000000001
+    },
+    {
+      "concept": 15273,
+      "class": "under",
+      "pile": 0.8322251773049645,
+      "dolma": NaN
+    },
+    {
+      "concept": 15423,
+      "class": "over",
+      "pile": 0.77,
+      "dolma": 0.79
+    },
+    {
+      "concept": 15677,
+      "class": "under",
+      "pile": 0.64,
+      "dolma": 0.61
+    },
+    {
+      "concept": 15805,
+      "class": "under",
+      "pile": 0.76,
+      "dolma": 0.76
+    },
+    {
+      "concept": 16079,
+      "class": "middle",
+      "pile": 0.6,
+      "dolma": 0.67
+    },
+    {
+      "concept": 16494,
+      "class": "under",
+      "pile": 0.69,
+      "dolma": 0.79
+    },
+    {
+      "concept": 17181,
+      "class": "under",
+      "pile": 0.98,
+      "dolma": 0.98
+    },
+    {
+      "concept": 17413,
+      "class": "under",
+      "pile": 0.97,
+      "dolma": 0.9347826086956521
+    },
+    {
+      "concept": 17525,
+      "class": "over",
+      "pile": 0.69,
+      "dolma": 0.6560283687943262
+    },
+    {
+      "concept": 17543,
+      "class": "over",
+      "pile": 0.71,
+      "dolma": 0.77
+    },
+    {
+      "concept": 17693,
+      "class": "over",
+      "pile": 0.61,
+      "dolma": 0.72
+    },
+    {
+      "concept": 17707,
+      "class": "under",
+      "pile": 0.9099999999999999,
+      "dolma": 0.95
+    },
+    {
+      "concept": 17741,
+      "class": "middle",
+      "pile": 0.5,
+      "dolma": 0.5995124113475178
+    },
+    {
+      "concept": 17833,
+      "class": "under",
+      "pile": NaN,
+      "dolma": 0.85
+    },
+    {
+      "concept": 18130,
+      "class": "over",
+      "pile": 0.87,
+      "dolma": 0.85
+    },
+    {
+      "concept": 18356,
+      "class": "under",
+      "pile": 0.78,
+      "dolma": 0.74
+    },
+    {
+      "concept": 18955,
+      "class": "under",
+      "pile": 0.85,
+      "dolma": 0.83
+    },
+    {
+      "concept": 19364,
+      "class": "over",
+      "pile": 0.67,
+      "dolma": 0.72
+    },
+    {
+      "concept": 19721,
+      "class": "middle",
+      "pile": 0.65,
+      "dolma": 0.8
+    },
+    {
+      "concept": 19770,
+      "class": "middle",
+      "pile": 0.9099999999999999,
+      "dolma": 0.8999999999999999
+    },
+    {
+      "concept": 19914,
+      "class": "over",
+      "pile": 0.98,
+      "dolma": 0.98
+    },
+    {
+      "concept": 20232,
+      "class": "under",
+      "pile": 0.95,
+      "dolma": 0.95
+    },
+    {
+      "concept": 20458,
+      "class": "under",
+      "pile": 0.74,
+      "dolma": 0.72
+    },
+    {
+      "concept": 20628,
+      "class": "under",
+      "pile": 0.6599999999999999,
+      "dolma": 0.68
+    },
+    {
+      "concept": 20653,
+      "class": "middle",
+      "pile": 0.69,
+      "dolma": 0.65
+    },
+    {
+      "concept": 21011,
+      "class": "under",
+      "pile": 0.88,
+      "dolma": 0.9
+    },
+    {
+      "concept": 21065,
+      "class": "under",
+      "pile": 0.7659574468085106,
+      "dolma": 0.62
+    },
+    {
+      "concept": 21199,
+      "class": "over",
+      "pile": 0.47,
+      "dolma": 0.62
+    },
+    {
+      "concept": 21458,
+      "class": "middle",
+      "pile": 0.84,
+      "dolma": NaN
+    },
+    {
+      "concept": 21846,
+      "class": "over",
+      "pile": 0.6,
+      "dolma": 0.57
+    },
+    {
+      "concept": 22433,
+      "class": "over",
+      "pile": 0.71,
+      "dolma": 0.74
+    },
+    {
+      "concept": 22856,
+      "class": "under",
+      "pile": 0.8953900709219859,
+      "dolma": 0.86
+    },
+    {
+      "concept": 22878,
+      "class": "over",
+      "pile": 0.7069653948535937,
+      "dolma": 0.7322537710736469
+    },
+    {
+      "concept": 23033,
+      "class": "over",
+      "pile": 0.69,
+      "dolma": 0.63
+    },
+    {
+      "concept": 23582,
+      "class": "over",
+      "pile": 0.86,
+      "dolma": 0.86
+    },
+    {
+      "concept": 23762,
+      "class": "under",
+      "pile": 0.86,
+      "dolma": 0.87
+    },
+    {
+      "concept": 23827,
+      "class": "under",
+      "pile": 0.77,
+      "dolma": 0.77
+    },
+    {
+      "concept": 24029,
+      "class": "over",
+      "pile": 0.8,
+      "dolma": 0.8300000000000001
+    },
+    {
+      "concept": 24738,
+      "class": "middle",
+      "pile": 0.9222222222222223,
+      "dolma": 0.8958333333333333
+    },
+    {
+      "concept": 24747,
+      "class": "middle",
+      "pile": 0.927240461401952,
+      "dolma": 0.9583333333333333
+    },
+    {
+      "concept": 24849,
+      "class": "middle",
+      "pile": 0.8400000000000001,
+      "dolma": 0.84
+    },
+    {
+      "concept": 25173,
+      "class": "under",
+      "pile": 0.8,
+      "dolma": 0.78
+    },
+    {
+      "concept": 25214,
+      "class": "middle",
+      "pile": 0.9,
+      "dolma": 0.88
+    },
+    {
+      "concept": 25249,
+      "class": "under",
+      "pile": 0.8999999999999999,
+      "dolma": 0.9361702127659575
+    },
+    {
+      "concept": 26426,
+      "class": "middle",
+      "pile": 0.5900000000000001,
+      "dolma": 0.56
+    },
+    {
+      "concept": 26446,
+      "class": "under",
+      "pile": 0.99,
+      "dolma": 0.95
+    },
+    {
+      "concept": 26506,
+      "class": "middle",
+      "pile": 0.77,
+      "dolma": 0.77
+    },
+    {
+      "concept": 26958,
+      "class": "over",
+      "pile": 0.7145390070921986,
+      "dolma": 0.7167553191489362
+    },
+    {
+      "concept": 27372,
+      "class": "under",
+      "pile": 0.76,
+      "dolma": 0.81
+    },
+    {
+      "concept": 27778,
+      "class": "middle",
+      "pile": 0.8863636363636364,
+      "dolma": 0.8936170212765957
+    },
+    {
+      "concept": 27996,
+      "class": "middle",
+      "pile": 0.83,
+      "dolma": 0.83
+    },
+    {
+      "concept": 28503,
+      "class": "middle",
+      "pile": 0.7777039007092199,
+      "dolma": 0.7878989361702128
+    },
+    {
+      "concept": 28765,
+      "class": "middle",
+      "pile": 0.9,
+      "dolma": 0.9299999999999999
+    },
+    {
+      "concept": 30010,
+      "class": "middle",
+      "pile": 0.69,
+      "dolma": 0.61
+    },
+    {
+      "concept": 30246,
+      "class": "under",
+      "pile": 0.6,
+      "dolma": 0.6799999999999999
+    },
+    {
+      "concept": 30399,
+      "class": "over",
+      "pile": 0.97,
+      "dolma": 0.97
+    },
+    {
+      "concept": 30695,
+      "class": "middle",
+      "pile": 0.85,
+      "dolma": 0.8300000000000001
+    },
+    {
+      "concept": 30945,
+      "class": "under",
+      "pile": 0.6799999999999999,
+      "dolma": 0.7903368794326242
+    },
+    {
+      "concept": 31869,
+      "class": "over",
+      "pile": 0.8600000000000001,
+      "dolma": 0.89
+    },
+    {
+      "concept": 32440,
+      "class": "middle",
+      "pile": 0.6635375494071146,
+      "dolma": 0.6799999999999999
+    },
+    {
+      "concept": 33074,
+      "class": "under",
+      "pile": 0.8,
+      "dolma": 0.89
+    },
+    {
+      "concept": 33270,
+      "class": "middle",
+      "pile": NaN,
+      "dolma": 0.75
+    },
+    {
+      "concept": 33820,
+      "class": "under",
+      "pile": 0.71,
+      "dolma": 0.6799999999999999
+    },
+    {
+      "concept": 33852,
+      "class": "under",
+      "pile": 0.8736702127659575,
+      "dolma": 0.88
+    },
+    {
+      "concept": 34025,
+      "class": "over",
+      "pile": 0.94,
+      "dolma": 0.87
+    },
+    {
+      "concept": 34205,
+      "class": "over",
+      "pile": 0.77,
+      "dolma": 0.81
+    },
+    {
+      "concept": 34577,
+      "class": "middle",
+      "pile": 0.71,
+      "dolma": 0.8200000000000001
+    },
+    {
+      "concept": 34778,
+      "class": "over",
+      "pile": 0.69,
+      "dolma": 0.73
+    },
+    {
+      "concept": 34799,
+      "class": "over",
+      "pile": 0.8400000000000001,
+      "dolma": 0.8899999999999999
+    },
+    {
+      "concept": 34875,
+      "class": "over",
+      "pile": 0.96,
+      "dolma": 0.94
+    },
+    {
+      "concept": 35842,
+      "class": "under",
+      "pile": 0.62,
+      "dolma": 0.6599999999999999
+    },
+    {
+      "concept": 36543,
+      "class": "under",
+      "pile": 0.59,
+      "dolma": 0.63
+    },
+    {
+      "concept": 36591,
+      "class": "over",
+      "pile": 0.86,
+      "dolma": 0.8999999999999999
+    },
+    {
+      "concept": 36600,
+      "class": "middle",
+      "pile": 0.769281914893617,
+      "dolma": 0.7959183673469388
+    },
+    {
+      "concept": 37405,
+      "class": "under",
+      "pile": 0.75,
+      "dolma": 0.78
+    },
+    {
+      "concept": 37453,
+      "class": "under",
+      "pile": 0.7,
+      "dolma": 0.89
+    },
+    {
+      "concept": 37611,
+      "class": "middle",
+      "pile": 0.5879875886524822,
+      "dolma": 0.6599999999999999
+    },
+    {
+      "concept": 37770,
+      "class": "middle",
+      "pile": 0.6699999999999999,
+      "dolma": 0.7240691489361701
+    },
+    {
+      "concept": 37870,
+      "class": "over",
+      "pile": 0.69,
+      "dolma": 0.71
+    },
+    {
+      "concept": 38462,
+      "class": "under",
+      "pile": 0.75,
+      "dolma": 0.81
+    },
+    {
+      "concept": 38689,
+      "class": "under",
+      "pile": 0.49,
+      "dolma": 0.46
+    },
+    {
+      "concept": 38850,
+      "class": "middle",
+      "pile": 0.7028698664027709,
+      "dolma": 0.7300354924578527
+    },
+    {
+      "concept": 38859,
+      "class": "middle",
+      "pile": 0.8,
+      "dolma": 0.8200000000000001
+    },
+    {
+      "concept": 39279,
+      "class": "over",
+      "pile": 0.86,
+      "dolma": 0.85
+    },
+    {
+      "concept": 39454,
+      "class": "under",
+      "pile": 0.74,
+      "dolma": 0.7127659574468085
+    },
+    {
+      "concept": 40343,
+      "class": "middle",
+      "pile": 0.8,
+      "dolma": 0.8200000000000001
+    },
+    {
+      "concept": 40641,
+      "class": "over",
+      "pile": 0.8,
+      "dolma": 0.8200000000000001
+    },
+    {
+      "concept": 41517,
+      "class": "middle",
+      "pile": 0.72,
+      "dolma": 0.66
+    },
+    {
+      "concept": 41874,
+      "class": "over",
+      "pile": 0.61,
+      "dolma": 0.64
+    },
+    {
+      "concept": 41932,
+      "class": "under",
+      "pile": 0.86,
+      "dolma": 0.86
+    },
+    {
+      "concept": 41958,
+      "class": "under",
+      "pile": 0.96,
+      "dolma": 0.96
+    },
+    {
+      "concept": 42402,
+      "class": "middle",
+      "pile": 0.55,
+      "dolma": 0.64
+    },
+    {
+      "concept": 42449,
+      "class": "middle",
+      "pile": 0.67,
+      "dolma": 0.6799999999999999
+    },
+    {
+      "concept": 43423,
+      "class": "under",
+      "pile": 0.75,
+      "dolma": 0.76
+    },
+    {
+      "concept": 43444,
+      "class": "under",
+      "pile": 0.9199999999999999,
+      "dolma": 0.98
+    },
+    {
+      "concept": 43683,
+      "class": "middle",
+      "pile": 0.8727836879432624,
+      "dolma": NaN
+    },
+    {
+      "concept": 44053,
+      "class": "over",
+      "pile": 0.71,
+      "dolma": 0.64
+    },
+    {
+      "concept": 45113,
+      "class": "under",
+      "pile": 0.72,
+      "dolma": 0.7
+    },
+    {
+      "concept": 45461,
+      "class": "middle",
+      "pile": 0.71,
+      "dolma": 0.69
+    },
+    {
+      "concept": 46089,
+      "class": "over",
+      "pile": 0.6458333333333334,
+      "dolma": 0.6345301418439716
+    },
+    {
+      "concept": 46445,
+      "class": "over",
+      "pile": 0.89,
+      "dolma": 0.88
+    },
+    {
+      "concept": 46659,
+      "class": "middle",
+      "pile": 0.96,
+      "dolma": 0.94
+    },
+    {
+      "concept": 47307,
+      "class": "middle",
+      "pile": NaN,
+      "dolma": 0.8369565217391304
+    },
+    {
+      "concept": 47489,
+      "class": "under",
+      "pile": 0.851063829787234,
+      "dolma": 0.85
+    },
+    {
+      "concept": 47578,
+      "class": "middle",
+      "pile": 0.9299999999999999,
+      "dolma": 0.9
+    },
+    {
+      "concept": 47811,
+      "class": "over",
+      "pile": 0.7,
+      "dolma": 0.73
+    },
+    {
+      "concept": 47915,
+      "class": "over",
+      "pile": 0.71,
+      "dolma": 0.8200000000000001
+    },
+    {
+      "concept": 48347,
+      "class": "over",
+      "pile": 0.89,
+      "dolma": 0.88
+    },
+    {
+      "concept": 48943,
+      "class": "over",
+      "pile": 0.58,
+      "dolma": 0.579192546583851
+    },
+    {
+      "concept": 49417,
+      "class": "under",
+      "pile": 0.7,
+      "dolma": 0.62
+    },
+    {
+      "concept": 49689,
+      "class": "under",
+      "pile": 0.77,
+      "dolma": 0.76
+    },
+    {
+      "concept": 50203,
+      "class": "middle",
+      "pile": 0.78,
+      "dolma": 0.72
+    },
+    {
+      "concept": 50331,
+      "class": "middle",
+      "pile": 0.8200000000000001,
+      "dolma": 0.73
+    },
+    {
+      "concept": 50634,
+      "class": "middle",
+      "pile": 0.87,
+      "dolma": 0.89
+    },
+    {
+      "concept": 50710,
+      "class": "over",
+      "pile": 0.7,
+      "dolma": 0.69
+    },
+    {
+      "concept": 50969,
+      "class": "over",
+      "pile": 0.9099999999999999,
+      "dolma": 0.9099999999999999
+    },
+    {
+      "concept": 51143,
+      "class": "middle",
+      "pile": 0.9270833333333333,
+      "dolma": 0.9199999999999999
+    },
+    {
+      "concept": 51232,
+      "class": "over",
+      "pile": 0.8400000000000001,
+      "dolma": 0.78
+    },
+    {
+      "concept": 51302,
+      "class": "under",
+      "pile": 0.54,
+      "dolma": 0.47
+    },
+    {
+      "concept": 51492,
+      "class": "middle",
+      "pile": 0.69,
+      "dolma": 0.69
+    },
+    {
+      "concept": 51568,
+      "class": "under",
+      "pile": 0.87,
+      "dolma": 0.87
+    },
+    {
+      "concept": 51644,
+      "class": "under",
+      "pile": 0.9,
+      "dolma": 0.98
+    },
+    {
+      "concept": 51915,
+      "class": "over",
+      "pile": 0.47000000000000003,
+      "dolma": 0.6192375886524822
+    },
+    {
+      "concept": 52443,
+      "class": "middle",
+      "pile": 0.84,
+      "dolma": 0.89
+    },
+    {
+      "concept": 52686,
+      "class": "under",
+      "pile": 0.53,
+      "dolma": 0.5796362023070097
+    },
+    {
+      "concept": 52837,
+      "class": "middle",
+      "pile": 0.8331117021276595,
+      "dolma": 0.73
+    },
+    {
+      "concept": 52965,
+      "class": "middle",
+      "pile": 0.97,
+      "dolma": 0.99
+    },
+    {
+      "concept": 53002,
+      "class": "middle",
+      "pile": 0.56,
+      "dolma": 0.5877659574468085
+    },
+    {
+      "concept": 53164,
+      "class": "over",
+      "pile": 0.76,
+      "dolma": 0.82
+    },
+    {
+      "concept": 53399,
+      "class": "under",
+      "pile": 0.87,
+      "dolma": 0.8999999999999999
+    },
+    {
+      "concept": 53724,
+      "class": "under",
+      "pile": 0.77,
+      "dolma": 0.77
+    },
+    {
+      "concept": 53801,
+      "class": "over",
+      "pile": NaN,
+      "dolma": 0.8200000000000001
+    },
+    {
+      "concept": 54199,
+      "class": "over",
+      "pile": 0.86,
+      "dolma": 0.8
+    },
+    {
+      "concept": 54286,
+      "class": "over",
+      "pile": 0.51,
+      "dolma": 0.53
+    },
+    {
+      "concept": 55676,
+      "class": "over",
+      "pile": 0.8,
+      "dolma": 0.7601950354609929
+    },
+    {
+      "concept": 55748,
+      "class": "middle",
+      "pile": 0.6799999999999999,
+      "dolma": 0.62
+    },
+    {
+      "concept": 55797,
+      "class": "middle",
+      "pile": 0.5,
+      "dolma": 0.5241792369121562
+    },
+    {
+      "concept": 56007,
+      "class": "under",
+      "pile": 0.96,
+      "dolma": 0.97
+    },
+    {
+      "concept": 56801,
+      "class": "over",
+      "pile": 0.76,
+      "dolma": 0.81
+    },
+    {
+      "concept": 57328,
+      "class": "under",
+      "pile": 0.75,
+      "dolma": 0.81
+    },
+    {
+      "concept": 57515,
+      "class": "middle",
+      "pile": 0.9199999999999999,
+      "dolma": 0.88
+    },
+    {
+      "concept": 57668,
+      "class": "over",
+      "pile": 0.77,
+      "dolma": 0.7619990103908956
+    },
+    {
+      "concept": 58135,
+      "class": "under",
+      "pile": 0.87,
+      "dolma": 0.95
+    },
+    {
+      "concept": 58233,
+      "class": "over",
+      "pile": 0.79,
+      "dolma": 0.8300000000000001
+    },
+    {
+      "concept": 58277,
+      "class": "under",
+      "pile": 0.89,
+      "dolma": 0.8200000000000001
+    },
+    {
+      "concept": 58591,
+      "class": "under",
+      "pile": 0.96,
+      "dolma": 0.96
+    },
+    {
+      "concept": 58915,
+      "class": "middle",
+      "pile": 0.7111801242236024,
+      "dolma": 0.670807453416149
+    },
+    {
+      "concept": 59350,
+      "class": "under",
+      "pile": 0.76,
+      "dolma": 0.89
+    },
+    {
+      "concept": 60081,
+      "class": "under",
+      "pile": 0.5374556737588653,
+      "dolma": 0.6799999999999999
+    },
+    {
+      "concept": 60315,
+      "class": "middle",
+      "pile": 0.9895833333333333,
+      "dolma": 0.98
+    },
+    {
+      "concept": 60566,
+      "class": "under",
+      "pile": NaN,
+      "dolma": NaN
+    },
+    {
+      "concept": 60875,
+      "class": "middle",
+      "pile": 0.8999999999999999,
+      "dolma": 0.8999999999999999
+    },
+    {
+      "concept": 60886,
+      "class": "under",
+      "pile": 0.61,
+      "dolma": 0.73
+    },
+    {
+      "concept": 61429,
+      "class": "over",
+      "pile": 0.64,
+      "dolma": 0.6599999999999999
+    },
+    {
+      "concept": 61749,
+      "class": "under",
+      "pile": 0.94,
+      "dolma": 0.9591836734693877
+    },
+    {
+      "concept": 61949,
+      "class": "over",
+      "pile": 0.73,
+      "dolma": 0.75
+    },
+    {
+      "concept": 61956,
+      "class": "middle",
+      "pile": 0.8999999999999999,
+      "dolma": 0.8999999999999999
+    },
+    {
+      "concept": 62069,
+      "class": "under",
+      "pile": 0.59,
+      "dolma": 0.6799999999999999
+    },
+    {
+      "concept": 62123,
+      "class": "under",
+      "pile": 0.8300000000000001,
+      "dolma": 0.7799202127659575
+    },
+    {
+      "concept": 62499,
+      "class": "under",
+      "pile": 0.77,
+      "dolma": 0.7
+    },
+    {
+      "concept": 62567,
+      "class": "middle",
+      "pile": 0.97,
+      "dolma": 0.97
+    },
+    {
+      "concept": 62595,
+      "class": "middle",
+      "pile": 0.75,
+      "dolma": 0.79
+    },
+    {
+      "concept": 62626,
+      "class": "over",
+      "pile": 0.65,
+      "dolma": 0.63
+    },
+    {
+      "concept": 62706,
+      "class": "over",
+      "pile": 0.63,
+      "dolma": 0.67
+    },
+    {
+      "concept": 62799,
+      "class": "middle",
+      "pile": 0.72,
+      "dolma": 0.66
+    },
+    {
+      "concept": 62980,
+      "class": "over",
+      "pile": 0.77,
+      "dolma": 0.78
+    },
+    {
+      "concept": 63262,
+      "class": "over",
+      "pile": 0.73,
+      "dolma": 0.57
+    },
+    {
+      "concept": 64245,
+      "class": "under",
+      "pile": 0.95,
+      "dolma": 0.9099999999999999
+    },
+    {
+      "concept": 64251,
+      "class": "over",
+      "pile": 0.73,
+      "dolma": 0.71
+    },
+    {
+      "concept": 64707,
+      "class": "middle",
+      "pile": 0.7127659574468085,
+      "dolma": 0.62
+    },
+    {
+      "concept": 64717,
+      "class": "over",
+      "pile": 0.95,
+      "dolma": 0.9299999999999999
+    },
+    {
+      "concept": 64787,
+      "class": "over",
+      "pile": 0.69,
+      "dolma": 0.69
+    },
+    {
+      "concept": 64872,
+      "class": "middle",
+      "pile": 0.6808510638297872,
+      "dolma": 0.7765957446808511
+    },
+    {
+      "concept": 65114,
+      "class": "under",
+      "pile": 0.99,
+      "dolma": 0.96
+    }
+  ]
+}

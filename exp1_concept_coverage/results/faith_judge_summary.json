@@ -1,0 +1,31 @@
+{
+  "requests": 480,
+  "statuses": {
+    "max_tokens": 1,
+    "ok": 479
+  },
+  "usage": {
+    "judgetrue": {
+      "requests": 240,
+      "statuses": {
+        "ok": 239,
+        "max_tokens": 1
+      },
+      "input_tokens": 146240,
+      "output_tokens": 7981,
+      "usd": 0.3723,
+      "usd_per_request": 0.001551
+    },
+    "judgecontrol": {
+      "requests": 240,
+      "statuses": {
+        "ok": 240
+      },
+      "input_tokens": 146240,
+      "output_tokens": 2542,
+      "usd": 0.3179,
+      "usd_per_request": 0.001325
+    }
+  },
+  "spent_total": 21.5995
+}

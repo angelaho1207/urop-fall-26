@@ -1,0 +1,35 @@
+{
+  "requests": 9600,
+  "statuses": {
+    "max_tokens": 129,
+    "ok": 9462,
+    "refusal": 9
+  },
+  "usage": {
+    "quizpile": {
+      "requests": 4800,
+      "statuses": {
+        "ok": 4734,
+        "max_tokens": 62,
+        "refusal": 4
+      },
+      "input_tokens": 7215160,
+      "output_tokens": 122540,
+      "usd": 7.8279,
+      "usd_per_request": 0.001631
+    },
+    "quizdolma": {
+      "requests": 4800,
+      "statuses": {
+        "ok": 4728,
+        "max_tokens": 67,
+        "refusal": 5
+      },
+      "input_tokens": 7205640,
+      "output_tokens": 122302,
+      "usd": 7.8171,
+      "usd_per_request": 0.001629
+    }
+  },
+  "spent_total": 20.9093
+}

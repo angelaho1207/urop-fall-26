@@ -81,6 +81,21 @@ def main():
         page = {**row, "dolma": windows("full", c, "T1"), "pile": windows("pile", c, "PileCC")}
         (DATA_OUT / "concepts" / f"{c}.json").write_text(json.dumps(page, ensure_ascii=False))
     (DATA_OUT / "sample.json").write_text(json.dumps(rows, ensure_ascii=False))
+
+    # P4: token-type patterns, with up to 3 named F-sample examples per type that is more common in over or under
+    pat_path = config.RESULTS / "patterns_token_types.json"
+    if pat_path.exists():
+        pat = json.loads(pat_path.read_text())
+        tt = pd.read_parquet(config.DATA / "full" / "token_types.parquet").set_index("concept")
+        examples = []
+        for cls in ("over", "under"):
+            for ty, (d, lo, hi) in pat["dominant_diff_vs_middle"][cls].items():
+                if lo > 0 and d >= 0.01:
+                    ids = [int(c) for c in tt.index[(tt["dominant"] == ty) & (tt["class_web"] == cls)] if str(c) in names][:3]
+                    examples.append({"cls": cls, "type": ty, "diff": d,
+                                     "concepts": [{"id": c, "name": names[str(c)]["dolma"]} for c in ids]})
+        (DATA_OUT / "patterns.json").write_text(json.dumps(
+            {"share": pat["dominant_share"], "diff": pat["dominant_diff_vs_middle"], "examples": examples}, ensure_ascii=False))
     size = sum(p.stat().st_size for p in DATA_OUT.rglob("*.json")) / 1e6
     print(f"overview {len(overview['id'])} concepts (cut lines {low:.3f}, {high:.3f}); noise {len(noise['id'])} "
           f"(Spearman {noise['spearman']}, same class {noise['same_class_share']}); pages {len(rows)}; "

@@ -85,6 +85,31 @@ async function drawNoise() {
   await Plotly.newPlot("noise-plot", traces, L, { responsive: true, displaylogo: false });
 }
 
+const TYPE_LABEL = {
+  partial_char: "partial character", whitespace: "whitespace / newline", digits: "digits", prose_punct: "prose punctuation",
+  symbols: "code / math symbols", non_latin: "non-Latin letters", word_start_cap: "capitalized word start",
+  word_start_lower: "lowercase word start", word_piece: "word piece", mixed: "code identifiers (mixed)",
+};
+async function drawPatterns() {
+  const d = await load("data/patterns.json");
+  const types = Object.keys(TYPE_LABEL);
+  const traces = ["over", "middle", "under"].map((cls) => ({
+    type: "bar", name: CLASS_LABEL[cls], y: types.map((t) => TYPE_LABEL[t]), orientation: "h",
+    x: types.map((t) => d.share[cls][t][0]),
+    error_x: { type: "data", symmetric: false, array: types.map((t) => d.share[cls][t][2] - d.share[cls][t][0]),
+               arrayminus: types.map((t) => d.share[cls][t][0] - d.share[cls][t][1]), color: css("--muted") },
+    marker: { color: css("--" + cls) }, hovertemplate: "%{x:.1%}<extra>" + cls + "</extra>",
+  }));
+  const L = layoutBase();
+  L.barmode = "group"; L.margin.l = 190;
+  L.xaxis = { ...L.xaxis, title: "share of concepts in the class", tickformat: ".0%" };
+  L.yaxis = { ...L.yaxis, autorange: "reversed" };
+  await Plotly.newPlot("patterns-plot", traces, L, { responsive: true, displaylogo: false });
+  document.getElementById("patterns-examples").innerHTML = d.examples.map((e) => `<div class="card" style="margin:10px 0">
+    <div class="k"><span class="badge ${e.cls}">${e.cls}</span> mostly ${TYPE_LABEL[e.type]}: ${(100 * e.diff).toFixed(1)} points more common than in middle</div>
+    ${e.concepts.map((c) => `<p><a href="#c=${c.id}">concept ${c.id}</a>: ${esc(c.name)}</p>`).join("") || "<p class='note'>no named example</p>"}</div>`).join("");
+}
+
 let sortKey = "log_ratio", sortDir = -1;
 const COLUMNS = [
   ["id", "concept"], ["cls", "class"], ["log_ratio", "log ratio"], ["share_dolma", "fires in Dolma web"],
@@ -156,6 +181,7 @@ async function route() {
     drawn[tab] = true;
     if (tab === "overview") await drawOverview();
     if (tab === "noise") await drawNoise();
+    if (tab === "patterns") await drawPatterns();
   }
   if (tab === "concepts") await drawTable();
 }

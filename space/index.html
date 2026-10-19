@@ -14,6 +14,7 @@
   <nav>
     <a href="#overview" data-tab="overview">Overview</a>
     <a href="#noise" data-tab="noise">Noise floor</a>
+    <a href="#patterns" data-tab="patterns">Patterns</a>
     <a href="#concepts" data-tab="concepts">Sampled concepts</a>
   </nav>
 </header>
@@ -29,8 +30,14 @@
     <p id="noise-stats" class="stats"></p>
     <div id="noise-plot" class="plot"></div>
   </section>
+  <section id="tab-patterns" class="tab">
+    <p class="note">What kind of token each concept fires on most strongly, taken at its peak in every document where it fires, in Dolma web and Pile web text (weighted equally). Bars: share of concepts in each class whose most common peak token is of that type, with 95% bootstrap intervals. All 46,360 compared concepts are included, not only the named sample.</p>
+    <div id="patterns-plot" class="plot"></div>
+    <h2>Examples (named concepts from the sample)</h2>
+    <div id="patterns-examples"></div>
+  </section>
   <section id="tab-concepts" class="tab">
-    <p class="note">80 concepts drawn at random from each of over, under and middle (row F3). Names and quiz scores appear after the faithfulness run. Click a column header to sort, a row to open the concept.</p>
+    <p class="note">80 concepts drawn at random from each of over, under and middle (row F3). Each has a name written from Pile web examples and one from Dolma web examples; the quiz columns give how well each name predicts where the concept fires in held-out Dolma web text (balanced accuracy, 0.5 = chance). Click a column header to sort, a row to open the concept.</p>
     <label>Class <select id="class-filter"><option value="">all</option><option>over</option><option>under</option><option>middle</option></select></label>
     <div class="table-wrap"><table id="concept-table"><thead></thead><tbody></tbody></table></div>
   </section>

@@ -1,0 +1,336 @@
+{
+ "vocab_by_type": {
+  "partial_char": 773,
+  "whitespace": 441,
+  "digits": 1110,
+  "prose_punct": 1496,
+  "symbols": 4355,
+  "non_latin": 2237,
+  "word_start_cap": 15658,
+  "word_start_lower": 26399,
+  "word_piece": 28068,
+  "mixed": 19741
+ },
+ "corpora": {
+  "dolma": {
+   "docs": 30418,
+   "tokenization_mismatches": 0
+  },
+  "pile": {
+   "docs": 11761,
+   "tokenization_mismatches": 0
+  }
+ },
+ "concepts": {
+  "middle": 37088,
+  "under": 4636,
+  "over": 4636
+ },
+ "min_peaks_per_concept": {
+  "dolma": 104,
+  "pile": 40
+ },
+ "dominant_share": {
+  "over": {
+   "partial_char": [
+    0.0032,
+    0.0017,
+    0.005
+   ],
+   "whitespace": [
+    0.0518,
+    0.0455,
+    0.0582
+   ],
+   "digits": [
+    0.0626,
+    0.0557,
+    0.0697
+   ],
+   "prose_punct": [
+    0.1508,
+    0.1404,
+    0.1611
+   ],
+   "symbols": [
+    0.0201,
+    0.0162,
+    0.0244
+   ],
+   "non_latin": [
+    0.0006,
+    0.0,
+    0.0015
+   ],
+   "word_start_cap": [
+    0.0343,
+    0.0291,
+    0.0397
+   ],
+   "word_start_lower": [
+    0.5475,
+    0.5332,
+    0.5615
+   ],
+   "word_piece": [
+    0.1251,
+    0.1158,
+    0.1348
+   ],
+   "mixed": [
+    0.0041,
+    0.0024,
+    0.006
+   ]
+  },
+  "under": {
+   "partial_char": [
+    0.0002,
+    0.0,
+    0.0006
+   ],
+   "whitespace": [
+    0.0188,
+    0.0151,
+    0.0229
+   ],
+   "digits": [
+    0.0207,
+    0.0168,
+    0.0248
+   ],
+   "prose_punct": [
+    0.0539,
+    0.0477,
+    0.0606
+   ],
+   "symbols": [
+    0.0037,
+    0.0019,
+    0.0056
+   ],
+   "non_latin": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "word_start_cap": [
+    0.1333,
+    0.1236,
+    0.143
+   ],
+   "word_start_lower": [
+    0.7153,
+    0.7021,
+    0.7282
+   ],
+   "word_piece": [
+    0.0475,
+    0.0416,
+    0.0537
+   ],
+   "mixed": [
+    0.0067,
+    0.0045,
+    0.0091
+   ]
+  },
+  "middle": {
+   "partial_char": [
+    0.0003,
+    0.0002,
+    0.0005
+   ],
+   "whitespace": [
+    0.014,
+    0.0128,
+    0.0152
+   ],
+   "digits": [
+    0.0327,
+    0.0309,
+    0.0345
+   ],
+   "prose_punct": [
+    0.0732,
+    0.0705,
+    0.0758
+   ],
+   "symbols": [
+    0.006,
+    0.0052,
+    0.0068
+   ],
+   "non_latin": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "word_start_cap": [
+    0.0506,
+    0.0484,
+    0.0528
+   ],
+   "word_start_lower": [
+    0.7438,
+    0.7393,
+    0.7482
+   ],
+   "word_piece": [
+    0.0736,
+    0.071,
+    0.0763
+   ],
+   "mixed": [
+    0.0059,
+    0.0051,
+    0.0067
+   ]
+  }
+ },
+ "dominant_diff_vs_middle": {
+  "over": {
+   "partial_char": [
+    0.0029,
+    0.0014,
+    0.0046
+   ],
+   "whitespace": [
+    0.0378,
+    0.0314,
+    0.0444
+   ],
+   "digits": [
+    0.0299,
+    0.0228,
+    0.0372
+   ],
+   "prose_punct": [
+    0.0776,
+    0.067,
+    0.0883
+   ],
+   "symbols": [
+    0.0141,
+    0.01,
+    0.0184
+   ],
+   "non_latin": [
+    0.0006,
+    0.0,
+    0.0015
+   ],
+   "word_start_cap": [
+    -0.0163,
+    -0.0219,
+    -0.0105
+   ],
+   "word_start_lower": [
+    -0.1963,
+    -0.2113,
+    -0.1815
+   ],
+   "word_piece": [
+    0.0515,
+    0.0419,
+    0.0615
+   ],
+   "mixed": [
+    -0.0018,
+    -0.0037,
+    0.0003
+   ]
+  },
+  "under": {
+   "partial_char": [
+    -0.0001,
+    -0.0005,
+    0.0004
+   ],
+   "whitespace": [
+    0.0048,
+    0.0009,
+    0.009
+   ],
+   "digits": [
+    -0.012,
+    -0.0163,
+    -0.0075
+   ],
+   "prose_punct": [
+    -0.0193,
+    -0.0261,
+    -0.0121
+   ],
+   "symbols": [
+    -0.0023,
+    -0.0041,
+    -0.0002
+   ],
+   "non_latin": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "word_start_cap": [
+    0.0827,
+    0.0729,
+    0.0929
+   ],
+   "word_start_lower": [
+    -0.0285,
+    -0.0425,
+    -0.0146
+   ],
+   "word_piece": [
+    -0.0261,
+    -0.0327,
+    -0.0195
+   ],
+   "mixed": [
+    0.0008,
+    -0.0016,
+    0.0033
+   ]
+  }
+ },
+ "mean_share": {
+  "over": {
+   "partial_char": 0.0059,
+   "whitespace": 0.0665,
+   "digits": 0.0645,
+   "prose_punct": 0.1475,
+   "symbols": 0.0419,
+   "non_latin": 0.0042,
+   "word_start_cap": 0.0905,
+   "word_start_lower": 0.3842,
+   "word_piece": 0.1657,
+   "mixed": 0.0291
+  },
+  "under": {
+   "partial_char": 0.0011,
+   "whitespace": 0.0284,
+   "digits": 0.0282,
+   "prose_punct": 0.0811,
+   "symbols": 0.0094,
+   "non_latin": 0.001,
+   "word_start_cap": 0.1648,
+   "word_start_lower": 0.5387,
+   "word_piece": 0.1257,
+   "mixed": 0.0215
+  },
+  "middle": {
+   "partial_char": 0.0017,
+   "whitespace": 0.0223,
+   "digits": 0.0361,
+   "prose_punct": 0.0928,
+   "symbols": 0.0129,
+   "non_latin": 0.0013,
+   "word_start_cap": 0.1024,
+   "word_start_lower": 0.5752,
+   "word_piece": 0.1335,
+   "mixed": 0.0219
+  }
+ },
+ "seconds": 62
+}

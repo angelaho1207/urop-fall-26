@@ -1,0 +1,431 @@
+{
+ "categories": [
+  "Proper names and name fragments",
+  "Numbers, dates and measurements",
+  "Code, markup and web boilerplate",
+  "Citations, attribution and media sources",
+  "Sentence, paragraph and list boundaries",
+  "Grammatical constructions and function-word slots",
+  "Lexical concepts and word families",
+  "Topical domain vocabulary",
+  "Non-English and nonstandard text",
+  "Diffuse or unclear"
+ ],
+ "kappa_opus_vs_sonnet": 0.9125,
+ "agreement": 0.9234,
+ "concepts": 240,
+ "share": {
+  "over": {
+   "Proper names and name fragments": [
+    0.0125,
+    0.0,
+    0.0375
+   ],
+   "Numbers, dates and measurements": [
+    0.1,
+    0.0375,
+    0.175
+   ],
+   "Code, markup and web boilerplate": [
+    0.2375,
+    0.15,
+    0.3375
+   ],
+   "Citations, attribution and media sources": [
+    0.075,
+    0.025,
+    0.1375
+   ],
+   "Sentence, paragraph and list boundaries": [
+    0.0875,
+    0.025,
+    0.15
+   ],
+   "Grammatical constructions and function-word slots": [
+    0.1125,
+    0.05,
+    0.1875
+   ],
+   "Lexical concepts and word families": [
+    0.15,
+    0.075,
+    0.2375
+   ],
+   "Topical domain vocabulary": [
+    0.075,
+    0.025,
+    0.1375
+   ],
+   "Non-English and nonstandard text": [
+    0.05,
+    0.0125,
+    0.1
+   ],
+   "Diffuse or unclear": [
+    0.0625,
+    0.0125,
+    0.1125
+   ]
+  },
+  "under": {
+   "Proper names and name fragments": [
+    0.1,
+    0.0375,
+    0.175
+   ],
+   "Numbers, dates and measurements": [
+    0.0875,
+    0.025,
+    0.15
+   ],
+   "Code, markup and web boilerplate": [
+    0.0625,
+    0.0125,
+    0.125
+   ],
+   "Citations, attribution and media sources": [
+    0.075,
+    0.025,
+    0.1375
+   ],
+   "Sentence, paragraph and list boundaries": [
+    0.0625,
+    0.0125,
+    0.125
+   ],
+   "Grammatical constructions and function-word slots": [
+    0.1125,
+    0.05,
+    0.1875
+   ],
+   "Lexical concepts and word families": [
+    0.2,
+    0.1125,
+    0.2875
+   ],
+   "Topical domain vocabulary": [
+    0.2125,
+    0.125,
+    0.3
+   ],
+   "Non-English and nonstandard text": [
+    0.0125,
+    0.0,
+    0.0375
+   ],
+   "Diffuse or unclear": [
+    0.075,
+    0.025,
+    0.1375
+   ]
+  },
+  "middle": {
+   "Proper names and name fragments": [
+    0.175,
+    0.1,
+    0.2625
+   ],
+   "Numbers, dates and measurements": [
+    0.075,
+    0.025,
+    0.1375
+   ],
+   "Code, markup and web boilerplate": [
+    0.025,
+    0.0,
+    0.0625
+   ],
+   "Citations, attribution and media sources": [
+    0.025,
+    0.0,
+    0.0625
+   ],
+   "Sentence, paragraph and list boundaries": [
+    0.0375,
+    0.0,
+    0.0875
+   ],
+   "Grammatical constructions and function-word slots": [
+    0.2625,
+    0.175,
+    0.3625
+   ],
+   "Lexical concepts and word families": [
+    0.225,
+    0.1375,
+    0.3125
+   ],
+   "Topical domain vocabulary": [
+    0.0625,
+    0.0125,
+    0.125
+   ],
+   "Non-English and nonstandard text": [
+    0.025,
+    0.0,
+    0.0625
+   ],
+   "Diffuse or unclear": [
+    0.0625,
+    0.0125,
+    0.125
+   ]
+  }
+ },
+ "diff_vs_middle": {
+  "over": {
+   "Proper names and name fragments": [
+    -0.1625,
+    -0.25,
+    -0.075
+   ],
+   "Numbers, dates and measurements": [
+    0.025,
+    -0.0625,
+    0.1125
+   ],
+   "Code, markup and web boilerplate": [
+    0.2125,
+    0.1125,
+    0.3125
+   ],
+   "Citations, attribution and media sources": [
+    0.05,
+    -0.0125,
+    0.1125
+   ],
+   "Sentence, paragraph and list boundaries": [
+    0.05,
+    -0.025,
+    0.125
+   ],
+   "Grammatical constructions and function-word slots": [
+    -0.15,
+    -0.275,
+    -0.0375
+   ],
+   "Lexical concepts and word families": [
+    -0.075,
+    -0.2,
+    0.05
+   ],
+   "Topical domain vocabulary": [
+    0.0125,
+    -0.0625,
+    0.0875
+   ],
+   "Non-English and nonstandard text": [
+    0.025,
+    -0.0375,
+    0.0875
+   ],
+   "Diffuse or unclear": [
+    0.0,
+    -0.075,
+    0.075
+   ]
+  },
+  "under": {
+   "Proper names and name fragments": [
+    -0.075,
+    -0.175,
+    0.025
+   ],
+   "Numbers, dates and measurements": [
+    0.0125,
+    -0.075,
+    0.1
+   ],
+   "Code, markup and web boilerplate": [
+    0.0375,
+    -0.025,
+    0.1
+   ],
+   "Citations, attribution and media sources": [
+    0.05,
+    -0.0125,
+    0.125
+   ],
+   "Sentence, paragraph and list boundaries": [
+    0.025,
+    -0.0375,
+    0.0875
+   ],
+   "Grammatical constructions and function-word slots": [
+    -0.15,
+    -0.2625,
+    -0.0375
+   ],
+   "Lexical concepts and word families": [
+    -0.025,
+    -0.15,
+    0.1
+   ],
+   "Topical domain vocabulary": [
+    0.15,
+    0.05,
+    0.25
+   ],
+   "Non-English and nonstandard text": [
+    -0.0125,
+    -0.05,
+    0.025
+   ],
+   "Diffuse or unclear": [
+    0.0125,
+    -0.0625,
+    0.0875
+   ]
+  }
+ },
+ "share_agreed_only": {
+  "over": {
+   "Proper names and name fragments": 0.0143,
+   "Numbers, dates and measurements": 0.1,
+   "Code, markup and web boilerplate": 0.2429,
+   "Citations, attribution and media sources": 0.0857,
+   "Sentence, paragraph and list boundaries": 0.0857,
+   "Grammatical constructions and function-word slots": 0.1143,
+   "Lexical concepts and word families": 0.1714,
+   "Topical domain vocabulary": 0.0714,
+   "Non-English and nonstandard text": 0.0571,
+   "Diffuse or unclear": 0.0571
+  },
+  "under": {
+   "Proper names and name fragments": 0.1096,
+   "Numbers, dates and measurements": 0.0685,
+   "Code, markup and web boilerplate": 0.0411,
+   "Citations, attribution and media sources": 0.0822,
+   "Sentence, paragraph and list boundaries": 0.0685,
+   "Grammatical constructions and function-word slots": 0.1233,
+   "Lexical concepts and word families": 0.2055,
+   "Topical domain vocabulary": 0.2192,
+   "Non-English and nonstandard text": 0.0137,
+   "Diffuse or unclear": 0.0685
+  },
+  "middle": {
+   "Proper names and name fragments": 0.1892,
+   "Numbers, dates and measurements": 0.0811,
+   "Code, markup and web boilerplate": 0.027,
+   "Citations, attribution and media sources": 0.027,
+   "Sentence, paragraph and list boundaries": 0.0405,
+   "Grammatical constructions and function-word slots": 0.2432,
+   "Lexical concepts and word families": 0.2432,
+   "Topical domain vocabulary": 0.0541,
+   "Non-English and nonstandard text": 0.027,
+   "Diffuse or unclear": 0.0676
+  }
+ },
+ "category_by_token_type": {
+  "Citations, attribution and media sources": {
+   "digits": 4,
+   "mixed": 0,
+   "partial_char": 0,
+   "prose_punct": 4,
+   "symbols": 0,
+   "whitespace": 0,
+   "word_piece": 0,
+   "word_start_cap": 2,
+   "word_start_lower": 4
+  },
+  "Code, markup and web boilerplate": {
+   "digits": 0,
+   "mixed": 0,
+   "partial_char": 0,
+   "prose_punct": 2,
+   "symbols": 1,
+   "whitespace": 1,
+   "word_piece": 3,
+   "word_start_cap": 0,
+   "word_start_lower": 19
+  },
+  "Diffuse or unclear": {
+   "digits": 0,
+   "mixed": 0,
+   "partial_char": 0,
+   "prose_punct": 0,
+   "symbols": 0,
+   "whitespace": 0,
+   "word_piece": 1,
+   "word_start_cap": 0,
+   "word_start_lower": 15
+  },
+  "Grammatical constructions and function-word slots": {
+   "digits": 0,
+   "mixed": 1,
+   "partial_char": 0,
+   "prose_punct": 1,
+   "symbols": 0,
+   "whitespace": 0,
+   "word_piece": 0,
+   "word_start_cap": 2,
+   "word_start_lower": 35
+  },
+  "Lexical concepts and word families": {
+   "digits": 0,
+   "mixed": 0,
+   "partial_char": 0,
+   "prose_punct": 0,
+   "symbols": 0,
+   "whitespace": 0,
+   "word_piece": 1,
+   "word_start_cap": 0,
+   "word_start_lower": 45
+  },
+  "Non-English and nonstandard text": {
+   "digits": 0,
+   "mixed": 0,
+   "partial_char": 1,
+   "prose_punct": 0,
+   "symbols": 0,
+   "whitespace": 0,
+   "word_piece": 4,
+   "word_start_cap": 0,
+   "word_start_lower": 2
+  },
+  "Numbers, dates and measurements": {
+   "digits": 11,
+   "mixed": 0,
+   "partial_char": 0,
+   "prose_punct": 1,
+   "symbols": 0,
+   "whitespace": 3,
+   "word_piece": 0,
+   "word_start_cap": 0,
+   "word_start_lower": 6
+  },
+  "Proper names and name fragments": {
+   "digits": 0,
+   "mixed": 0,
+   "partial_char": 0,
+   "prose_punct": 0,
+   "symbols": 0,
+   "whitespace": 0,
+   "word_piece": 12,
+   "word_start_cap": 9,
+   "word_start_lower": 2
+  },
+  "Sentence, paragraph and list boundaries": {
+   "digits": 0,
+   "mixed": 1,
+   "partial_char": 0,
+   "prose_punct": 8,
+   "symbols": 0,
+   "whitespace": 2,
+   "word_piece": 1,
+   "word_start_cap": 0,
+   "word_start_lower": 3
+  },
+  "Topical domain vocabulary": {
+   "digits": 0,
+   "mixed": 0,
+   "partial_char": 0,
+   "prose_punct": 0,
+   "symbols": 0,
+   "whitespace": 0,
+   "word_piece": 0,
+   "word_start_cap": 2,
+   "word_start_lower": 26
+  }
+ }
+}

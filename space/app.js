@@ -110,6 +110,24 @@ async function drawPatterns() {
     ${e.concepts.map((c) => `<p><a href="#c=${c.id}">concept ${c.id}</a>: ${esc(c.name)}</p>`).join("") || "<p class='note'>no named example</p>"}</div>`).join("");
 }
 
+async function drawTopics() {
+  let d;
+  try { d = await load("data/topics.json"); } catch { return; }
+  document.getElementById("topics-stats").textContent =
+    `Agreement between the two codings: ${pct(d.agreement)} (Cohen's kappa ${d.kappa}).`;
+  const traces = ["over", "middle", "under"].map((cls) => ({
+    type: "bar", name: CLASS_LABEL[cls], orientation: "h", y: d.categories, x: d.categories.map((c) => d.share[cls][c][0]),
+    error_x: { type: "data", symmetric: false, array: d.categories.map((c) => d.share[cls][c][2] - d.share[cls][c][0]),
+               arrayminus: d.categories.map((c) => d.share[cls][c][0] - d.share[cls][c][1]), color: css("--muted") },
+    marker: { color: css("--" + cls) }, hovertemplate: "%{x:.0%}<extra>" + cls + "</extra>",
+  }));
+  const L = layoutBase();
+  L.barmode = "group"; L.margin.l = 330;
+  L.xaxis = { ...L.xaxis, title: "share of the class's 80 named concepts", tickformat: ".0%" };
+  L.yaxis = { ...L.yaxis, autorange: "reversed" };
+  await Plotly.newPlot("topics-plot", traces, L, { responsive: true, displaylogo: false });
+}
+
 let sortKey = "log_ratio", sortDir = -1;
 const COLUMNS = [
   ["id", "concept"], ["cls", "class"], ["log_ratio", "log ratio"], ["share_dolma", "fires in Dolma web"],
@@ -166,9 +184,15 @@ async function drawConcept(id) {
       <div class="card"><div class="k">fires in Dolma web docs (train)</div><div class="v">${pct(c.share_dolma)}</div></div>
       <div class="card"><div class="k">fires in Pile web docs</div><div class="v">${pct(c.share_pile)}</div></div>
     </div>
+    <p class="note" id="topic-line"></p>
     <div class="cards">${name("name written from Pile web windows", c.name_pile, c.quiz_pile)}${name("name written from Dolma web windows", c.name_dolma, c.quiz_dolma)}</div>
     <p class="note">40 windows per side, 4 from each of 10 rank groups by activation; shading is each token's activation relative to its window's maximum. Hover a token for its value.</p>
     <div class="cols">${column("Dolma web (train, T1)", c.dolma)}${column("Pile web (Pile-CC)", c.pile)}</div>`;
+  try {
+    const t = await load("data/topics.json");
+    const cat = t.concepts[String(c.id)];
+    document.getElementById("topic-line").textContent = "Topic category: " + (cat || "not assigned (the answer hit its length cap)");
+  } catch {}
 }
 
 async function route() {
@@ -181,7 +205,7 @@ async function route() {
     drawn[tab] = true;
     if (tab === "overview") await drawOverview();
     if (tab === "noise") await drawNoise();
-    if (tab === "patterns") await drawPatterns();
+    if (tab === "patterns") { await drawPatterns(); await drawTopics(); }
   }
   if (tab === "concepts") await drawTable();
 }

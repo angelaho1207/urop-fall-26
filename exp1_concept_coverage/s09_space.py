@@ -96,6 +96,17 @@ def main():
                                      "concepts": [{"id": c, "name": names[str(c)]["dolma"]} for c in ids]})
         (DATA_OUT / "patterns.json").write_text(json.dumps(
             {"share": pat["dominant_share"], "diff": pat["dominant_diff_vs_middle"], "examples": examples}, ensure_ascii=False))
+
+    # Q6: topic categories of the 240 named concepts (plan B)
+    top_path = config.RESULTS / "patterns_topics.json"
+    if top_path.exists():
+        top = json.loads(top_path.read_text())
+        asg = pd.read_parquet(config.DATA / "full" / "labels" / "topics" / "assignments.parquet").set_index("concept")["opus"]
+        (DATA_OUT / "topics.json").write_text(json.dumps(
+            {"share": top["share"], "kappa": top["kappa_opus_vs_sonnet"], "agreement": top["agreement"],
+             "categories": top["categories"],
+             "concepts": {str(c): (asg.get(c) if isinstance(asg.get(c), str) else None) for c in sample["concept"]}},
+            ensure_ascii=False))
     size = sum(p.stat().st_size for p in DATA_OUT.rglob("*.json")) / 1e6
     print(f"overview {len(overview['id'])} concepts (cut lines {low:.3f}, {high:.3f}); noise {len(noise['id'])} "
           f"(Spearman {noise['spearman']}, same class {noise['same_class_share']}); pages {len(rows)}; "

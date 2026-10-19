@@ -36,11 +36,20 @@ async function drawOverview() {
     };
   });
   const s = d.sampled.map((v, i) => (v ? i : -1)).filter((i) => i >= 0);
+  const wrap = (t, n = 60, max = 200) => {  // W8: short, wrapped hover text
+    if (!t) return "no name";
+    t = t.length > max ? t.slice(0, max).replace(/\s+\S*$/, "") + " …" : t;
+    const out = []; let line = "";
+    for (const w of t.split(" ")) { if ((line + " " + w).length > n && line) { out.push(line); line = w; } else line = line ? line + " " + w : w; }
+    out.push(line);
+    return out.map((x) => x.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")).join("<br>");  // Plotly decodes these three
+  };
   traces.push({
-    type: "scattergl", mode: "markers", name: "sampled (click to open)",
+    type: "scattergl", mode: "markers", name: "named (hover or click)",
     x: s.map((i) => d.x[i]), y: s.map((i) => d.y[i]), customdata: s.map((i) => d.id[i]),
+    text: s.map((i) => wrap((d.names[String(d.id[i])] || {}).dolma)),
     marker: { size: 8, color: "rgba(0,0,0,0)", line: { width: 1.5, color: css("--fg") } },
-    hovertemplate: "concept %{customdata} (sampled)<br>log ratio %{y:.3f}<extra></extra>",
+    hovertemplate: "<b>concept %{customdata}</b> · log ratio %{y:.3f}<br>%{text}<extra></extra>",
   });
   const L = layoutBase();
   L.xaxis = { ...L.xaxis, type: "log", title: "share of docs where the concept fires (mean of Dolma web and Pile web)" };
@@ -48,9 +57,13 @@ async function drawOverview() {
   L.shapes = [d.low, d.high].map((y) => ({ type: "line", xref: "paper", x0: 0, x1: 1, y0: y, y1: y,
     line: { dash: "dash", width: 1, color: css("--muted") } }));
   await Plotly.newPlot("overview-plot", traces, L, { responsive: true, displaylogo: false });
-  document.getElementById("overview-plot").on("plotly_click", (e) => {
-    const p = e.points[0];
-    if (p.curveNumber === 3) location.hash = "c=" + p.customdata;
+  document.getElementById("overview-plot").on("plotly_click", (e) => {  // W8: description panel
+    const p = e.points[0], id = p.customdata, i = d.id.indexOf(id), n = d.names[String(id)];
+    const head = `<b>Concept ${id}</b> <span class="badge ${d.cls[i]}">${d.cls[i]}</span> · log ratio ${fmt(d.y[i])} · fires in ${pct(d.x[i])} of docs (mean of both corpora)`;
+    document.getElementById("overview-detail").innerHTML = n
+      ? `${head}<p><span class="k">Name from Dolma web examples:</span> ${esc(n.dolma || "–")}</p>
+         <p><span class="k">Name from Pile web examples:</span> ${esc(n.pile || "–")}</p><a href="#c=${id}">open the concept page →</a>`
+      : `${head}<p class="note">No description: names were written only for the 240 sampled concepts (80 per class, row F3). This concept is not one of them.</p>`;
   });
 
   const order = ["over", "under", "middle", "rare_in_pile_present_in_dolma", "rare_in_dolma_present_in_pile", "too_rare_to_compare"];

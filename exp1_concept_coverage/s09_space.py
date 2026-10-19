@@ -53,6 +53,8 @@ def main():
     overview = {"id": b["concept"].tolist(), "x": [round(v, 6) for v in share[both]],
                 "y": [round(v, 4) for v in b["log_ratio_web"]], "cls": b["class_web"].tolist(),
                 "sampled": [int(c in in_sample) for c in b["concept"]],
+                "names": {str(c): {"pile": names.get(str(c), {}).get("pile"), "dolma": names.get(str(c), {}).get("dolma")}
+                          for c in in_sample if str(c) in names},  # W8
                 "low": round(float(low), 4), "high": round(float(high), 4),
                 "class_counts": web["class_web"].value_counts().to_dict(),
                 "n_docs": {"dolma_web": N_DOLMA_WEB, "pile_cc": N_PILE_WEB}}

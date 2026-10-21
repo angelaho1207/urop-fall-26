@@ -1,0 +1,10 @@
+{
+  "run": "pilot",
+  "generator": "main",
+  "encoder_revision": "a81bae42db3975be1671e27b9c9a56da1a9f980f",
+  "rollouts_encoded": 200,
+  "tokens": 111269,
+  "mean_active_per_token": 104.47,
+  "retokenized_different": 69,
+  "seconds_per_rollout_this_session": 0.069
+}

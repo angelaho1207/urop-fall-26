@@ -1,0 +1,21 @@
+{
+  "run": "pilot",
+  "generator": "stage1",
+  "revision": "stage1-step1413814",
+  "commit": "373bad25002f1624757a73235c5ca844c6375c25",
+  "rollouts": 200,
+  "batch": 40,
+  "ended_by_eos_share": 0.64,
+  "empty_rollouts": 0,
+  "length_quantiles": {
+    "0.1": 120,
+    "0.25": 271,
+    "0.5": 606,
+    "0.75": 1024,
+    "0.9": 1024
+  },
+  "mean_length": 623.4,
+  "tokens_per_second_this_session": 302.8,
+  "peak_gpu_gb": 36.8,
+  "gpu": "NVIDIA L40S"
+}

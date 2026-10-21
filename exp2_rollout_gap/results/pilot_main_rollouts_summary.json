@@ -1,0 +1,21 @@
+{
+  "run": "pilot",
+  "generator": "main",
+  "revision": "a81bae42db3975be1671e27b9c9a56da1a9f980f",
+  "commit": "a81bae42db3975be1671e27b9c9a56da1a9f980f",
+  "rollouts": 200,
+  "batch": 40,
+  "ended_by_eos_share": 0.725,
+  "empty_rollouts": 0,
+  "length_quantiles": {
+    "0.1": 60,
+    "0.25": 189,
+    "0.5": 553,
+    "0.75": 1024,
+    "0.9": 1024
+  },
+  "mean_length": 556.8,
+  "tokens_per_second_this_session": 271.8,
+  "peak_gpu_gb": 36.8,
+  "gpu": "NVIDIA L40S"
+}

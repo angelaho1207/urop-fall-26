@@ -208,6 +208,90 @@ async function drawConcept(id) {
   } catch {}
 }
 
+// Exp 2 "Temp visualizations" tab (exp2_rollout_gap/design.md G10, G12, G23, G24).
+// Data written by exp2_rollout_gap/s05_space.py; images by exp2_rollout_gap/figures/make_rollout_figure.py.
+const GEN_LABEL = { stage1: "end of stage 1 (stage1-step1413814)", main: "final model (main)" };
+const GEN_COLOR = { V: "--middle", stage1: "--under", main: "--over" };
+async function drawRollouts() {
+  const d = await load("data/rollouts.json");
+  const select = document.getElementById("rollout-gen");
+  const gens = d.sets.filter((s) => s !== "V");
+  if (!select.options.length) {
+    select.innerHTML = gens.map((g) => `<option value="${g}">${GEN_LABEL[g] || g}</option>`).join("");
+    select.onchange = drawRollouts;
+  }
+  const g = select.value;
+  const rgba = (name, a) => { const n = parseInt(css(name).replace("#", ""), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; };
+  const label = (s) => (s === "V" ? "Dolma V (held out)" : "rollouts, " + (GEN_LABEL[s] || s));
+  // One band = lower edge, upper edge filled to it, median line. ax is "" for graph 1, "2" or "3" for graphs 2-3
+  const band = (f, s, ax, legend) => [
+    { x: d.band_rank, y: f.sets[s].lo, xaxis: "x" + ax, yaxis: "y" + ax, mode: "lines", line: { width: 0 }, hoverinfo: "skip", showlegend: false },
+    { x: d.band_rank, y: f.sets[s].hi, xaxis: "x" + ax, yaxis: "y" + ax, mode: "lines", line: { width: 0 }, fill: "tonexty", fillcolor: rgba(GEN_COLOR[s], 0.2), hoverinfo: "skip", showlegend: false },
+    { x: d.band_rank, y: f.sets[s].mid, xaxis: "x" + ax, yaxis: "y" + ax, mode: "lines", line: { color: css(GEN_COLOR[s]), width: 2 }, name: label(s) + ": median, 10th-90th pct", hoverinfo: "skip", showlegend: legend },
+  ];
+  const train = (ax, legend) => ({ x: d.train.rank, y: d.train.chi, xaxis: "x" + ax, yaxis: "y" + ax, mode: "lines", line: { color: css("--fg"), width: 2 }, name: "Dolma train (sets the order)", hoverinfo: "skip", showlegend: legend });
+  const traces = (f) => [
+    ...band(f, "V", "", false), train("", false),
+    ...band(f, g, "2", false),
+    ...band(f, "V", "3", true), train("3", true), ...band(f, g, "3", true),
+    { x: d.named.map((n) => n.rank), y: d.named.map((n) => n.chi[f.key][g]), xaxis: "x3", yaxis: "y3", mode: "markers", name: "240 named concepts (rollout χ)",
+      marker: { size: 7, color: css(GEN_COLOR[g]), line: { color: css("--bg"), width: 1.5 } },
+      text: d.named.map((n) => `#${n.c}: ${esc(n.name)}<br>χ train ${fmt(n.train, 4)} · V ${fmt(n.chi[f.key].V, 4)} · rollouts ${fmt(n.chi[f.key][g], 4)}`),
+      hovertemplate: "%{text}<extra></extra>" },
+    ...["V", g].map((s) => ({ x: d.bin_rank, y: f.sets[s].ratio, xaxis: "x4", yaxis: "y4", mode: "lines+markers",
+      line: { color: css(GEN_COLOR[s]), width: 2 }, marker: { size: 8, line: { color: css("--bg"), width: 2 } },
+      name: `${label(s)}: median log(χ / χ train), slope ${fmt(f.sets[s].slope, 2)}`, hovertemplate: "rank %{x}: %{y:.3f}<extra></extra>" })),
+  ];
+  const stats = (f) => {
+    const dl = d.delta[g];
+    const delta = f.key === "doc" ? (dl ? `Δ slope (rollouts − V): ${fmt(dl.delta, 3)}, 95% CI ${fmt(dl.ci95_basic[0], 3)} to ${fmt(dl.ci95_basic[1], 3)}` : "")
+      : "window slopes are descriptive, with no interval";
+    return `${f.label}: ${f.docs.toLocaleString()} documents per set. ${delta}${d.run === "pilot" ? " · PILOT DATA (200 rollouts), not a result" : ""}`;
+  };
+  // Fixed ranges over every frame, so the axes stay put while the frames play
+  const all = (pick) => d.frames.flatMap((f) => d.sets.flatMap((s) => pick(f.sets[s]))).filter((v) => v !== null);
+  const ratios = all((x) => x.ratio);
+  const chis = all((x) => [...x.lo, ...x.hi]).concat(d.train.chi.filter((v) => v > 0));
+  const chiRange = [Math.log10(Math.min(...chis)) - 0.2, Math.log10(Math.max(...chis)) + 0.2];
+  const base = layoutBase();
+  const xr = [0, Math.max(...d.train.rank) * 1.02];
+  const top = (dom, title) => ({ ...base.xaxis, domain: dom, range: xr, title: { text: "rank by Dolma train χ", font: { size: 12 } } });
+  const logy = (anchor, showTitle) => ({ ...base.yaxis, type: "log", range: chiRange, domain: [0.47, 0.93], anchor,
+    title: showTitle ? "χ (relative to the average concept)" : "", showticklabels: showTitle });
+  const ann = (x, text) => ({ text, x, y: 0.95, xref: "paper", yref: "paper", xanchor: "left", showarrow: false, font: { size: 15 } });
+  const layout = {
+    ...base, margin: { l: 70, r: 20, t: 90, b: 110 }, hovermode: "closest",
+    legend: { orientation: "h", x: 0, y: 1.0, yanchor: "bottom", font: { size: 11 } },
+    annotations: [ann(0, "1. Dolma"), ann(0.345, "2. Rollouts"), ann(0.69, "3. Overlay")],
+    xaxis: top([0, 0.31]), xaxis2: top([0.345, 0.655]), xaxis3: top([0.69, 1]),
+    yaxis: logy("x", true), yaxis2: logy("x2", false), yaxis3: logy("x3", false),
+    xaxis4: { ...base.xaxis, domain: [0, 1], range: xr, anchor: "y4", title: "concept rank by Dolma train χ (1 = most common)" },
+    yaxis4: { ...base.yaxis, domain: [0, 0.33], anchor: "x4", title: "median log(χ / χ train)", zeroline: true,
+      range: [Math.min(...ratios) - 0.1, Math.max(...ratios, 0) + 0.1] },
+    sliders: [{ active: 0, x: 0.1, len: 0.88, y: -0.07, yanchor: "top", currentvalue: { prefix: "Frame: " },
+      steps: d.frames.map((f) => ({ label: f.label, method: "animate",
+        args: [[f.key], { mode: "immediate", frame: { duration: 0, redraw: true }, transition: { duration: 0 } }] })) }],
+    updatemenus: [{ type: "buttons", showactive: false, x: 0, y: -0.07, yanchor: "top", xanchor: "left", pad: { t: 30 },
+      buttons: [{ label: "Play", method: "animate", args: [null, { frame: { duration: 1500, redraw: true }, fromcurrent: true }] }] }],
+  };
+  const el = document.getElementById("rollout-plot");
+  // newPlot, not react: a redraw for another generator must replace the frames, not add to them
+  await Plotly.newPlot(el, traces(d.frames[0]), layout, { responsive: true });
+  await Plotly.addFrames(el, d.frames.map((f) => ({ name: f.key, data: traces(f) })));
+  document.getElementById("rollout-stats").textContent = stats(d.frames[0]);
+  el.on("plotly_animatingframe", (e) => {
+    document.getElementById("rollout-stats").textContent = stats(d.frames.find((f) => f.key === e.name) || d.frames[0]);
+  });
+  // Static PNGs and GIFs (G23), one row per generator
+  const frameName = (f) => (f.key === "doc" ? "doc" : "w" + f.key);
+  document.getElementById("rollout-gallery").innerHTML = gens.map((s) => `
+    <h3>${esc(label(s))}</h3>
+    <p class="note">Animated GIF (5 frames, 1.5 s each): <a href="data/exp2/${d.run}_${s}_animation.gif" target="_blank">open</a></p>
+    <div class="cards">${d.frames.map((f) => `<a href="data/exp2/${d.run}_${s}_${frameName(f)}.png" target="_blank"><figure style="margin:0">
+      <img src="data/exp2/${d.run}_${s}_${frameName(f)}.png" alt="${esc(label(s))}, ${esc(f.label)}" style="width:100%;max-width:560px" loading="lazy">
+      <figcaption class="note">${esc(f.label)}</figcaption></figure></a>`).join("")}</div>`).join("");
+}
+
 async function route() {
   const h = location.hash.replace("#", "") || "overview";
   const tab = h.startsWith("c=") ? "concept" : h;
@@ -219,6 +303,7 @@ async function route() {
     if (tab === "overview") await drawOverview();
     if (tab === "noise") await drawNoise();
     if (tab === "patterns") { await drawPatterns(); await drawTopics(); }
+    if (tab === "temp") await drawRollouts();
   }
   if (tab === "concepts") await drawTable();
 }

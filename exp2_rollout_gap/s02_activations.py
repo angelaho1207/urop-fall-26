@@ -16,6 +16,7 @@ import pandas as pd
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+from s01_rollouts import claim
 from s03_pilot import DEVICE, load_sae, tokenize  # Exp 1
 from s04_activations import encode_part  # Exp 1
 
@@ -29,6 +30,10 @@ def main():
     acts_dir = gen_dir / "acts"
     acts_dir.mkdir(parents=True, exist_ok=True)
 
+    srcs = sorted((gen_dir / "rollouts").glob("part_?????.parquet"))
+    if all((acts_dir / s.name.replace(".parquet", ".npz")).exists() for s in srcs):
+        print(f"{args.generator}: all {len(srcs)} rollout parts on disk are encoded", flush=True)
+        return  # G21: a late worker exits without loading the model
     # G8: the encoder is always the final model at Exp 1's pinned revision, whichever model wrote the rollout
     tokenizer = AutoTokenizer.from_pretrained(config.MODEL_ID, revision=config.MODEL_REVISION)
     sae = load_sae()
@@ -37,10 +42,11 @@ def main():
     model.eval()
 
     seconds = []
-    for src in sorted((gen_dir / "rollouts").glob("part_?????.parquet")):
+    for src in srcs:
         path = acts_dir / src.name.replace(".parquet", ".npz")
-        if path.exists():
-            continue  # X1: resume
+        lock = acts_dir / src.name.replace(".parquet", ".lock")
+        if not claim(path, lock):
+            continue  # X1, G21: done, or another worker has it
         part = pd.read_parquet(src)
         part = part[part["ids"].map(len) > 0]  # G3: empty rollouts have no tokens to encode
         # G8: decode to text, then the same tokenize() as every Dolma doc (no special tokens, cut to 1,024)
@@ -49,9 +55,10 @@ def main():
         retokenized_same = np.array([list(a) == list(b) for a, b in zip(part["ids"], token_lists)])
         t0 = time.time()
         arrays = encode_part(model, sae, token_lists)
-        tmp = acts_dir / src.name.replace(".parquet", ".tmp.npz")
+        tmp = acts_dir / src.name.replace(".parquet", f".{os.getpid()}.tmp.npz")
         np.savez(tmp, doc_id=part["rollout_id"].to_numpy(), retokenized_same=retokenized_same, **arrays)
         os.replace(tmp, path)
+        lock.unlink(missing_ok=True)
         seconds.append((time.time() - t0) / len(part))
         print(f"{src.name}: {len(part)} rollouts, {seconds[-1]:.3f} s/rollout", flush=True)
 

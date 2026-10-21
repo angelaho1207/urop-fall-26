@@ -2,7 +2,8 @@
 # Waits until every rollout part of both generators is generated and encoded (design.md G21), then runs the
 # analysis (s03, G9-G17, loop threshold G14), examples (s04, G19-G20), Space data (s05), the figures (G23), and
 # uploads the Space (G24).
-#SBATCH -p mit_normal
+#SBATCH -p mit_preemptable
+#SBATCH --requeue
 #SBATCH -c 4
 #SBATCH --mem=48G
 #SBATCH -t 12:00:00

@@ -17,6 +17,12 @@ set -euo pipefail
 D=/orcd/pool/005/angela_h/exp2/full
 done_count() { ls $D/stage1/$1/part_?????.$2 $D/main/$1/part_?????.$2 2>/dev/null | wc -l; }
 echo "start: $(date)"
+# G26: copies may be queued on several partitions; the lowest-id running copy goes on and cancels the others
+other_finishers=$(squeue -u angela_h -h -n exp2_finish -o "%i %T" | awk -v me="$SLURM_JOB_ID" '$1 != me')
+if echo "$other_finishers" | awk -v me="$SLURM_JOB_ID" '$2 == "RUNNING" && $1 < me' | grep -q .; then
+  echo "an earlier finisher is running, exiting"; exit 0
+fi
+for job_id in $(echo "$other_finishers" | awk '{print $1}'); do scancel "$job_id"; done
 until [ "$(done_count rollouts parquet)" -eq 40 ] && [ "$(done_count acts npz)" -eq 40 ]; do
   # G21: if parts are missing and no worker is queued or running (tunnel worker included), start one
   if [ -z "$(squeue -u angela_h -n exp2_worker -h)" ] && ! pgrep -u angela_h -f worker.sbatch >/dev/null; then
@@ -33,7 +39,7 @@ python -u s04_examples.py --run full
 python -u s05_space.py --run full
 deactivate
 # G23: graphs 1-3 and the ratio panel per generator and frame, plus GIFs; into the repo and the Space folder
-(cd figures && python make_rollout_figure.py --run full) 2>&1 | grep -v findfont
+(cd figures && python make_rollout_figure.py --run full) 2>&1 | { grep -v findfont || true; }  # grep exits 1 on no output
 mkdir -p ../space/data/exp2 && cp figures/full_*.png figures/full_*.gif ../space/data/exp2/
 # G24: deploy the Space (tab "Temp visualizations")
 ~/venvs/cg/bin/hf upload angelaho1207/olmo3-concept-coverage ../space . --repo-type=space \

@@ -1,0 +1,21 @@
+{
+  "run": "full",
+  "generator": "stage1",
+  "revision": "stage1-step1413814",
+  "commit": "373bad25002f1624757a73235c5ca844c6375c25",
+  "rollouts": 10000,
+  "parts_done": 20,
+  "ended_by_eos_share": 0.6382,
+  "empty_rollouts": 0,
+  "length_quantiles": {
+    "0.1": 135,
+    "0.25": 320,
+    "0.5": 707,
+    "0.75": 1024,
+    "0.9": 1024
+  },
+  "mean_length": 655.1,
+  "tokens_per_second_by_gpu": {
+    "NVIDIA L40S": 335.6
+  }
+}

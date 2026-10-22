@@ -1,0 +1,10 @@
+{
+  "run": "full",
+  "generator": "main",
+  "encoder_revision": "a81bae42db3975be1671e27b9c9a56da1a9f980f",
+  "rollouts_encoded": 9991,
+  "tokens": 5326136,
+  "mean_active_per_token": 104.13,
+  "retokenized_different": 3504,
+  "seconds_per_rollout_this_session": 0.068
+}

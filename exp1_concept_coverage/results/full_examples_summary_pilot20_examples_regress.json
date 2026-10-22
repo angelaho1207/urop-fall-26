@@ -1,0 +1,36 @@
+{
+  "run": "full",
+  "concepts_spec": "pilot:20",
+  "concepts": 20,
+  "source": null,
+  "pool_all": null,
+  "out_name": "examples_regress",
+  "short": {
+    "naming_T1": 0,
+    "naming_T2": 0,
+    "naming_V": 0,
+    "quiz_firing_T2": 0,
+    "quiz_firing_V": 0,
+    "quiz_nonfiring_T2": 0,
+    "quiz_nonfiring_V": 0,
+    "quiz_nonfiring_neighbour_T2": 3
+  },
+  "n_firing_quantiles_10_50_90": {
+    "T1": [
+      79.0,
+      398.0,
+      1626.0
+    ],
+    "T2": [
+      75.0,
+      374.0,
+      1692.0
+    ],
+    "V": [
+      75.0,
+      387.0,
+      1604.0
+    ]
+  },
+  "seconds": 107.3
+}

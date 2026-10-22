@@ -292,6 +292,13 @@ async function drawRollouts() {
     <div class="cards">${d.frames.map((f) => `<a href="data/exp2/${d.run}_${s}_${frameName(f)}.png" target="_blank"><figure style="margin:0">
       <img src="data/exp2/${d.run}_${s}_${frameName(f)}.png" alt="${esc(label(s))}, ${esc(f.label)}" style="width:100%;max-width:560px" loading="lazy">
       <figcaption class="note">${esc(f.label)}</figcaption></figure></a>`).join("")}</div>`).join("");
+  // Histograms in the style of CG paper Figs. 3-4 (G28), one row per generator
+  document.getElementById("rollout-hist").innerHTML = gens.map((s) => `
+    <h3>${esc(label(s))}</h3>
+    <p class="note">Animated GIF (5 frames, 1.5 s each): <a href="data/exp2/${d.run}_${s}_hist_animation.gif" target="_blank">open</a></p>
+    <div class="cards">${d.frames.map((f) => `<a href="data/exp2/${d.run}_${s}_hist_${frameName(f)}.png" target="_blank"><figure style="margin:0">
+      <img src="data/exp2/${d.run}_${s}_hist_${frameName(f)}.png" alt="histograms, ${esc(label(s))}, ${esc(f.label)}" style="width:100%;max-width:560px" loading="lazy">
+      <figcaption class="note">${esc(f.label)}</figcaption></figure></a>`).join("")}</div>`).join("");
 }
 
 async function route() {

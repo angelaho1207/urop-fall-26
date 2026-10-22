@@ -40,6 +40,7 @@ python -u s05_space.py --run full
 deactivate
 # G23: graphs 1-3 and the ratio panel per generator and frame, plus GIFs; into the repo and the Space folder
 (cd figures && python make_rollout_figure.py --run full) 2>&1 | { grep -v findfont || true; }  # grep exits 1 on no output
+(cd figures && python make_histograms.py --run full) 2>&1 | { grep -v findfont || true; }  # G28
 mkdir -p ../space/data/exp2 && cp figures/full_*.png figures/full_*.gif ../space/data/exp2/
 # G24: deploy the Space (tab "Temp visualizations")
 ~/venvs/cg/bin/hf upload angelaho1207/olmo3-concept-coverage ../space . --repo-type=space \

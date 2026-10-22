@@ -52,6 +52,9 @@
     <label>Rollouts from <select id="rollout-gen"></select></label>
     <p id="rollout-stats" class="stats"></p>
     <div id="rollout-plot" class="plot" style="height:860px"></div>
+    <h2>Histograms (as in CG paper Figs. 3-4)</h2>
+    <p class="note">The same per-concept χ as above, counted instead of ranked. (a) Number of concepts per χ bin on the paper's axes (linear χ, log counts): nearly every concept lands in the first bin, because χ spans about 10<sup>-5</sup> to 10<sup>3</sup>. (b) The same over log10 χ. (c) Per concept, ln(χ / χ train), over the slope concepts; dashed lines are medians. Dolma V shows the width noise alone gives, so a wider rollout histogram means the model moved concepts beyond noise. In the token-window frames, the spike at the left of (b) is the smallest possible χ (concepts firing in a single document).</p>
+    <div id="rollout-hist"></div>
     <h2>Static figures and animations (for slides)</h2>
     <div id="rollout-gallery"></div>
   </section>

@@ -238,6 +238,8 @@ async function drawRollouts() {
       marker: { size: 7, color: css(GEN_COLOR[g]), line: { color: css("--bg"), width: 1.5 } },
       text: d.named.map((n) => `#${n.c}: ${esc(n.name)}<br>χ train ${fmt(n.train, 4)} · V ${fmt(n.chi[f.key].V, 4)} · rollouts ${fmt(n.chi[f.key][g], 4)}`),
       hovertemplate: "%{text}<extra></extra>" },
+    // Graph 4 (G27): the overlay again without the named-concept dots
+    ...band(f, "V", "5", false), train("5", false), ...band(f, g, "5", false),
     ...["V", g].map((s) => ({ x: d.bin_rank, y: f.sets[s].ratio, xaxis: "x4", yaxis: "y4", mode: "lines+markers",
       line: { color: css(GEN_COLOR[s]), width: 2 }, marker: { size: 8, line: { color: css("--bg"), width: 2 } },
       name: `${label(s)}: median log(χ / χ train), slope ${fmt(f.sets[s].slope, 2)}`, hovertemplate: "rank %{x}: %{y:.3f}<extra></extra>" })),
@@ -262,9 +264,9 @@ async function drawRollouts() {
   const layout = {
     ...base, margin: { l: 70, r: 20, t: 90, b: 110 }, hovermode: "closest",
     legend: { orientation: "h", x: 0, y: 1.0, yanchor: "bottom", font: { size: 11 } },
-    annotations: [ann(0, "1. Dolma"), ann(0.345, "2. Rollouts"), ann(0.69, "3. Overlay")],
-    xaxis: top([0, 0.31]), xaxis2: top([0.345, 0.655]), xaxis3: top([0.69, 1]),
-    yaxis: logy("x", true), yaxis2: logy("x2", false), yaxis3: logy("x3", false),
+    annotations: [ann(0, "1. Dolma"), ann(0.255, "2. Rollouts"), ann(0.51, "3. Overlay"), ann(0.765, "4. Overlay, curves only")],
+    xaxis: top([0, 0.235]), xaxis2: top([0.255, 0.49]), xaxis3: top([0.51, 0.745]), xaxis5: top([0.765, 1]),
+    yaxis: logy("x", true), yaxis2: logy("x2", false), yaxis3: logy("x3", false), yaxis5: logy("x5", false),
     xaxis4: { ...base.xaxis, domain: [0, 1], range: xr, anchor: "y4", title: "concept rank by Dolma train χ (1 = most common)" },
     yaxis4: { ...base.yaxis, domain: [0, 0.33], anchor: "x4", title: "median log(χ / χ train)", zeroline: true,
       range: [Math.min(...ratios) - 0.1, Math.max(...ratios, 0) + 0.1] },

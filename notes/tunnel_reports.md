@@ -147,3 +147,19 @@ Garbled check plan (design.md G54-G59, committed before code):
 - G59: V's NLL is on text the model trained on, so the threshold sits lower than a held-out one would.
 
 Also fixed: the G52 findings edit had cut the "Qualitative results" heading in design.md; restored.
+
+## 2026-11-01 17:30, Exp 2: G53 resend results; garbled check running
+
+G53 resend (job 27590332, 17:24-17:27): 193 of 193 prompts answered (largest answer 943 tokens). Spent $9.74 of $15 in all. `results/full_post_moved_summary.md` regenerated.
+
+| group | scored | agree (G50) | agree, both own-name scores ≥ 0.6 (post hoc) |
+|---|---|---|---|
+| gainers | 16 of 20 | 13 of 16 | 12 of 13 |
+| losers | 16 of 21 | 14 of 16 | 7 of 9 |
+| controls | 19 of 20 | 18 of 19 | 12 of 13 |
+
+- The 6 surface concepts: 70, 235, 1387, 2028 agree. 1902 (dpo gainer, gaps 0.19 / −0.10) and 1032 (stage1 control, −0.14 / 0.16) disagree.
+- 10 already-scored concepts had 1-3 re-sent prompts; scores moved ≤ 0.025. One flag flipped: 85 (sft loser, gap on Dolma 0.138 → 0.12) now agrees.
+- Disagreements now: 670, 42804, 1902, 842, 1432, 1032. Only 670 has both gaps > 0.13 (each name wins on its own side). For 1032 the rollout name beats the Dolma name on both sides, so the G50 flag there marks a better name, not a change of meaning.
+
+Garbled check (G54-G59): 3 NLL workers running since 17:27 (27590760, 27590761 `mit_preemptable`; 27590762 `mit_normal_gpu`; L40S, 0.077 s/doc), 6 of 120 parts done, about 25 min left. Finisher 27590764 (`mit_normal`) is running and waiting; its copy 27590763 was cancelled. s15 was dry-run end to end on fake NLL values (outputs in scratch only) before submission.

@@ -142,6 +142,12 @@ Findings (2026-11-01, labels job 27585445; `results/full_post_moved_summary.{jso
 - By eye: the top sft, dpo and instruct gainers are repetition loops, garbled text, document-start tokens and line breaks. Both sides give these the same name. Losers are mostly diffuse prose features: fluent news, marketing or expository writing on the Dolma side, against assistant-style or generic prose on the rollout side.
 - Judge (unvalidated): same meaning for 65% of gainers, 75% of losers and 95% of controls. For mismatched control pairs it said same 0-10% of the time.
 
+Findings after G53 (2026-11-01, job 27590332; the bullets above are the first run's):
+- 193 of 193 re-sent prompts answered (largest answer 943 tokens). Spent $9.74 in all.
+- The 6 surface concepts now have scores: 70, 235, 1387 and 2028 agree; 1902 (dpo gainer, gaps 0.19 / −0.10) and 1032 (stage1 control, −0.14 / 0.16) do not. Ten already-scored concepts each had 1-3 re-sent prompts. Their scores moved by at most 0.025, and one flag flipped: 85 (sft loser), gap on Dolma 0.138 → 0.12, now agrees.
+- Agree (G50): gainers 13 of 16 (670, 42804, 1902 disagree), losers 14 of 16 (842, 1432), controls 18 of 19 (1032). With both own-name scores ≥ 0.6 (post hoc): 12 of 13, 7 of 9, 12 of 13.
+- Reading of the disagreements: only 670 has both gaps above 0.13, meaning each side's name wins on its own side. The other 5 have one gap above 0.13 and the other small or negative. For 1032 (first letter "A"), the rollout name scores higher on both sides (0.90 vs 0.76 on Dolma, 0.94 vs 0.78 on rollouts), so G50 flags a better name rather than a change of meaning.
+
 ## Garbled-rollout check (2026-11-01, Angela: per-doc NLL under the encoder model, flag above V's 99th percentile, recompute without flagged docs; written before any code ran)
 
 | # | Choice | Reason | Alternatives rejected | Source |

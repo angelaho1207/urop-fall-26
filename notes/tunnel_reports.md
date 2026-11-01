@@ -167,3 +167,24 @@ Garbled check (G54-G59): 3 NLL workers running since 17:27 (27590760, 27590761 `
 ## 2026-11-01 17:51, Exp 2 garbled check: job status
 
 All 120 NLL parts are on disk (V and each of the 5 rollout sets: 20 of 20). The 3 workers ended without errors. Finisher 27590764 (`mit_normal`, running since 17:27) checks every 5 min, so s15 starts by about 17:56. Expected s15 run time: 10-15 min (the diagnostics job, with similar bootstrap work, took 8.7 min). Results expected around 18:10; mail on END/FAIL. No API cost.
+
+## 2026-11-01 18:05, Exp 2 garbled-rollout check: results
+
+Finisher 27590764 ran s15 17:52-17:57, no errors. Results: `exp2_rollout_gap/results/full_post_garbled_summary.md` (and `.json`, `full_post_garbled_threshold.json`, `full_post_noflag_distribution_summary.json`). Findings added under G59 in design.md. Examples for Angela: `DATA/full_post/garbled_examples.md` (pool only).
+
+Threshold 3.816 nats (V's 99th percentile; V median 2.21).
+
+| set | flagged | token-weighted | flagged, docs with 300+ tokens | Δ vs V bias-corrected, full_post → noflag | top 10 gainers still top 10 / top 30 |
+|---|---|---|---|---|---|
+| V | 1.0% | 0.8% | 0.5-0.8% | – | – |
+| stage1 | 21.9% | 21.7% | 19-21% | +0.029 → +0.014 | 9 / 10 |
+| main | 20.5% | 21.1% | 17-21% | −0.016 → −0.031 | 7 / 10 |
+| sft | 23.4% | 22.3% | 21-24% | −0.042 → −0.044 | 7 / 9 |
+| dpo | 24.4% | 19.6% | 18-21% | −0.038 → −0.042 | 7 / 8 |
+| instruct | 8.3% | 2.3% | 1-2% | −0.033 → −0.041 | 7 / 8 |
+
+- Short docs are flagged more in every set, but for stage1, main, sft and dpo long rollouts are flagged at 17-24% too. Instruct's flags are mostly short docs.
+- The NLL flag and G14's loop flag pick different docs (at most 1.1% of flagged docs are loops): loops are predictable and score low NLL.
+- By eye: random flagged sft and dpo rollouts are mostly garbled (mixed scripts, broken code, word salad). Some flagged instruct rollouts are short fluent questions or titles. The rollouts just below the threshold are also often garbled, so the rule misses some garbled text and catches some short fluent text.
+- After the filter (5,751 docs per set): every Δ interval still excludes 0. Excess dispersion sd changes by ≤ 0.03 and median ln ratio by ≤ 0.02, so garbled docs do not explain the dispersion. Gainers that drop out: 2044 (the garbled-text concept) in sft, rank 7 → 38; document-start concepts 70 and 1902 in dpo and instruct, ranks 32-57.
+- Open: the doc count fell from 7,985 to 5,751, and count alone moves Δ (G16). A random drop to 5,751 docs per set (no flag) would separate the count's share of the Δ change from the filter's. CPU only, about 5 min; needs a design row and Angela's go.

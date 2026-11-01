@@ -45,7 +45,7 @@ def window_text(tokenizer, ids, center):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--run", required=True, choices=["pilot", "full"])
+    parser.add_argument("--run", required=True, choices=list(settings.SEED_ROOT))
     args = parser.parse_args()
     run_dir = settings.DATA / args.run
     tokenizer = AutoTokenizer.from_pretrained(config.MODEL_ID, revision=config.MODEL_REVISION)
@@ -61,9 +61,10 @@ def main():
         rolls[g] = rolls[g].set_index("rollout_id")
         out.append(f"\n## (a) {N_ROLLOUTS_SHOWN} rollouts, {g}\n")
         for i in np.random.default_rng([0, 19]).choice(len(rolls[g]), size=N_ROLLOUTS_SHOWN, replace=False):
-            ids = list(rolls[g]["ids"].iloc[i])
+            ids = settings.encoder_ids(args.run, rolls[g]["ids"].iloc[i])  # G34
             text = tokenizer.decode(ids)[:600].replace("\n", "⏎ ")
-            out.append(f"- `{rolls[g].index[i]}` ({len(ids)} tokens, ended by EOS: {rolls[g]['ended_by_eos'].iloc[i]}): {text}\n")
+            stop = f", stop id {rolls[g]['stop_id'].iloc[i]}" if "stop_id" in rolls[g] else ""  # G31
+            out.append(f"- `{rolls[g].index[i]}` ({len(ids)} tokens, ended by EOS: {rolls[g]['ended_by_eos'].iloc[i]}{stop}): {text}\n")
 
     # (b) Named concepts with the largest gaps vs V (G19)
     named = [c for c in names if table.at[c, "in_slope"]]
@@ -87,7 +88,8 @@ def main():
         return window_text(tokenizer, tokenize(tokenizer, docs.at[r.doc_id, "text"])[0], r.argmax)
 
     def g_window(g, r):  # G8: the encoded ids are the re-tokenized text
-        return window_text(tokenizer, tokenize(tokenizer, tokenizer.decode(list(rolls[g].at[r.doc_id, "ids"])))[0], r.argmax)
+        ids = settings.encoder_ids(args.run, rolls[g].at[r.doc_id, "ids"])  # G34
+        return window_text(tokenizer, tokenize(tokenizer, tokenizer.decode(ids))[0], r.argmax)
 
     for g in gens:
         for side, concepts in picks[g].items():

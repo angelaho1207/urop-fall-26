@@ -1,7 +1,7 @@
 """Unprompted rollouts with pure sampling (design.md G1-G7, X1). GPU.
 
 Usage: python s01_rollouts.py --run full --generator stage1 [--n 10000] [--batch auto]
-Writes DATA/<run>/<generator>/rollouts/part_<k>.parquet (rollout_id, ids, ended_by_eos, batch, gpu, seconds) and
+Writes DATA/<run>/<generator>/rollouts/part_<k>.parquet (rollout_id, ids, ended_by_eos, stop_id, batch, gpu, seconds) and
 results/<run>_<generator>_rollouts_summary.json. Parts already on disk are skipped, so a rerun resumes (X1).
 Several workers can run at once: each claims a part with a lock file first (G21).
 """
@@ -22,9 +22,9 @@ torch.set_grad_enabled(False)
 DEVICE = "cuda"
 
 
-def resolve(revision):
-    """G4: turn a branch name into the commit hash it points to today, so the run is pinned and logged."""
-    for branch in list_repo_refs(config.MODEL_ID).branches:
+def resolve(repo, revision):
+    """G4, G30: turn a branch name into the commit hash it points to today, so the run is pinned and logged."""
+    for branch in list_repo_refs(repo).branches:
         if branch.name == revision:
             return branch.target_commit
     return revision  # already a commit hash
@@ -62,9 +62,11 @@ def part_generator(run, k):
     return torch.Generator(device=DEVICE).manual_seed(seed)
 
 
-def sample_batch(model, size, gen):
+def sample_batch(model, size, gen, stop_ids):
     """G1-G3, G7: start every rollout from <|endoftext|>, then draw each next token from softmax(logits) in float32.
-    No temperature change, top-k, top-p or penalty. A rollout ends at its first <|endoftext|> or after MAX_NEW tokens."""
+    No temperature change, top-k, top-p or penalty. A rollout ends at its first stop id (G3, G31) or after MAX_NEW
+    tokens. Returns (ids without the stop id, the stop id or -1) per rollout."""
+    stops = torch.tensor(stop_ids, device=DEVICE)
     step_ids = torch.full((size, 1), settings.EOS_ID, device=DEVICE)
     out = model(step_ids, use_cache=True)
     tokens = torch.full((size, settings.MAX_NEW), settings.EOS_ID, device=DEVICE)
@@ -74,20 +76,20 @@ def sample_batch(model, size, gen):
         nxt = torch.multinomial(probs, 1, generator=gen)[:, 0]
         nxt = torch.where(done, settings.EOS_ID, nxt)  # finished rollouts keep stepping in the batch; cut below
         tokens[:, t] = nxt
-        done |= nxt == settings.EOS_ID
+        done |= torch.isin(nxt, stops)
         if done.all():
             break
         out = model(nxt[:, None], past_key_values=out.past_key_values, use_cache=True)
     rows = []
     for seq in tokens.cpu().tolist():
-        n = seq.index(settings.EOS_ID) if settings.EOS_ID in seq else len(seq)
-        rows.append((seq[:n], n < len(seq)))  # G3: drop the closing <|endoftext|>
+        n = next((i for i, t in enumerate(seq) if t in stop_ids), len(seq))
+        rows.append((seq[:n], seq[n] if n < len(seq) else -1))  # G3: drop the closing stop id
     return rows
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--run", required=True, choices=["pilot", "full"])
+    parser.add_argument("--run", required=True, choices=list(settings.SEED_ROOT))
     parser.add_argument("--generator", required=True, choices=list(settings.GENERATORS))
     parser.add_argument("--n", type=int, default=settings.N_ROLLOUTS)
     parser.add_argument("--batch", default="auto")  # G22
@@ -99,13 +101,15 @@ def main():
     if all((out_dir / f"part_{k:05d}.parquet").exists() for k in range(n_parts)):
         print(f"{args.generator}: all {n_parts} parts done", flush=True)
         return  # G21: a late worker exits without loading the model
-    commit = resolve(settings.GENERATORS[args.generator])
-    model = AutoModelForCausalLM.from_pretrained(config.MODEL_ID, revision=commit,
+    repo, revision = settings.GENERATORS[args.generator]
+    commit = resolve(repo, revision)
+    stop_ids = settings.STOP_IDS[args.generator]
+    model = AutoModelForCausalLM.from_pretrained(repo, revision=commit,
                                                  dtype=getattr(torch, config.MODEL_DTYPE), device_map=DEVICE)
     model.eval()
     batch = auto_batch() if args.batch == "auto" else int(args.batch)
     gpu = torch.cuda.get_device_name()
-    print(f"generator {args.generator}: {settings.GENERATORS[args.generator]} -> {commit}; {gpu}, batch {batch}", flush=True)
+    print(f"generator {args.generator}: {repo}@{revision} -> {commit}; stop ids {stop_ids}; {gpu}, batch {batch}", flush=True)
 
     for k in range(n_parts):
         path = out_dir / f"part_{k:05d}.parquet"
@@ -117,11 +121,12 @@ def main():
         t0 = time.time()
         rows = []
         for start in range(0, size, batch):
-            rows += sample_batch(model, min(batch, size - start), gen)
+            rows += sample_batch(model, min(batch, size - start), gen, stop_ids)
             lock.touch()  # G21: heartbeat
         seconds = time.time() - t0
         part = pd.DataFrame({"rollout_id": [f"{args.generator}/{k:05d}/{i:03d}" for i in range(size)],
-                             "ids": [ids for ids, _ in rows], "ended_by_eos": [eos for _, eos in rows],
+                             "ids": [ids for ids, _ in rows], "ended_by_eos": [stop == settings.EOS_ID for _, stop in rows],
+                             "stop_id": [stop for _, stop in rows],
                              "batch": batch, "gpu": gpu, "seconds": seconds})  # G22: per part, for reproducibility
         tmp = out_dir / f"part_{k:05d}.{os.getpid()}.tmp.parquet"
         part.to_parquet(tmp)
@@ -134,9 +139,11 @@ def main():
     parts = pd.concat([pd.read_parquet(p) for p in sorted(out_dir.glob("part_?????.parquet"))])
     lengths = parts["ids"].map(len).to_numpy()
     summary = {
-        "run": args.run, "generator": args.generator, "revision": settings.GENERATORS[args.generator],
+        "run": args.run, "generator": args.generator, "repo": repo, "revision": revision, "stop_ids": stop_ids,
         "commit": commit, "rollouts": len(parts), "parts_done": int(parts["rollout_id"].str[:-4].nunique()),
         "ended_by_eos_share": round(float(parts["ended_by_eos"].mean()), 4),
+        **({"stop_id_counts": {str(k): int(v) for k, v in parts["stop_id"].value_counts().items()}}
+           if "stop_id" in parts else {}),  # G31, G36
         "empty_rollouts": int((lengths == 0).sum()),
         "length_quantiles": {q: int(np.quantile(lengths, q)) for q in (0.1, 0.25, 0.5, 0.75, 0.9)},
         "mean_length": round(float(lengths.mean()), 1),

@@ -137,7 +137,7 @@ def degeneration(ids):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--run", required=True, choices=["pilot", "full"])
+    parser.add_argument("--run", required=True, choices=list(settings.SEED_ROOT))
     parser.add_argument("--degen", type=float, default=None)  # G14 threshold, set after the pilot
     parser.add_argument("--boot", type=int, default=settings.BOOTSTRAP)
     args = parser.parse_args()
@@ -165,7 +165,8 @@ def main():
         if not g_paths:
             continue
         rolls = pd.concat([pd.read_parquet(p) for p in sorted((run_dir / g / "rollouts").glob("part_?????.parquet"))])
-        degen[g] = rolls.set_index("rollout_id")["ids"].map(degeneration).astype(float)
+        # G34: scored on the ids that were encoded
+        degen[g] = rolls.set_index("rollout_id")["ids"].map(lambda ids: degeneration(settings.encoder_ids(args.run, ids))).astype(float)
         paths[g] = g_paths
         all_lengths[g] = lengths(g_paths, lambda ids: np.ones(len(ids), dtype=bool))
         if args.degen is not None:

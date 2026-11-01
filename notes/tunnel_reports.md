@@ -94,3 +94,13 @@ G47 updated (Angela): 4 controls per set, each an unmoved concept (|ln ratio| �
 | labels (s13, paid, $15 guard) | 27582718 `mit_normal`, 27582719 `mit_preemptable` | waiting on the windows job |
 
 Concepts: 61 by construction (41 moved + 20 controls); expected cost ≈ $9.5 (122 names, 4,880 quiz prompts, 122 judge requests at F-run per-request costs). Final count of concepts testable on both sides, and the cost from it, will be appended when the windows job ends.
+
+## 2026-11-01 16:22, Exp 2 moved-concepts naming: windows done, final count and cost
+
+Windows job 27582717 finished 16:20 (149 s). Final selection (`results/full_post_moved_windows_summary.json`):
+- 61 concepts: 20 gainers, 21 losers (counted by the kind in the set each concept was assigned to), 20 controls (4 per set, rank-matched, no redraws needed). By set: stage1 13, main 8, sft 19, dpo 10, instruct 11.
+- All 61 fire in at least 90 docs on both sides, so all get both names (122 names).
+- 10 concepts fire in nearly every doc, so fewer than 50 of their 200 non-firing candidates were all-zero windows (E9); the quiz is skipped on that side: 260, 446, 1106, 1321, 1831 (both sides), 983 (rollout side), 1362, 1483, 1546, 1593 (Dolma side). They keep their names and the judge but get no agree flag. 51 concepts are quizzed on both sides: 16 gainers, 16 losers, 19 controls.
+- Final estimate: 122 names ≈ $1.34 + 4,280 quiz prompts ≈ $6.98 + 122 judge requests ≈ $0.18 = ≈ $8.5 (hard stop $15).
+
+Labels job (27582718 / 27582719) is next in the queue.

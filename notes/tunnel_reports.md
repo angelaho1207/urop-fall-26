@@ -188,3 +188,9 @@ Threshold 3.816 nats (V's 99th percentile; V median 2.21).
 - By eye: random flagged sft and dpo rollouts are mostly garbled (mixed scripts, broken code, word salad). Some flagged instruct rollouts are short fluent questions or titles. The rollouts just below the threshold are also often garbled, so the rule misses some garbled text and catches some short fluent text.
 - After the filter (5,751 docs per set): every Δ interval still excludes 0. Excess dispersion sd changes by ≤ 0.03 and median ln ratio by ≤ 0.02, so garbled docs do not explain the dispersion. Gainers that drop out: 2044 (the garbled-text concept) in sft, rank 7 → 38; document-start concepts 70 and 1902 in dpo and instruct, ranks 32-57.
 - Open: the doc count fell from 7,985 to 5,751, and count alone moves Δ (G16). A random drop to 5,751 docs per set (no flag) would separate the count's share of the Δ change from the filter's. CPU only, about 5 min; needs a design row and Angela's go.
+
+## 2026-11-01 18:15, Exp 2 doc-count control (G60): submitted
+
+G60 (committed before code): 20 seeds; every set (V, 5 generators, their no-loop versions) drawn at random without the flag to 5,751 docs, then the same pipeline as noflag (`s15_garbled.measure`, refactored out of G58's inline code). One extra task reruns `measure()` on G58's docs and must reproduce the published noflag numbers exactly. Reported per set: bias-corrected Δ, raw Δ, excess dispersion sd, median ln ratio; full_post, noflag, control mean ± sd [min, max]; count effect = control mean − full_post, filter effect = noflag − control mean (in control sd).
+
+Jobs: array 27595867 (tasks 0-19 seeds, task 20 check; `mit_normal`, 4 CPUs, 16 GB, 1 h), summary 27595869 after the array (`afterany`). Mail on END/FAIL for both. Expected about 5-10 min per task, $0.

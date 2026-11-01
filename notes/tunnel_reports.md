@@ -133,3 +133,17 @@ Labels job 27585445 finished 17:03. Spent $9.10 of $15 (names $1.74, quiz $7.15,
 - Unscored: 10 concepts lacked non-firing windows (s12). 6 more (70, 1902, 235, 1032, 1387, 2028; first-token, first-letter, word-piece and "of" concepts) lost more than 10 of 100 windows because 193 quiz prompts hit the 200-token output cap (F7). 2 refusals (3565, still scored).
 
 Decision for Angela: re-send only the 195 failed quiz prompts with a 1,000-token cap, so the 6 surface concepts get scores? Worst case ≈ $1.45 (195 × [input bound × 1.1 + 1,000 output] at batch prices), so the total stays ≤ $10.6 under the $15 guard. This needs a new design row (G53, deviation from F7's cap) before it runs. Nothing is sent without a go.
+
+## 2026-11-01 17:23, Exp 2: G53 resend submitted; garbled-rollout check plan (G54-G59)
+
+G53 resend: 193 quiz prompts that hit the 200-token cap (the 2 refusals are not re-sent, so 193, not 195), rebuilt and checked against the saved quiz key, cap 1,000. Worst case $1.52 on top of $9.10 spent, same $15 guard. Jobs 27590332 (`mit_normal`) / 27590333 (`mit_preemptable`).
+
+Garbled check plan (design.md G54-G59, committed before code):
+- G54: per-doc mean NLL under the encoder model (main, pinned revision, bf16), on the ids the SAE saw; token 0 has no prediction (no BOS). Sets: all 9,955 V docs and every encoded rollout of stage1, main, sft, dpo, instruct.
+- G55: 120 parts of 500 docs, lock-file workers (G21): 2 GPU workers on `mit_preemptable`, 1 on `mit_normal_gpu`; CPU finisher as two copies, resubmits workers if parts are missing, then runs the analysis; mail on END/FAIL. About 1-2 GPU hours, $0 API.
+- G56: threshold = V's 99th percentile, written to a file before any rollout NLL is read; same rule for every set. Report share flagged, token-weighted share, NLL quantiles, plus short-doc share and overlap with G14 loops.
+- G57: 10 random flagged + 10 just-below rollouts per post-trained set, in `DATA/full_post/garbled_examples.md` (pool only).
+- G58: drop flagged docs from every set, one G16 count, then Δ vs V (bias-corrected), excess dispersion, median ln ratio, and the G41 top-10 gainers' new ranks; each next to its `full_post` value.
+- G59: V's NLL is on text the model trained on, so the threshold sits lower than a held-out one would.
+
+Also fixed: the G52 findings edit had cut the "Qualitative results" heading in design.md; restored.

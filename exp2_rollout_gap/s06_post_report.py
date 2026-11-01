@@ -26,7 +26,8 @@ SCOPES = [("doc", 0)] + [(str(w), a) for w, (a, _) in enumerate(settings.WINDOWS
 
 
 def read_rollouts(run, g):
-    return pd.concat([pd.read_parquet(p) for p in sorted((settings.DATA / run / g / "rollouts").glob("part_?????.parquet"))])
+    return pd.concat([pd.read_parquet(p) for p in sorted((settings.DATA / run / g / "rollouts").glob("part_?????.parquet"))],
+                     ignore_index=True)
 
 
 def eligible(n_tokens):

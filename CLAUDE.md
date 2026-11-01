@@ -51,6 +51,7 @@ Research questions (Sheng-Yu's plan):
 ## Repo rules
 - Repo is temporarily public. Never commit tensors, model weights, dataset text dumps, tokens or keys.
 - Each experiment gets a folder `expN_<name>/` with `design.md`, code, and `results/` (small JSON/TXT only).
+- Tunnel Claude reports: after every reply that reports results, a plan, a decision request or a job status, append the same report to `notes/tunnel_reports.md` (heading with date and time, newest at the bottom), then commit and push. The laptop Claude reads the file there instead of pasted terminal text. Never include document text (Dolma, Pile or rollout windows) in it.
 
 ## Writing style
 Concise, no filler. Banned words: genuinely, real, exactly, precisely, worth. No negative parallelisms or three-beat rhythms.

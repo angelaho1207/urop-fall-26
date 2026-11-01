@@ -116,3 +116,20 @@ Needed from Angela: a valid key in `~/.anthropic_key` (chmod 600). Then rerun th
 ## 2026-11-01 16:41, Exp 2 moved-concepts naming: new key valid, labels job resubmitted
 
 Angela replaced `~/.anthropic_key` (chmod 600, changed 16:38; the key was never shown to Claude). One free token-count call succeeded. Labels job resubmitted: 27585445 (`mit_normal`), 27585446 (`mit_preemptable`); first to start cancels the other. Same $15 guard; expected ≈ $8.5.
+
+## 2026-11-01 17:06, Exp 2 moved-concepts naming: results
+
+Labels job 27585445 finished 17:03. Spent $9.10 of $15 (names $1.74, quiz $7.15, judge $0.22); every batch request came back. Per-concept table (both names, 4 scores, gaps, agree, judge): `exp2_rollout_gap/results/full_post_moved_summary.md`. Findings added under G52 in design.md.
+
+| group | concepts | scored | agree (G50, gaps ≤ 0.13) | agree, both own-name scores ≥ 0.6 (post hoc) | mean gap on Dolma / rollouts | judge same, true / mismatched pairs |
+|---|---|---|---|---|---|---|
+| gainers | 20 | 14 | 12 of 14 | 11 of 12 | 0.067 / 0.035 | 0.65 / 0.05 |
+| losers | 21 | 16 | 13 of 16 | 6 of 9 | 0.012 / 0.040 | 0.75 / 0.10 |
+| controls | 20 | 15 | 15 of 15 | 9 of 9 | 0.012 / 0.000 | 0.95 / 0.00 |
+
+- Disagree: 670 (main gainer, gaps 0.18 / 0.16), 42804 (main gainer, 0.20 / 0.05), 85 (sft loser, 0.14 / 0.02), 842 (sft loser, −0.01 / 0.16), 1432 (instruct loser, 0.04 / 0.16).
+- By eye: the top post-trained gainers are repetition loops, garbled text, document-start tokens and line breaks, and both sides give them the same name. Losers are diffuse prose features: fluent human web prose on the Dolma side, assistant-style or generic prose on the rollout side.
+- 15 of 45 scored concepts have an own-name score below 0.6 on a side. For those the quiz has little power, so agreement there carries little weight.
+- Unscored: 10 concepts lacked non-firing windows (s12). 6 more (70, 1902, 235, 1032, 1387, 2028; first-token, first-letter, word-piece and "of" concepts) lost more than 10 of 100 windows because 193 quiz prompts hit the 200-token output cap (F7). 2 refusals (3565, still scored).
+
+Decision for Angela: re-send only the 195 failed quiz prompts with a 1,000-token cap, so the 6 surface concepts get scores? Worst case ≈ $1.45 (195 × [input bound × 1.1 + 1,000 output] at batch prices), so the total stays ≤ $10.6 under the $15 guard. This needs a new design row (G53, deviation from F7's cap) before it runs. Nothing is sent without a go.

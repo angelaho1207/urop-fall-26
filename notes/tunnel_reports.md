@@ -112,3 +112,7 @@ Labels job 27582718 started 16:21 and stopped at the first free token-count call
 Fix in s13 (committed): the token counter now retries only rate-limit, connection and server errors; any other error (such as an invalid key) stops at once instead of retrying.
 
 Needed from Angela: a valid key in `~/.anthropic_key` (chmod 600). Then rerun the labels job: `cd exp2_rollout_gap && sbatch -p mit_normal sbatch/moved_labels.sbatch` (or tell tunnel Claude to submit it). Same $15 guard.
+
+## 2026-11-01 16:41, Exp 2 moved-concepts naming: new key valid, labels job resubmitted
+
+Angela replaced `~/.anthropic_key` (chmod 600, changed 16:38; the key was never shown to Claude). One free token-count call succeeded. Labels job resubmitted: 27585445 (`mit_normal`), 27585446 (`mit_preemptable`); first to start cancels the other. Same $15 guard; expected ≈ $8.5.

@@ -41,3 +41,17 @@ Every set subsampled to the same length distribution: 5,461 docs per set (bins [
 V under lenmatch: slope 1.004, firing-share slope 1.012, median ln ratio −0.021.
 
 Reading: matching lengths leaves Δ, its sign and the median offset nearly unchanged (sft median −0.67 before and after), so short rollouts do not explain the offset or Δ. The firing-share vs χ gap (deferred O4) also stays after matching (dpo 0.892 vs 0.968), so length is not its cause either. With matched lengths most bootstrap biases of Δ are smaller (dpo 0.0008 vs 0.0043 in full_post; sft 0.0048 vs 0.0084); the cause is not checked. Still running: diagnostics (27579383), min30 (27579385); the summary job follows.
+
+## 2026-11-01 15:58, Exp 2 item 3: `full_post_min30` finished (job 27579385)
+
+Docs under 30 tokens dropped from every set, then one doc count: 6,986 docs per set. V: slope 1.005, median ln ratio −0.007.
+
+| set | Δ min30 (bias-corrected) [basic 95%] | median ln ratio, min30 |
+|---|---|---|
+| stage1 | +0.0357 (+0.0341) [+0.0265, +0.0418] | −0.119 |
+| main | −0.0163 (−0.0180) [−0.0250, −0.0110] | −0.218 |
+| sft | −0.0386 (−0.0457) [−0.0530, −0.0381] | −0.660 |
+| dpo | −0.0416 (−0.0441) [−0.0508, −0.0376] | −0.437 |
+| instruct | −0.0329 (−0.0371) [−0.0440, −0.0300] | −0.460 |
+
+Reading: as with lenmatch, Δ keeps its sign and size, and the offsets barely move, so docs under 30 tokens do not drive either. Diagnostics job 27579383 is at the G44 bootstrap (dpo); then gainers, examples and figures; the summary job follows.

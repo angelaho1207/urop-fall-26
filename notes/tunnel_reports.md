@@ -83,3 +83,14 @@ New files: `results/full_post_diagnostics.json`, `results/full_post_{lenmatch,mi
 7. Cost: 122 names ≈ $1.34 + 4,880 quiz prompts ≈ $7.95 + 122 judge ≈ $0.18 = ≈ $9.5 expected (F-run per-request costs). Hard stop $15 by the F7 guard (spent + worst case of the next chunk ≤ $15), own ledger.
 8. Runs as two sbatch jobs (windows, then labels with a dependency) so it finishes without the session; mail on END/FAIL.
 9. Output: `results/full_post_moved_summary.json` and `.md` (per concept: both names, 4 scores, gaps, agree flag, judge); text and raw outputs on pool only.
+
+## 2026-11-01 16:15, Exp 2 moved-concepts naming: jobs submitted, pending
+
+G47 updated (Angela): 4 controls per set, each an unmoved concept (|ln ratio| ≤ 0.1 in that set, slope concept, testable on both sides) within ±500 χ_train ranks of a randomly drawn moved concept of that set. Code committed (`46bebbe`).
+
+| job | id | state |
+|---|---|---|
+| windows (s12) | 27582716 `mit_normal`, 27582717 `mit_preemptable` | pending (first to start cancels the other) |
+| labels (s13, paid, $15 guard) | 27582718 `mit_normal`, 27582719 `mit_preemptable` | waiting on the windows job |
+
+Concepts: 61 by construction (41 moved + 20 controls); expected cost ≈ $9.5 (122 names, 4,880 quiz prompts, 122 judge requests at F-run per-request costs). Final count of concepts testable on both sides, and the cost from it, will be appended when the windows job ends.

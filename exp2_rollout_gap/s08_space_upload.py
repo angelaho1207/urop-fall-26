@@ -11,6 +11,7 @@ Writes results/full_post_space_check.json. Exit code 1 if any check fails (no up
 import json
 import subprocess
 import sys
+from pathlib import Path
 
 import settings
 from huggingface_hub import HfApi
@@ -21,6 +22,8 @@ BASE_COMMIT = "4764b71"  # last commit before the post-trained section
 ALLOWED = ["app.js", "index.html", "style.css"]
 NEW = ["data/rollouts_post.json", "data/exp2/full_post_*"]
 N_FIGURES = 3 * 12  # per generator: 5 rank PNGs + GIF, 5 histogram PNGs + GIF
+# Exp 1 config moves HF_HOME to the pool cache, which holds no login token; read the token from the default location
+TOKEN_FILE = Path.home() / ".cache" / "huggingface" / "token"
 
 
 def snapshot(api):
@@ -50,7 +53,7 @@ def main():
     if not (SPACE / "data" / "rollouts_post.json").exists() or len(figures) != N_FIGURES:
         stop(f"expected rollouts_post.json and {N_FIGURES} figures, found {len(figures)} figures")
 
-    api = HfApi()
+    api = HfApi(token=TOKEN_FILE.read_text().strip())
     sha_before, before = snapshot(api)
     report["before"] = {"commit": sha_before, "files": len(before)}
     clash = [f for f in figures + ["data/rollouts_post.json"] if f in before]

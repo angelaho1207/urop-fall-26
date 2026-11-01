@@ -1,0 +1,235 @@
+{
+  "run": "pilot_post",
+  "generators": {
+    "sft": {
+      "repo": "allenai/Olmo-3-7B-Instruct-SFT",
+      "commit": "e1452fc572d51966ff4aaeb25118b891eb93e549",
+      "rollouts": 200,
+      "empty_generated": 13,
+      "empty_after_special_drop": 0,
+      "empty_share": 0.065,
+      "stop_id_counts": {
+        "100265": 90,
+        "-1": 58,
+        "100257": 52
+      },
+      "special_ids_generated": 2,
+      "rollouts_with_special_ids": 2,
+      "special_ids_generated_by_id": {
+        "100268": 1,
+        "100271": 1
+      },
+      "special_ids_in_sae_input": 0,
+      "retokenized_different": 88,
+      "encoded_length_quantiles": {
+        "0.1": 38,
+        "0.25": 106,
+        "0.5": 365,
+        "0.75": 1023,
+        "0.9": 1024
+      },
+      "tokens_per_second_by_gpu": {
+        "NVIDIA L40S": 223.6
+      },
+      "degeneration": {
+        "rollouts_scored": 159,
+        "quantiles": {
+          "0.5": 0.079,
+          "0.9": 0.884,
+          "0.95": 0.985,
+          "0.99": 0.996
+        },
+        "flagged": 22
+      },
+      "flagged": 22,
+      "gate_passed": true
+    },
+    "dpo": {
+      "repo": "allenai/Olmo-3-7B-Instruct-DPO",
+      "commit": "b33130b7de49f0c2553b5c2b3bc8409ff3e627d1",
+      "rollouts": 200,
+      "empty_generated": 36,
+      "empty_after_special_drop": 0,
+      "empty_share": 0.18,
+      "stop_id_counts": {
+        "100265": 100,
+        "-1": 63,
+        "100257": 37
+      },
+      "special_ids_generated": 2,
+      "rollouts_with_special_ids": 1,
+      "special_ids_generated_by_id": {
+        "100266": 1,
+        "100267": 1
+      },
+      "special_ids_in_sae_input": 0,
+      "retokenized_different": 93,
+      "encoded_length_quantiles": {
+        "0.1": 23,
+        "0.25": 173,
+        "0.5": 612,
+        "0.75": 1024,
+        "0.9": 1024
+      },
+      "tokens_per_second_by_gpu": {
+        "NVIDIA L40S": 235.9
+      },
+      "degeneration": {
+        "rollouts_scored": 140,
+        "quantiles": {
+          "0.5": 0.02,
+          "0.9": 0.187,
+          "0.95": 0.951,
+          "0.99": 0.996
+        },
+        "flagged": 10
+      },
+      "flagged": 10,
+      "gate_passed": true
+    },
+    "instruct": {
+      "repo": "allenai/Olmo-3-7B-Instruct",
+      "commit": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+      "rollouts": 200,
+      "empty_generated": 22,
+      "empty_after_special_drop": 0,
+      "empty_share": 0.11,
+      "stop_id_counts": {
+        "100265": 103,
+        "100257": 51,
+        "-1": 46
+      },
+      "special_ids_generated": 1,
+      "rollouts_with_special_ids": 1,
+      "special_ids_generated_by_id": {
+        "100268": 1
+      },
+      "special_ids_in_sae_input": 0,
+      "retokenized_different": 69,
+      "encoded_length_quantiles": {
+        "0.1": 23,
+        "0.25": 97,
+        "0.5": 369,
+        "0.75": 1021,
+        "0.9": 1024
+      },
+      "tokens_per_second_by_gpu": {
+        "NVIDIA L40S": 207.6
+      },
+      "degeneration": {
+        "rollouts_scored": 145,
+        "quantiles": {
+          "0.5": 0.032,
+          "0.9": 0.207,
+          "0.95": 0.928,
+          "0.99": 0.996
+        },
+        "flagged": 9
+      },
+      "flagged": 9,
+      "gate_passed": true
+    }
+  },
+  "projected_full_post_docs_per_scope": {
+    "doc": 7700,
+    "0": 7700,
+    "1": 4250,
+    "2": 2850,
+    "3": 2250
+  },
+  "projected_smallest_set": {
+    "doc": "dpo_no_loops",
+    "0": "dpo_no_loops",
+    "1": "sft_no_loops",
+    "2": "sft_no_loops",
+    "3": "sft_no_loops"
+  },
+  "full_docs_per_scope": {
+    "doc": 9753,
+    "0": 9753,
+    "1": 6121,
+    "2": 4580,
+    "3": 3389
+  },
+  "eligible_docs_per_set": {
+    "V": {
+      "doc": 9955,
+      "0": 9955,
+      "1": 8710,
+      "2": 6975,
+      "3": 5441
+    },
+    "stage1": {
+      "doc": 10000,
+      "0": 10000,
+      "1": 7995,
+      "2": 6136,
+      "3": 4675
+    },
+    "stage1_no_loops": {
+      "doc": 9954,
+      "0": 9954,
+      "1": 7950,
+      "2": 6094,
+      "3": 4637
+    },
+    "main": {
+      "doc": 9991,
+      "0": 9991,
+      "1": 6344,
+      "2": 4783,
+      "3": 3578
+    },
+    "main_no_loops": {
+      "doc": 9753,
+      "0": 9753,
+      "1": 6121,
+      "2": 4579,
+      "3": 3389
+    },
+    "sft": {
+      "doc": 9350,
+      "0": 9350,
+      "1": 5300,
+      "2": 3850,
+      "3": 3100
+    },
+    "sft_no_loops": {
+      "doc": 8250,
+      "0": 8250,
+      "1": 4250,
+      "2": 2850,
+      "3": 2250
+    },
+    "dpo": {
+      "doc": 8200,
+      "0": 8200,
+      "1": 5600,
+      "2": 4400,
+      "3": 3600
+    },
+    "dpo_no_loops": {
+      "doc": 7700,
+      "0": 7700,
+      "1": 5150,
+      "2": 4000,
+      "3": 3250
+    },
+    "instruct": {
+      "doc": 8900,
+      "0": 8900,
+      "1": 5250,
+      "2": 3550,
+      "3": 2800
+    },
+    "instruct_no_loops": {
+      "doc": 8450,
+      "0": 8450,
+      "1": 4850,
+      "2": 3150,
+      "3": 2400
+    }
+  },
+  "check_V_spearman": 0.9246,
+  "gate_passed": true
+}

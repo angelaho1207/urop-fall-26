@@ -1,0 +1,31 @@
+{
+  "run": "pilot_post",
+  "generator": "instruct",
+  "repo": "allenai/Olmo-3-7B-Instruct",
+  "revision": "main",
+  "stop_ids": [
+    100265,
+    100257
+  ],
+  "commit": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+  "rollouts": 200,
+  "parts_done": 1,
+  "ended_by_eos_share": 0.255,
+  "stop_id_counts": {
+    "100265": 103,
+    "100257": 51,
+    "-1": 46
+  },
+  "empty_rollouts": 22,
+  "length_quantiles": {
+    "0.1": 0,
+    "0.25": 50,
+    "0.5": 285,
+    "0.75": 926,
+    "0.9": 1024
+  },
+  "mean_length": 425.3,
+  "tokens_per_second_by_gpu": {
+    "NVIDIA L40S": 207.6
+  }
+}

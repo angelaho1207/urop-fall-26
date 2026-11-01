@@ -2,7 +2,7 @@
 
 Newest at the bottom. No document text (Dolma, Pile or rollout windows) in this file (CLAUDE.md).
 
-## 2026-11-01 15:50, Exp 2 full_post diagnostics: jobs submitted and running
+## 2026-11-01 15:49, Exp 2 full_post diagnostics: jobs submitted and running
 
 Status: design rows G39-G46 and open items O4-O7 committed before any code ran (`1e97fe6`); code committed (`18251d0`). CPU jobs running, no results yet. Nothing goes to the Space.
 
@@ -26,7 +26,7 @@ Deferred by Angela: items 4, 5 (BCa), 6, 7, recorded as open items O4-O7 in desi
 
 Next: when the summary job has written the md, check its numbers, rewrite the generated 3-4-sentence answer to Sheng-Yu, then commit and push the results.
 
-## 2026-11-01 15:55, Exp 2 item 3: `full_post_lenmatch` finished (job 27579384, 4 min)
+## 2026-11-01 15:50, Exp 2 item 3: `full_post_lenmatch` finished (job 27579384, 4 min)
 
 Every set subsampled to the same length distribution: 5,461 docs per set (bins [1,30) 49, [30,100) 225, [100,300) 1,266, [300,1024) 2,664, [1024] 1,257). V limits the two short bins (only 49 V docs under 30 tokens); instruct_no_loops and sft_no_loops limit the two long bins.
 
@@ -42,7 +42,7 @@ V under lenmatch: slope 1.004, firing-share slope 1.012, median ln ratio −0.02
 
 Reading: matching lengths leaves Δ, its sign and the median offset nearly unchanged (sft median −0.67 before and after), so short rollouts do not explain the offset or Δ. The firing-share vs χ gap (deferred O4) also stays after matching (dpo 0.892 vs 0.968), so length is not its cause either. With matched lengths most bootstrap biases of Δ are smaller (dpo 0.0008 vs 0.0043 in full_post; sft 0.0048 vs 0.0084); the cause is not checked. Still running: diagnostics (27579383), min30 (27579385); the summary job follows.
 
-## 2026-11-01 15:58, Exp 2 item 3: `full_post_min30` finished (job 27579385)
+## 2026-11-01 15:51, Exp 2 item 3: `full_post_min30` finished (job 27579385)
 
 Docs under 30 tokens dropped from every set, then one doc count: 6,986 docs per set. V: slope 1.005, median ln ratio −0.007.
 
@@ -55,3 +55,19 @@ Docs under 30 tokens dropped from every set, then one doc count: 6,986 docs per 
 | instruct | −0.0329 (−0.0371) [−0.0440, −0.0300] | −0.460 |
 
 Reading: as with lenmatch, Δ keeps its sign and size, and the offsets barely move, so docs under 30 tokens do not drive either. Diagnostics job 27579383 is at the G44 bootstrap (dpo); then gainers, examples and figures; the summary job follows.
+
+## 2026-11-01 16:05, Exp 2 full_post diagnostics: all results in
+
+Diagnostics job 27579383 finished 15:54 (all three jobs on `mit_normal`, 4-9 min each). G39's checks passed: doc counts, χ (max relative difference 0) and slopes equal the published `full_post`. The summary job was cancelled while pending and `s11` was run on the login node (reads JSON, seconds). Full tables: `exp2_rollout_gap/results/full_post_diagnostics_summary.md`; findings also in design.md under G39-G46.
+
+Answer to Sheng-Yu: panels (a)-(b) show each distribution without pairing concepts, while (c) pairs them, and most of what (c) shows is concepts trading places: sorting both distributions keeps only 14-27% of the per-concept squared distance (V 5%), so 73-86% of it cannot appear in (a)-(b). What does appear is a median shift of −0.05 to −0.29 in log10 and a spread 9-25% wider (sd of ln χ 1.86-2.13 vs train 1.70). "Most concepts appear less" follows from χ's fixed total: the concepts that rise hold 55-65% of the χ mass (26-43% in train), spread over thousands of concepts (top 30 gainers take 12-19% of the moved mass, top 1,000 take 60-68%). Length explains none of it (item 3).
+
+| item | result |
+|---|---|
+| 1 χ mass | Mass moved (TV) 13-38% (V 2%); top-10 share 6-7% in every set; top 1,000 41% train, 43-49% rollouts. Largest gainers mostly concepts already common in train (1106, 1204) plus some rising from χ ≈ 3 (924, 982); two dpo/instruct gainers (70, 1902) sit at positions 0-3 for 21-30% of their activation and take 65-79% of their χ from docs under 30 tokens. No top-30 gainer has an Exp 1 name |
+| 2 slope vs change | Trend describes 0.03-1.1% of the per-concept variance. Proposed companion statistic: excess dispersion, sd 0.53 (stage1), 0.83 (main), 1.31 (sft), 1.19 (dpo), 1.24 (instruct) in ln units, V 0 |
+| 3 length | Δ and medians barely move: e.g. sft Δ −0.034 → −0.036 (lenmatch) → −0.039 (min30), median ln ratio −0.67 → −0.67 → −0.66 |
+| 8 range | Correction to my review note: stage1's Δ stays positive in the middle 16 bins (+0.017 [+0.009, +0.023]), so it does not come from the rare end only. For main and the post-trained sets the middle bins give a negative Δ, the rare end adds to it and the top bin offsets it (without the rarest 3 bins Δ is −0.007 to +0.005; without the top bin −0.028 to −0.064) |
+| 5 (partial) | Bias-corrected full_post Δ: stage1 +0.029, main −0.016, sft −0.042, dpo −0.038, instruct −0.033 |
+
+New files: `results/full_post_diagnostics.json`, `results/full_post_{lenmatch,min30}_distribution_summary.json`, `results/full_post_diagnostics_summary.md`, 12 figures `figures/full_post_<set>_{scatter,hist_shifted}.png`; example windows on pool only (`DATA/full_post/diagnostics_gainers.md`). Nothing uploaded to the Space.

@@ -71,3 +71,15 @@ Answer to Sheng-Yu: panels (a)-(b) show each distribution without pairing concep
 | 5 (partial) | Bias-corrected full_post Δ: stage1 +0.029, main −0.016, sft −0.042, dpo −0.038, instruct −0.033 |
 
 New files: `results/full_post_diagnostics.json`, `results/full_post_{lenmatch,min30}_distribution_summary.json`, `results/full_post_diagnostics_summary.md`, 12 figures `figures/full_post_<set>_{scatter,hist_shifted}.png`; example windows on pool only (`DATA/full_post/diagnostics_gainers.md`). Nothing uploaded to the Space.
+
+## 2026-11-01 16:30, Exp 2 plan: name and test the concepts that moved (design rows G47-G52), waiting for Angela's OK
+
+1. Concepts: top 10 gainers + top 10 losers by χ mass change per rollout set (G41) = 100 (concept, set) entries = 41 distinct concepts (21 gainers, 22 losers), all slope concepts; plus 20 controls (4 per set, |ln ratio| ≤ 0.1 in that set). 61 concepts total.
+2. One rollout set per concept: the selecting set where it moved most. All 100 pairs would cost about $16 expected, over the $15 stop.
+3. Windows (CPU job, Exp 1 E1-E9 rules): 40 naming windows from Dolma V (all 9,955 docs) and 40 from that set's rollouts; quiz windows (50 firing + 50 non-firing) from docs disjoint from the naming docs on each side. Text stays on pool.
+4. Labels as F1-F8: Opus 5.5 names (N4 prompt), Sonnet 5.5 detection quiz (N5), each name quizzed on both sides (4 quizzes per concept), balanced accuracy (N7).
+5. Agreement (G50): names agree if both cross gaps (own name minus the other side's name, on each side's windows) are ≤ 0.13, the 95th percentile of Exp 1's F-run gap (sd 0.062). Gainers and losers compared with the controls' agree rate.
+6. N10 judge on (Dolma name, rollout name) plus a negative control, reported but unvalidated (as in Exp 1), so it does not set the flag.
+7. Cost: 122 names ≈ $1.34 + 4,880 quiz prompts ≈ $7.95 + 122 judge ≈ $0.18 = ≈ $9.5 expected (F-run per-request costs). Hard stop $15 by the F7 guard (spent + worst case of the next chunk ≤ $15), own ledger.
+8. Runs as two sbatch jobs (windows, then labels with a dependency) so it finishes without the session; mail on END/FAIL.
+9. Output: `results/full_post_moved_summary.json` and `.md` (per concept: both names, 4 scores, gaps, agree flag, judge); text and raw outputs on pool only.

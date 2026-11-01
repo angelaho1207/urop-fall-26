@@ -1,6 +1,7 @@
 """Name and quiz the concepts that moved, F-run style (design.md G49-G52). Calls the Anthropic API (Message Batches).
 
 Usage: python s13_moved_labels.py run       # count, names, quiz, judge, analyze; resumes from what is saved
+       python s13_moved_labels.py resend    # G53: quiz prompts that hit the 200-token cap, again at 1,000; then analyze
        python s13_moved_labels.py analyze   # no API
 Reads DATA/full_post/moved/{concepts.json, examples/} (s12). Writes requests, raw results, names and answers to
 DATA/full_post/labels/moved/ (pool: they hold text) and results/full_post_moved_summary.{json,md} (ids, names, scores,
@@ -26,6 +27,7 @@ from s12_moved_windows import SIDE_SEED
 
 LIMIT_USD = 15.0  # G51, Angela
 CAPS = {"name": 1_000, "quiz": 200, "judge": 300}  # Exp 1 F7
+RESEND_CAP = 1_000  # G53
 QUIZ_CHUNK = 1_000  # G51
 SLACK_TOKENS = 300  # Exp 1 F7b
 AGREE_GAP = 0.13  # G50
@@ -56,7 +58,7 @@ def naming_request(c, ex, side):
     return claude_batch.params(LABELER, system, messages, prompts.EXPLANATION_SCHEMA, max_tokens=CAPS["name"])
 
 
-def quiz_requests(c, ex, side, name_src, name):
+def quiz_requests(c, ex, side, name_src, name, max_tokens=CAPS["quiz"]):
     """20 prompts of 5 held-out windows on one side; both names see the same windows in the same order (G49)."""
     firing, nonfiring = ex["quiz_firing"][side], ex["quiz_nonfiring"][side]
     windows = [(w, 1) for w in firing] + [(w, 0) for w in nonfiring]
@@ -70,7 +72,7 @@ def quiz_requests(c, ex, side, name_src, name):
         idx = range(k * PER_PROMPT, min((k + 1) * PER_PROMPT, len(order)))
         system, messages = prompts.quiz_messages("detection", name, "\n".join(f"Example {i}: {texts[j]}" for i, j in enumerate(idx)))
         cid = f"q{name_src[0]}-{c}-{SIDES[side]}-{k}"
-        out.append((cid, claude_batch.params(SCORER, system, messages, prompts.ANSWERS_SCHEMA, max_tokens=CAPS["quiz"])))
+        out.append((cid, claude_batch.params(SCORER, system, messages, prompts.ANSWERS_SCHEMA, max_tokens=max_tokens)))
         key[cid] = [{"doc_id": windows[order[j]][0]["doc_id"], "start": windows[order[j]][0]["start"], "fires": windows[order[j]][1]} for j in idx]
     return out, key
 
@@ -179,6 +181,66 @@ def recover():
 
 
 # ---- stages ----
+def load_names():
+    names, name_out = {}, {}
+    for cid, o in saved("names").items():
+        purpose, c, _, _ = cid.split("-")
+        names.setdefault(int(c), {})[purpose[len("name"):]] = (o["answer"] or {}).get("explanation")
+        name_out[cid] = (o["usage"] or {}).get("output_tokens", CAPS["name"])
+    return names, name_out
+
+
+def build_quiz(cs, ex, names, name_out, max_tokens=CAPS["quiz"]):
+    """Quiz (G49): every available name on every testable side; input bounds as F7b."""
+    quiz, key = [], {}
+    for c in cs:
+        for side in SIDES:
+            if ex[c]["quiz_firing"][side] is None or ex[c]["quiz_nonfiring"][side] is None:
+                continue
+            for src in SIDES:
+                if names.get(c, {}).get(src):
+                    r, k = quiz_requests(c, ex[c], side, src, names[c][src], max_tokens)
+                    quiz += r
+                    key.update(k)
+    rng = np.random.default_rng([config.SEED, 47, 200])
+    sample = [quiz[i] for i in rng.choice(len(quiz), size=min(200, len(quiz)), replace=False)]
+    counted = count_inputs([(f"sample_{cid}", p) for cid, p in sample])  # F7b: 200 seeded prompts, names included
+    base_q = max(counted[f"sample_{cid}"] for cid, _ in sample)
+    longest_name = max(name_out.values())
+    bounds = {cid: base_q + longest_name + SLACK_TOKENS for cid, _ in quiz}
+    return quiz, key, bounds
+
+
+def quiz_outcomes():
+    """First answers (quiz_0 ...), with a G53 re-sent answer replacing a failed one."""
+    out = {}
+    for path in sorted(OUT.glob("outcomes_quiz_[0-9]*.json")):
+        out.update(json.loads(path.read_text()))
+    for cid, o in (saved("quiz_resend") or {}).items():
+        if out.get(cid, {}).get("status") != "ok":
+            out[cid] = o
+    return out
+
+
+def resend():
+    """G53: the quiz prompts that stopped at the 200-token cap, rebuilt identically with a 1,000-token cap."""
+    recover()
+    if saved("quiz_resend") is not None:
+        return analyze()
+    cs = [v["concept"] for v in concepts()]
+    ex = {c: examples(c) for c in cs}
+    names, name_out = load_names()
+    quiz, key, bounds = build_quiz(cs, ex, names, name_out, max_tokens=RESEND_CAP)
+    saved_key = json.loads((OUT / "quiz_key.json").read_text())
+    if key != saved_key:
+        raise SystemExit("rebuilt quiz key differs from the saved one; nothing sent (G53)")
+    first = quiz_outcomes()
+    todo = [(cid, p) for cid, p in quiz if first[cid]["status"] == "max_tokens"]
+    print(f"G53: {len(todo)} prompts to re-send", flush=True)
+    send(todo, "quiz_resend", bounds)
+    analyze()
+
+
 def run():
     OUT.mkdir(parents=True, exist_ok=True)
     recover()
@@ -191,31 +253,10 @@ def run():
     if saved("names") is None:
         counts = count_inputs(name_reqs)
         send(name_reqs, "names", counts)
-    outcomes = saved("names")
-    names, name_out = {}, {}
-    for cid, o in outcomes.items():
-        purpose, c, _, _ = cid.split("-")
-        names.setdefault(int(c), {})[purpose[len("name"):]] = (o["answer"] or {}).get("explanation")
-        name_out[cid] = (o["usage"] or {}).get("output_tokens", CAPS["name"])
+    names, name_out = load_names()
     (OUT / "names.json").write_text(json.dumps(names, indent=1, ensure_ascii=False))
 
-    # Quiz (G49): every available name on every testable side; bounds as F7b
-    quiz, key = [], {}
-    for c in cs:
-        for side in SIDES:
-            if ex[c]["quiz_firing"][side] is None or ex[c]["quiz_nonfiring"][side] is None:
-                continue
-            for src in SIDES:
-                if names.get(c, {}).get(src):
-                    r, k = quiz_requests(c, ex[c], side, src, names[c][src])
-                    quiz += r
-                    key.update(k)
-    rng = np.random.default_rng([config.SEED, 47, 200])
-    sample = [quiz[i] for i in rng.choice(len(quiz), size=min(200, len(quiz)), replace=False)]
-    counted = count_inputs([(f"sample_{cid}", p) for cid, p in sample])  # F7b: 200 seeded prompts, names included
-    base_q = max(counted[f"sample_{cid}"] for cid, _ in sample)
-    longest_name = max(name_out.values())
-    bounds = {cid: base_q + longest_name + SLACK_TOKENS for cid, _ in quiz}
+    quiz, key, bounds = build_quiz(cs, ex, names, name_out)
     for i in range(0, len(quiz), QUIZ_CHUNK):
         tag = f"quiz_{i // QUIZ_CHUNK}"
         if saved(tag) is None:
@@ -237,9 +278,7 @@ def analyze():
     info = {v["concept"]: v for v in concepts()}
     names = {int(c): v for c, v in json.loads((OUT / "names.json").read_text()).items()}
     key = json.loads((OUT / "quiz_key.json").read_text())
-    outcomes = {}
-    for path in sorted(OUT.glob("outcomes_quiz_*.json")):
-        outcomes.update(json.loads(path.read_text()))
+    outcomes = quiz_outcomes()
     rows = {}
     for cid, windows in key.items():
         o = outcomes.get(cid, {"status": "missing", "answer": None})
@@ -279,7 +318,9 @@ def analyze():
                "judge_note": "unvalidated (Exp 1 N10 hand labels skipped); not used for the agree flag (G50)", "concepts": per}
     (settings.RESULTS / f"{RUN}_moved_summary.json").write_text(json.dumps(summary, indent=1, ensure_ascii=False))
     md = [f"# Exp 2: names of the concepts that moved (design.md G47-G52)\n\nSpent ${summary['spent_usd']:.2f} of the ${LIMIT_USD:.0f} limit. "
-          f"Agree = both cross gaps ≤ {AGREE_GAP} (G50). Judge unvalidated (G50).\n\n| group | concepts | scored | agree share | mean gap on Dolma | mean gap on rollouts | judge same (true / control) |\n|---|---|---|---|---|---|---|\n"]
+          f"Agree = both cross gaps ≤ {AGREE_GAP} (G50). Judge unvalidated (G50). "
+          f"Quiz prompts re-sent at a 1,000-token cap (G53): {len(saved('quiz_resend') or {})}, of which "
+          f"{sum(o['status'] == 'ok' for o in (saved('quiz_resend') or {}).values())} answered.\n\n| group | concepts | scored | agree share | mean gap on Dolma | mean gap on rollouts | judge same (true / control) |\n|---|---|---|---|---|---|---|\n"]
     for k, g in groups.items():
         md.append(f"| {k} | {g['concepts']} | {g['scored']} | {g['agree_share']} | {g['mean_gap_on_dolma']} | {g['mean_gap_on_rollouts']} | {g['judge_same_true']} / {g['judge_same_control']} |\n")
     md.append("\n| concept | kind | set | rank | ln ratio | Dolma name | rollout name | D name on D | R name on D | R name on R | D name on R | agree | judge |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|\n")
@@ -294,7 +335,7 @@ def analyze():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("stage", choices=["run", "analyze"])
+    parser.add_argument("stage", choices=["run", "resend", "analyze"])
     args = parser.parse_args()
-    run() if args.stage == "run" else analyze()
+    {"run": run, "resend": resend, "analyze": analyze}[args.stage]()
     sys.exit(0)

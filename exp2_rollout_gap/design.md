@@ -87,6 +87,13 @@ Pilot findings, `pilot_post` (2026-11-01, job 27517516, L40S; `results/pilot_pos
 - Content by eye: mostly user-prompt-like requests, code, and garbled multilingual text; no chat scaffolding (`<|im_start|>` never generated).
 - Check 6: Spearman 0.9246 at 154 V docs (base pilot: 0.9357 at 193).
 
+Full run findings, `full_post` (2026-11-01, finisher 27521192 and upload job 27575096; `results/full_post_*`, `results/full_fimcheck_*`).
+- G16 doc counts: 7,985 / 7,985 / 4,376 / 3,054 / 2,386 (whole doc, windows 0-3), against `full/`'s 9,753 / 9,753 / 6,121 / 4,580 / 3,389.
+- Δ vs V (G17, whole doc): stage1 +0.0312 [0.0215, 0.0357], main −0.0136 [−0.0231, −0.0096], sft −0.0338 [−0.0488, −0.0355], dpo −0.0339 [−0.0447, −0.0319], instruct −0.0268 [−0.0390, −0.0259]; no-loop versions within 0.0035 of these. sft's basic interval excludes its Δ (bootstrap bias 0.0084, largest of all sets), as G17 allows.
+- Empty (G3): sft 575, dpo 1,526, instruct 1,054 of 10,000; none from the G34 drop; 0 special ids in the SAE input (generated: 365 / 155 / 165). Loops (G14): sft 1,147 / 7,800 scored, dpo 489 / 6,960, instruct 508 / 7,391.
+- G35: main Δ −0.0122 [−0.0210, −0.0083] published, −0.0121 [−0.0208, −0.0082] after the drop; main_no_loops −0.0122 → −0.0120. 68 of the 70 rollouts changed length; one (`main/00007/011`) dropped below 512 tokens, so window 2 has 4,579 docs and its G16 draw changes for every set. V and stage1 whole-doc slopes and Δ reproduce to every digit; only their window-2 entries differ. The 9,921 rollouts without special ids got identical activations. Loop flags unchanged (238).
+- Upload (G37): Space commit 1957e86f, 37 files added, app.js / index.html / style.css changed, nothing removed. The hash check flagged `.gitattributes`: the Hub appended 36 LFS lines, one per new figure, and changed no existing line (diff of 153499c7 vs 1957e86f). The first attempt (finisher) failed with HTTP 401 before any commit: Exp 1's config sets HF_HOME to the pool cache, which holds no token; s08 now reads `~/.cache/huggingface/token`.
+
 ## Qualitative results (written 2026-10-21, before the full run finished)
 | # | Choice | Reason | Alternatives rejected | Source |
 |---|---|---|---|---|

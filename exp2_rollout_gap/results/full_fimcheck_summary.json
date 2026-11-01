@@ -1,0 +1,221 @@
+{
+  "note": "Published Exp 2 main results include 108 FIM ids in 70 of 10,000 rollouts (design.md G34, G35)",
+  "docs_per_scope": {
+    "published": {
+      "doc": 9753,
+      "0": 9753,
+      "1": 6121,
+      "2": 4580,
+      "3": 3389
+    },
+    "after_drop": {
+      "doc": 9753,
+      "0": 9753,
+      "1": 6121,
+      "2": 4579,
+      "3": 3389
+    },
+    "equal": false
+  },
+  "delta_vs_V": {
+    "stage1": {
+      "published": {
+        "delta": 0.0326,
+        "ci95_basic": [
+          0.0241,
+          0.0373
+        ],
+        "bootstrap_bias": 0.002
+      },
+      "after_drop": {
+        "delta": 0.0326,
+        "ci95_basic": [
+          0.0241,
+          0.0373
+        ],
+        "bootstrap_bias": 0.002
+      }
+    },
+    "stage1_no_loops": {
+      "published": {
+        "delta": 0.0342,
+        "ci95_basic": [
+          0.0254,
+          0.0389
+        ],
+        "bootstrap_bias": 0.0022
+      },
+      "after_drop": {
+        "delta": 0.0342,
+        "ci95_basic": [
+          0.0254,
+          0.0389
+        ],
+        "bootstrap_bias": 0.0022
+      }
+    },
+    "main": {
+      "published": {
+        "delta": -0.0122,
+        "ci95_basic": [
+          -0.021,
+          -0.0083
+        ],
+        "bootstrap_bias": 0.0023
+      },
+      "after_drop": {
+        "delta": -0.0121,
+        "ci95_basic": [
+          -0.0208,
+          -0.0082
+        ],
+        "bootstrap_bias": 0.0023
+      }
+    },
+    "main_no_loops": {
+      "published": {
+        "delta": -0.0122,
+        "ci95_basic": [
+          -0.0204,
+          -0.0084
+        ],
+        "bootstrap_bias": 0.0021
+      },
+      "after_drop": {
+        "delta": -0.012,
+        "ci95_basic": [
+          -0.0203,
+          -0.0083
+        ],
+        "bootstrap_bias": 0.0021
+      }
+    }
+  },
+  "slopes": {
+    "V": {
+      "published": {
+        "docs": 9753,
+        "slope_chi": 1.0028,
+        "slope_chi_ci95_basic": [
+          0.9935,
+          1.0028
+        ],
+        "bootstrap_bias": 0.0046,
+        "slope_fire_share": 1.004
+      },
+      "after_drop": {
+        "docs": 9753,
+        "slope_chi": 1.0028,
+        "slope_chi_ci95_basic": [
+          0.9935,
+          1.0028
+        ],
+        "bootstrap_bias": 0.0046,
+        "slope_fire_share": 1.004
+      }
+    },
+    "stage1": {
+      "published": {
+        "docs": 9753,
+        "slope_chi": 1.0354,
+        "slope_chi_ci95_basic": [
+          1.0239,
+          1.0335
+        ],
+        "bootstrap_bias": 0.0066,
+        "slope_fire_share": 1.0257
+      },
+      "after_drop": {
+        "docs": 9753,
+        "slope_chi": 1.0354,
+        "slope_chi_ci95_basic": [
+          1.0239,
+          1.0335
+        ],
+        "bootstrap_bias": 0.0066,
+        "slope_fire_share": 1.0257
+      }
+    },
+    "stage1_no_loops": {
+      "published": {
+        "docs": 9753,
+        "slope_chi": 1.037,
+        "slope_chi_ci95_basic": [
+          1.0255,
+          1.0348
+        ],
+        "bootstrap_bias": 0.0068,
+        "slope_fire_share": 1.027
+      },
+      "after_drop": {
+        "docs": 9753,
+        "slope_chi": 1.037,
+        "slope_chi_ci95_basic": [
+          1.0255,
+          1.0348
+        ],
+        "bootstrap_bias": 0.0068,
+        "slope_fire_share": 1.027
+      }
+    },
+    "main": {
+      "published": {
+        "docs": 9753,
+        "slope_chi": 0.9906,
+        "slope_chi_ci95_basic": [
+          0.9794,
+          0.988
+        ],
+        "bootstrap_bias": 0.0069,
+        "slope_fire_share": 0.9596
+      },
+      "after_drop": {
+        "docs": 9753,
+        "slope_chi": 0.9907,
+        "slope_chi_ci95_basic": [
+          0.9795,
+          0.9881
+        ],
+        "bootstrap_bias": 0.0069,
+        "slope_fire_share": 0.9601
+      }
+    },
+    "main_no_loops": {
+      "published": {
+        "docs": 9753,
+        "slope_chi": 0.9906,
+        "slope_chi_ci95_basic": [
+          0.9798,
+          0.9877
+        ],
+        "bootstrap_bias": 0.0067,
+        "slope_fire_share": 0.9595
+      },
+      "after_drop": {
+        "docs": 9753,
+        "slope_chi": 0.9908,
+        "slope_chi_ci95_basic": [
+          0.98,
+          0.9878
+        ],
+        "bootstrap_bias": 0.0067,
+        "slope_fire_share": 0.96
+      }
+    }
+  },
+  "V_and_stage1_reproduce": false,
+  "main_rollouts_with_special_ids": 70,
+  "main_rollouts_missing_after_drop": 0,
+  "main_rollouts_length_changed": 68,
+  "main_rollouts_crossing_a_scope_start": [
+    "main/00007/011"
+  ],
+  "loop_flags": {
+    "published": 238,
+    "after_drop": 238,
+    "changed": []
+  },
+  "unchanged_rollouts_identical_acts": 9921,
+  "unchanged_rollouts_different_acts": 0,
+  "max_abs_doc_mean_diff_where_different": 0.0
+}

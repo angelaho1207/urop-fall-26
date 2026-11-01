@@ -1,0 +1,31 @@
+{
+  "run": "full_post",
+  "generator": "sft",
+  "encoder_revision": "a81bae42db3975be1671e27b9c9a56da1a9f980f",
+  "rollouts_encoded": 9425,
+  "tokens": 4656440,
+  "mean_active_per_token": 100.26,
+  "retokenized_different": 4232,
+  "drop_special_ids": true,
+  "empty_generated": 575,
+  "empty_after_special_drop": 0,
+  "special_ids_generated": 365,
+  "rollouts_with_special_ids": 115,
+  "special_ids_in_sae_input": 0,
+  "special_ids_generated_by_id": {
+    "100258": 1,
+    "100259": 1,
+    "100261": 1,
+    "100264": 160,
+    "100266": 88,
+    "100267": 86,
+    "100268": 9,
+    "100269": 13,
+    "100270": 1,
+    "100271": 2,
+    "100272": 1,
+    "100273": 1,
+    "100277": 1
+  },
+  "seconds_per_rollout_this_session": 0.065
+}

@@ -1,0 +1,27 @@
+{
+  "run": "full_post",
+  "generator": "dpo",
+  "encoder_revision": "a81bae42db3975be1671e27b9c9a56da1a9f980f",
+  "rollouts_encoded": 8474,
+  "tokens": 4574984,
+  "mean_active_per_token": 111.37,
+  "retokenized_different": 4539,
+  "drop_special_ids": true,
+  "empty_generated": 1526,
+  "empty_after_special_drop": 0,
+  "special_ids_generated": 155,
+  "rollouts_with_special_ids": 84,
+  "special_ids_in_sae_input": 0,
+  "special_ids_generated_by_id": {
+    "100259": 1,
+    "100262": 1,
+    "100264": 14,
+    "100266": 62,
+    "100267": 62,
+    "100268": 5,
+    "100269": 8,
+    "100273": 1,
+    "100276": 1
+  },
+  "seconds_per_rollout_this_session": 0.067
+}

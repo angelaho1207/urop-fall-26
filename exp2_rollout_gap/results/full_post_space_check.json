@@ -1,0 +1,68 @@
+{
+  "repo": "angelaho1207/olmo3-concept-coverage",
+  "uploaded_patterns": [
+    "app.js",
+    "index.html",
+    "style.css",
+    "data/rollouts_post.json",
+    "data/exp2/full_post_*"
+  ],
+  "git_diff_removed_lines": 0,
+  "local_new_files": 37,
+  "before": {
+    "commit": "153499c723d6ad44f6811268f5c4d26a1fa38a6d",
+    "files": 275
+  },
+  "after": {
+    "commit": "1957e86fb06581ed3baa52cef1b053751d55bd6b",
+    "files": 312,
+    "upload_commit": "https://huggingface.co/spaces/angelaho1207/olmo3-concept-coverage/commit/1957e86fb06581ed3baa52cef1b053751d55bd6b"
+  },
+  "changed_existing": [
+    ".gitattributes",
+    "app.js",
+    "index.html",
+    "style.css"
+  ],
+  "removed": [],
+  "added": [
+    "data/exp2/full_post_dpo_animation.gif",
+    "data/exp2/full_post_dpo_doc.png",
+    "data/exp2/full_post_dpo_hist_animation.gif",
+    "data/exp2/full_post_dpo_hist_doc.png",
+    "data/exp2/full_post_dpo_hist_w0.png",
+    "data/exp2/full_post_dpo_hist_w1.png",
+    "data/exp2/full_post_dpo_hist_w2.png",
+    "data/exp2/full_post_dpo_hist_w3.png",
+    "data/exp2/full_post_dpo_w0.png",
+    "data/exp2/full_post_dpo_w1.png",
+    "data/exp2/full_post_dpo_w2.png",
+    "data/exp2/full_post_dpo_w3.png",
+    "data/exp2/full_post_instruct_animation.gif",
+    "data/exp2/full_post_instruct_doc.png",
+    "data/exp2/full_post_instruct_hist_animation.gif",
+    "data/exp2/full_post_instruct_hist_doc.png",
+    "data/exp2/full_post_instruct_hist_w0.png",
+    "data/exp2/full_post_instruct_hist_w1.png",
+    "data/exp2/full_post_instruct_hist_w2.png",
+    "data/exp2/full_post_instruct_hist_w3.png",
+    "data/exp2/full_post_instruct_w0.png",
+    "data/exp2/full_post_instruct_w1.png",
+    "data/exp2/full_post_instruct_w2.png",
+    "data/exp2/full_post_instruct_w3.png",
+    "data/exp2/full_post_sft_animation.gif",
+    "data/exp2/full_post_sft_doc.png",
+    "data/exp2/full_post_sft_hist_animation.gif",
+    "data/exp2/full_post_sft_hist_doc.png",
+    "data/exp2/full_post_sft_hist_w0.png",
+    "data/exp2/full_post_sft_hist_w1.png",
+    "data/exp2/full_post_sft_hist_w2.png",
+    "data/exp2/full_post_sft_hist_w3.png",
+    "data/exp2/full_post_sft_w0.png",
+    "data/exp2/full_post_sft_w1.png",
+    "data/exp2/full_post_sft_w2.png",
+    "data/exp2/full_post_sft_w3.png",
+    "data/rollouts_post.json"
+  ],
+  "result": "existing files changed or removed: ['.gitattributes']"
+}

@@ -1,0 +1,31 @@
+{
+  "run": "full_post",
+  "generator": "dpo",
+  "repo": "allenai/Olmo-3-7B-Instruct-DPO",
+  "revision": "main",
+  "stop_ids": [
+    100265,
+    100257
+  ],
+  "commit": "b33130b7de49f0c2553b5c2b3bc8409ff3e627d1",
+  "rollouts": 10000,
+  "parts_done": 20,
+  "ended_by_eos_share": 0.1352,
+  "stop_id_counts": {
+    "100265": 5713,
+    "-1": 2935,
+    "100257": 1352
+  },
+  "empty_rollouts": 1526,
+  "length_quantiles": {
+    "0.1": 0,
+    "0.25": 28,
+    "0.5": 310,
+    "0.75": 1024,
+    "0.9": 1024
+  },
+  "mean_length": 458.1,
+  "tokens_per_second_by_gpu": {
+    "NVIDIA L40S": 230.3
+  }
+}

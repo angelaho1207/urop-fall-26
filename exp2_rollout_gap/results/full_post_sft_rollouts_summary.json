@@ -1,0 +1,31 @@
+{
+  "run": "full_post",
+  "generator": "sft",
+  "repo": "allenai/Olmo-3-7B-Instruct-SFT",
+  "revision": "main",
+  "stop_ids": [
+    100265,
+    100257
+  ],
+  "commit": "e1452fc572d51966ff4aaeb25118b891eb93e549",
+  "rollouts": 10000,
+  "parts_done": 20,
+  "ended_by_eos_share": 0.2589,
+  "stop_id_counts": {
+    "100265": 4559,
+    "-1": 2852,
+    "100257": 2589
+  },
+  "empty_rollouts": 575,
+  "length_quantiles": {
+    "0.1": 10,
+    "0.25": 80,
+    "0.5": 308,
+    "0.75": 1024,
+    "0.9": 1024
+  },
+  "mean_length": 466.6,
+  "tokens_per_second_by_gpu": {
+    "NVIDIA L40S": 237.5
+  }
+}

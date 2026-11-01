@@ -15,6 +15,7 @@ import time
 
 import settings  # first: puts Exp 1 on the path and sets HF_HOME
 import config
+import anthropic
 import numpy as np
 
 import claude_batch  # Exp 1
@@ -123,8 +124,8 @@ def count_inputs(requests):
                 cache[cid] = api.messages.count_tokens(model=p["model"], system=p["system"], messages=p["messages"],
                                                        output_config={"format": p["output_config"]["format"]}).input_tokens
                 break
-            except Exception:  # rate limit or transient error
-                time.sleep(2 ** attempt)
+            except (anthropic.RateLimitError, anthropic.APIConnectionError, anthropic.InternalServerError):
+                time.sleep(2 ** attempt)  # transient; anything else (e.g. an invalid key) stops the run
         else:
             raise RuntimeError(f"token count failed for {cid}")
     path.write_text(json.dumps(cache))

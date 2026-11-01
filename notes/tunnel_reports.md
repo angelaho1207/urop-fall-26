@@ -104,3 +104,11 @@ Windows job 27582717 finished 16:20 (149 s). Final selection (`results/full_post
 - Final estimate: 122 names ≈ $1.34 + 4,280 quiz prompts ≈ $6.98 + 122 judge requests ≈ $0.18 = ≈ $8.5 (hard stop $15).
 
 Labels job (27582718 / 27582719) is next in the queue.
+
+## 2026-11-01 16:30, Exp 2 moved-concepts naming: labels job stopped, API key rejected; $0 spent
+
+Labels job 27582718 started 16:2x and stopped at the first free token-count call: the API answers 401 `invalid x-api-key` (checked again from the login node, request `req_011Cgcv9NuFWfb5dKncygiye`). `~/.anthropic_key` exists (chmod 600, 109 bytes, last changed 2026-10-18 01:48), so the key itself was revoked or expired. Nothing was sent: `DATA/full_post/labels/moved/` is empty and no ledger exists, so $0 spent. The windows (s12) are done and stay valid.
+
+Fix in s13 (committed): the token counter now retries only rate-limit, connection and server errors; any other error (such as an invalid key) stops at once instead of retrying.
+
+Needed from Angela: a valid key in `~/.anthropic_key` (chmod 600). Then rerun the labels job: `cd exp2_rollout_gap && sbatch -p mit_normal sbatch/moved_labels.sbatch` (or tell tunnel Claude to submit it). Same $15 guard.

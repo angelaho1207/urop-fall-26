@@ -194,3 +194,21 @@ Threshold 3.816 nats (V's 99th percentile; V median 2.21).
 G60 (committed before code): 20 seeds; every set (V, 5 generators, their no-loop versions) drawn at random without the flag to 5,751 docs, then the same pipeline as noflag (`s15_garbled.measure`, refactored out of G58's inline code). One extra task reruns `measure()` on G58's docs and must reproduce the published noflag numbers exactly. Reported per set: bias-corrected Δ, raw Δ, excess dispersion sd, median ln ratio; full_post, noflag, control mean ± sd [min, max]; count effect = control mean − full_post, filter effect = noflag − control mean (in control sd).
 
 Jobs: array 27595867 (tasks 0-19 seeds, task 20 check; `mit_normal`, 4 CPUs, 16 GB, 1 h), summary 27595869 after the array (`afterany`). Mail on END/FAIL for both. Expected about 5-10 min per task, $0.
+
+## 2026-11-01 18:33, Exp 2 doc-count control (G60): results
+
+Array 27595867 (20 seeds + check) and summary 27595869 completed. Check: `measure()` reproduces the published noflag numbers (max difference 0.0). Full tables: `exp2_rollout_gap/results/full_post_countctl_summary.md`; findings under G60 in design.md.
+
+Bias-corrected Δ vs V:
+
+| set | full_post | noflag | control (20 draws, 5,751 docs) mean ± sd [min, max] | count effect | filter effect (control sd) |
+|---|---|---|---|---|---|
+| stage1 | +0.0291 | +0.0136 | +0.0315 ± 0.0035 [+0.0251, +0.0367] | +0.0024 | −0.0179 (−5.1) |
+| main | −0.0160 | −0.0309 | −0.0159 ± 0.0033 [−0.0230, −0.0096] | +0.0001 | −0.0150 (−4.5) |
+| sft | −0.0422 | −0.0438 | −0.0403 ± 0.0023 [−0.0446, −0.0362] | +0.0019 | −0.0035 (−1.6) |
+| dpo | −0.0382 | −0.0421 | −0.0371 ± 0.0027 [−0.0436, −0.0324] | +0.0011 | −0.0050 (−1.9) |
+| instruct | −0.0326 | −0.0412 | −0.0312 ± 0.0034 [−0.0384, −0.0257] | +0.0014 | −0.0100 (−2.9) |
+
+- The count barely moves Δ (≤ +0.002). The filter lowers Δ in every set. For stage1, main and instruct the noflag value lies outside all 20 draws; for sft and dpo it lies inside.
+- Excess dispersion sd: filter effects −0.024 to +0.021 against values of 0.51-1.33. Median ln ratio: filter effects within ±0.015.
+- The sd units assume noflag's draw spread matches the control's; noflag draws from a smaller pool, so they are approximate.

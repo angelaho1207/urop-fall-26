@@ -1,0 +1,257 @@
+{
+ "docs": 5751,
+ "seeds_done": 20,
+ "seeds_planned": 20,
+ "sets": {
+  "stage1": {
+   "delta": {
+    "full_post": 0.0312,
+    "noflag": 0.0157,
+    "control_mean": 0.0343,
+    "control_sd": 0.0035,
+    "control_min": 0.0278,
+    "control_max": 0.0398,
+    "count_effect": 0.0031,
+    "filter_effect": -0.0186,
+    "filter_effect_in_sd": -5.4,
+    "noflag_outside_control_range": true
+   },
+   "delta_bias_corrected": {
+    "full_post": 0.0291,
+    "noflag": 0.0136,
+    "control_mean": 0.0315,
+    "control_sd": 0.0035,
+    "control_min": 0.0251,
+    "control_max": 0.0367,
+    "count_effect": 0.0024,
+    "filter_effect": -0.0179,
+    "filter_effect_in_sd": -5.1,
+    "noflag_outside_control_range": true
+   },
+   "excess_dispersion_sd": {
+    "full_post": 0.5264,
+    "noflag": 0.5057,
+    "control_mean": 0.5294,
+    "control_sd": 0.0072,
+    "control_min": 0.5172,
+    "control_max": 0.5411,
+    "count_effect": 0.003,
+    "filter_effect": -0.0237,
+    "filter_effect_in_sd": -3.3,
+    "noflag_outside_control_range": true
+   },
+   "median_ln_ratio": {
+    "full_post": -0.1198,
+    "noflag": -0.1087,
+    "control_mean": -0.1233,
+    "control_sd": 0.0022,
+    "control_min": -0.1273,
+    "control_max": -0.1196,
+    "count_effect": -0.0035,
+    "filter_effect": 0.0146,
+    "filter_effect_in_sd": 6.7,
+    "noflag_outside_control_range": true
+   }
+  },
+  "main": {
+   "delta": {
+    "full_post": -0.0136,
+    "noflag": -0.028,
+    "control_mean": -0.0126,
+    "control_sd": 0.0033,
+    "control_min": -0.0196,
+    "control_max": -0.0064,
+    "count_effect": 0.001,
+    "filter_effect": -0.0154,
+    "filter_effect_in_sd": -4.7,
+    "noflag_outside_control_range": true
+   },
+   "delta_bias_corrected": {
+    "full_post": -0.016,
+    "noflag": -0.0309,
+    "control_mean": -0.0159,
+    "control_sd": 0.0033,
+    "control_min": -0.023,
+    "control_max": -0.0096,
+    "count_effect": 0.0001,
+    "filter_effect": -0.015,
+    "filter_effect_in_sd": -4.5,
+    "noflag_outside_control_range": true
+   },
+   "excess_dispersion_sd": {
+    "full_post": 0.8335,
+    "noflag": 0.8469,
+    "control_mean": 0.8357,
+    "control_sd": 0.007,
+    "control_min": 0.8219,
+    "control_max": 0.8481,
+    "count_effect": 0.0022,
+    "filter_effect": 0.0112,
+    "filter_effect_in_sd": 1.6,
+    "noflag_outside_control_range": false
+   },
+   "median_ln_ratio": {
+    "full_post": -0.2472,
+    "noflag": -0.2645,
+    "control_mean": -0.2498,
+    "control_sd": 0.0047,
+    "control_min": -0.2576,
+    "control_max": -0.2432,
+    "count_effect": -0.0026,
+    "filter_effect": -0.0147,
+    "filter_effect_in_sd": -3.1,
+    "noflag_outside_control_range": true
+   }
+  },
+  "sft": {
+   "delta": {
+    "full_post": -0.0338,
+    "noflag": -0.0333,
+    "control_mean": -0.0299,
+    "control_sd": 0.0023,
+    "control_min": -0.0343,
+    "control_max": -0.0259,
+    "count_effect": 0.0039,
+    "filter_effect": -0.0034,
+    "filter_effect_in_sd": -1.5,
+    "noflag_outside_control_range": false
+   },
+   "delta_bias_corrected": {
+    "full_post": -0.0422,
+    "noflag": -0.0438,
+    "control_mean": -0.0403,
+    "control_sd": 0.0023,
+    "control_min": -0.0446,
+    "control_max": -0.0362,
+    "count_effect": 0.0019,
+    "filter_effect": -0.0035,
+    "filter_effect_in_sd": -1.6,
+    "noflag_outside_control_range": false
+   },
+   "excess_dispersion_sd": {
+    "full_post": 1.3143,
+    "noflag": 1.334,
+    "control_mean": 1.327,
+    "control_sd": 0.0065,
+    "control_min": 1.3087,
+    "control_max": 1.3356,
+    "count_effect": 0.0127,
+    "filter_effect": 0.007,
+    "filter_effect_in_sd": 1.1,
+    "noflag_outside_control_range": false
+   },
+   "median_ln_ratio": {
+    "full_post": -0.6698,
+    "noflag": -0.684,
+    "control_mean": -0.6729,
+    "control_sd": 0.0057,
+    "control_min": -0.6804,
+    "control_max": -0.654,
+    "count_effect": -0.0031,
+    "filter_effect": -0.0111,
+    "filter_effect_in_sd": -1.9,
+    "noflag_outside_control_range": true
+   }
+  },
+  "dpo": {
+   "delta": {
+    "full_post": -0.0339,
+    "noflag": -0.0383,
+    "control_mean": -0.0321,
+    "control_sd": 0.0027,
+    "control_min": -0.0389,
+    "control_max": -0.0275,
+    "count_effect": 0.0018,
+    "filter_effect": -0.0062,
+    "filter_effect_in_sd": -2.3,
+    "noflag_outside_control_range": false
+   },
+   "delta_bias_corrected": {
+    "full_post": -0.0382,
+    "noflag": -0.0421,
+    "control_mean": -0.0371,
+    "control_sd": 0.0027,
+    "control_min": -0.0436,
+    "control_max": -0.0324,
+    "count_effect": 0.0011,
+    "filter_effect": -0.005,
+    "filter_effect_in_sd": -1.9,
+    "noflag_outside_control_range": false
+   },
+   "excess_dispersion_sd": {
+    "full_post": 1.1901,
+    "noflag": 1.2186,
+    "control_mean": 1.2002,
+    "control_sd": 0.0046,
+    "control_min": 1.1925,
+    "control_max": 1.2091,
+    "count_effect": 0.0101,
+    "filter_effect": 0.0184,
+    "filter_effect_in_sd": 4.0,
+    "noflag_outside_control_range": true
+   },
+   "median_ln_ratio": {
+    "full_post": -0.4527,
+    "noflag": -0.4457,
+    "control_mean": -0.4575,
+    "control_sd": 0.0033,
+    "control_min": -0.4623,
+    "control_max": -0.4515,
+    "count_effect": -0.0048,
+    "filter_effect": 0.0118,
+    "filter_effect_in_sd": 3.6,
+    "noflag_outside_control_range": true
+   }
+  },
+  "instruct": {
+   "delta": {
+    "full_post": -0.0268,
+    "noflag": -0.0356,
+    "control_mean": -0.024,
+    "control_sd": 0.0033,
+    "control_min": -0.0313,
+    "control_max": -0.0186,
+    "count_effect": 0.0028,
+    "filter_effect": -0.0116,
+    "filter_effect_in_sd": -3.5,
+    "noflag_outside_control_range": true
+   },
+   "delta_bias_corrected": {
+    "full_post": -0.0326,
+    "noflag": -0.0412,
+    "control_mean": -0.0312,
+    "control_sd": 0.0034,
+    "control_min": -0.0384,
+    "control_max": -0.0257,
+    "count_effect": 0.0014,
+    "filter_effect": -0.01,
+    "filter_effect_in_sd": -2.9,
+    "noflag_outside_control_range": true
+   },
+   "excess_dispersion_sd": {
+    "full_post": 1.2375,
+    "noflag": 1.2701,
+    "control_mean": 1.2495,
+    "control_sd": 0.0038,
+    "control_min": 1.2406,
+    "control_max": 1.2568,
+    "count_effect": 0.012,
+    "filter_effect": 0.0206,
+    "filter_effect_in_sd": 5.4,
+    "noflag_outside_control_range": true
+   },
+   "median_ln_ratio": {
+    "full_post": -0.4752,
+    "noflag": -0.4803,
+    "control_mean": -0.4721,
+    "control_sd": 0.0043,
+    "control_min": -0.4806,
+    "control_max": -0.463,
+    "count_effect": 0.0031,
+    "filter_effect": -0.0082,
+    "filter_effect_in_sd": -1.9,
+    "noflag_outside_control_range": false
+   }
+  }
+ }
+}

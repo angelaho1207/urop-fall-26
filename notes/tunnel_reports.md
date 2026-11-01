@@ -163,3 +163,7 @@ G53 resend (job 27590332, 17:24-17:27): 193 of 193 prompts answered (largest ans
 - Disagreements now: 670, 42804, 1902, 842, 1432, 1032. Only 670 has both gaps > 0.13 (each name wins on its own side). For 1032 the rollout name beats the Dolma name on both sides, so the G50 flag there marks a better name, not a change of meaning.
 
 Garbled check (G54-G59): 3 NLL workers running since 17:27 (27590760, 27590761 `mit_preemptable`; 27590762 `mit_normal_gpu`; L40S, 0.077 s/doc), 6 of 120 parts done, about 25 min left. Finisher 27590764 (`mit_normal`) is running and waiting; its copy 27590763 was cancelled. s15 was dry-run end to end on fake NLL values (outputs in scratch only) before submission.
+
+## 2026-11-01 17:51, Exp 2 garbled check: job status
+
+All 120 NLL parts are on disk (V and each of the 5 rollout sets: 20 of 20). The 3 workers ended without errors. Finisher 27590764 (`mit_normal`, running since 17:27) checks every 5 min, so s15 starts by about 17:56. Expected s15 run time: 10-15 min (the diagnostics job, with similar bootstrap work, took 8.7 min). Results expected around 18:10; mail on END/FAIL. No API cost.

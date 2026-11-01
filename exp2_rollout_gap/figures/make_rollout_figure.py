@@ -5,7 +5,7 @@ x = concept rank by Dolma train chi in every graph. Bands: 10th-90th percentile 
 median. Ratio panel: binned median of log(chi / chi_train) from s03's summary.
 Reads DATA/<run>/distribution.parquet and results/<run>_distribution_summary.json. Colors match space/style.css.
 Writes <run>_<generator>_<frame>.png for every frame and <run>_<generator>_animation.gif into --out.
-Run from this folder: python make_rollout_figure.py --run full [--out DIR]
+Run from this folder: python make_rollout_figure.py --run full [--out DIR] [--generators sft dpo instruct]
 """
 import argparse
 import json
@@ -21,7 +21,10 @@ from PIL import Image  # noqa: E402
 
 BG, FG, MUTED, LINE = "#fbfbfa", "#1d1d1f", "#6b6b70", "#e2e2e0"
 NULL = "#9a9a9a"
-SERIES = {"stage1": ("#2a6fb0", "rollouts, end of stage 1"), "main": ("#d1601f", "rollouts, final model")}
+SERIES = {"stage1": ("#2a6fb0", "rollouts, end of stage 1"), "main": ("#d1601f", "rollouts, final model"),
+          # G37: post-trained generators, colors as --sft, --dpo, --instruct in space/style.css
+          "sft": ("#2f8f5b", "rollouts, Instruct-SFT"), "dpo": ("#b0417a", "rollouts, Instruct-DPO"),
+          "instruct": ("#8c6d1f", "rollouts, Instruct (final)")}
 STEP = 512  # ranks per band bin
 
 plt.rcParams.update({"font.family": ["Arial", "Liberation Sans", "DejaVu Sans"], "font.size": 14, "text.color": FG,
@@ -111,12 +114,13 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--run", required=True)
     parser.add_argument("--out", default=str(Path(__file__).resolve().parent))
+    parser.add_argument("--generators", nargs="*", default=list(SERIES))  # G37
     args = parser.parse_args()
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     table = pd.read_parquet(settings.DATA / args.run / "distribution.parquet").sort_values("chi_train", ascending=False)
     summary = json.loads((settings.RESULTS / f"{args.run}_distribution_summary.json").read_text())
-    for g in [g for g in SERIES if f"chi_{g}" in table]:
+    for g in [g for g in args.generators if f"chi_{g}" in table]:
         paths = [draw(table, summary, g, frame, out) for frame in [None] + list(range(len(settings.WINDOWS)))]
         frames = [Image.open(p).convert("RGB") for p in paths]
         gif = out / f"{args.run}_{g}_animation.gif"

@@ -57,6 +57,15 @@
     <div id="rollout-hist"></div>
     <h2>Static figures and animations (for slides)</h2>
     <div id="rollout-gallery"></div>
+    <h2>Post-trained generators: Olmo-3-7B-Instruct-SFT, -DPO and Instruct</h2>
+    <p class="note">The same graphs for text written unprompted by the three post-training stages of Olmo 3 7B Instruct (separate run; design.md G30-G37). Same start token and sampler as above (temperature 1, no top-k or top-p, although these models' configs recommend 0.6 and 0.95). A rollout ends at the model's first <code>&lt;|im_end|&gt;</code> or <code>&lt;|endoftext|&gt;</code>, the two end ids in their generation configs. Special-token ids are removed before encoding, since Dolma's SAE inputs contain none. Document counts per frame are matched over Dolma V, the two base generators and the three post-trained ones, so they can be lower than above.</p>
+    <label>Rollouts from <select id="post-gen"></select></label>
+    <p id="post-stats" class="stats"></p>
+    <div id="post-plot" class="plot" style="height:860px"></div>
+    <h2>Histograms, post-trained generators</h2>
+    <div id="post-hist"></div>
+    <h2>Static figures and animations, post-trained generators</h2>
+    <div id="post-gallery"></div>
   </section>
   <section id="tab-concept" class="tab">
     <p><a href="#concepts">← all sampled concepts</a></p>

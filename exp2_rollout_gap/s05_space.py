@@ -1,8 +1,9 @@
 """Data for the Space tab "Rollouts" (design.md G10, G12): one frame for the whole doc and one per token window.
 
-Usage: python s05_space.py --run full
+Usage: python s05_space.py --run full [--generators sft dpo instruct]
 Reads DATA/<run>/distribution.parquet and results/<run>_distribution_summary.json (from s03) and Exp 1's names.
-Writes ../space/data/rollouts.json (gitignored, as Exp 1's T7).
+Writes ../space/data/rollouts.json for runs pilot and full, ../space/data/rollouts_post.json for full_post (G37)
+(gitignored, as Exp 1's T7).
 """
 import argparse
 import json
@@ -11,7 +12,8 @@ import settings  # first: puts Exp 1 on the path
 import numpy as np
 import pandas as pd
 
-OUT = settings.RESULTS.parent.parent / "space" / "data" / "rollouts.json"
+SPACE_DATA = settings.RESULTS.parent.parent / "space" / "data"
+OUT = {"pilot": "rollouts.json", "full": "rollouts.json", "full_post": "rollouts_post.json"}  # G37
 NAMES = settings.EXP1_RUN / "labels" / "faith" / "names.json"
 STEP = 512  # ranks per band bin, as in figures/make_rollout_figure.py
 
@@ -33,12 +35,14 @@ def band(values):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--run", required=True, choices=["pilot", "full"])
+    parser.add_argument("--run", required=True, choices=list(OUT))
+    parser.add_argument("--generators", nargs="*", default=None)  # G37: default, every generator in the run
     args = parser.parse_args()
+    out = SPACE_DATA / OUT[args.run]
     table = pd.read_parquet(settings.DATA / args.run / "distribution.parquet").sort_values("chi_train", ascending=False)
     table["rank"] = np.arange(1, len(table) + 1)
     summary = json.loads((settings.RESULTS / f"{args.run}_distribution_summary.json").read_text())
-    sets = ["V"] + [g for g in settings.GENERATORS if f"chi_{g}" in table]
+    sets = ["V"] + [g for g in (args.generators or settings.GENERATORS) if f"chi_{g}" in table]
 
     edges = np.array(summary["bin_edges_log_chi_train"])
     centers = np.exp((edges[:-1] + edges[1:]) / 2)
@@ -67,9 +71,9 @@ def main():
             "train": {"rank": table["rank"].to_numpy()[keep].tolist(),
                       "chi": [r4(x) for x in table["chi_train"].to_numpy()[keep]]},
             "delta": summary.get("delta_vs_V", {}), "named": named}
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(data, ensure_ascii=False))
-    print(OUT, f"{OUT.stat().st_size / 1e6:.2f} MB")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(data, ensure_ascii=False))
+    print(out, f"{out.stat().st_size / 1e6:.2f} MB")
 
 
 if __name__ == "__main__":

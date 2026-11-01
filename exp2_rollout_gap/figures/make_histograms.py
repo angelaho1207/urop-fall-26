@@ -4,7 +4,7 @@ then each token window), three panels over the same sets as the rank graphs (Dol
 (c) per-concept ln(chi / chi_train) over the slope concepts (G13), with each set's median.
 Reads DATA/<run>/distribution.parquet (or --table) and results/<run>_distribution_summary.json.
 Writes <run>_<generator>_hist_<frame>.png for every frame and <run>_<generator>_hist_animation.gif into --out.
-Run from this folder: python make_histograms.py --run full [--out DIR] [--table PATH]
+Run from this folder: python make_histograms.py --run full [--out DIR] [--table PATH] [--generators sft dpo instruct]
 """
 import argparse
 import json
@@ -79,6 +79,7 @@ def main():
     parser.add_argument("--run", required=True)
     parser.add_argument("--out", default=str(Path(__file__).resolve().parent))
     parser.add_argument("--table", default=None)  # a local copy of distribution.parquet
+    parser.add_argument("--generators", nargs="*", default=list(SERIES))  # G37
     args = parser.parse_args()
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -88,7 +89,7 @@ def main():
     # G28 (a): one set of linear bins for every set and frame, so the GIF frames share an x axis
     chi_columns = [c for c in table if c.startswith("chi_") and "no_loops" not in c]
     linear_bins = np.linspace(0, table[chi_columns].to_numpy().max(), N_LINEAR_BINS + 1)
-    for g in [g for g in SERIES if f"chi_{g}" in table]:
+    for g in [g for g in args.generators if f"chi_{g}" in table]:
         paths = [draw(table, summary, g, frame, linear_bins, out) for frame in frames]
         images = [Image.open(p).convert("RGB") for p in paths]
         gif = out / f"{args.run}_{g}_hist_animation.gif"

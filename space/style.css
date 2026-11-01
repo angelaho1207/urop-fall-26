@@ -50,3 +50,9 @@ tbody tr:hover { background: rgba(var(--hl), 0.08); }
 button { background: var(--card); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
 select { background: var(--card); color: var(--fg); border: 1px solid var(--line); border-radius: 4px; padding: 2px 6px; }
 a { color: var(--accent); }
+/* Exp 2 post-trained generators (exp2_rollout_gap/design.md G37) */
+:root { --sft: #2f8f5b; --dpo: #b0417a; --instruct: #8c6d1f; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --sft: #5cc28a; --dpo: #e07aae; --instruct: #c9a54a; }
+}
+:root[data-theme="dark"] { --sft: #5cc28a; --dpo: #e07aae; --instruct: #c9a54a; }

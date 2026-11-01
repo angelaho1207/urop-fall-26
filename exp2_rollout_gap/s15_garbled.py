@@ -93,8 +93,21 @@ def recompute(drop):
     eligible = {name: np.sort(n.index[~n.index.isin(list(drop[name.replace("_no_loops", "")]))].to_numpy()) for name, n in all_lengths.items()}
     n = min(len(e) for e in eligible.values())
     chosen = {name: np.random.default_rng([0, 58, 9, j]).choice(e, size=n, replace=False) for j, (name, e) in enumerate(eligible.items())}
+    summary, chis = measure(c, paths, chosen)
+    summary = {"run": NOFLAG, "docs": n, "available": {k: len(e) for k, e in eligible.items()}, **summary}
+    out_dir = settings.DATA / NOFLAG
+    out_dir.mkdir(parents=True, exist_ok=True)
+    table = pd.DataFrame({"concept": np.arange(D_SAE), "chi_train": chi_train, "in_slope": sel, **{f"chi_{k}": v for k, v in chis.items()}})
+    table.to_parquet(out_dir / "distribution.parquet")
+    (R / f"{NOFLAG}_distribution_summary.json").write_text(json.dumps(summary, indent=1))
+    return summary, chis, chi_train
+
+
+def measure(c, paths, chosen):
+    """G58, G60: slope, bootstrap, Δ vs V (bias-corrected), excess dispersion and median ln ratio of the chosen docs."""
+    x, sel = c["x"], c["sel"]
     rng = np.random.default_rng(0)  # as s03
-    summary = {"run": NOFLAG, "docs": n, "available": {k: len(e) for k, e in eligible.items()}, "sets": {}}
+    summary = {"sets": {}}
     boots, slopes, chis, noise, var_r = {}, {}, {}, {}, {}
     for j, name in enumerate(paths):
         means, _, lens = dc.read_means(paths[name], chosen[name])
@@ -124,12 +137,7 @@ def recompute(drop):
         bias = float(db.mean() - d)
         summary["delta_vs_V"][name] = {"delta": r4(d), "ci95_basic": (2 * d - np.quantile(db, [0.975, 0.025])).round(4).tolist(),
                                        "bootstrap_bias": r4(bias), "delta_bias_corrected": r4(d - bias)}  # G45
-    out_dir = settings.DATA / NOFLAG
-    out_dir.mkdir(parents=True, exist_ok=True)
-    table = pd.DataFrame({"concept": np.arange(D_SAE), "chi_train": chi_train, "in_slope": sel, **{f"chi_{k}": v for k, v in chis.items()}})
-    table.to_parquet(out_dir / "distribution.parquet")
-    (R / f"{NOFLAG}_distribution_summary.json").write_text(json.dumps(summary, indent=1))
-    return summary, chis, chi_train
+    return summary, chis
 
 
 def main():

@@ -66,6 +66,20 @@
     <div id="post-hist"></div>
     <h2>Static figures and animations, post-trained generators</h2>
     <div id="post-gallery"></div>
+    <h2>Exp 2 diagnostics</h2>
+    <p class="note">Checks on the comparison above for run full_post (Dolma V, the two base generators and the three post-trained ones), whole documents only (design.md G39-G61). Nothing here is recomputed for the page: every number comes from a file in <code>exp2_rollout_gap/results/</code>. Unless stated, statistics are over the slope concepts (G13), with r = ln χ<sub>set</sub> − ln χ<sub>train</sub> per concept.</p>
+    <h3>Figures: per-concept scatter and shifted histograms</h3>
+    <p class="note">Left: per concept, log10 χ in the set against log10 χ in Dolma train (hexbin, darker = more concepts), with y = x (black), y = x moved by the set's median ratio (dashed) and the median in each of G11's 20 bins (dots). Spread around the dashed line is per-concept change; a slope away from 1 is the part Δ slope measures. Right: panel (b) of the histograms above (log10 χ, all concepts with χ &gt; 0): Dolma train (gray), the set as is (dotted), the set shifted by its median ratio (solid, left) and also rescaled to train's sd (solid, right). When the shifted histogram lies on train's, the histograms hide the per-concept change the scatter shows. Dolma V comes first: it shows what sampling noise alone gives.</p>
+    <div id="diag-figures"></div>
+    <h3>(a) Shuffle vs shape, and excess dispersion (G40, G42)</h3>
+    <p class="note">D<sub>pair</sub> = mean r² (concepts paired by id). D<sub>marg</sub> = the same after sorting each side, so it sees only the two histograms. Shape share = D<sub>marg</sub> / D<sub>pair</sub>; rank-shuffle share = the rest, the change that swaps concepts' places and leaves the histogram as it was. Var(r) splits into a trend part, (b − 1)² Var(ln χ<sub>train</sub>) from the line fit of ln χ<sub>set</sub> on ln χ<sub>train</sub>, and the scatter around that line; the trend share is the part a slope can describe. Excess dispersion sd = √(Var(r) − the set's noise − train's noise), noise from split halves, in ln units; V defines train's noise, so its value is 0.</p>
+    <div id="diag-shape"></div>
+    <h3>(b) Do the moved concepts mean the same thing in rollouts and in Dolma? (G47-G53)</h3>
+    <p class="note">Per rollout set, the 10 concepts that gained and the 10 that lost the most χ mass (41 distinct concepts, each tested with the set where it moved most), plus 20 controls matched in frequency that did not move. Each concept was named twice by Claude Opus 5.5, from 40 Dolma V windows and from 40 rollout windows, and each name was scored by Claude Sonnet 5.5 on held-out windows from both sides (balanced accuracy, Exp 1's F-run quiz). Gap on Dolma = Dolma name's score − rollout name's score, on Dolma windows; gap on rollouts = the reverse, on rollout windows. Agree = both gaps ≤ 0.13, the 95th percentile of the same gap between two human corpora in Exp 1. Not scored = fewer than 90 of 100 windows answered on a side (N7). Quiz answers cut off at 200 tokens were re-sent with a 1,000-token cap (G53). Names only; the windows stay off the page.</p>
+    <div id="diag-moved"></div>
+    <h3>(c) Δ slope vs Dolma V under four document choices (G43, G58, G60)</h3>
+    <p class="note">Bold: bias-corrected Δ (G45). Below it: raw Δ and its 95% basic bootstrap interval (G17). Each column applies one document choice to every set, V included. All docs: G16's matched count. Length-matched: in each length bin, every set cut to the smallest count (G43). Garbled removed: docs whose mean token NLL under the encoder model is above V's 99th percentile dropped (G58). Count control: random drops, without the flag, to the garbled-removed count, 20 draws, mean ± sd and range (G60). Count control minus all docs is what the smaller count does alone; garbled removed minus count control is what the flag does.</p>
+    <div id="diag-delta"></div>
   </section>
   <section id="tab-concept" class="tab">
     <p><a href="#concepts">← all sampled concepts</a></p>

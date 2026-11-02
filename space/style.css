@@ -56,3 +56,11 @@ a { color: var(--accent); }
   :root:not([data-theme="light"]) { --sft: #5cc28a; --dpo: #e07aae; --instruct: #c9a54a; }
 }
 :root[data-theme="dark"] { --sft: #5cc28a; --dpo: #e07aae; --instruct: #c9a54a; }
+/* Exp 2 diagnostics (exp2_rollout_gap/design.md G61) */
+.diag-figs { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; margin: 8px 0 16px; align-items: start; }
+.diag-figs img { width: 100%; }
+@media (max-width: 760px) { .diag-figs { grid-template-columns: 1fr; } }
+table.diag { font-size: 0.9em; margin-bottom: 8px; }
+table.diag th, table.diag tbody tr { cursor: default; }
+table.diag th { white-space: normal; vertical-align: bottom; }
+table.diag td .nm { display: block; min-width: 260px; max-width: 420px; }

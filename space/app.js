@@ -394,6 +394,47 @@ async function drawRolloutsPost() {
       <figcaption class="note">${esc(f.label)}</figcaption></figure></a>`).join("")}</div>`).join("");
 }
 
+// Exp 2 diagnostics (exp2_rollout_gap/design.md G61): the G40 figures and three tables, all read from
+// data/exp2_diagnostics.json, which exp2_rollout_gap/s17_space_diag.py builds from the committed results files.
+async function drawDiagnostics() {
+  const d = await load("data/exp2_diagnostics.json");
+  const name = (s) => (s === "V" ? "Dolma V (held out)" : GEN_LABEL[s] || s);
+  const sgn = (x, k = 3) => (x === null || x === undefined ? "–" : (x < 0 ? "−" : "+") + Math.abs(x).toFixed(k));
+  const table = (head, rows) => `<div class="table-wrap"><table class="diag"><thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  // G40 figures, one row per set
+  document.getElementById("diag-figures").innerHTML = d.sets.map((s) => `
+    <h3>${esc(name(s))}</h3>
+    <div class="diag-figs">${["scatter", "hist_shifted"].map((k) => `<a href="${d.figures[s][k]}" target="_blank">
+      <img src="${d.figures[s][k]}" alt="${k === "scatter" ? "per-concept scatter" : "shifted histograms"}, ${esc(name(s))}" loading="lazy"></a>`).join("")}</div>`).join("");
+  // (a) G40 and G42
+  document.getElementById("diag-shape").innerHTML = table(
+    ["set", "rank-shuffle share of D<sub>pair</sub>", "shape share", "Spearman ρ", "Var(r)", "trend share of Var(r)", "excess dispersion sd"],
+    d.shape_dispersion.map((r) => [esc(name(r.set)), fmt(r.shuffle_share, 3), fmt(r.shape_share, 3), fmt(r.spearman, 3), fmt(r.var_r, 3),
+      fmt(r.trend_share, 4), r.set === "V" ? "0 (reference)" : fmt(r.excess_dispersion_sd, 3)]));
+  // (b) G47-G53: names only, no window text
+  const m = d.moved;
+  const KIND = { gainer: "gainers", loser: "losers", control: "controls" };
+  const agree = (a) => (a === true ? "yes" : a === false ? "<b>no</b>" : "not scored");
+  document.getElementById("diag-moved").innerHTML = table(
+    ["group", "concepts", "scored", "agree share", "mean gap on Dolma", "mean gap on rollouts"],
+    m.groups.map((g) => [KIND[g.kind], g.concepts, g.scored, fmt(g.agree_share, 2), sgn(g.mean_gap_on_dolma, 3), sgn(g.mean_gap_on_rollouts, 3)]))
+    + m.groups.map((g) => `<h3>${KIND[g.kind]}</h3>` + table(
+      ["concept", "set", "rank in train", "name from Dolma V windows", "name from rollout windows", "gap on Dolma", "gap on rollouts", "agree"],
+      m.concepts.filter((c) => c.kind === g.kind).map((c) => [c.concept, esc(c.set), c.rank_train.toLocaleString(), `<span class="nm">${esc(c.dolma_name || "–")}</span>`,
+        `<span class="nm">${esc(c.rollout_name || "–")}</span>`, sgn(c.gap_on_dolma, 2), sgn(c.gap_on_rollouts, 2), agree(c.agree)]))).join("");
+  // (c) G43, G58, G60
+  const t = d.delta;
+  const cell = (x) => `<b>${sgn(x.delta_bias_corrected, 4)}</b><br><span class="note">Δ ${sgn(x.delta, 4)}, CI ${sgn(x.ci95_basic[0], 3)} to ${sgn(x.ci95_basic[1], 3)}</span>`;
+  const ctl = (x) => `<b>${sgn(x.control_mean, 4)}</b> ± ${fmt(x.control_sd, 4)}<br><span class="note">range ${sgn(x.control_min, 4)} to ${sgn(x.control_max, 4)}</span>`;
+  const n = (x) => x.docs.toLocaleString() + " docs";
+  document.getElementById("diag-delta").innerHTML = table(
+    ["set", `all docs<br><span class="note">${n(t.all_docs)}</span>`, `length-matched<br><span class="note">${n(t.length_matched)}</span>`,
+      `garbled removed<br><span class="note">${n(t.garbled_removed)}</span>`, `count control<br><span class="note">${n(t.count_control)}, ${t.count_control.draws} draws</span>`],
+    Object.keys(t.all_docs.sets).map((g) => [esc(name(g)), cell(t.all_docs.sets[g]), cell(t.length_matched.sets[g]), cell(t.garbled_removed.sets[g]),
+      ctl(t.count_control.sets[g])]));
+}
+
 async function route() {
   const h = location.hash.replace("#", "") || "overview";
   const tab = h.startsWith("c=") ? "concept" : h;
@@ -407,6 +448,7 @@ async function route() {
     if (tab === "patterns") { await drawPatterns(); await drawTopics(); }
     if (tab === "temp") await drawRollouts();
     if (tab === "temp") await drawRolloutsPost().catch((e) => console.error(e));
+    if (tab === "temp") await drawDiagnostics().catch((e) => console.error(e));
   }
   if (tab === "concepts") await drawTable();
 }

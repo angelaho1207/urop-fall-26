@@ -1,0 +1,63 @@
+{
+  "repo": "angelaho1207/olmo3-concept-coverage",
+  "base_commit": "5ff5805",
+  "uploaded": [
+    "app.js",
+    "index.html",
+    "style.css",
+    "data/exp2_diagnostics.json",
+    "data/exp2/full_post_V_scatter.png",
+    "data/exp2/full_post_V_hist_shifted.png",
+    "data/exp2/full_post_stage1_scatter.png",
+    "data/exp2/full_post_stage1_hist_shifted.png",
+    "data/exp2/full_post_main_scatter.png",
+    "data/exp2/full_post_main_hist_shifted.png",
+    "data/exp2/full_post_sft_scatter.png",
+    "data/exp2/full_post_sft_hist_shifted.png",
+    "data/exp2/full_post_dpo_scatter.png",
+    "data/exp2/full_post_dpo_hist_shifted.png",
+    "data/exp2/full_post_instruct_scatter.png",
+    "data/exp2/full_post_instruct_hist_shifted.png"
+  ],
+  "git_diff_added_lines": 64,
+  "git_diff_removed_lines": 0,
+  "before": {
+    "commit": "1957e86fb06581ed3baa52cef1b053751d55bd6b",
+    "files": 312
+  },
+  "after": {
+    "commit": "d65e023d45447716f24b5a18821cdc3e532ecec5",
+    "files": 325,
+    "upload_commit": "https://huggingface.co/spaces/angelaho1207/olmo3-concept-coverage/commit/d65e023d45447716f24b5a18821cdc3e532ecec5"
+  },
+  "changed_existing": [
+    ".gitattributes",
+    "app.js",
+    "index.html",
+    "style.css"
+  ],
+  "removed": [],
+  "added": [
+    "data/exp2/full_post_V_hist_shifted.png",
+    "data/exp2/full_post_V_scatter.png",
+    "data/exp2/full_post_dpo_hist_shifted.png",
+    "data/exp2/full_post_dpo_scatter.png",
+    "data/exp2/full_post_instruct_hist_shifted.png",
+    "data/exp2/full_post_instruct_scatter.png",
+    "data/exp2/full_post_main_hist_shifted.png",
+    "data/exp2/full_post_main_scatter.png",
+    "data/exp2/full_post_sft_hist_shifted.png",
+    "data/exp2/full_post_sft_scatter.png",
+    "data/exp2/full_post_stage1_hist_shifted.png",
+    "data/exp2/full_post_stage1_scatter.png",
+    "data/exp2_diagnostics.json"
+  ],
+  "gitattributes_added_lines": [
+    "data/exp2/full_post_dpo_scatter.png filter=lfs diff=lfs merge=lfs -text",
+    "data/exp2/full_post_instruct_scatter.png filter=lfs diff=lfs merge=lfs -text",
+    "data/exp2/full_post_main_scatter.png filter=lfs diff=lfs merge=lfs -text",
+    "data/exp2/full_post_sft_scatter.png filter=lfs diff=lfs merge=lfs -text",
+    "data/exp2/full_post_stage1_scatter.png filter=lfs diff=lfs merge=lfs -text"
+  ],
+  "result": "ok"
+}

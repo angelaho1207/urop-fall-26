@@ -212,3 +212,10 @@ Bias-corrected Δ vs V:
 - The count barely moves Δ (≤ +0.002). The filter lowers Δ in every set. For stage1, main and instruct the noflag value lies outside all 20 draws; for sft and dpo it lies inside.
 - Excess dispersion sd: filter effects −0.024 to +0.021 against values of 0.51-1.33. Median ln ratio: filter effects within ±0.015.
 - The sd units assume noflag's draw spread matches the control's; noflag draws from a smaller pool, so they are approximate.
+
+## 2026-11-01 20:20, Exp 2: "Exp 2 diagnostics" section on the Space (G61): done
+
+- Design row G61 committed before code (36f1f5e). Code d640dc6: `s17_space_diag.py` builds `space/data/exp2_diagnostics.json` from committed results files (nothing recomputed) and copies the 12 G40 PNGs (sha256 checked); `s18_space_diag_upload.py` does the s08-style upload.
+- New section at the end of the Temp visualizations tab: scatter and shifted-histogram PNGs for V, stage1, main, sft, dpo, instruct; table (a) shuffle vs shape and excess dispersion (G40, G42); table (b) moved-concept naming by group with both names, both gaps and the agree flag (G47-G53; names only, no window text, no judge column); table (c) bias-corrected Δ vs V with raw Δ and basic interval for all docs (7,985), length-matched (5,461), garbled removed (5,751) and the count control's 20 draws (G43, G58, G60).
+- Upload checks all passed (`results/full_post_space_diag_check.json`): `git diff 5ff5805` of app.js/index.html/style.css has 64 added lines and 0 removed; the remote code files matched their 5ff5805 versions before the upload; remote 312 → 325 files (commit d65e023d); no existing file changed other than the three code files and `.gitattributes` (5 appended LFS lines, one per new scatter PNG); all 13 new paths match the local hashes. The live site serves the JSON and PNGs.
+- Checked without a browser: app.js passes `node --check`, and the new function rendered against a stub DOM gives balanced HTML with 12 images, 6 tables and numbers that match the results files. Not yet looked at in a browser.

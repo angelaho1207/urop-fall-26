@@ -40,6 +40,7 @@ Research questions (Sheng-Yu's plan):
 ## Tools per task
 - SAE activations: sbatch GPU jobs on ORCD (`mit_normal_gpu`).
 - Concept labels: Anthropic API script (Message Batches), fixed model id, prompts and outputs saved. API key lives in `~/.anthropic_key` (chmod 600), never in the repo.
+- API costs: after every paid run, add a row to `notes/api_costs.md` (date, run, what it paid for, models, dollars, record) and update the total. Needed for reimbursement.
 - Code, job submission, analysis: Claude Code in the VS Code tunnel job.
 - Website: Hugging Face Space.
 

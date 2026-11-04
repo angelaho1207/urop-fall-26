@@ -100,8 +100,9 @@ def select(table, n_fire):
     return sorted(chosen.values(), key=lambda v: v["concept"]), redraws, len(entries)
 
 
-def build_side(side, concepts):
-    """G48: naming and held-out quiz windows for the given concepts on one side. Returns {concept: {...}}."""
+def build_side(side, concepts, naming_only=False):
+    """G48: naming and held-out quiz windows for the given concepts on one side. Returns {concept: {...}}.
+    naming_only (G64): only the 40 naming windows, so a concept needs 40 firing docs instead of 90."""
     parts = side_parts(side)
     selected = np.zeros(D_SAE, dtype=bool)
     selected[concepts] = True
@@ -130,21 +131,26 @@ def build_side(side, concepts):
         idx = np.flatnonzero(e_c == c)
         out = {"n_firing": int(len(idx)), "max": round(float(e_max[idx].max()), 4) if len(idx) else 0.0}
         plan[c] = out
-        if len(idx) < MIN_FIRING:
+        if len(idx) < (N_NAMING if naming_only else MIN_FIRING):
             out["naming"] = out["quiz_firing"] = out["quiz_nonfiring"] = None  # G47: side not testable
             continue
         order = idx[np.lexsort((e_doc[idx], e_max[idx]))]
         naming = rank_groups(order, NAMING_PER_GROUP, np.random.default_rng([config.SEED, c, s_i, PURPOSE["naming"]]))
         named_docs = {int(e_doc[e]) for e, _ in naming}
-        rest = order[~np.isin(e_doc[order], list(named_docs))]  # G48: held out from naming
-        quiz = rank_groups(rest, QUIZ_PER_GROUP, np.random.default_rng([config.SEED, c, s_i, PURPOSE["quiz_firing"]]))
-        for purpose, picks in (("naming", naming), ("quiz_firing", quiz)):
+        picks_by_purpose = [("naming", naming)]
+        if not naming_only:
+            rest = order[~np.isin(e_doc[order], list(named_docs))]  # G48: held out from naming
+            quiz = rank_groups(rest, QUIZ_PER_GROUP, np.random.default_rng([config.SEED, c, s_i, PURPOSE["quiz_firing"]]))
+            picks_by_purpose.append(("quiz_firing", quiz))
+        for purpose, picks in picks_by_purpose:
             out[purpose] = []
             for e, g in picks:
                 d = int(e_doc[e])
                 item = {"doc": d, "group": g, "max": float(e_max[e]), "start": window_start(int(e_arg[e]), int(doc_len[d]))}
                 out[purpose].append(item)
                 requests.append((d, c, item))
+        if naming_only:
+            continue
         rng = np.random.default_rng([config.SEED, c, s_i, PURPOSE["quiz_nonfiring"]])
         pool = np.setdiff1d(np.arange(len(keys)), list(named_docs))
         out["quiz_nonfiring"] = []

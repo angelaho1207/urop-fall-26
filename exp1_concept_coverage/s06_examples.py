@@ -50,6 +50,9 @@ def pick_concepts(spec, run_dir):
             return np.sort(np.concatenate(chosen))
     if spec == "faith":  # F3: the sample drawn by s06c, for the Dolma and the Pile runs alike
         return np.sort(pd.read_parquet(config.DATA / "full" / "faith_sample.parquet")["concept"].to_numpy())
+    if spec == "exp2_named":  # Exp 2 G63: the concepts s19 found without a cached Dolma name
+        path = config.DATA.parent / "exp2" / "full_post" / "named" / "t1_concepts.json"
+        return np.sort(np.array(json.loads(path.read_text()), dtype=np.int64))
     if spec.startswith("pilot:"):  # N14: uniform draw from testable concepts in the web-only flagged classes
         n = int(spec.split(":")[1])
         tested = pd.read_parquet(run_dir / "firing_counts.parquet", columns=["tested"])["tested"].to_numpy()

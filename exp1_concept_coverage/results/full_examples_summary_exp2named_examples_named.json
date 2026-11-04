@@ -1,0 +1,26 @@
+{
+  "run": "full",
+  "concepts_spec": "exp2_named",
+  "concepts": 1172,
+  "source": null,
+  "pool_all": null,
+  "out_name": "examples_named",
+  "short": {
+    "naming_T1": 0,
+    "quiz_firing_V": 0,
+    "quiz_nonfiring_V": 0
+  },
+  "n_firing_quantiles_10_50_90": {
+    "T1": [
+      94.0,
+      538.0,
+      4013.0
+    ],
+    "V": [
+      90.0,
+      528.0,
+      3995.0
+    ]
+  },
+  "seconds": 332.4
+}

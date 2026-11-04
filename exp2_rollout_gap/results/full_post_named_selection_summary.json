@@ -1,0 +1,112 @@
+{
+ "by_model": {
+  "stage1": {
+   "slope_concepts": 53401,
+   "class_size": 5340,
+   "chi_zero": 0,
+   "chi_zero_noflag": 0,
+   "testable": {
+    "over": 5137,
+    "under": 5101,
+    "middle": 42050
+   },
+   "same_class_noflag": {
+    "over": 66,
+    "under": 68,
+    "middle": 77
+   }
+  },
+  "main": {
+   "slope_concepts": 53401,
+   "class_size": 5340,
+   "chi_zero": 0,
+   "chi_zero_noflag": 0,
+   "testable": {
+    "over": 5158,
+    "under": 5103,
+    "middle": 42027
+   },
+   "same_class_noflag": {
+    "over": 68,
+    "under": 70,
+    "middle": 78
+   }
+  },
+  "sft": {
+   "slope_concepts": 53401,
+   "class_size": 5340,
+   "chi_zero": 3,
+   "chi_zero_noflag": 24,
+   "testable": {
+    "over": 5172,
+    "under": 5128,
+    "middle": 41988
+   },
+   "same_class_noflag": {
+    "over": 75,
+    "under": 63,
+    "middle": 78
+   }
+  },
+  "dpo": {
+   "slope_concepts": 53401,
+   "class_size": 5340,
+   "chi_zero": 4,
+   "chi_zero_noflag": 5,
+   "testable": {
+    "over": 5144,
+    "under": 5136,
+    "middle": 42008
+   },
+   "same_class_noflag": {
+    "over": 73,
+    "under": 77,
+    "middle": 78
+   }
+  },
+  "instruct": {
+   "slope_concepts": 53401,
+   "class_size": 5340,
+   "chi_zero": 4,
+   "chi_zero_noflag": 5,
+   "testable": {
+    "over": 5167,
+    "under": 5116,
+    "middle": 42005
+   },
+   "same_class_noflag": {
+    "over": 76,
+    "under": 73,
+    "middle": 80
+   }
+  }
+ },
+ "entries": 1200,
+ "distinct_concepts": 1180,
+ "new_t1_names": 1172,
+ "reused_names": 8,
+ "reused_by_source": {
+  "exp1 F run (faith), T1 common_crawl": 8
+ },
+ "selected_by_n_models": {
+  "1": 1160,
+  "2": 20
+ },
+ "check_excluded_under_40_rollout_docs": {
+  "base_over": 0,
+  "base_under": 25,
+  "base_middle": 3,
+  "instruct_over": 0,
+  "instruct_under": 95,
+  "instruct_middle": 13
+ },
+ "check_eligible": {
+  "base_over": 158,
+  "base_under": 134,
+  "base_middle": 156,
+  "instruct_over": 235,
+  "instruct_under": 137,
+  "instruct_middle": 227
+ },
+ "seconds": 72
+}

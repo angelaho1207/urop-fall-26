@@ -224,8 +224,20 @@ Bias-corrected Δ vs V:
 
 Design rows G62-G68 committed before code ran. From the login node, so all computation and API work run in sbatch.
 
-- Selection: per model, r = ln(χ_model / χ_train) over the 54,494 slope concepts of `full_post`; over and under = top and bottom 5,449 by rank, middle = the rest; 80 per class drawn from testable concepts (at least 40 firing docs in all-source T1, 50 in V). The class under `noflag` is recorded and selects nothing.
+- Selection: per model, r = ln(χ_model / χ_train) over the 53,401 slope concepts of `full_post` (corrected: first written as 54,494, which omits the χ_train ≥ e^-5 cut); over and under = top and bottom 5,340 by rank, middle = the rest; 80 per class drawn from testable concepts (at least 40 firing docs in all-source T1, 50 in V). The class under `noflag` is recorded and selects nothing.
 - Names: one Dolma name per distinct concept. New shared cache `notes/name_cache.json`, filled from the F run, the pilot and G47; a concept with a cached Dolma name reuses it with the source recorded. Other concepts: 40 all-source T1 windows, N4, `claude-opus-5-5`.
 - Check: base (stage1, main) and instruct (sft, dpo, instruct), 20 per class per group, new T1 names only, with a second name from the selecting model's rollouts. Both names take the N5 quiz (`claude-sonnet-5-5`, cap 1,000) on 50 + 50 all-source V windows. E9-short concepts are counted and unscored.
 - My choice, for you to overrule: the rollout firing requirement (40 docs) applies to the check draw only, so selection keeps concepts the rollouts lose. The under cells of the check then describe concepts that still fire in rollouts; the excluded count per cell is reported.
 - Budget: expected at most $26.90, hard stop $35 with the F7 guard and its own ledger, T1 names in chunks of 200 and the quiz in chunks of 500. A free `check` job runs first (rebuilds every request with placeholder names) and the paid job opens with one free token-count call.
+
+## 2026-11-04 18:55, Exp 2 names per model and class: job status
+
+Windows job 27925820 (`mit_preemptable`, 11.5 min, 31.8 GB) done. Free check job 27926711 passed with 0 failures: 1,172 T1 naming requests, 120 rollout naming requests, 4,800 quiz prompts; worst case $4.63 per name chunk and $4.04 per quiz chunk, highest spent-plus-worst path $29.15 against the $35 stop; expected total $26.45.
+
+- Selection: 1,200 entries, 1,180 distinct concepts (20 selected by two models). 8 reuse an F-run Dolma name (T1 common_crawl), 1,172 get a new T1 name. No G47 or pilot name was selected.
+- Testable per class: over 5,137-5,172 of 5,340, under 5,101-5,136, middle 41,988-42,050 of 42,721. E9 short: 0 of the 1,172 concepts (all have 50 non-firing V windows).
+- Check restriction (G64): new-name selections excluded for under 40 rollout firing docs: base under 25, base middle 3, instruct under 95, instruct middle 13, over 0. Eligible left: base 158 / 134 / 156, instruct 235 / 137 / 227 (over / under / middle). So instruct's under cell draws from concepts that still fire in the rollouts, about 59% of its new-name concepts.
+- Same class under noflag, of 80 per class: stage1 66 / 68 / 77, main 68 / 70 / 78, sft 75 / 63 / 78, dpo 73 / 77 / 78, instruct 76 / 73 / 80 (over / under / middle).
+- Corrected from the plan: slope concepts are 53,401 and classes 5,340, not 54,494 and 5,449. The code reads the `in_slope` column, so the selection was never affected.
+
+Paid labels jobs 27927077 (`mit_normal`) and 27927078 (`mit_preemptable`) submitted; the first to start cancels the other. Mail on END/FAIL. Cost so far $0.

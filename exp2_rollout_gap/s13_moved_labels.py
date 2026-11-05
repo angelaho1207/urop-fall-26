@@ -174,6 +174,11 @@ def recover():
         if not outcomes:
             continue
         usage = claude_batch.usage_summary(outcomes, lambda cid: cid.split("-")[0])
+        if all(o["status"] in ("errored", "expired") for o in outcomes.values()):  # G74: never processed, nothing billed; send sends it again
+            with open(OUT / "ledger.jsonl", "a") as f:
+                f.write(json.dumps({"tag": tag, "usd": 0.0, "time": time.time(), "recovered": True, "unprocessed": True}) + "\n")
+            print(f"{tag}: all {len(outcomes)} results errored or expired, recorded at $0, to be sent again", flush=True)
+            continue
         with open(OUT / "ledger.jsonl", "a") as f:
             f.write(json.dumps({"tag": tag, "usd": sum(u["usd"] for u in usage.values()), "time": time.time(), "recovered": True}) + "\n")
         (OUT / f"outcomes_{tag}.json").write_text(json.dumps(outcomes))

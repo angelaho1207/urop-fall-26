@@ -15,7 +15,7 @@ ROOT = HERE.parent
 RESULTS = HERE / "results"
 LEDGER = Path("/orcd/pool/005/angela_h/exp2/full_post/labels/named/ledger.jsonl")
 CELLS = ["random_over", "random_under", "random_middle", "extreme_over", "extreme_under_unfiltered", "extreme_under_filtered"]
-MARK = "Exp 2 names per model, check and noise rerun (G70-G73)"
+MARK = "Exp 2 names per model, check and noise rerun, final (G70-G74)"
 FILES = ["exp2_rollout_gap/design.md", "exp2_rollout_gap/results/full_post_named_names.json", "exp2_rollout_gap/results/full_post_named_extremes.md",
          "exp2_rollout_gap/results/full_post_named_summary.json", "exp2_rollout_gap/results/full_post_named_summary.md",
          "exp2_rollout_gap/results/full_post_named_selection_summary.json", "exp2_rollout_gap/results/full_post_named_check.json",
@@ -29,12 +29,12 @@ def load(name):
 
 
 def spent():
-    """Latest ledger entry per tag; pending entries are submissions with no saved result, counted at their worst case."""
+    """Latest ledger entry per tag: dollars of finished submissions, and the worst case of any still pending (G74)."""
     last = {}
     for line in open(LEDGER):
         e = json.loads(line)
         last[e["tag"]] = e
-    return sum(e["usd"] for e in last.values()), [t for t, e in last.items() if e.get("pending")]
+    return sum(e["usd"] for e in last.values() if not e.get("pending")), {t: round(e["usd"], 2) for t, e in last.items() if e.get("pending")}
 
 
 def cost_row(usd, today):
@@ -42,10 +42,10 @@ def cost_row(usd, today):
     text = path.read_text()
     if "G62-G73" in text:
         return
-    total = float(re.search(r"\*\*Total\*\* \| \| \*\*([0-9.]+)\*\*", text).group(1))
+    total = float(re.search(r"\*\*Total\*\* \| \| \| \*\*([0-9.]+)\*\*", text).group(1))
     row = (f"| {today} | Exp 2 names per model and class (G62-G73) | Dolma names of selected concepts, rollout names and quizzes of the check | Opus 5.5, Sonnet 5.5 | {usd:.2f} | "
            "`exp2_rollout_gap/results/full_post_named_summary.json`, pool `exp2/full_post/labels/named/ledger.jsonl` |\n")
-    text = re.sub(r"\| \| \*\*Total\*\* \| \| \*\*[0-9.]+\*\*", lambda _: f"{row}| | **Total** | | **{total + usd:.2f}**", text)
+    text = re.sub(r"\| \| \*\*Total\*\* \| \| \| \*\*[0-9.]+\*\*", lambda _: f"{row}| | **Total** | | | **{total + usd:.2f}**", text)
     path.write_text(text)
 
 
@@ -56,7 +56,7 @@ def clean(t):
 def report(usd, pending, today_time):
     summary, noise, sel = load("full_post_named_summary.json"), load("full_post_named_noise_summary.json"), load("full_post_named_selection_summary.json")
     out = [f"\n## {today_time}: {MARK}\n\nWritten by the finisher job, with no session open.\n"]
-    out.append(f"- Spent ${usd:.2f} of the $40 stop." + (f" Pending with no result: {pending}." if pending else ""))
+    out.append(f"- Spent ${usd:.2f} of the $40 stop." + (f" Pending with no result, at worst case, not counted: {pending}." if pending else ""))
     if sel:
         out.append(f"- Selection: {sel['entries']} list entries, {sel['distinct_concepts']} distinct concepts; {sel['new_names_in_this_run']} names written in this run ({sel['new_from_train']} from train windows, {sel['train_docs_named_under_40']} of those from under 40 docs), {sel['reused_names']} reused from earlier runs.")
     if summary is None:

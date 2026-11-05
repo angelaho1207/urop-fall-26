@@ -19,15 +19,15 @@ HERE = Path(__file__).resolve().parent
 SPACE = HERE.parent / "space"
 RESULTS = HERE / "results"
 REPO = "angelaho1207/olmo3-concept-coverage"
-BASE_COMMIT = "0506758"  # last commit with the code as uploaded by G61
+BASE_COMMIT = "dec0e3a"  # last commit with the code as uploaded (G75-G77, Space commit b9646599)
 CODE = ["app.js", "index.html", "style.css"]
-NEW = ["data/exp2_named.json", "data/exp2_named_lists.json"]
-OLD_TABS = {"tab-overview", "tab-noise", "tab-patterns", "tab-concepts", "tab-temp"}
+NEW = []  # G78: the data files are already on the Space and do not change
+OLD_TABS = {"sec-key", "named-key"}  # G78: the only ids this change removes
 TOKEN_FILE = Path.home() / ".cache" / "huggingface" / "token"
 SHOTS = Path("/orcd/pool/005/angela_h/exp2/space_preview")
 # Elements that must hold content once a tab is drawn
 FILLED = {"pile": ["overview-plot", "class-bars", "noise-plot", "patterns-plot", "topics-plot", "concept-table"],
-          "rollouts": ["named-key", "named-forest", "named-cells", "named-means", "named-low", "named-docs", "named-split-docs", "named-split-missing", "named-scores", "named-pairs",
+          "rollouts": ["named-forest", "named-cells", "named-means", "named-low", "named-docs", "named-split-docs", "named-split-missing", "named-scores", "named-pairs",
                        "noise-classes", "noise-lists", "noise-table", "named-selection", "lists-plot", "lists-table", "rollout-plot", "post-plot", "diag-figures", "diag-shape", "diag-moved", "diag-delta"]}
 
 
@@ -90,7 +90,7 @@ def browser_checks():
             if name == "pile":
                 page.locator("#sec-concepts").screenshot(path=str(SHOTS / "part_sec-concepts.png"))
             if name == "rollouts":
-                for el in ("sec-key", "named-forest", "named-cells", "named-docs", "sec-named-noise", "named-selection"):
+                for el in ("named-forest", "named-cells", "named-docs", "sec-named-noise", "named-selection"):
                     page.locator(f"#{el}").screenshot(path=str(SHOTS / f"part_{el}.png"))
                 page.select_option("#lists-model", "stage1")
                 page.select_option("#pairs-group", "base")
@@ -114,7 +114,7 @@ def snapshot(api):
 
 def upload():
     from huggingface_hub import HfApi, hf_hub_download
-    out = RESULTS / "full_post_space_named_check.json"
+    out = RESULTS / "full_post_space_named_nokey_check.json"
     report = {"repo": REPO, "base_commit": BASE_COMMIT, "uploaded": CODE + NEW}
 
     def stop(reason):
@@ -145,7 +145,7 @@ def upload():
 
     attrs_before = attrs(sha_before)
     commit = api.upload_folder(folder_path=str(SPACE), repo_id=REPO, repo_type="space", allow_patterns=CODE + NEW,
-                               commit_message="Merge Pile vs Dolma tabs, rename rollouts tab, add names results (G75-G77)")
+                               commit_message="Remove the key results box from the rollouts tab (G78)")
     sha_after, after = snapshot(api)
     report["after"] = {"commit": sha_after, "files": len(after), "upload_commit": str(commit)}
     changed = sorted(f for f in before if f in after and before[f] != after[f])

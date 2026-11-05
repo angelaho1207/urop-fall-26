@@ -467,3 +467,8 @@ Space: tabs merged and renamed, names section added, preview passed with no cons
 ## 2026-11-05 02:20, Space: tabs rearranged and names results live
 
 Uploaded (Space commit `b9646599`, 325 to 327 files, nothing removed; `results/full_post_space_named_check.json` result ok). Tabs: "Dolma vs Pile (web text)" and "Dolma (pretraining data) vs pretrained, mid-trained and post-trained Olmo 3 rollouts". Key results box at the top of the second tab, names section at its end. Stars are Claude's reading and have not been checked by hand against windows (G76).
+
+## 2026-11-05 02:35, Space: key results box removed
+
+Angela asked to take away the key results section (G78). Stars stay; the status caveats move to the top of the names section. Check job and upload submitted, code files only.
+

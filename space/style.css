@@ -69,9 +69,6 @@ table.diag td .nm { display: block; min-width: 260px; max-width: 420px; }
 nav a { max-width: 620px; }
 h3 { font-size: 1rem; margin: 20px 0 6px; }
 .keymark { color: var(--accent); font-weight: 700; }
-.keybox { border: 2px solid var(--accent); border-radius: 8px; padding: 4px 16px 10px; margin: 12px 0; background: var(--card); }
-.keybox h2 { margin-top: 10px; }
-.keybox li { margin: 6px 0; }
 .scrolly { max-height: 680px; overflow: auto; }
 table.diag tr.keyrow td { background: rgba(var(--hl), 0.12); }
 table.diag tr.keyrow td:first-child { font-weight: 600; }

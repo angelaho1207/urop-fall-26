@@ -468,26 +468,6 @@ const statsRow = (label, t, cls) => ({ cls, cells: [label, t.drawn, t.scored_pai
   fmt(t.mean_dolma_name), fmt(t.mean_rollout_name), `<b>${sgnN(t.mean_gap)}</b> ${ciN(t.gap_ci95)}`, `${fmt(t.share_dolma_below_0_6)} ${t.share_ci95 ? `[${fmt(t.share_ci95[0])}, ${fmt(t.share_ci95[1])}]` : "–"}`] });
 const STATS_HEAD = ["set", "drawn", "scored", "unscored", "Dolma name, mean", "rollout name, mean", "gap [95%]", "Dolma names below 0.6 [95%]"];
 
-function namedKeyBox(d) {
-  const c = d.tables.cells, v = (k) => `${sgnN(c[k].mean_gap)} ${ciN(c[k].gap_ci95)}`;
-  const nz = (k) => c[k].scored_pairs;
-  const lists = NAMED_MODELS.map((g) => d.noise.models[g].extreme_lists);
-  const range = (f) => { const a = lists.map(f); return `${Math.round(100 * Math.min(...a))}-${Math.round(100 * Math.max(...a))}%`; };
-  const classes = NAMED_MODELS.map((g) => d.noise.models[g].classes);
-  const fe = d.noise.filter_effect;
-  const allStay = classes.flatMap((m) => ["over", "under", "middle"].map((k) => m[k].mean_share_stays));
-  document.getElementById("named-key").innerHTML = `
-    <p class="note">Each checked concept has two names, one written from Dolma windows and one from rollout windows, both quizzed on the same held-out Dolma windows. A positive gap (Dolma name score − rollout name score) means the rollout name describes Dolma text less well. Either the concept fires on different text in rollouts or the rollout name had little evidence.</p>
-    <ul>
-      <li><b>Post-trained models, underrepresented concepts: rollout names fall behind.</b> <a href="#named-gap">Gap per cell</a>: extreme under, filtered ${v("instruct_extreme_under_filtered")} (${nz("instruct_extreme_under_filtered")} concepts, 40 rollout windows each: <b>the cleanest evidence</b>); random under ${v("instruct_random_under")}; extreme under, unfiltered ${v("instruct_extreme_under_unfiltered")} (${nz("instruct_extreme_under_unfiltered")} concepts, each under 40 rollout docs: <b>thin evidence</b>, see <a href="#named-docs">gap vs rollout docs</a>).</li>
-      <li><b>Base models: in the same cells the intervals include 0.</b> Extreme under, filtered ${v("base_extreme_under_filtered")}; random under ${v("base_random_under")}; extreme under, unfiltered ${v("base_extreme_under_unfiltered")}, which is wide.</li>
-      <li><b>Baseline: middle concepts show no gap.</b> Base ${v("base_random_middle")}, instruct ${v("instruct_random_middle")}. V is Dolma text and favors Dolma names, so this is the reference for the other cells.</li>
-      <li><b>Over cells: small positive gaps in both groups.</b> Base extreme over ${v("base_extreme_over")} and instruct random over ${v("instruct_random_over")} exclude 0; base random over ${v("base_random_over")} and instruct extreme over ${v("instruct_extreme_over")} do not.</li>
-      <li><b>Noise:</b> over ${d.noise.reruns} reruns dropping ${Math.round(100 * d.noise.drop)}% of docs, classes keep ${Math.round(100 * Math.min(...allStay))}-${Math.round(100 * Math.max(...allStay))}% of concepts. The unfiltered under lists keep ${range((x) => x.extreme_unfiltered_under.mean_overlap_with_baseline)}: these concepts fire in few rollout docs, so individual entries are less stable than the class. The filtered under lists keep ${range((x) => x.extreme_filtered_under.mean_overlap_with_baseline)}, mostly because of the fixed 50-doc filter: the ${fe.near} of ${fe.entries} entries with under ${fe.near_cut_docs} rollout docs stay in ${Math.round(100 * fe.near_mean_stay)}% of reruns on average, since dropping docs takes them below 50, and the rest stay in ${Math.round(100 * fe.above_mean_stay)}%. See <a href="#named-noise">noise rerun</a>.</li>
-    </ul>
-    <p class="note">Status: these results have not yet been checked by hand against the windows. Intervals are per cell and uncorrected across the 12 cells. Stars are a reading of the results made during the analysis; <a href="#named">every result is listed below</a>, starred or not.</p>`;
-}
-
 function namedPlots(d) {
   const cfg = { responsive: true, displaylogo: false };
   const c = d.tables.cells;
@@ -656,7 +636,6 @@ async function drawNamedLists() {
 
 async function drawNamed() {
   const d = await load("data/exp2_named.json");
-  namedKeyBox(d);
   namedTables(d);
   namedPlots(d);
   await drawNamedLists();

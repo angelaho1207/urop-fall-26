@@ -454,3 +454,12 @@ All jobs completed; finisher pushed `5bc508f`. Spent $28.47 this run, total $63.
 - The unfiltered instruct figure rests on 9 concepts, each with a rollout name from under 40 docs (largest gaps: 1-3 docs), so it mixes meaning change with thin evidence. The filtered figure rests on 10 concepts with 40 docs each and is the cleaner signal.
 - Noise: classes keep 90-98% of concepts over reruns. Under lists keep 58-79%, so individual extreme under concepts are less stable than the class.
 - 20 of 200 entries were quizzed on under 30 firing V windows. 1 entry had no rollout docs (concept 58222, instruct). 15 of 1,620 new names were refused.
+
+## 2026-11-05 02:20, Exp 2 names per model and class: correction to the 01:35 reading, Space status
+
+Correction: "Under lists keep 58-79%, so individual extreme under concepts are less stable than the class" holds for the unfiltered lists only. Filtered under entries with 50-62 rollout docs stay in 21% of reruns and those with 63+ stay in 92-97%. The reruns keep the 50-doc cut fixed while docs shrink by 20%, so this mostly measures distance to the cut (G72, G76).
+
+Also not said at 01:35: over cells show small positive gaps, and base extreme over +0.042 [0.003, 0.084] and instruct random over +0.032 [0.006, 0.061] exclude 0.
+
+Space: tabs merged and renamed, names section added, preview passed with no console errors; upload follows a repeat of the check (G75-G77).
+

@@ -208,7 +208,7 @@ async function drawConcept(id) {
   } catch {}
 }
 
-// Exp 2 "Temp visualizations" tab (exp2_rollout_gap/design.md G10, G12, G23, G24).
+// Exp 2 rollouts tab, formerly "Temp visualizations" (exp2_rollout_gap/design.md G10, G12, G23, G24, G75).
 // Data written by exp2_rollout_gap/s05_space.py; images by exp2_rollout_gap/figures/make_rollout_figure.py.
 const GEN_LABEL = { stage1: "end of stage 1 (stage1-step1413814)", main: "final model (main)" };
 const GEN_COLOR = { V: "--middle", stage1: "--under", main: "--over" };
@@ -302,7 +302,7 @@ async function drawRollouts() {
 }
 
 // Exp 2, post-trained generators (exp2_rollout_gap/design.md G30-G37): the same graphs, PNGs and histograms as
-// drawRollouts, for run full_post (data/rollouts_post.json), in their own section of the Temp visualizations tab.
+// drawRollouts, for run full_post (data/rollouts_post.json), in their own section of the rollouts tab.
 Object.assign(GEN_LABEL, { sft: "Olmo-3-7B-Instruct-SFT", dpo: "Olmo-3-7B-Instruct-DPO", instruct: "Olmo-3-7B-Instruct (final)" });
 Object.assign(GEN_COLOR, { sft: "--sft", dpo: "--dpo", instruct: "--instruct" });
 async function drawRolloutsPost() {
@@ -435,22 +435,249 @@ async function drawDiagnostics() {
       ctl(t.count_control.sets[g])]));
 }
 
+// Names per model (exp2_rollout_gap/design.md G76): read from data/exp2_named.json and data/exp2_named_lists.json, built by
+// exp2_rollout_gap/s23_space_named.py from the committed results files. Names and numbers only, no window text.
+const NAMED_CELLS = ["random_over", "random_middle", "random_under", "extreme_over", "extreme_under_filtered", "extreme_under_unfiltered"];
+const NAMED_CELL_LABEL = { random_over: "Random, over", random_middle: "Random, middle", random_under: "Random, under", extreme_over: "Extreme, over",
+  extreme_under_filtered: "Extreme, under, filtered", extreme_under_unfiltered: "Extreme, under, unfiltered" };
+const NAMED_KEY = new Set(["instruct_extreme_under_filtered", "instruct_random_under", "instruct_extreme_under_unfiltered", "base_random_middle", "instruct_random_middle"]);
+const NAMED_MODELS = ["stage1", "main", "sft", "dpo", "instruct"];
+const NAMED_MODEL_LABEL = { stage1: "mid-trained (stage1)", main: "pretrained (main)", sft: "post-trained (SFT)", dpo: "post-trained (DPO)", instruct: "post-trained (Instruct)" };
+const NAMED_GROUP_LABEL = { base: "base (stage1, main)", instruct: "instruct (SFT, DPO, Instruct)" };
+const NAMED_LIST_LABEL = { random: "random", extreme_unfiltered: "extreme, unfiltered", extreme_filtered: "extreme, filtered" };
+const sgnN = (x, k = 3) => (x === null || x === undefined ? "–" : (x < 0 ? "−" : "+") + Math.abs(x).toFixed(k));
+const ciN = (c, k = 3) => (c ? `[${sgnN(c[0], k)}, ${sgnN(c[1], k)}]` : "–");
+const escN = (s) => esc(s === null || s === undefined || s === "" ? "–" : String(s));
+const nmN = (s) => `<span class="nm">${escN(s)}</span>`;
+function tableN(head, rows) {  // rows: arrays of cells, or { cells, cls } for a row class
+  return `<div class="table-wrap"><table class="diag"><thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => {
+    const cells = Array.isArray(r) ? r : r.cells;
+    return `<tr${r.cls ? ` class="${r.cls}"` : ""}>${cells.map((c) => `<td>${c}</td>`).join("")}</tr>`;
+  }).join("")}</tbody></table></div>`;
+}
+const hoverN = (t, n = 60, max = 180) => {  // same short, wrapped hover text as W8
+  if (!t) return "no name";
+  t = t.length > max ? t.slice(0, max).replace(/\s+\S*$/, "") + " …" : t;
+  const out = []; let line = "";
+  for (const w of t.split(" ")) { if ((line + " " + w).length > n && line) { out.push(line); line = w; } else line = line ? line + " " + w : w; }
+  out.push(line);
+  return out.map((x) => x.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")).join("<br>");
+};
+const statsRow = (label, t, cls) => ({ cls, cells: [label, t.drawn, t.scored_pairs,
+  Object.entries(t.status).filter(([k]) => k !== "scored").map(([k, v]) => `${esc(k.replace(/_/g, " "))}: ${v}`).join("<br>") || "0",
+  fmt(t.mean_dolma_name), fmt(t.mean_rollout_name), `<b>${sgnN(t.mean_gap)}</b> ${ciN(t.gap_ci95)}`, `${fmt(t.share_dolma_below_0_6)} ${t.share_ci95 ? `[${fmt(t.share_ci95[0])}, ${fmt(t.share_ci95[1])}]` : "–"}`] });
+const STATS_HEAD = ["set", "drawn", "scored", "unscored", "Dolma name, mean", "rollout name, mean", "gap [95%]", "Dolma names below 0.6 [95%]"];
+
+function namedKeyBox(d) {
+  const c = d.tables.cells, v = (k) => `${sgnN(c[k].mean_gap)} ${ciN(c[k].gap_ci95)}`;
+  const nz = (k) => c[k].scored_pairs;
+  const lists = NAMED_MODELS.map((g) => d.noise.models[g].extreme_lists);
+  const range = (f) => { const a = lists.map(f); return `${Math.round(100 * Math.min(...a))}-${Math.round(100 * Math.max(...a))}%`; };
+  const classes = NAMED_MODELS.map((g) => d.noise.models[g].classes);
+  const fe = d.noise.filter_effect;
+  const allStay = classes.flatMap((m) => ["over", "under", "middle"].map((k) => m[k].mean_share_stays));
+  document.getElementById("named-key").innerHTML = `
+    <p class="note">Each checked concept has two names, one written from Dolma windows and one from rollout windows, both quizzed on the same held-out Dolma windows. A positive gap (Dolma name score − rollout name score) means the rollout name describes Dolma text less well. Either the concept fires on different text in rollouts or the rollout name had little evidence.</p>
+    <ul>
+      <li><b>Post-trained models, underrepresented concepts: rollout names fall behind.</b> <a href="#named-gap">Gap per cell</a>: extreme under, filtered ${v("instruct_extreme_under_filtered")} (${nz("instruct_extreme_under_filtered")} concepts, 40 rollout windows each: <b>the cleanest evidence</b>); random under ${v("instruct_random_under")}; extreme under, unfiltered ${v("instruct_extreme_under_unfiltered")} (${nz("instruct_extreme_under_unfiltered")} concepts, each under 40 rollout docs: <b>thin evidence</b>, see <a href="#named-docs">gap vs rollout docs</a>).</li>
+      <li><b>Base models: in the same cells the intervals include 0.</b> Extreme under, filtered ${v("base_extreme_under_filtered")}; random under ${v("base_random_under")}; extreme under, unfiltered ${v("base_extreme_under_unfiltered")}, which is wide.</li>
+      <li><b>Baseline: middle concepts show no gap.</b> Base ${v("base_random_middle")}, instruct ${v("instruct_random_middle")}. V is Dolma text and favors Dolma names, so this is the reference for the other cells.</li>
+      <li><b>Over cells: small positive gaps in both groups.</b> Base extreme over ${v("base_extreme_over")} and instruct random over ${v("instruct_random_over")} exclude 0; base random over ${v("base_random_over")} and instruct extreme over ${v("instruct_extreme_over")} do not.</li>
+      <li><b>Noise:</b> over ${d.noise.reruns} reruns dropping ${Math.round(100 * d.noise.drop)}% of docs, classes keep ${Math.round(100 * Math.min(...allStay))}-${Math.round(100 * Math.max(...allStay))}% of concepts. The unfiltered under lists keep ${range((x) => x.extreme_unfiltered_under.mean_overlap_with_baseline)}: these concepts fire in few rollout docs, so individual entries are less stable than the class. The filtered under lists keep ${range((x) => x.extreme_filtered_under.mean_overlap_with_baseline)}, mostly because of the fixed 50-doc filter: the ${fe.near} of ${fe.entries} entries with under ${fe.near_cut_docs} rollout docs stay in ${Math.round(100 * fe.near_mean_stay)}% of reruns on average, since dropping docs takes them below 50, and the rest stay in ${Math.round(100 * fe.above_mean_stay)}%. See <a href="#named-noise">noise rerun</a>.</li>
+    </ul>
+    <p class="note">Status: these results have not yet been checked by hand against the windows. Intervals are per cell and uncorrected across the 12 cells. Stars are a reading of the results made during the analysis; <a href="#named">every result is listed below</a>, starred or not.</p>`;
+}
+
+function namedPlots(d) {
+  const cfg = { responsive: true, displaylogo: false };
+  const c = d.tables.cells;
+  const groupColor = { base: css("--sft"), instruct: css("--accent") };
+  // Gap per cell
+  const forest = ["base", "instruct"].map((g, gi) => {
+    const rows = NAMED_CELLS.map((k, i) => ({ t: c[`${g}_${k}`], y: i + (gi ? 0.14 : -0.14), key: NAMED_KEY.has(`${g}_${k}`), k }));
+    return { type: "scatter", mode: "markers", name: NAMED_GROUP_LABEL[g], x: rows.map((r) => r.t.mean_gap), y: rows.map((r) => r.y),
+      error_x: { type: "data", symmetric: false, array: rows.map((r) => r.t.gap_ci95[1] - r.t.mean_gap), arrayminus: rows.map((r) => r.t.mean_gap - r.t.gap_ci95[0]), color: groupColor[g], thickness: 1.5 },
+      marker: { size: rows.map((r) => (r.key ? 15 : 9)), symbol: rows.map((r) => (r.key ? "star" : "circle")), color: groupColor[g] },
+      customdata: rows.map((r) => [NAMED_CELL_LABEL[r.k], r.t.scored_pairs, r.t.gap_ci95[0], r.t.gap_ci95[1]]),
+      hovertemplate: `${g}, %{customdata[0]}<br>gap %{x:.3f} [%{customdata[2]:.3f}, %{customdata[3]:.3f}]<br>%{customdata[1]} scored<extra></extra>` };
+  });
+  const L = layoutBase();
+  L.margin.l = 190;
+  L.xaxis = { ...L.xaxis, title: "gap: Dolma name score − rollout name score" };
+  L.yaxis = { ...L.yaxis, tickvals: NAMED_CELLS.map((_, i) => i), ticktext: NAMED_CELLS.map((k) => NAMED_CELL_LABEL[k]), autorange: "reversed" };
+  L.shapes = [{ type: "line", yref: "paper", y0: 0, y1: 1, x0: 0, x1: 0, line: { width: 1.5, color: css("--muted") } }];
+  Plotly.newPlot("named-forest", forest, L, cfg);
+  // Mean scores
+  const means = [["base", "mean_dolma_name", "base, Dolma name", "--sft", 1], ["base", "mean_rollout_name", "base, rollout name", "--sft", 0.45],
+    ["instruct", "mean_dolma_name", "instruct, Dolma name", "--accent", 1], ["instruct", "mean_rollout_name", "instruct, rollout name", "--accent", 0.45]].map(([g, f, name, col, op]) => ({
+    type: "bar", name, x: NAMED_CELLS.map((k) => NAMED_CELL_LABEL[k]), y: NAMED_CELLS.map((k) => c[`${g}_${k}`][f]), marker: { color: css(col), opacity: op }, hovertemplate: `${name}<br>%{x}: %{y:.3f}<extra></extra>` }));
+  const M = layoutBase();
+  M.barmode = "group";
+  M.yaxis = { ...M.yaxis, title: "balanced accuracy", range: [0.4, 1] };
+  M.legend.y = -0.22;
+  Plotly.newPlot("named-means", means, M, cfg);
+  // Share below 0.6
+  const low = ["base", "instruct"].map((g) => {
+    const t = NAMED_CELLS.map((k) => c[`${g}_${k}`]);
+    return { type: "bar", name: NAMED_GROUP_LABEL[g], x: NAMED_CELLS.map((k) => NAMED_CELL_LABEL[k]), y: t.map((x) => x.share_dolma_below_0_6), marker: { color: groupColor[g] },
+      error_y: { type: "data", symmetric: false, array: t.map((x) => x.share_ci95[1] - x.share_dolma_below_0_6), arrayminus: t.map((x) => x.share_dolma_below_0_6 - x.share_ci95[0]) }, hovertemplate: "%{x}: %{y:.3f}<extra></extra>" };
+  });
+  const S = layoutBase();
+  S.barmode = "group";
+  S.yaxis = { ...S.yaxis, title: "share below 0.6" };
+  S.legend.y = -0.25;
+  Plotly.newPlot("named-low", low, S, cfg);
+  // Gap against rollout docs, and score against score
+  const scored = d.pairs.filter((p) => p.gap !== null);
+  const text = (p) => `<b>concept ${p.concept}</b>, ${p.model}, ${p.cell.replace(/_/g, " ")}<br><b>Dolma:</b> ${hoverN(p.dolma_name)}<br><b>Rollout:</b> ${hoverN(p.rollout_name)}`;
+  const docs = ["base", "instruct"].map((g) => {
+    const p = scored.filter((x) => x.group === g);
+    return { type: "scatter", mode: "markers", name: NAMED_GROUP_LABEL[g], x: p.map((x) => x.n_fire_model), y: p.map((x) => x.gap), text: p.map(text), marker: { size: 8, color: groupColor[g], opacity: 0.75 }, hovertemplate: "%{text}<br>%{x} rollout docs, gap %{y:.3f}<extra></extra>" };
+  });
+  const D = layoutBase();
+  D.xaxis = { ...D.xaxis, type: "log", title: "firing docs in the model's rollouts (log scale)" };
+  D.yaxis = { ...D.yaxis, title: "gap: Dolma name score − rollout name score" };
+  D.shapes = [{ type: "line", yref: "paper", y0: 0, y1: 1, x0: 40, x1: 40, line: { dash: "dash", width: 1, color: css("--muted") } },
+    { type: "line", xref: "paper", x0: 0, x1: 1, y0: 0, y1: 0, line: { width: 1, color: css("--muted") } }];
+  Plotly.newPlot("named-docs", docs, D, cfg);
+  const side = (k) => (k.includes("over") ? "over" : k.includes("under") ? "under" : "middle");
+  const scatter = ["over", "middle", "under"].map((cl) => {
+    const p = scored.filter((x) => side(x.cell) === cl);
+    return { type: "scatter", mode: "markers", name: cl, x: p.map((x) => x.dolma_score), y: p.map((x) => x.rollout_score), text: p.map(text), marker: { size: 8, color: css("--" + cl), opacity: 0.75 }, hovertemplate: "%{text}<br>Dolma %{x:.3f}, rollout %{y:.3f}<extra></extra>" };
+  });
+  const X = layoutBase();
+  X.xaxis = { ...X.xaxis, title: "Dolma name score", range: [0.3, 1.02] };
+  X.yaxis = { ...X.yaxis, title: "rollout name score", range: [0.3, 1.02], scaleanchor: "x" };
+  X.shapes = [{ type: "line", x0: 0.3, y0: 0.3, x1: 1.02, y1: 1.02, line: { dash: "dot", width: 1, color: css("--muted") } }];
+  Plotly.newPlot("named-scores", scatter, X, cfg);
+  // Noise
+  const classColor = { over: "--over", middle: "--middle", under: "--under" };
+  const nc = ["over", "middle", "under"].map((k) => ({ type: "bar", name: k, x: NAMED_MODELS, y: NAMED_MODELS.map((g) => d.noise.models[g].classes[k].mean_share_stays), marker: { color: css(classColor[k]) }, hovertemplate: `${k}, %{x}: %{y:.3f}<extra></extra>` }));
+  const NC = layoutBase();
+  NC.barmode = "group"; NC.yaxis = { ...NC.yaxis, title: "share staying in the class", range: [0, 1] }; NC.legend.y = -0.2;
+  Plotly.newPlot("noise-classes", nc, NC, cfg);
+  const lists = [["extreme_unfiltered_over", "over, unfiltered", "--over", 1], ["extreme_filtered_over", "over, filtered", "--over", 0.5], ["extreme_unfiltered_under", "under, unfiltered", "--under", 1], ["extreme_filtered_under", "under, filtered", "--under", 0.5]];
+  const nl = lists.map(([k, name, col, op]) => ({ type: "bar", name, x: NAMED_MODELS, y: NAMED_MODELS.map((g) => d.noise.models[g].extreme_lists[k].mean_overlap_with_baseline), marker: { color: css(col), opacity: op }, hovertemplate: `${name}, %{x}: %{y:.3f}<extra></extra>` }));
+  const NL = layoutBase();
+  NL.barmode = "group"; NL.yaxis = { ...NL.yaxis, title: "share of the 50 still in the list", range: [0, 1] }; NL.legend.y = -0.2;
+  Plotly.newPlot("noise-lists", nl, NL, cfg);
+}
+
+function namedTables(d) {
+  const T = d.tables, cellLabel = (k) => { const g = k.split("_")[0], c = k.slice(g.length + 1); return `${g}, ${(NAMED_CELL_LABEL[c] || c).toLowerCase()}`; };
+  const cellKeys = ["base", "instruct"].flatMap((g) => NAMED_CELLS.map((k) => `${g}_${k}`));
+  document.getElementById("named-cells").innerHTML = tableN(STATS_HEAD,
+    cellKeys.map((k) => statsRow((NAMED_KEY.has(k) ? '<span class="keymark">★</span> ' : "") + cellLabel(k), T.cells[k], NAMED_KEY.has(k) ? "keyrow" : ""))
+      .concat(Object.entries(T.groups).map(([k, t], i) => statsRow(k.replace("_", ", ") + " (all cells of this kind)", t, i === 0 ? "pooled" : "")))
+      .concat(NAMED_CELLS.map((k, i) => statsRow(`both groups, ${NAMED_CELL_LABEL[k].toLowerCase()}`, T.pooled_cells[k], i === 0 ? "pooled" : ""))));
+  const split = (tab, suffixes) => tableN(STATS_HEAD, Object.entries(tab).map(([k, t]) => {
+    const suffix = suffixes.find(([s]) => k.endsWith(s));
+    return statsRow(`${cellLabel(k.slice(0, -suffix[0].length - 1))}: ${suffix[1]}`, t);
+  }));
+  document.getElementById("named-split-docs").innerHTML = split(T.by_rollout_docs, [["under_40_docs", "under 40 docs"], ["40_or_more_docs", "40+ docs"]]);
+  document.getElementById("named-split-missing").innerHTML = split(T.by_missing_from_rollouts, [["missing_from_rollouts", "below e⁻⁵ in rollouts"], ["above_e-5_in_rollouts", "above e⁻⁵ in rollouts"]]);
+
+  // Check entries
+  const gs = document.getElementById("pairs-group"), cs = document.getElementById("pairs-cell");
+  gs.innerHTML = '<option value="">all</option>' + Object.entries(NAMED_GROUP_LABEL).map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join("");
+  cs.innerHTML = '<option value="">all</option>' + NAMED_CELLS.map((k) => `<option value="${k}">${esc(NAMED_CELL_LABEL[k])}</option>`).join("");
+  const pairs = () => {
+    const rows = d.pairs.filter((p) => (!gs.value || p.group === gs.value) && (!cs.value || p.cell === cs.value))
+      .sort((a, b) => a.group.localeCompare(b.group) || NAMED_CELLS.indexOf(a.cell) - NAMED_CELLS.indexOf(b.cell) || (b.gap ?? -9) - (a.gap ?? -9));
+    document.getElementById("pairs-count").textContent = `${rows.length} entries, largest gap first within each cell.`;
+    document.getElementById("named-pairs").innerHTML = tableN(["group", "cell", "concept", "model", "r", "noflag class", "train docs", "rollout docs", "below e⁻⁵ in rollouts", "Dolma name", "rollout name", "Dolma docs named", "rollout docs named", "V firing windows", "Dolma score", "rollout score", "gap", "status"],
+      rows.map((p) => ({ cls: NAMED_KEY.has(`${p.group}_${p.cell}`) ? "keyrow" : "", cells: [p.group, esc(NAMED_CELL_LABEL[p.cell]), p.concept, esc(p.model), fmt(p.r), escN(p.class_noflag), p.n_fire_train.toLocaleString(), p.n_fire_model.toLocaleString(), p.missing_from_rollouts ? "yes" : "no",
+        nmN(p.dolma_name), nmN(p.rollout_name), p.dolma_docs_named, p.rollout_docs_named, p.quiz_firing_windows, fmt(p.dolma_score), fmt(p.rollout_score), `<b>${sgnN(p.gap)}</b>`, esc(p.status.replace(/_/g, " "))] })));
+  };
+  gs.onchange = cs.onchange = pairs;
+  pairs();
+
+  // Noise
+  const n = d.noise;
+  document.getElementById("noise-note").textContent = `${n.reruns} reruns, each dropping a random ${Math.round(100 * n.drop)}% of docs per set (${n.train_docs.toLocaleString()} train docs; ${n.matched_docs.stage1.toLocaleString()} matched docs per model), recomputing χ, r, the e⁻⁵ cut, classes and extreme lists. The filter's 50-doc cut stays fixed while docs shrink, so filtered lists lose concepts near the cut even when r holds: of the ${n.filter_effect.entries} filtered under entries, the ${n.filter_effect.near} with under ${n.filter_effect.near_cut_docs} rollout docs stay in ${Math.round(100 * n.filter_effect.near_mean_stay)}% of reruns on average, the others in ${Math.round(100 * n.filter_effect.above_mean_stay)}%. No names or quizzes were rerun. Per-concept figures are in the table of all entries below.`;
+  const pc = (x) => (x === null || x === undefined ? "–" : (100 * x).toFixed(1) + "%");
+  document.getElementById("noise-table").innerHTML =
+    tableN(["model", "class", "concepts", "mean share staying", "concepts staying in all reruns", "median sd of r", "90th percentile sd of r"],
+      NAMED_MODELS.flatMap((g) => ["over", "middle", "under"].map((k) => { const x = n.models[g].classes[k]; return [esc(NAMED_MODEL_LABEL[g]), k, x.concepts.toLocaleString(), pc(x.mean_share_stays), pc(x.share_of_concepts_always_stays), fmt(x.median_r_sd), fmt(x.p90_r_sd)]; })))
+    + tableN(["model", "list", "mean share of the 50 still in the list", "median concept stays", "least stable concept stays", "median sd of r"],
+      NAMED_MODELS.flatMap((g) => Object.entries(n.models[g].extreme_lists).map(([k, x]) => ({ cls: k.endsWith("under") ? "keyrow" : "", cells: [esc(NAMED_MODEL_LABEL[g]), esc(k.replace("extreme_", "").replace("_", ", ")), pc(x.mean_overlap_with_baseline), pc(x.median_share_stays), pc(x.lowest_share_stays), fmt(x.median_r_sd)] }))));
+
+  // Selection and cost
+  const s = d.selection, u = d.counts, kv = (rows) => tableN(["", ""], rows.map(([a, b]) => [a, b]));
+  document.getElementById("named-selection").innerHTML =
+    `<p class="note">Spent $${d.spent_usd.toFixed(2)} of the $${d.limit_usd} limit, batch prices.</p>`
+    + tableN(["model", "ranked (χ<sub>train</sub> ≥ e⁻⁵)", "missing (χ<sub>train</sub> &lt; e⁻⁵)", "per class (over, under)", "χ<sub>model</sub> = 0", "χ<sub>model</sub> &lt; e⁻⁵", "pass the 50-doc filter", "random draws kept from the earlier sample (over, under, middle)"],
+      NAMED_MODELS.map((g) => { const x = s.by_model[g]; return [esc(NAMED_MODEL_LABEL[g]), x.ranked_concepts.toLocaleString(), x.missing_chi_train.toLocaleString(), x.class_size.toLocaleString(), x.chi_zero_ranked, x.missing_from_rollouts_ranked.toLocaleString(), x.pass_filter.toLocaleString(), ["over", "under", "middle"].map((k) => x.kept_g62_draws[k]).join(", ")]; }))
+    + "<h3>Firing docs of the extreme lists</h3>"
+    + tableN(["model", "list", "median train docs", "median rollout docs", "concepts with 0 rollout docs"],
+      NAMED_MODELS.flatMap((g) => Object.entries(s.by_model[g].lists).map(([k, x]) => [esc(NAMED_MODEL_LABEL[g]), esc(k.replace("extreme_", "").replace("_", ", ")), x.median_train_docs.toLocaleString(), x.median_rollout_docs.toLocaleString(), x.zero_rollout_docs])))
+    + "<h3>Counts</h3>"
+    + kv([["list entries", s.entries.toLocaleString()], ["distinct concepts", s.distinct_concepts.toLocaleString()], ["new names planned", u.new_names_planned.toLocaleString()], ["new names returned", u.new_names_returned.toLocaleString()],
+      ["new names refused, left unnamed", u.new_names_failed], ["new names from all-train windows (under 40 T1 firing docs)", s.new_from_train], ["of those, from under 40 docs", s.train_docs_named_under_40],
+      ["names reused from earlier runs", s.reused_names], ["names bought earlier, concept no longer selected", u.names_bought_not_selected], ["check entries", u.check_entries], ["distinct concepts in the check", u.check_distinct],
+      ["entries with under 30 firing V windows", d.pairs.filter((p) => p.quiz_firing_windows < 30).length], ["rollout names written", u.rollout_names_new], ["quiz prompts", u.quiz_prompts.toLocaleString()],
+      ["check candidates passed over for a failed name", Object.values(u.skipped_for_failed_name).reduce((a, b) => a + b, 0)]])
+    + "<h3>Sources of reused names</h3>" + kv(Object.entries(u.reused_by_source).map(([k, v]) => [esc(k), v]))
+    + "<h3>Cost by request type</h3>"
+    + tableN(["type", "requests", "statuses", "input tokens", "output tokens", "USD", "USD per request"],
+      Object.entries(d.usage).map(([k, x]) => [esc(k), x.requests.toLocaleString(), esc(Object.entries(x.statuses).map(([a, b]) => `${a} ${b}`).join(", ")), x.input_tokens.toLocaleString(), x.output_tokens.toLocaleString(), x.usd.toFixed(2), x.usd_per_request.toFixed(4)]))
+    + "<h3>Class of the random draws without the flagged garbled docs (recorded only, selects nothing)</h3>"
+    + tableN(["model", "class → class without flagged docs: entries"], NAMED_MODELS.map((g) => [esc(NAMED_MODEL_LABEL[g]), esc(Object.entries(d.noflag[g]).sort().map(([k, v]) => `${k.replace("->", " → ")}: ${v}`).join(", "))]));
+}
+
+async function drawNamedLists() {
+  const rows = await load("data/exp2_named_lists.json");
+  const m = document.getElementById("lists-model"), l = document.getElementById("lists-list"), c = document.getElementById("lists-class");
+  m.innerHTML = NAMED_MODELS.map((g) => `<option value="${g}">${esc(NAMED_MODEL_LABEL[g])}</option>`).join("");
+  l.innerHTML = Object.entries(NAMED_LIST_LABEL).map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join("");
+  c.innerHTML = '<option value="">all</option><option>over</option><option>middle</option><option>under</option>';
+  m.value = "instruct"; l.value = "extreme_filtered"; c.value = "under";
+  const draw = () => {
+    const mine = rows.filter((r) => r.model === m.value);
+    const shown = mine.filter((r) => r.list === l.value && (!c.value || r.class === c.value))
+      .sort((a, b) => (a.class === "over" && b.class === "over" ? (b.r ?? -99) - (a.r ?? -99) : (a.r ?? -99) - (b.r ?? -99)));
+    const noR = mine.filter((r) => r.r === null).length;
+    document.getElementById("lists-count").textContent = `${shown.length} entries in the table, strongest first. The chart shows all of this model's entries` + (noR ? `, leaving out ${noR} with χ = 0 (r has no finite value).` : ".");
+    document.getElementById("lists-table").innerHTML = tableN(["concept", "class", "r", "r sd", "r 95% over reruns", "stays in class", "stays in list", "train docs", "rollout docs", "T1 docs", "V docs", "χ train", "χ model", "below e⁻⁵ in rollouts", "class without flagged docs", "in check", "Dolma name", "name source"],
+      shown.map((r) => [r.concept, r.class, fmt(r.r), fmt(r.r_sd), r.r_lo === null ? "–" : `${fmt(r.r_lo, 2)} to ${fmt(r.r_hi, 2)}`, fmt(r.stay_class, 2), fmt(r.stay_list, 2), r.train_docs.toLocaleString(), r.rollout_docs.toLocaleString(), r.n_T1.toLocaleString(), r.n_V.toLocaleString(), fmt(r.chi_train, 4), fmt(r.chi_model, 4), r.missing ? "yes" : "no", escN(r.class_noflag), r.in_check ? "yes" : "no", nmN(r.name), escN(r.source)]));
+    const colors = { random: "--middle", extreme_filtered: "--accent", extreme_unfiltered: "--over" };
+    const traces = Object.keys(NAMED_LIST_LABEL).map((k) => {
+      const p = mine.filter((r) => r.list === k && r.r !== null);
+      return { type: "scatter", mode: "markers", name: NAMED_LIST_LABEL[k], x: p.map((r) => r.r), y: p.map((r) => r.rollout_docs + 1), customdata: p.map((r) => r.rollout_docs), text: p.map((r) => `<b>concept ${r.concept}</b>, ${r.class}<br>${hoverN(r.name)}`), marker: { size: 7, color: css(colors[k]), opacity: 0.7 }, hovertemplate: "%{text}<br>r %{x:.2f}, %{customdata} rollout docs<extra></extra>" };
+    });
+    const L = layoutBase();
+    L.xaxis = { ...L.xaxis, title: "r = ln(χ model / χ train)" };
+    L.yaxis = { ...L.yaxis, type: "log", title: "rollout firing docs + 1 (log scale)" };
+    Plotly.react("lists-plot", traces, L, { responsive: true, displaylogo: false });
+  };
+  m.onchange = l.onchange = c.onchange = draw;
+  draw();
+}
+
+async function drawNamed() {
+  const d = await load("data/exp2_named.json");
+  namedKeyBox(d);
+  namedTables(d);
+  namedPlots(d);
+  await drawNamedLists();
+}
+
+// G75: one tab per experiment; a hash may name a tab, a section (sec-<hash>) or a concept page. temp is the old name of rollouts.
 async function route() {
-  const h = location.hash.replace("#", "") || "overview";
-  const tab = h.startsWith("c=") ? "concept" : h;
+  const h = (location.hash.replace("#", "") || "pile").replace(/^temp$/, "rollouts");
+  const section = document.getElementById("sec-" + h);
+  const tab = h.startsWith("c=") ? "concept" : section ? section.closest(".tab").id.slice(4) : h;
   document.querySelectorAll(".tab").forEach((s) => s.classList.toggle("active", s.id === "tab-" + tab));
   document.querySelectorAll("nav a").forEach((a) => a.classList.toggle("active", a.dataset.tab === tab));
   if (tab === "concept") return drawConcept(h.slice(2));
+  if (section) section.scrollIntoView();
   if (!drawn[tab]) {
     drawn[tab] = true;
-    if (tab === "overview") await drawOverview();
-    if (tab === "noise") await drawNoise();
-    if (tab === "patterns") { await drawPatterns(); await drawTopics(); }
-    if (tab === "temp") await drawRollouts();
-    if (tab === "temp") await drawRolloutsPost().catch((e) => console.error(e));
-    if (tab === "temp") await drawDiagnostics().catch((e) => console.error(e));
+    const steps = tab === "pile" ? [drawOverview, drawNoise, drawPatterns, drawTopics, drawTable]
+      : tab === "rollouts" ? [drawNamed, drawRollouts, drawRolloutsPost, drawDiagnostics] : [];
+    for (const step of steps) await step().catch((e) => console.error(e));  // one failed chart leaves the others drawn
+    if (section) section.scrollIntoView();
   }
-  if (tab === "concepts") await drawTable();
 }
 document.getElementById("class-filter").onchange = drawTable;
 window.addEventListener("hashchange", route);

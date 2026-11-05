@@ -9,55 +9,64 @@
 </head>
 <body>
 <header>
-  <h1>Concept coverage of Olmo 3 pretraining web text</h1>
-  <p class="sub">SAE <code>decoderesearch/olmo-3-saes</code> layer 16 on <code>allenai/Olmo-3-1025-7B</code>. Each SAE concept's coverage in Dolma 3 web text (common_crawl, train split) is compared with the Pile's web text (Pile-CC). Exp 1, Torralba lab.</p>
+  <h1>Olmo 3 concept coverage</h1>
+  <p class="sub">How the concepts of an SAE on <code>allenai/Olmo-3-1025-7B</code> are spread across its pretraining data (Dolma), another web corpus (the Pile) and the text Olmo 3 writes at each training stage. UROP, Torralba lab.</p>
   <nav>
-    <a href="#overview" data-tab="overview">Overview</a>
-    <a href="#noise" data-tab="noise">Noise floor</a>
-    <a href="#patterns" data-tab="patterns">Patterns</a>
-    <a href="#concepts" data-tab="concepts">Sampled concepts</a>
-    <a href="#temp" data-tab="temp">Temp visualizations</a>
+    <a href="#pile" data-tab="pile">Dolma vs Pile (web text)</a>
+    <a href="#rollouts" data-tab="rollouts">Dolma (pretraining data) vs pretrained, mid-trained and post-trained Olmo 3 rollouts</a>
   </nav>
 </header>
 <main>
-  <section id="tab-overview" class="tab">
+  <section id="tab-pile" class="tab">
+    <p class="note">SAE <code>decoderesearch/olmo-3-saes</code> layer 16 on <code>allenai/Olmo-3-1025-7B</code>. Each SAE concept's coverage in Dolma 3 web text (common_crawl, train split) is compared with the Pile's web text (Pile-CC). Exp 1, Torralba lab.</p>
+    <p class="toc">Jump to: <a href="#overview">Overview</a> · <a href="#noise">Noise floor</a> · <a href="#patterns">Patterns</a> · <a href="#concepts">Sampled concepts</a></p>
+    <div id="sec-overview">
+    <h2>Overview</h2>
     <p class="note">One dot per concept that fires often enough in both web samples to compare. The y axis is the log ratio of the concept's coverage in Dolma web to Pile web (CG paper Eq. 2); the dashed lines are the 10th and 90th percentiles that define <b>under</b> and <b>over</b>. Ringed dots are the 240 named concepts: hover to read the name, click for the full description and a link to the concept's page.</p>
     <div id="overview-plot" class="plot"></div>
     <div id="overview-detail" class="card" style="margin:8px 0 0"><span class="note">Click any dot to see its description here. Hover over a ringed dot to see its name.</span></div>
-    <h2>Concepts per class</h2>
+    <h3>Concepts per class</h3>
     <div id="class-bars" class="plot short"></div>
-  </section>
-  <section id="tab-noise" class="tab">
+  </div>
+    <div id="sec-noise">
+    <h2>Noise floor</h2>
     <p class="note">Each concept's log ratio measured on two disjoint halves of both samples. Points far from the diagonal are concepts whose ratio depends on which documents were drawn; class labels near the cut lines can flip between halves.</p>
     <p id="noise-stats" class="stats"></p>
     <div id="noise-plot" class="plot"></div>
-  </section>
-  <section id="tab-patterns" class="tab">
+  </div>
+    <div id="sec-patterns">
+    <h2>Patterns</h2>
     <p class="note">What kind of token each concept fires on most strongly, taken at its peak in every document where it fires, in Dolma web and Pile web text (weighted equally). Bars: share of concepts in each class whose most common peak token is of that type, with 95% bootstrap intervals. All 46,360 compared concepts are included, not only the named sample.</p>
     <div id="patterns-plot" class="plot"></div>
-    <h2>Examples (named concepts from the sample)</h2>
+    <h3>Examples (named concepts from the sample)</h3>
     <div id="patterns-examples"></div>
-    <h2>Topic categories of the 240 named concepts</h2>
+    <h3>Topic categories of the 240 named concepts</h3>
     <p class="note">Categories proposed by Claude Opus 5.5 from the 240 concepts' names without seeing their class; each concept was then placed in one category by Opus and, separately, by Sonnet 5.5. Bars use the Opus coding with 95% bootstrap intervals; with 80 concepts per class, only differences of about 10 points or more can be read.</p>
     <p id="topics-stats" class="stats"></p>
     <div id="topics-plot" class="plot"></div>
-  </section>
-  <section id="tab-concepts" class="tab">
+  </div>
+    <div id="sec-concepts">
+    <h2>Sampled concepts</h2>
     <p class="note">80 concepts drawn at random from each of over, under and middle (row F3). Each has a name written from Pile web examples and one from Dolma web examples; the quiz columns give how well each name predicts where the concept fires in held-out Dolma web text (balanced accuracy, 0.5 = chance). Click a column header to sort, a row to open the concept.</p>
     <label>Class <select id="class-filter"><option value="">all</option><option>over</option><option>under</option><option>middle</option></select></label>
     <div class="table-wrap"><table id="concept-table"><thead></thead><tbody></tbody></table></div>
+  </div>
   </section>
-  <section id="tab-temp" class="tab">
-    <p class="note">Exp 2 (work in progress): the concept distribution of text Olmo 3 writes unprompted (starting from <code>&lt;|endoftext|&gt;</code>, temperature 1, no top-k or top-p), next to Dolma 3's. In every graph, concepts are ordered by χ in Dolma train (CG paper Eq. 2, all sources), so a concept keeps its place across graphs and frames. Graph 1: Dolma alone (black: train, which sets the order; gray band: held-out V, what noise alone gives). Graph 2: the rollouts alone. Graph 3: both overlaid. Graph 4: graph 3 without the named-concept dots. Bands are the 10th-90th percentile of χ in each bin of 512 ranks, lines the median. Bottom: median log(χ / χ train) in 20 bins; a rollout line further below V at the rare end (right) and above it at the common end (left) means the model's output is more spread than its data. All sets in a frame use the same number of documents, since fewer documents alone steepen the curve. Use the slider or Play to step through positions in the document; hover a dot in graph 3 for one of the 240 named concepts.</p>
+  <section id="tab-rollouts" class="tab">
+    <p class="note">Generators: <b>mid-trained</b> = <code>stage1-step1413814</code>, the end of stage 1 of pretraining; <b>pretrained</b> = the final base model <code>main</code>; <b>post-trained</b> = <code>Olmo-3-7B-Instruct-SFT</code>, <code>-DPO</code> and <code>Instruct</code>. All compared with Dolma, the data the base model was pretrained on.</p>
+    <div id="sec-key" class="keybox"><h2><span class="keymark">★ Key results</span> names per model (run of 2026-11-05)</h2><div id="named-key"></div></div>
+    <p class="toc">Jump to: <a href="#rollout-graphs">Base generators: graphs</a> · <a href="#rollout-figures">histograms and static figures</a> · <a href="#post">Post-trained generators</a> · <a href="#diag">Exp 2 diagnostics</a> · <a href="#named"><b>★ Names per model</b></a> (<a href="#named-gap">★ gap per cell</a>, <a href="#named-table">★ all cells</a>, <a href="#named-docs">★ gap vs rollout docs</a>, <a href="#named-pairs">check entries</a>, <a href="#named-noise">★ noise rerun</a>, <a href="#named-selection">selection and cost</a>, <a href="#named-lists">all 2,200 entries</a>)</p>
+    <div id="sec-rollout-graphs"><h2>Base generators: distribution graphs</h2></div>
+    <p class="note">Exp 2: the concept distribution of text Olmo 3 writes unprompted (starting from <code>&lt;|endoftext|&gt;</code>, temperature 1, no top-k or top-p), next to Dolma 3's. In every graph, concepts are ordered by χ in Dolma train (CG paper Eq. 2, all sources), so a concept keeps its place across graphs and frames. Graph 1: Dolma alone (black: train, which sets the order; gray band: held-out V, what noise alone gives). Graph 2: the rollouts alone. Graph 3: both overlaid. Graph 4: graph 3 without the named-concept dots. Bands are the 10th-90th percentile of χ in each bin of 512 ranks, lines the median. Bottom: median log(χ / χ train) in 20 bins; a rollout line further below V at the rare end (right) and above it at the common end (left) means the model's output is more spread than its data. All sets in a frame use the same number of documents, since fewer documents alone steepen the curve. Use the slider or Play to step through positions in the document; hover a dot in graph 3 for one of the 240 named concepts.</p>
     <label>Rollouts from <select id="rollout-gen"></select></label>
     <p id="rollout-stats" class="stats"></p>
     <div id="rollout-plot" class="plot" style="height:860px"></div>
-    <h2>Histograms (as in CG paper Figs. 3-4)</h2>
+    <h2 id="sec-rollout-figures">Histograms (as in CG paper Figs. 3-4)</h2>
     <p class="note">The same per-concept χ as above, counted instead of ranked. (a) Number of concepts per χ bin on the paper's axes (linear χ, log counts): nearly every concept lands in the first bin, because χ spans about 10<sup>-5</sup> to 10<sup>3</sup>. (b) The same over log10 χ. (c) Per concept, ln(χ / χ train), over the slope concepts; dashed lines are medians. Dolma V shows the width noise alone gives, so a wider rollout histogram means the model moved concepts beyond noise. In the token-window frames, the spike at the left of (b) is the smallest possible χ (concepts firing in a single document).</p>
     <div id="rollout-hist"></div>
     <h2>Static figures and animations (for slides)</h2>
     <div id="rollout-gallery"></div>
-    <h2>Post-trained generators: Olmo-3-7B-Instruct-SFT, -DPO and Instruct</h2>
+    <h2 id="sec-post">Post-trained generators: Olmo-3-7B-Instruct-SFT, -DPO and Instruct</h2>
     <p class="note">The same graphs for text written unprompted by the three post-training stages of Olmo 3 7B Instruct (separate run; design.md G30-G37). Same start token and sampler as above (temperature 1, no top-k or top-p, although these models' configs recommend 0.6 and 0.95). A rollout ends at the model's first <code>&lt;|im_end|&gt;</code> or <code>&lt;|endoftext|&gt;</code>, the two end ids in their generation configs. Special-token ids are removed before encoding, since Dolma's SAE inputs contain none. Document counts per frame are matched over Dolma V, the two base generators and the three post-trained ones, so they can be lower than above.</p>
     <label>Rollouts from <select id="post-gen"></select></label>
     <p id="post-stats" class="stats"></p>
@@ -66,7 +75,7 @@
     <div id="post-hist"></div>
     <h2>Static figures and animations, post-trained generators</h2>
     <div id="post-gallery"></div>
-    <h2>Exp 2 diagnostics</h2>
+    <h2 id="sec-diag">Exp 2 diagnostics</h2>
     <p class="note">Checks on the comparison above for run full_post (Dolma V, the two base generators and the three post-trained ones), whole documents only (design.md G39-G61). Nothing here is recomputed for the page: every number comes from a file in <code>exp2_rollout_gap/results/</code>. Unless stated, statistics are over the slope concepts (G13), with r = ln χ<sub>set</sub> − ln χ<sub>train</sub> per concept.</p>
     <h3>Figures: per-concept scatter and shifted histograms</h3>
     <p class="note">Left: per concept, log10 χ in the set against log10 χ in Dolma train (hexbin, darker = more concepts), with y = x (black), y = x moved by the set's median ratio (dashed) and the median in each of G11's 20 bins (dots). Spread around the dashed line is per-concept change; a slope away from 1 is the part Δ slope measures. Right: panel (b) of the histograms above (log10 χ, all concepts with χ &gt; 0): Dolma train (gray), the set as is (dotted), the set shifted by its median ratio (solid, left) and also rescaled to train's sd (solid, right). When the shifted histogram lies on train's, the histograms hide the per-concept change the scatter shows. Dolma V comes first: it shows what sampling noise alone gives.</p>
@@ -80,6 +89,60 @@
     <h3>(c) Δ slope vs Dolma V under four document choices (G43, G58, G60)</h3>
     <p class="note">Bold: bias-corrected Δ (G45). Below it: raw Δ and its 95% basic bootstrap interval (G17). Each column applies one document choice to every set, V included. All docs: G16's matched count. Length-matched: in each length bin, every set cut to the smallest count (G43). Garbled removed: docs whose mean token NLL under the encoder model is above V's 99th percentile dropped (G58). Count control: random drops, without the flag, to the garbled-removed count, 20 draws, mean ± sd and range (G60). Count control minus all docs is what the smaller count does alone; garbled removed minus count control is what the flag does.</p>
     <div id="diag-delta"></div>
+      <div id="sec-named">
+    <h2><span class="keymark">★</span> Names per model: do concepts mean the same thing in rollouts?</h2>
+    <p class="note">Per model, concepts with χ<sub>train</sub> ≥ e<sup>−5</sup> are ranked by r = ln(χ<sub>model</sub> / χ<sub>train</sub>): lowest 10% = under, highest 10% = over, the rest = middle (CG paper Sec. 3.1, 5.1). Random lists: 80 per class. Extreme lists: the 50 highest and 50 lowest r, unfiltered and among concepts with at least 50 firing docs on both sides. The check takes 200 of these entries, 100 per group (base = stage1, main; instruct = SFT, DPO, Instruct). Each gets a name from Dolma windows and one from that model's rollout windows, and both names are quizzed on the same held-out Dolma V windows (30 firing + 30 non-firing, balanced accuracy, Paulo et al. detection). <b>Gap = Dolma name score − rollout name score.</b> Design: <code>exp2_rollout_gap/design.md</code> G70-G74. Window text stays off this page (G20).</p>
+    <div id="sec-named-gap">
+    <h3><span class="keymark">★</span> Gap per cell, with 95% interval</h3>
+    <p class="note">Stars mark the key cells. Bootstrap over concepts, 10,000 resamples, per cell.</p>
+    <div id="named-forest" class="plot" style="height:480px"></div>
+    </div>
+    <div id="sec-named-table">
+    <h3><span class="keymark">★</span> All cells</h3>
+    <p class="note">Highlighted rows are the key cells. Pooled rows count a concept drawn in both groups twice.</p>
+    <div id="named-cells"></div>
+    <h3>Mean score of each name, per cell</h3>
+    <div id="named-means" class="plot" style="height:420px"></div>
+    <h3>Share of Dolma names scoring below 0.6, per cell</h3>
+    <div id="named-low" class="plot" style="height:380px"></div>
+    </div>
+    <div id="sec-named-docs">
+    <h3><span class="keymark">★</span> Gap against rollout firing docs</h3>
+    <p class="note">One dot per scored check entry; hover for both names. The dashed line marks 40 docs, below which the rollout name was written from every firing doc. A large gap at few docs can come from thin evidence as well as from a change of meaning, so the two cannot be separated in that range.</p>
+    <div id="named-docs" class="plot"></div>
+    <h3>Splits: rollout docs under 40 or 40+</h3>
+    <div id="named-split-docs"></div>
+    <h3>Splits: concept below e<sup>−5</sup> in rollouts or above</h3>
+    <div id="named-split-missing"></div>
+    <h3>Dolma name score against rollout name score</h3>
+    <p class="note">Below the diagonal: the Dolma name scored higher. Colors follow the class.</p>
+    <div id="named-scores" class="plot"></div>
+    </div>
+    <div id="sec-named-pairs">
+    <h3>All 200 check entries, both names side by side</h3>
+    <label>Group <select id="pairs-group"></select></label> <label>Cell <select id="pairs-cell"></select></label>
+    <p id="pairs-count" class="note"></p>
+    <div id="named-pairs" class="scrolly"></div>
+    </div>
+    <div id="sec-named-noise">
+    <h3><span class="keymark">★</span> Noise rerun (CG paper App. B.3)</h3>
+    <p id="noise-note" class="note"></p>
+    <div class="cols"><div id="noise-classes" class="plot" style="height:380px"></div><div id="noise-lists" class="plot" style="height:380px"></div></div>
+    <div id="noise-table"></div>
+    </div>
+    <div id="sec-named-selection">
+    <h3>Selection and cost</h3>
+    <div id="named-selection"></div>
+    </div>
+    <div id="sec-named-lists">
+    <h3>All 2,200 list entries: names, firing docs and noise figures</h3>
+    <p class="note">Rollout names exist only for check entries, so this table holds Dolma names. r sd and the interval come from the noise rerun; "stays" is the share of reruns in which the concept keeps its class or list.</p>
+    <label>Model <select id="lists-model"></select></label> <label>List <select id="lists-list"></select></label> <label>Class <select id="lists-class"></select></label>
+    <p id="lists-count" class="note"></p>
+    <div id="lists-plot" class="plot" style="height:420px"></div>
+    <div id="lists-table" class="scrolly"></div>
+    </div>
+    </div>
   </section>
   <section id="tab-concept" class="tab">
     <p><a href="#concepts">← all sampled concepts</a></p>

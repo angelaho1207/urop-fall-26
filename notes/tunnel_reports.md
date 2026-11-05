@@ -286,3 +286,11 @@ Slope rule counts (job 27932480, `distribution.parquet`, rule reproduces `in_slo
 CG paper (arXiv:2512.20638v2, read through the arXiv HTML; the repo's stage scripts were not read): Sec. 3.1 labels concepts below e^-5 missing and takes deciles of the rest; Sec. 5.1 reports over the full dictionary "to avoid importing selection bias from a filtering criterion" and accepts noisier distributions; Sec. 4.2 lists top and bottom concepts; Appendix C-E tables filter to concepts that activate in at least 5 benchmarks with at least 50 supporting datapoints, for display; Appendix B.3 re-runs with 20% dropped, 100 times. No per-concept firing floor for classes, and no random sampling of concepts described.
 
 Decision asked: drop the 160-doc rule and keep e^-5 (55,569 concepts, about $36 in all).
+
+## 2026-11-04 20:15, Exp 2 names per model and class: paper's labels, noise rerun, decision request
+
+Angela: imitate the CG paper on classes, statistics and extremes. Nothing running; design row not written yet.
+
+- CG labels (repo `fetch_feature_descriptions.py`, `gen_mistral_autointerp.py`): downloaded from Neuronpedia or local CSVs, and for Mistral computed as the 5 nearest vocabulary tokens to each decoder vector (no LLM). The paper gives no labeling cost or sample. The Olmo SAE card mentions no labels; one guessed Neuronpedia id returned 404, which is not conclusive.
+- Noise rerun proposal: 100 reruns dropping 20% of docs per set, recomputing χ, r, classes and extreme lists; $0, one CPU job, estimated 20-30 min, no names or quizzes rerun.
+- Decision asked: name the top and bottom 50 unfiltered with firing docs shown, plus the paper-style at least 50 firing docs table for display; and whether to add the noise rerun.

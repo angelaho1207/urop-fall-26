@@ -444,3 +444,13 @@ Noise rerun: 100 reruns dropping 20% of docs per set (share of a class or list t
 | instruct | 0.9635 | 0.9157 | 0.9838 | 0.0536 | 0.1604 | 0.9354 | 0.7218 | 0.9356 | 0.7544 |
 
 Reading of these numbers is left for the next session: nothing here has been checked by hand.
+
+## 2026-11-05 01:35, Exp 2 names per model and class: done, first reading
+
+All jobs completed; finisher pushed `5bc508f`. Spent $28.47 this run, total $63.90. First reading, not yet checked by hand against windows:
+
+- Instruct under, largest gap: 0.252 [0.155, 0.341] unfiltered, 0.085 [0.037, 0.138] filtered, 0.071 [0.025, 0.123] random. Base under stays within noise: 0.009, 0.030, 0.013, all intervals include 0.
+- Middle gap is about 0 in both groups (0.005, −0.0025), a useful baseline given the Dolma name's home-side advantage on V (G66).
+- The unfiltered instruct figure rests on 9 concepts, each with a rollout name from under 40 docs (largest gaps: 1-3 docs), so it mixes meaning change with thin evidence. The filtered figure rests on 10 concepts with 40 docs each and is the cleaner signal.
+- Noise: classes keep 90-98% of concepts over reruns. Under lists keep 58-79%, so individual extreme under concepts are less stable than the class.
+- 20 of 200 entries were quizzed on under 30 firing V windows. 1 entry had no rollout docs (concept 58222, instruct). 15 of 1,620 new names were refused.

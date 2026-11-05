@@ -1,8 +1,8 @@
 #!/bin/bash
 # Names per model: names, rollout names, quiz, analysis (design.md G70-G73). Paid API calls, hard stop $40 (s13 guard)
 #SBATCH -c 1
-#SBATCH --mem=16G
-#SBATCH -t 12:00:00
+#SBATCH --mem=8G
+#SBATCH -t 6:00:00
 #SBATCH -J exp2_named_labels
 #SBATCH --requeue
 #SBATCH --chdir=/orcd/home/002/angela_h/urop-fall-26/exp2_rollout_gap

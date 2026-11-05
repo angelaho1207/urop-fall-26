@@ -308,3 +308,9 @@ Read-only job 27933383, $0. Top and bottom 50 by r per comparison, over the 55,5
 | instruct | 0 | 47 | 2 | 5 | 50 | 50 |
 
 Filtering on both sides fails Angela's over-half test for under (0-3 of 50). Filtering on Dolma train only keeps 46-50 on both sides. Most extreme under concepts would get rollout names from very few docs. Decision asked: Dolma-only filter for the table.
+
+## 2026-11-04 20:45, Exp 2 names per model and class: plan recap and quiz details, decision request
+
+Nothing running; design row not written yet. Plan per comparison: 240 random (80 per class) over the 55,569 concepts with χ_train ≥ e^-5, plus 50 over and 50 under by r unfiltered, plus 50 over and 50 under among concepts with at least 50 firing docs in Dolma train and in rollouts. The two over lists are nearly the same (49-50 of 50 pass). Concepts with χ_model < e^-5 stay and are flagged as missing from rollouts.
+
+Quiz: 200 concepts: 120 random (20 per class per group) and 80 extreme (per group, 20 over, 10 under unfiltered, 10 under filtered). Each gets a rollout name (40 windows, or all firing docs if fewer) and two quizzes on the same V windows (50 firing, or all if fewer, plus 50 non-firing; 20 prompts of 5; `claude-sonnet-5-5`, cap 1,000). At most 8,000 prompts, about $15.60; about $39 in all. Paired gap with bootstrap interval, share of Dolma names below 0.6, split by rollout docs. Plus the free noise rerun. Decision asked: go.

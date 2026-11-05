@@ -318,3 +318,7 @@ Quiz: 200 concepts: 120 random (20 per class per group) and 80 extreme (per grou
 ## 2026-11-04 21:00, Exp 2 names per model and class: quiz size options, decision request
 
 Nothing running. No quiz or formal label check found in the CG paper's text as fetched (some of the page was truncated); the quiz comes from Paulo et al.'s scorer via Exp 1. Estimates from Exp 1 F3 (concept sd 0.09) and G50 (gap sd 0.062), n = 20 per cell: 100 windows, quiz about $13.40, gap interval about ±0.027; 60 windows (30 + 30), about $8.00, about ±0.035; 40 windows, about $5.30, about ±0.044; 10 concepts per cell with 100 windows, about $6.70, about ±0.038, with a much wider below-0.6 share. Recommended if cutting: 60 windows, about $33.60 in all. Decision asked.
+
+## 2026-11-04 21:15, Exp 2 names per model and class: quiz procedure
+
+Angela: use Paulo et al.'s quiz procedure with her models and data groupings. Paulo et al. 2024 (arXiv:2410.13928): 32-token windows (Sec. 3.2), 40 examples to write a name (Sec. 3.2), 5 examples per scorer prompt (App. D.1), 100 activating + 100 non-activating per feature in the paper (Sec. 4.2), 50 + 50 as the `delphi` code default (Exp 1 row 18); results over hundreds of features (Sec. 4.2: 500+), no cells. Our smaller size is 30 + 30 per name, 20 concepts per cell, pending her go. Nothing running.

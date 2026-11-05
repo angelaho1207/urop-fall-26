@@ -15,7 +15,7 @@ import pandas as pd
 from transformers import AutoTokenizer
 
 from s03_pilot import tokenize  # Exp 1
-from s06_examples import (N_NAMING, N_NONFIRING_CANDIDATES, N_QUIZ, NAMING_PER_GROUP, QUIZ_PER_GROUP, WINDOW,
+from s06_examples import (GROUPS, N_NAMING, N_NONFIRING_CANDIDATES, N_QUIZ, NAMING_PER_GROUP, QUIZ_PER_GROUP, WINDOW,
                           rank_groups, window_start)  # Exp 1 E1, E2, E9
 
 D_SAE = 65_536
@@ -102,7 +102,7 @@ def select(table, n_fire):
 
 def build_side(side, concepts, naming_only=False):
     """G48: naming and held-out quiz windows for the given concepts on one side. Returns {concept: {...}}.
-    naming_only (G64): only the 40 naming windows, so a concept needs 40 firing docs instead of 90."""
+    naming_only (G64, G69): only naming windows: 40 as usual, or every firing doc if the concept has fewer than 40."""
     parts = side_parts(side)
     selected = np.zeros(D_SAE, dtype=bool)
     selected[concepts] = True
@@ -131,11 +131,14 @@ def build_side(side, concepts, naming_only=False):
         idx = np.flatnonzero(e_c == c)
         out = {"n_firing": int(len(idx)), "max": round(float(e_max[idx].max()), 4) if len(idx) else 0.0}
         plan[c] = out
-        if len(idx) < (N_NAMING if naming_only else MIN_FIRING):
+        if len(idx) < (1 if naming_only else MIN_FIRING):
             out["naming"] = out["quiz_firing"] = out["quiz_nonfiring"] = None  # G47: side not testable
             continue
         order = idx[np.lexsort((e_doc[idx], e_max[idx]))]
-        naming = rank_groups(order, NAMING_PER_GROUP, np.random.default_rng([config.SEED, c, s_i, PURPOSE["naming"]]))
+        if naming_only and len(idx) < N_NAMING:  # G69: all of them, in rank order
+            naming = [(int(e), g) for g, members in enumerate(np.array_split(order, GROUPS)) for e in members]
+        else:
+            naming = rank_groups(order, NAMING_PER_GROUP, np.random.default_rng([config.SEED, c, s_i, PURPOSE["naming"]]))
         named_docs = {int(e_doc[e]) for e, _ in naming}
         picks_by_purpose = [("naming", naming)]
         if not naming_only:

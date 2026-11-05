@@ -258,3 +258,9 @@ Read-only job 27927840, from `DATA/full_post/named/concepts.json`; $0. Labels jo
 
 - Consequence: the under cells' gap and below-0.6 share describe the milder, more common under concepts, and must be reported that way. Selection and names are unaffected.
 - Open for Angela: quiz the excluded under concepts' Dolma names on V (120 concepts × 20 prompts, about $4, about $30.50 in all, same $35 guard). It gives their below-0.6 share and no gap, since they have no rollout name. It can run after this job.
+
+## 2026-11-04 19:15, Exp 2 names per model and class: design change (G69)
+
+Angela: why exclude concepts for few rollout firing docs, when underrepresented concepts have few by construction. The 40-doc floor was added in G64 and is not in her brief, and my advice against naming from fewer windows is withdrawn. Labels job 27927078 was cancelled at 12 min, before any rollout name or quiz was sent. Spent so far: $6.70 on 600 T1 names plus chunk 3 in flight (worst case $4.03), which the restart fetches without sending again.
+
+G69: the check draws 20 per class per group from concepts with at least 1 rollout firing doc. At 40 or more docs the windows do not change; below 40, every firing doc is used and the count is recorded. The report splits the statistics by under 40 / 40 or more docs, and `DATA/full_post/named/check_examples.md` (pool only) gives the doc count, both names and 5 strongest windows per side for a human check. Same draw size and cost, so the expected total stays at or below $26.45. The earlier offer to quiz excluded Dolma names is dropped.

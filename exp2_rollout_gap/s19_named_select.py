@@ -16,13 +16,14 @@ import pandas as pd
 from transformers import AutoTokenizer
 
 import name_cache
-from s06_examples import N_NAMING, WINDOW  # Exp 1 E1, E2
+from s06_examples import WINDOW  # Exp 1 E1
 from s12_moved_windows import D_SAE, SETS, build_side, firing_counts, token_ids
 
 CLASSES = ["over", "under", "middle"]  # F3's order
 GROUPS = {"base": ["stage1", "main"], "instruct": ["sft", "dpo", "instruct"]}  # Angela
 N_PER_CLASS, MIN_T1, MIN_V = 80, 40, 50  # G62; F2
 N_CHECK, N_RESERVE = 20, 10  # G64
+MIN_ROLLOUT_DOCS = 1  # G69, replaces G64's 40
 RUN = "full_post"
 OUT = settings.DATA / RUN / "named"
 
@@ -81,11 +82,13 @@ def main():
                       "n_T1": int(fires.at[c, "n_T1"]), "n_V": int(fires.at[c, "n_V"]), "n_fire_model": int(n_fire[g][c])} for c in pick]
 
     # G63: what the cache already holds
-    cache = name_cache.load()
+    cache = {c: [e for e in v if not e["source"].startswith("exp2 named")] for c, v in name_cache.load().items()}  # G69: a rerun ignores this run's own names
     distinct = sorted({row["concept"] for row in rows})
     reused = {c: name_cache.dolma(cache, c) for c in distinct if name_cache.dolma(cache, c)}
     new = [c for c in distinct if c not in reused]
     new_set = set(new)
+    if (OUT / "t1_concepts.json").exists() and json.loads((OUT / "t1_concepts.json").read_text()) != new:
+        raise SystemExit("G69: the selection changed on rerun; nothing written")
 
     # G64: ordered candidates per (group, class); the first 20 with a returned T1 name are fixed later by s20
     cells, excluded = [], {}
@@ -94,7 +97,7 @@ def main():
             mine = [row for row in rows if row["model"] in models and row["class"] == c_name and row["concept"] in new_set]
             eligible = {}
             for row in mine:
-                if row["n_fire_model"] >= N_NAMING:
+                if row["n_fire_model"] >= MIN_ROLLOUT_DOCS:
                     eligible.setdefault(row["concept"], []).append(row["model"])
             excluded[f"{group}_{c_name}"] = len({row["concept"] for row in mine} - set(eligible))
             ids = sorted(eligible)
@@ -142,7 +145,7 @@ def main():
         sources[f"{e['source']}, {e['windows']}"] = sources.get(f"{e['source']}, {e['windows']}", 0) + 1
     summary = {"by_model": by_model, "entries": len(rows), "distinct_concepts": len(distinct), "new_t1_names": len(new), "reused_names": len(reused),
                "reused_by_source": sources, "selected_by_n_models": {str(n): int(v) for n, v in zip(*np.unique(np.unique([row["concept"] for row in rows], return_counts=True)[1], return_counts=True))},
-               "check_excluded_under_40_rollout_docs": excluded, "check_eligible": {f"{c['group']}_{c['class']}": c["eligible"] for c in cells},
+               "check_excluded_no_rollout_docs": excluded, "check_eligible": {f"{c['group']}_{c['class']}": c["eligible"] for c in cells},
                "seconds": round(time.time() - t0)}
     (settings.RESULTS / f"{RUN}_named_selection_summary.json").write_text(json.dumps(summary, indent=1))
     print(json.dumps(summary, indent=1))

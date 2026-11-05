@@ -198,7 +198,10 @@ def check():
         per_cell[f"{e['group']}_{e['class']}"] = per_cell.get(f"{e['group']}_{e['class']}", 0) + 1
     print("check concepts per cell:", per_cell, flush=True)
     roll_reqs = [(f"namerollout-{e['concept']}-{e['model']}-0", s13.naming_request(e["concept"], rollout_example(e["model"], e["concept"]), "rollout")) for e in final]
-    bad += [cid for cid, p in roll_reqs if not (p["model"] == LABELER and p["max_tokens"] == NAME_CAP and "Example 40:" in last(p) and "Example 41:" not in last(p))]
+    n_windows = {f"namerollout-{e['concept']}-{e['model']}-0": len(rollout_example(e["model"], e["concept"])["naming"]["rollout"]) for e in final}
+    bad += [cid for cid, p in roll_reqs if not (p["model"] == LABELER and p["max_tokens"] == NAME_CAP and 1 <= n_windows[cid] <= 40  # G69
+                                                and f"Example {n_windows[cid]}:" in last(p) and f"Example {n_windows[cid] + 1}:" not in last(p))]
+    print("rollout windows per check concept: under 40 in", sum(n < 40 for n in n_windows.values()), "of", len(n_windows), "; fewest", min(n_windows.values()), flush=True)
     rollout = {(e["concept"], e["model"]): PLACEHOLDER + " B" for e in final}
     quiz, key, _, base = build_quiz(final, t1, rollout, 0)
     by_id = dict(quiz)
@@ -282,7 +285,7 @@ def clean(t):
     return (t or "–").replace("|", "/").replace("\n", " ")
 
 
-def strongest(windows, n=3):
+def strongest(windows, n=5):
     lines = []
     for w in sorted(windows, key=lambda w: -w["max"])[:n]:
         acts, cut = w["acts"], THRESHOLD * max(w["acts"])
@@ -323,13 +326,17 @@ def analyze(stop=None):
         status = ("no_nonfiring_E9" if e["e9_short"] else "rollout_name_missing" if rname is None else "not_quizzed" if not d or not ro
                   else "too_few_answers" if None in (ds, rs) else "scored")
         pairs.append({"group": e["group"], "class": e["class"], "concept": c, "model": model, "r": info[(c, model)]["r"], "class_noflag": info[(c, model)]["class_noflag"],
-                      "dolma_name": t1.get(c), "rollout_name": rname, "rollout_name_source": e["rollout_name_source"], "dolma_score": ds, "rollout_score": rs,
+                      "rollout_docs_named": len(rollout_example(model, c)["naming"]["rollout"]), "dolma_name": t1.get(c), "rollout_name": rname, "rollout_name_source": e["rollout_name_source"], "dolma_score": ds, "rollout_score": rs,
                       "gap": round(ds - rs, 4) if status == "scored" else None, "status": status})
-    tables = {"cells": {}, "groups": {}, "classes": {}}
+    tables = {"cells": {}, "groups": {}, "classes": {}, "by_rollout_docs": {}}
     for gi, g in enumerate(GROUP_ORDER):
         tables["groups"][g] = stats([p for p in pairs if p["group"] == g], [config.SEED, 66, gi, 9])
         for ci, k in enumerate(CLASS_ORDER):
             tables["cells"][f"{g}_{k}"] = stats([p for p in pairs if p["group"] == g and p["class"] == k], [config.SEED, 66, gi, ci])
+            for few, label_docs in ((1, "under_40_docs"), (0, "40_or_more_docs")):  # G69
+                part = [p for p in pairs if p["group"] == g and p["class"] == k and (p["rollout_docs_named"] < 40) == bool(few)]
+                if part:
+                    tables["by_rollout_docs"][f"{g}_{k}_{label_docs}"] = stats(part, [config.SEED, 69, gi, ci, few])
     for ci, k in enumerate(CLASS_ORDER):
         tables["classes"][k] = stats([p for p in pairs if p["class"] == k], [config.SEED, 66, 9, ci])
 
@@ -354,11 +361,11 @@ def analyze(stop=None):
     md = [f"# Exp 2: names per model and class (design.md G62-G68)\n\nSpent ${summary['spent_usd']:.2f} of the ${LIMIT_USD:.0f} limit.{' Stopped: ' + stop if stop else ''}\n\n## Names side by side\n"]
     for g in GROUP_ORDER:
         for k in CLASS_ORDER:
-            md.append(f"\n### {g}, {k}\n\n| concept | model | r | noflag class | Dolma name | rollout name | Dolma score | rollout score | gap | status |\n|---|---|---|---|---|---|---|---|---|---|\n")
+            md.append(f"\n### {g}, {k}\n\n| concept | model | r | noflag class | rollout docs | Dolma name | rollout name | Dolma score | rollout score | gap | status |\n|---|---|---|---|---|---|---|---|---|---|---|\n")
             for p in [p for p in pairs if p["group"] == g and p["class"] == k]:
-                md.append(f"| {p['concept']} | {p['model']} | {p['r']} | {p['class_noflag']} | {clean(p['dolma_name'])} | {clean(p['rollout_name'])} | {p['dolma_score']} | {p['rollout_score']} | {p['gap']} | {p['status']} |\n")
+                md.append(f"| {p['concept']} | {p['model']} | {p['r']} | {p['class_noflag']} | {p['rollout_docs_named']} | {clean(p['dolma_name'])} | {clean(p['rollout_name'])} | {p['dolma_score']} | {p['rollout_score']} | {p['gap']} | {p['status']} |\n")
     md.append("\n## Paired gap, Dolma name minus rollout name, on V windows\n\n| set | drawn | scored | unscored | Dolma name | rollout name | gap [95%] | Dolma names below 0.6 [95%] |\n|---|---|---|---|---|---|---|---|\n")
-    for label_, t in [(f"{g}, {k}", tables["cells"][f"{g}_{k}"]) for g in GROUP_ORDER for k in CLASS_ORDER] + [(g, tables["groups"][g]) for g in GROUP_ORDER] + [(f"{k} (both groups)", tables["classes"][k]) for k in CLASS_ORDER]:
+    for label_, t in [(f"{g}, {k}", tables["cells"][f"{g}_{k}"]) for g in GROUP_ORDER for k in CLASS_ORDER] + [(g, tables["groups"][g]) for g in GROUP_ORDER] + [(f"{k} (both groups)", tables["classes"][k]) for k in CLASS_ORDER] + [(k.replace("_", " "), t) for k, t in tables["by_rollout_docs"].items()]:
         unscored = {s: n for s, n in t["status"].items() if s != "scored"}
         md.append(f"| {label_} | {t['drawn']} | {t['scored_pairs']} | {unscored or 0} | {t['mean_dolma_name']} | {t['mean_rollout_name']} | {t['mean_gap']} {t['gap_ci95']} | {t['share_dolma_below_0_6']} {t['share_ci95']} |\n")
     md.append("\nPooled class rows count a concept drawn in both groups twice (G66).\n")
@@ -368,7 +375,7 @@ def analyze(stop=None):
     text = ["# Check concepts: strongest naming windows (pool only, G20)\n"]
     for p in pairs:
         ex, ro = t1_example(p["concept"]), rollout_example(p["model"], p["concept"])
-        text += [f"\n## {p['concept']} ({p['group']}, {p['class']}, {p['model']})\n", f"Dolma name: {clean(p['dolma_name'])}\n", f"Rollout name: {clean(p['rollout_name'])}\n", "T1 windows:"]
+        text += [f"\n## {p['concept']} ({p['group']}, {p['class']}, {p['model']})\n", f"Dolma name: {clean(p['dolma_name'])}\n", f"Rollout name: {clean(p['rollout_name'])}, from {p['rollout_docs_named']} docs\n", "T1 windows (40 docs named):"]
         text += strongest(ex["naming"]["T1"]) + ["Rollout windows:"] + strongest(ro["naming"]["rollout"])
     (IN / "check_examples.md").write_text("\n".join(text) + "\n")
     print(json.dumps({k: v for k, v in summary.items() if k not in ("pairs", "noflag_class_of_selected")}, indent=1, ensure_ascii=False))

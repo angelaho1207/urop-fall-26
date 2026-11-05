@@ -1,0 +1,27 @@
+{
+  "repo": "angelaho1207/olmo3-concept-coverage",
+  "base_commit": "dec0e3a",
+  "uploaded": [
+    "app.js",
+    "index.html",
+    "style.css"
+  ],
+  "before": {
+    "commit": "b9646599edeeb0579cbcc3dec812cdb8f60977c1",
+    "files": 327
+  },
+  "after": {
+    "commit": "5a102d7d7e7a3adf58d50f0de8ed48289b7a8f4d",
+    "files": 327,
+    "upload_commit": "https://huggingface.co/spaces/angelaho1207/olmo3-concept-coverage/commit/5a102d7d7e7a3adf58d50f0de8ed48289b7a8f4d"
+  },
+  "changed_existing": [
+    "app.js",
+    "index.html",
+    "style.css"
+  ],
+  "removed": [],
+  "added": [],
+  "gitattributes_added_lines": [],
+  "result": "ok"
+}

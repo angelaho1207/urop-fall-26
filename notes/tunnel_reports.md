@@ -472,3 +472,7 @@ Uploaded (Space commit `b9646599`, 325 to 327 files, nothing removed; `results/f
 
 Angela asked to take away the key results section (G78). Stars stay; the status caveats move to the top of the names section. Check job and upload submitted, code files only.
 
+
+## 2026-11-05 02:45, Space: key results box removed, live
+
+Check passed with no console errors; upload result ok, code files only, no file removed (`results/full_post_space_named_nokey_check.json`). G78 done.

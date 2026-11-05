@@ -463,3 +463,7 @@ Also not said at 01:35: over cells show small positive gaps, and base extreme ov
 
 Space: tabs merged and renamed, names section added, preview passed with no console errors; upload follows a repeat of the check (G75-G77).
 
+
+## 2026-11-05 02:20, Space: tabs rearranged and names results live
+
+Uploaded (Space commit `b9646599`, 325 to 327 files, nothing removed; `results/full_post_space_named_check.json` result ok). Tabs: "Dolma vs Pile (web text)" and "Dolma (pretraining data) vs pretrained, mid-trained and post-trained Olmo 3 rollouts". Key results box at the top of the second tab, names section at its end. Stars are Claude's reading and have not been checked by hand against windows (G76).

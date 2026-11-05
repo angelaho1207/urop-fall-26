@@ -173,6 +173,7 @@ The table above assumed T1 and V names for every concept; after the F1-F8 change
 | W6 | Concept index page: table of the 240 sampled concepts (id, class, log ratio, Pile name, Dolma name, quiz scores when available), sortable | Entry point for reading patterns per class | – | F3 |
 | W7 | No V windows on the site until the F quiz has run (F6) | V is read only by the final quiz | – | F6 |
 | W8 | Overview chart (requested in feedback, 2026-10-18): hovering a named (ringed) concept shows its Dolma-web name, cut to about 200 characters and wrapped; clicking any dot shows a panel below the chart with the concept's id, class, log ratio and both full names with a link to its page, or, for a concept outside the named sample, a note that only the 240 sampled concepts have names (F3) | Lets a reader see what a dot is without leaving the chart; unnamed concepts get an explicit note rather than an empty panel | Names for every concept (needs the API for about 46,000 concepts; rejected for cost in F3) | Feedback 2026-10-18; F3 |
+| W9 | Added 2026-11-05: the Overview, Noise floor, Patterns and Sampled concepts tabs (W2-W8) become sections of one tab, "Dolma vs Pile (web text)"; all content and concept pages stay, old links still work | Angela's request; second tab holds Exp 2 | Separate tabs (Angela asked to merge) | Angela, 2026-11-05; `exp2_rollout_gap/design.md` G75 |
 
 ## Pilot procedure (Chunk 5)
 Proposed 2026-10-17; approved by Angela 2026-10-18.

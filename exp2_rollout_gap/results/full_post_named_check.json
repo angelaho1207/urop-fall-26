@@ -1,0 +1,22 @@
+{
+ "spent_before_usd": 8.86,
+ "names_to_send": 888,
+ "rollout_requests": 199,
+ "quiz_prompts": 4664,
+ "unscored_concepts": {
+  "no_firing_v": 0,
+  "no_nonfiring_v": 0
+ },
+ "concepts_under_30_firing_v": 18,
+ "check_entries": 200,
+ "check_distinct": 196,
+ "quiz_base_input_tokens": 1546,
+ "worst_usd_per_name": 0.023,
+ "worst_usd_per_quiz_prompt": 0.00813,
+ "worst_usd_per_name_chunk": 4.6,
+ "worst_usd_per_quiz_chunk": 4.07,
+ "expected_total_usd": 28.79,
+ "highest_spent_plus_worst_usd": 31.74,
+ "failures": 0,
+ "first_failures": []
+}

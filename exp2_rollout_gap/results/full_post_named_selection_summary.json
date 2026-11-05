@@ -1,112 +1,262 @@
 {
  "by_model": {
   "stage1": {
-   "slope_concepts": 53401,
-   "class_size": 5340,
-   "chi_zero": 0,
-   "chi_zero_noflag": 0,
-   "testable": {
-    "over": 5137,
-    "under": 5101,
-    "middle": 42050
+   "ranked_concepts": 55569,
+   "missing_chi_train": 9967,
+   "class_size": 5556,
+   "chi_zero_ranked": 0,
+   "missing_from_rollouts_ranked": 2468,
+   "pass_filter": 51079,
+   "kept_g62_draws": {
+    "over": 73,
+    "under": 67,
+    "middle": 76
    },
-   "same_class_noflag": {
-    "over": 66,
-    "under": 68,
-    "middle": 77
+   "lists": {
+    "extreme_unfiltered_over": {
+     "median_train_docs": 544.5,
+     "median_rollout_docs": 877.5,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    },
+    "extreme_unfiltered_under": {
+     "median_train_docs": 152.5,
+     "median_rollout_docs": 8.0,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    },
+    "extreme_filtered_over": {
+     "median_train_docs": 572.5,
+     "median_rollout_docs": 935.5,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    },
+    "extreme_filtered_under": {
+     "median_train_docs": 1554.5,
+     "median_rollout_docs": 71.5,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    }
    }
   },
   "main": {
-   "slope_concepts": 53401,
-   "class_size": 5340,
-   "chi_zero": 0,
-   "chi_zero_noflag": 0,
-   "testable": {
-    "over": 5158,
-    "under": 5103,
-    "middle": 42027
+   "ranked_concepts": 55569,
+   "missing_chi_train": 9967,
+   "class_size": 5556,
+   "chi_zero_ranked": 2,
+   "missing_from_rollouts_ranked": 2966,
+   "pass_filter": 50649,
+   "kept_g62_draws": {
+    "over": 73,
+    "under": 61,
+    "middle": 75
    },
-   "same_class_noflag": {
-    "over": 68,
-    "under": 70,
-    "middle": 78
+   "lists": {
+    "extreme_unfiltered_over": {
+     "median_train_docs": 446.5,
+     "median_rollout_docs": 687.5,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    },
+    "extreme_unfiltered_under": {
+     "median_train_docs": 124.0,
+     "median_rollout_docs": 5.0,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    },
+    "extreme_filtered_over": {
+     "median_train_docs": 468.5,
+     "median_rollout_docs": 740.0,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    },
+    "extreme_filtered_under": {
+     "median_train_docs": 2029.0,
+     "median_rollout_docs": 75.5,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    }
    }
   },
   "sft": {
-   "slope_concepts": 53401,
-   "class_size": 5340,
-   "chi_zero": 3,
-   "chi_zero_noflag": 24,
-   "testable": {
-    "over": 5172,
-    "under": 5128,
-    "middle": 41988
+   "ranked_concepts": 55569,
+   "missing_chi_train": 9967,
+   "class_size": 5556,
+   "chi_zero_ranked": 15,
+   "missing_from_rollouts_ranked": 5770,
+   "pass_filter": 46662,
+   "kept_g62_draws": {
+    "over": 74,
+    "under": 68,
+    "middle": 77
    },
-   "same_class_noflag": {
-    "over": 75,
-    "under": 63,
-    "middle": 78
+   "lists": {
+    "extreme_unfiltered_over": {
+     "median_train_docs": 356.0,
+     "median_rollout_docs": 1902.5,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    },
+    "extreme_unfiltered_under": {
+     "median_train_docs": 212.0,
+     "median_rollout_docs": 2.0,
+     "zero_rollout_docs": 6,
+     "outside_side_by_rank": 0
+    },
+    "extreme_filtered_over": {
+     "median_train_docs": 356.0,
+     "median_rollout_docs": 1902.5,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    },
+    "extreme_filtered_under": {
+     "median_train_docs": 4951.5,
+     "median_rollout_docs": 73.0,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    }
    }
   },
   "dpo": {
-   "slope_concepts": 53401,
-   "class_size": 5340,
-   "chi_zero": 4,
-   "chi_zero_noflag": 5,
-   "testable": {
-    "over": 5144,
-    "under": 5136,
-    "middle": 42008
+   "ranked_concepts": 55569,
+   "missing_chi_train": 9967,
+   "class_size": 5556,
+   "chi_zero_ranked": 4,
+   "missing_from_rollouts_ranked": 4693,
+   "pass_filter": 49146,
+   "kept_g62_draws": {
+    "over": 76,
+    "under": 69,
+    "middle": 79
    },
-   "same_class_noflag": {
-    "over": 73,
-    "under": 77,
-    "middle": 78
+   "lists": {
+    "extreme_unfiltered_over": {
+     "median_train_docs": 368.0,
+     "median_rollout_docs": 1197.5,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    },
+    "extreme_unfiltered_under": {
+     "median_train_docs": 733.5,
+     "median_rollout_docs": 4.0,
+     "zero_rollout_docs": 3,
+     "outside_side_by_rank": 0
+    },
+    "extreme_filtered_over": {
+     "median_train_docs": 368.0,
+     "median_rollout_docs": 1197.5,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    },
+    "extreme_filtered_under": {
+     "median_train_docs": 4788.0,
+     "median_rollout_docs": 79.0,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    }
    }
   },
   "instruct": {
-   "slope_concepts": 53401,
-   "class_size": 5340,
-   "chi_zero": 4,
-   "chi_zero_noflag": 5,
-   "testable": {
-    "over": 5167,
-    "under": 5116,
-    "middle": 42005
-   },
-   "same_class_noflag": {
-    "over": 76,
+   "ranked_concepts": 55569,
+   "missing_chi_train": 9967,
+   "class_size": 5556,
+   "chi_zero_ranked": 8,
+   "missing_from_rollouts_ranked": 4948,
+   "pass_filter": 47917,
+   "kept_g62_draws": {
+    "over": 75,
     "under": 73,
-    "middle": 80
+    "middle": 71
+   },
+   "lists": {
+    "extreme_unfiltered_over": {
+     "median_train_docs": 349.0,
+     "median_rollout_docs": 869.0,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    },
+    "extreme_unfiltered_under": {
+     "median_train_docs": 403.0,
+     "median_rollout_docs": 2.0,
+     "zero_rollout_docs": 5,
+     "outside_side_by_rank": 0
+    },
+    "extreme_filtered_over": {
+     "median_train_docs": 349.0,
+     "median_rollout_docs": 869.0,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    },
+    "extreme_filtered_under": {
+     "median_train_docs": 5029.0,
+     "median_rollout_docs": 80.5,
+     "zero_rollout_docs": 0,
+     "outside_side_by_rank": 0
+    }
    }
   }
  },
- "entries": 1200,
- "distinct_concepts": 1180,
- "new_t1_names": 1172,
- "reused_names": 8,
+ "entries": 2200,
+ "distinct_concepts": 1634,
+ "new_names_in_this_run": 1620,
+ "reused_names": 14,
  "reused_by_source": {
-  "exp1 F run (faith), T1 common_crawl": 8
+  "exp2 moved (G47), V all sources": 2,
+  "exp1 F run (faith), T1 common_crawl": 12
  },
+ "new_from_t1": 1441,
+ "new_from_train": 179,
+ "train_docs_named_under_40": 10,
+ "train_docs_quantiles_10_50_90": [
+  53.8,
+  95.0,
+  161.0
+ ],
+ "t1_windows_to_build": 377,
  "selected_by_n_models": {
-  "1": 1160,
-  "2": 20
- },
- "check_excluded_no_rollout_docs": {
-  "base_over": 0,
-  "base_under": 0,
-  "base_middle": 0,
-  "instruct_over": 0,
-  "instruct_under": 1,
-  "instruct_middle": 0
+  "1": 1391,
+  "2": 140,
+  "3": 32,
+  "4": 30,
+  "5": 3,
+  "6": 13,
+  "7": 1,
+  "8": 14,
+  "9": 1,
+  "10": 7,
+  "11": 2
  },
  "check_eligible": {
-  "base_over": 158,
-  "base_under": 159,
-  "base_middle": 159,
-  "instruct_over": 235,
-  "instruct_under": 231,
-  "instruct_middle": 240
+  "base_random_over": 158,
+  "base_random_under": 158,
+  "base_random_middle": 160,
+  "base_extreme_over": 77,
+  "base_extreme_under_unfiltered": 96,
+  "base_extreme_under_filtered": 90,
+  "instruct_random_over": 235,
+  "instruct_random_under": 232,
+  "instruct_random_middle": 240,
+  "instruct_extreme_over": 72,
+  "instruct_extreme_under_unfiltered": 120,
+  "instruct_extreme_under_filtered": 101
  },
- "seconds": 166
+ "check_candidates": 312,
+ "candidates_v_firing_under_30": 32,
+ "candidates_v_firing_zero": 0,
+ "candidates_no_nonfiring": 0,
+ "candidates_rollout_zero": {
+  "stage1": 0,
+  "main": 0,
+  "sft": 0,
+  "dpo": 0,
+  "instruct": 2
+ },
+ "candidates_rollout_under_40": {
+  "stage1": 15,
+  "main": 17,
+  "sft": 20,
+  "dpo": 11,
+  "instruct": 12
+ },
+ "seconds": 470
 }

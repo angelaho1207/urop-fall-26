@@ -264,3 +264,13 @@ Read-only job 27927840, from `DATA/full_post/named/concepts.json`; $0. Labels jo
 Angela: why exclude concepts for few rollout firing docs, when underrepresented concepts have few by construction. The 40-doc floor was added in G64 and is not in her brief, and my advice against naming from fewer windows is withdrawn. Labels job 27927078 was cancelled at 12 min, before any rollout name or quiz was sent. Spent so far: $6.70 on 600 T1 names plus chunk 3 in flight (worst case $4.03), which the restart fetches without sending again.
 
 G69: the check draws 20 per class per group from concepts with at least 1 rollout firing doc. At 40 or more docs the windows do not change; below 40, every firing doc is used and the count is recorded. The report splits the statistics by under 40 / 40 or more docs, and `DATA/full_post/named/check_examples.md` (pool only) gives the doc count, both names and 5 strongest windows per side for a human check. Same draw size and cost, so the expected total stays at or below $26.45. The earlier offer to quiz excluded Dolma names is dropped.
+
+## 2026-11-04 19:30, Exp 2 names per model and class: status and decision request
+
+Paid labels job is held until Angela answers; the redraw job 27928660 (free) is running. Names so far: 600 saved at about $0.0112 each, 200 in flight. Random over and under stay a uniform draw from the top and bottom 10% (G62), which are not the 80 most extreme.
+
+Decisions asked:
+1. Extreme 80s: one-line selection change plus about 6 min of CPU. About $9 more at most if kept alongside the random sets (800 entries, less with overlap). Rare concepts dominate an r ranking (G41).
+2. Check scope, what remains after the 800 names (about $8.90) and the other 372 random names (about $4.10): (a) names only, $0 more; (b) Dolma names quizzed on V for a sample, about $4; (c) as briefed, rollout names plus both quizzes, about $9.30.
+
+Evidence on hand: Exp 1's F run tested Pile names against Dolma names on V (gap 0.002-0.016, mean scores 0.73-0.78) and did not read rollouts. G47 tested rollouts against Dolma on 61 concepts, picked by mass change plus controls: agree 13 of 16, 14 of 16, 18 of 19.

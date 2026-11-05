@@ -322,3 +322,36 @@ Nothing running. No quiz or formal label check found in the CG paper's text as f
 ## 2026-11-04 21:15, Exp 2 names per model and class: quiz procedure
 
 Angela: use Paulo et al.'s quiz procedure with her models and data groupings. Paulo et al. 2024 (arXiv:2410.13928): 32-token windows (Sec. 3.2), 40 examples to write a name (Sec. 3.2), 5 examples per scorer prompt (App. D.1), 100 activating + 100 non-activating per feature in the paper (Sec. 4.2), 50 + 50 as the `delphi` code default (Exp 1 row 18); results over hundreds of features (Sec. 4.2: 500+), no cells. Our smaller size is 30 + 30 per name, 20 concepts per cell, pending her go. Nothing running.
+
+## 2026-11-04 21:11: Exp 2 names per model, check and noise rerun (G70-G73)
+
+Written by the finisher job, with no session open.
+
+- Spent $17.43 of the $40 stop. Pending with no result: ['names_more_2'].
+- Selection: 2200 list entries, 1634 distinct concepts; 1620 names written in this run (179 from train windows, 10 of those from under 40 docs), 14 reused from earlier runs.
+- Labels job left no summary: check `logs/exp2_named_labels_*.out`.
+
+Noise rerun: 100 reruns dropping 20% of docs per set (share of a class or list that stays, median r spread):
+
+| model | over stays | under stays | middle stays | over median r sd | under median r sd | unfiltered over list | unfiltered under list | filtered over list | filtered under list |
+|---|---|---|---|---|---|---|---|---|---|
+| stage1 | 0.9084 | 0.8965 | 0.9755 | 0.0649 | 0.126 | 0.8836 | 0.6292 | 0.8914 | 0.6924 |
+| main | 0.947 | 0.9126 | 0.9817 | 0.0594 | 0.1324 | 0.931 | 0.7372 | 0.943 | 0.7358 |
+| sft | 0.9632 | 0.9123 | 0.9833 | 0.0559 | 0.1845 | 0.9294 | 0.5792 | 0.9296 | 0.6664 |
+| dpo | 0.9596 | 0.9207 | 0.9838 | 0.0556 | 0.1501 | 0.9186 | 0.7852 | 0.9186 | 0.6862 |
+| instruct | 0.9635 | 0.9157 | 0.9838 | 0.0536 | 0.1604 | 0.9354 | 0.7218 | 0.9356 | 0.7544 |
+
+Reading of these numbers is left for the next session: nothing here has been checked by hand.
+
+## 2026-11-05 00:35, Exp 2 names per model and class: status after the labels job failed, decision request
+
+The section above (21:11) was written by the finisher and overstates spending: its $17.43 counts `names_more_2` at its $4.07 worst case. That batch errored on all 200 requests with no usage.
+
+- Finished: windows and free check (job 27936197, 0 failures, expected total $28.79), noise rerun (27937050, no-drop χ matches the table).
+- Failed: labels (27937048, 21:10): `Your credit balance is too low to access the Anthropic API`. The free check cannot see the balance.
+- Failed: finisher (27937051): my regex missed the Total row in `notes/api_costs.md`. So no cost row, no findings, no commit of results; those files are uncommitted in the working tree.
+- Spent: $13.36, six chunks of names; 1,188 names returned, 12 refused.
+- Left: 488 of the 1,620 selected new names (200 errored, 288 never sent), 199 rollout names, 4,664 quiz prompts; about $15.49, so about $28.85 in all.
+- Nothing is running. Nothing is resubmitted until Angela says so.
+
+Fixes needed before a resume: `recover` would save the 200 errored results as finished, and those names would never be re-sent; the finisher's Total regex; its spent figure with pending entries; its check that skips a new report because this run's heading already exists. API credit must be added first.

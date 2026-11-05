@@ -241,3 +241,20 @@ Windows job 27925820 (`mit_preemptable`, 11.5 min, 31.8 GB) done. Free check job
 - Corrected from the plan: slope concepts are 53,401 and classes 5,340, not 54,494 and 5,449. The code reads the `in_slope` column, so the selection was never affected.
 
 Paid labels jobs 27927077 (`mit_normal`) and 27927078 (`mit_preemptable`) submitted; the first to start cancels the other. Mail on END/FAIL. Cost so far $0.
+
+## 2026-11-04 19:10, Exp 2 names per model and class: who the check leaves out (Angela's question)
+
+Read-only job 27927840, from `DATA/full_post/named/concepts.json`; $0. Labels job 27927078 keeps running, unchanged.
+
+- Instruct under: 3 × 80 = 240 entries, 235 distinct (5 selected by two models), 3 with a cached F-run name, so 232 new names. 95 of those 232 have no selecting model with 40 rollout firing docs. They still get Dolma T1 names; they leave only the check.
+- These are the strongest under concepts. Of the 10 / 20 / 40 lowest r entries, instruct's check excludes 10 / 17 / 30 and base's excludes 4 / 8 / 12.
+
+| group, under | median r | median V firing docs | median rollout firing docs |
+|---|---|---|---|
+| instruct, excluded (99 entries) | −2.99 | 151 | 17 |
+| instruct, eligible | −2.43 | 825 | 105 |
+| base, excluded (25) | −1.70 | 87 | 27 |
+| base, eligible | −1.43 | 528 | 174 |
+
+- Consequence: the under cells' gap and below-0.6 share describe the milder, more common under concepts, and must be reported that way. Selection and names are unaffected.
+- Open for Angela: quiz the excluded under concepts' Dolma names on V (120 concepts × 20 prompts, about $4, about $30.50 in all, same $35 guard). It gives their below-0.6 share and no gap, since they have no rollout name. It can run after this job.

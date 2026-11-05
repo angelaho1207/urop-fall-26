@@ -294,3 +294,17 @@ Angela: imitate the CG paper on classes, statistics and extremes. Nothing runnin
 - CG labels (repo `fetch_feature_descriptions.py`, `gen_mistral_autointerp.py`): downloaded from Neuronpedia or local CSVs, and for Mistral computed as the 5 nearest vocabulary tokens to each decoder vector (no LLM). The paper gives no labeling cost or sample. The Olmo SAE card mentions no labels; one guessed Neuronpedia id returned 404, which is not conclusive.
 - Noise rerun proposal: 100 reruns dropping 20% of docs per set, recomputing χ, r, classes and extreme lists; $0, one CPU job, estimated 20-30 min, no names or quizzes rerun.
 - Decision asked: name the top and bottom 50 unfiltered with firing docs shown, plus the paper-style at least 50 firing docs table for display; and whether to add the noise rerun.
+
+## 2026-11-04 20:30, Exp 2 names per model and class: extremes kept by a 50-doc filter
+
+Read-only job 27933383, $0. Top and bottom 50 by r per comparison, over the 55,569 concepts with χ_train ≥ e^-5; rollout docs are all encoded rollouts, train docs are Dolma train.
+
+| comparison | under: 50+ both | under: 50+ train | under: median rollout docs | under: 0 rollout docs | over: 50+ both | over: 50+ train |
+|---|---|---|---|---|---|---|
+| stage1 | 3 | 49 | 8 | 0 | 49 | 50 |
+| main | 0 | 49 | 5 | 0 | 49 | 49 |
+| sft | 0 | 46 | 2 | 6 | 50 | 50 |
+| dpo | 2 | 48 | 4 | 3 | 50 | 50 |
+| instruct | 0 | 47 | 2 | 5 | 50 | 50 |
+
+Filtering on both sides fails Angela's over-half test for under (0-3 of 50). Filtering on Dolma train only keeps 46-50 on both sides. Most extreme under concepts would get rollout names from very few docs. Decision asked: Dolma-only filter for the table.

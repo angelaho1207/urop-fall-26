@@ -274,3 +274,15 @@ Decisions asked:
 2. Check scope, what remains after the 800 names (about $8.90) and the other 372 random names (about $4.10): (a) names only, $0 more; (b) Dolma names quizzed on V for a sample, about $4; (c) as briefed, rollout names plus both quizzes, about $9.30.
 
 Evidence on hand: Exp 1's F run tested Pile names against Dolma names on V (gap 0.002-0.016, mean scores 0.73-0.78) and did not read rollouts. G47 tested rollouts against Dolma on 61 concepts, picked by mass change plus controls: agree 13 of 16, 14 of 16, 18 of 19.
+
+## 2026-11-04 20:00, Exp 2 names per model and class: floors and the CG paper, decision request
+
+Nothing running; paid job held. Spent $6.70 recorded plus one chunk of 200 names in flight. Redraw job 27928660 (G69) finished; the selection reproduced.
+
+Angela's tentative plan: 80 random per class plus 50 + 50 extreme per comparison, 200 concepts checked, $40 stop, no 40 / 50 floors at selection or tests. Not yet in design.md and not implemented.
+
+Slope rule counts (job 27932480, `distribution.parquet`, rule reproduces `in_slope`): χ_train < e^-5 for 9,967 concepts, none with χ_train = 0; under 160 train firing docs for 11,042; 8,874 fail both, 1,093 fail e^-5 alone, 2,168 fail 160 docs alone; 53,401 remain.
+
+CG paper (arXiv:2512.20638v2, read through the arXiv HTML; the repo's stage scripts were not read): Sec. 3.1 labels concepts below e^-5 missing and takes deciles of the rest; Sec. 5.1 reports over the full dictionary "to avoid importing selection bias from a filtering criterion" and accepts noisier distributions; Sec. 4.2 lists top and bottom concepts; Appendix C-E tables filter to concepts that activate in at least 5 benchmarks with at least 50 supporting datapoints, for display; Appendix B.3 re-runs with 20% dropped, 100 times. No per-concept firing floor for classes, and no random sampling of concepts described.
+
+Decision asked: drop the 160-doc rule and keep e^-5 (55,569 concepts, about $36 in all).

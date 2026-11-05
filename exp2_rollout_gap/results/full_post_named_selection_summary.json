@@ -92,21 +92,21 @@
   "1": 1160,
   "2": 20
  },
- "check_excluded_under_40_rollout_docs": {
+ "check_excluded_no_rollout_docs": {
   "base_over": 0,
-  "base_under": 25,
-  "base_middle": 3,
+  "base_under": 0,
+  "base_middle": 0,
   "instruct_over": 0,
-  "instruct_under": 95,
-  "instruct_middle": 13
+  "instruct_under": 1,
+  "instruct_middle": 0
  },
  "check_eligible": {
   "base_over": 158,
-  "base_under": 134,
-  "base_middle": 156,
+  "base_under": 159,
+  "base_middle": 159,
   "instruct_over": 235,
-  "instruct_under": 137,
-  "instruct_middle": 227
+  "instruct_under": 231,
+  "instruct_middle": 240
  },
- "seconds": 72
+ "seconds": 166
 }

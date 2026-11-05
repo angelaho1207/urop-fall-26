@@ -11,7 +11,7 @@ import settings  # first: puts Exp 1 on the path and sets HF_HOME
 import config
 
 PATH = Path(__file__).resolve().parent.parent / "notes" / "name_cache.json"
-DOLMA_ORDER = ["T1 all sources", "T1 common_crawl", "T2 all sources", "V all sources"]  # G63
+DOLMA_ORDER = ["T1 all sources", "T1 common_crawl", "T2 all sources", "V all sources", "train all sources"]  # G63, G70
 
 
 def _entry(name, text, windows, source, model=None):

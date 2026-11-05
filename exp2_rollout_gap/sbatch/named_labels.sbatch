@@ -1,5 +1,5 @@
 #!/bin/bash
-# Names per model and class: names, quiz, analysis (design.md G63-G67). Paid API calls, hard stop $35 (s13 guard)
+# Names per model: names, rollout names, quiz, analysis (design.md G70-G73). Paid API calls, hard stop $40 (s13 guard)
 #SBATCH -c 1
 #SBATCH --mem=16G
 #SBATCH -t 12:00:00
@@ -13,7 +13,7 @@ set -euo pipefail
 source sbatch/dedupe.sh
 dedupe
 echo "start: $(date) $(hostname) $SLURM_JOB_PARTITION"
-test -f results/full_post_named_selection_summary.json || { echo "selection summary missing: s19 did not finish"; exit 1; }
+test -f results/full_post_named_check.json || { echo "free check missing"; exit 1; }
 module load miniforge/25.11.0-0
 source ~/venvs/cg/bin/activate
 python -u s20_named_labels.py run

@@ -355,3 +355,9 @@ The section above (21:11) was written by the finisher and overstates spending: i
 - Nothing is running. Nothing is resubmitted until Angela says so.
 
 Fixes needed before a resume: `recover` would save the 200 errored results as finished, and those names would never be re-sent; the finisher's Total regex; its spent figure with pending entries; its check that skips a new report because this run's heading already exists. API credit must be added first.
+
+## 2026-11-05 00:45, Exp 2 names per model and class: resumed
+
+Angela added credit and said to continue. G74 and its fixes are committed (`f258d4d`). Submitted labels 27951981 and 27951982 (two copies, one wins) and finisher 27951985 (`afterany`). Selection, windows and noise are not rerun.
+
+Left: 488 names, 199 rollout names, 4,664 quiz prompts, about $15.49, about $28.85 in all against the $40 stop. Estimate: about 1 hour once labels starts, from measured batch times (2-4 minutes per batch, 3 name chunks, 1 rollout batch, 10 quiz chunks). The finisher then writes the cost row, report and findings and pushes.

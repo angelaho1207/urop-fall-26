@@ -68,8 +68,16 @@ table.diag td .nm { display: block; min-width: 260px; max-width: 420px; }
 .toc { font-size: 0.92em; }
 nav a { max-width: 620px; }
 h3 { font-size: 1rem; margin: 20px 0 6px; }
-.keymark { color: var(--accent); font-weight: 700; }
 .scrolly { max-height: 680px; overflow: auto; }
-table.diag tr.keyrow td { background: rgba(var(--hl), 0.12); }
-table.diag tr.keyrow td:first-child { font-weight: 600; }
 table.diag tr.pooled td { border-top: 2px solid var(--line); }
+/* Rollouts tab: visible results and dropdowns (exp2_rollout_gap/design.md G80-G82) */
+details.more { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 0 14px; margin: 8px 0; }
+details.more > summary { cursor: pointer; padding: 10px 0; font-weight: 600; }
+details.more[open] { padding-bottom: 14px; }
+details.more.sub { background: var(--bg); }
+details.more.sub > summary { font-weight: 500; font-size: 0.95em; }
+details.name-more { margin-top: 2px; }
+details.name-more > summary { cursor: pointer; color: var(--muted); font-size: 0.85em; }
+#tab-rollouts .cols { align-items: start; }
+#tab-rollouts .cols > * { min-width: 0; }
+#tab-rollouts .cols table.diag td .nm { min-width: 0; }

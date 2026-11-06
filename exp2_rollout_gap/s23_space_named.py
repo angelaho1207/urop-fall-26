@@ -15,14 +15,23 @@ SPACE = Path(__file__).resolve().parent.parent / "space" / "data"
 MODELS = ["stage1", "main", "sft", "dpo", "instruct"]
 NEAR_CUT = 63  # 50 / 0.8: below this, dropping 20% of docs usually takes a concept under the 50-doc filter
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+\.[a-z]{2,}", re.I)
+COST_KEY = re.compile(r"usd|spent|price|limit_", re.I)
 
 
 def read(name):
     return json.loads((R / f"full_post_named_{name}.json").read_text())
 
 
+def cost_keys(value, path=""):
+    if isinstance(value, dict):
+        return [f"{path}/{k}" for k in value if COST_KEY.search(k)] + [hit for k, v in value.items() for hit in cost_keys(v, f"{path}/{k}")]
+    if isinstance(value, list):
+        return [hit for v in value for hit in cost_keys(v, path)]
+    return []
+
+
 def main():
-    summary, names, sel, noise, check = read("summary"), read("names"), read("selection_summary"), read("noise_summary"), read("check")
+    summary, names, sel, noise = read("summary"), read("names"), read("selection_summary"), read("noise_summary")
     if summary["stopped"] is not None or len(summary["pairs"]) != 200:
         raise SystemExit("G76: expected a finished run with 200 check entries")
 
@@ -46,11 +55,14 @@ def main():
     filter_effect = {"near_cut_docs": NEAR_CUT, "entries": len(under), "near": len(near), "near_mean_stay": round(sum(near) / len(near), 3), "above": len(above), "above_mean_stay": round(sum(above) / len(above), 3)}
     texts = [r["name"] for r in rows] + [p["dolma_name"] for p in summary["pairs"]] + [p["rollout_name"] for p in summary["pairs"]]
     found = sorted({m for t in texts if t for m in EMAIL.findall(t)})
-    out = {"run": "full_post", "sources": [f"results/full_post_named_{k}.json" for k in ("summary", "names", "selection_summary", "noise_summary", "check")],
-           "spent_usd": summary["spent_usd"], "limit_usd": summary["limit_usd"], "counts": summary["counts"], "usage": summary["usage"], "tables": summary["tables"], "pairs": summary["pairs"],
-           "noflag": summary["noflag_class_of_random_draws"], "check": check, "selection": {k: v for k, v in sel.items() if k != "seconds"},
+    out = {"run": "full_post", "sources": [f"results/full_post_named_{k}.json" for k in ("summary", "names", "selection_summary", "noise_summary")],
+           "counts": summary["counts"], "tables": summary["tables"], "pairs": summary["pairs"],
+           "noflag": summary["noflag_class_of_random_draws"], "selection": {k: v for k, v in sel.items() if k != "seconds"},
            "noise": {"reruns": noise["reruns"], "drop": noise["drop"], "train_docs": noise["train_docs"], "matched_docs": noise["matched_docs"], "filter_effect": filter_effect,
                      "models": {g: {k: m[k] for k in ("classes", "extreme_lists")} for g, m in noise["models"].items()}}}
+    dollars = cost_keys(out)  # G83: no cost figure leaves for the public Space
+    if dollars:
+        raise SystemExit(f"G83: cost fields in the page data: {dollars}")
     (SPACE / "exp2_named.json").write_text(json.dumps(out, ensure_ascii=False))
     (SPACE / "exp2_named_lists.json").write_text(json.dumps(rows, ensure_ascii=False))
     print("rows", len(rows), "email-like strings in names:", found, "bytes", (SPACE / "exp2_named.json").stat().st_size, (SPACE / "exp2_named_lists.json").stat().st_size)

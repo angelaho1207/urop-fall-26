@@ -1,0 +1,13 @@
+{
+  "repo": "angelaho1207/olmo3-concept-coverage",
+  "route": "web upload in Chrome (G85)",
+  "source_commit": "af20327",
+  "base_commit": "ad2ff58",
+  "uploaded": ["app.js", "index.html", "style.css", "data/exp2_named.json"],
+  "before": {"commit": "5a102d7d", "files": 327},
+  "after": {"commits": ["c360bb07", "a09046dc"], "files": 327},
+  "data_keys_removed": ["check", "limit_usd", "spent_usd", "usage"],
+  "data_values_changed": ["sources"],
+  "remote_hashes_match_local": true,
+  "result": "ok"
+}

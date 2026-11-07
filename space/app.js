@@ -782,6 +782,86 @@ function missingListTable(rows) {
   draw();
 }
 
+// Additional experiments tab: coverage lists (design.md G95-G100). Data from s31_space_coverage.py. Names and numbers only.
+const COVERAGE_SETS = ["train", ...NAMED_MODELS];
+const coverageSetLabel = (s) => (s === "train" ? "Dolma train" : SET_LABEL[s]);
+
+function drawCoverageTop(d) {
+  const select = document.getElementById("coverage-model");
+  select.innerHTML = NAMED_MODELS.map((g) => `<option value="${g}">${esc(SET_LABEL[g])}</option>`).join("");
+  select.value = "instruct";
+  const listOf = (s) => d.rows.filter((x) => x.set === s && x.list === "top").sort((a, b) => a.rank - b.rank);
+  const dolmaTop = new Set(listOf("train").map((x) => x.concept));
+  const pct = (x) => `${Math.round(100 * x)}%`;
+  document.getElementById("coverage-top-train").innerHTML = tableN(["rank", "concept", "χ", "stays", "name"],
+    listOf("train").map((x) => [x.rank, x.concept, fmt(x.chi, 1), pct(x.stays), nameCell(x.name)]));
+  const draw = () => {
+    const g = select.value;
+    document.getElementById("coverage-top-model-title").textContent = `Rollouts, ${SET_LABEL[g]}`;
+    document.getElementById("coverage-jaccard").textContent = `Overlap with Dolma's top 10 (Jaccard similarity, CG paper Fig. 28): ${fmt(d.jaccard_with_dolma_train[g].top, 2)}.`;
+    document.getElementById("coverage-top-model").innerHTML = tableN(["rank", "concept", "χ", "stays", "in Dolma's top 10", "name"],
+      listOf(g).map((x) => [x.rank, x.concept, fmt(x.chi, 1), pct(x.stays), dolmaTop.has(x.concept) ? "yes" : "<b>no</b>", nameCell(x.name)]));
+  };
+  select.onchange = draw;
+  draw();
+}
+
+function drawCoverageZero(d) {
+  const outside = NAMED_MODELS.map((g) => d.zero_fire_outside_matched[g]);
+  const nowhere = NAMED_MODELS.map((g, i) => d.zero_counts[g] - outside[i]);
+  const labels = NAMED_MODELS.map((g) => SET_LABEL[g]);
+  const L = layoutBase();
+  L.barmode = "stack";
+  L.bargap = 0.3;
+  L.barcornerradius = 4;
+  L.margin = { l: 150, r: 20, t: 10, b: 70 };
+  L.legend = { orientation: "h", y: -0.32, x: 0 };
+  L.xaxis = { ...L.xaxis, title: "concepts with χ = 0" };
+  L.yaxis = { ...L.yaxis, autorange: "reversed", showgrid: false };
+  const bar = (name, x, color) => ({ type: "bar", orientation: "h", name, y: labels, x, text: x.map(String), textposition: "inside", insidetextanchor: "middle",
+    textfont: { color: "#ffffff" }, marker: { color: css(color), line: { color: css("--bg"), width: 2 } }, hovertemplate: `%{y}: %{x} ${name}<extra></extra>` });
+  Plotly.newPlot("coverage-zero-plot", [bar("fire in no rollout", nowhere, "--cov-a"), bar("fire in other rollouts", outside, "--cov-b")], L, PLOT_CFG);
+}
+
+function coverageTables(d) {
+  const pct = (x) => (x === null || x === undefined ? "–" : `${Math.round(100 * x)}%`);
+  const sb = document.getElementById("coverage-bottom-set");
+  sb.innerHTML = COVERAGE_SETS.map((s) => `<option value="${s}">${esc(coverageSetLabel(s))}</option>`).join("");
+  sb.value = "instruct";
+  const drawBottom = () => {
+    document.getElementById("coverage-bottom").innerHTML = tableN(["rank", "concept", "χ", "stays", "name"],
+      d.rows.filter((x) => x.set === sb.value && x.list === "bottom").sort((a, b) => a.rank - b.rank).map((x) => [x.rank, x.concept, fmt(x.chi, 4), pct(x.stays), nameCell(x.name)]));
+  };
+  sb.onchange = drawBottom;
+  drawBottom();
+
+  const sz = document.getElementById("coverage-zero-model");
+  sz.innerHTML = NAMED_MODELS.map((g) => `<option value="${g}">${esc(SET_LABEL[g])}</option>`).join("");
+  sz.value = "instruct";
+  const drawZero = () => {
+    const mine = d.rows.filter((x) => x.set === sz.value && x.list === "zero");
+    document.getElementById("coverage-zero-count").textContent = `${mine.length} concepts, ${mine.filter((x) => x.fires_outside_matched).length} of them firing in other rollouts.`;
+    document.getElementById("coverage-zero-table").innerHTML = tableN(["concept", "fires in other rollouts", "rollout docs firing (all 10,000)", "Dolma docs firing", "name"],
+      mine.map((x) => [x.concept, x.fires_outside_matched ? "yes" : "no", (x.n_fire_rollout_all ?? 0).toLocaleString(), x.n_fire_train.toLocaleString(), nameCell(x.name)]));
+  };
+  sz.onchange = drawZero;
+  drawZero();
+
+  document.getElementById("coverage-stability").innerHTML = tableN(["set", "docs", "top 10: mean share staying", "bottom 10: mean share staying", "χ = 0 concepts", "Jaccard with Dolma, top 10", "Jaccard with Dolma, bottom 10"],
+    COVERAGE_SETS.map((s) => { const j = d.jaccard_with_dolma_train[s]; return [esc(coverageSetLabel(s)), d.docs[s].toLocaleString(), pct(d.mean_share_staying[s].top), pct(d.mean_share_staying[s].bottom),
+      d.zero_counts[s].toLocaleString(), j ? fmt(j.top, 2) : "–", j ? fmt(j.bottom, 2) : "–"]; }));
+  document.getElementById("coverage-naming").innerHTML = tableN(["", ""], [["list entries", d.rows.length.toLocaleString()], ["new names from Dolma text", d.new_dolma_names.toLocaleString()],
+    ["new names from rollouts", d.new_rollout_names.toLocaleString()], ["names reused", d.reused_names.toLocaleString()], ["new names from under 40 firing docs", d.new_names_from_under_40_docs.toLocaleString()],
+    ["names refused", (d.name_statuses.refusal || 0).toLocaleString()]]);
+}
+
+async function drawCoverageSection() {
+  const d = await load("data/exp2_coverage.json");
+  drawCoverageTop(d);
+  drawCoverageZero(d);
+  coverageTables(d);
+}
+
 async function drawAdditionalTab() {
   const [d, rows] = await Promise.all([load("data/exp2_missing.json"), load("data/exp2_missing_lists.json")]);
   drawMissingTop(rows);
@@ -789,6 +869,7 @@ async function drawAdditionalTab() {
   drawMissingThemes(d);
   missingTables(d);
   missingListTable(rows);
+  await drawCoverageSection();
 }
 
 // G75, G79, G80: one tab per experiment; a hash may name a tab, a section (sec-<hash>) or a concept page. temp is the old name of rollouts.

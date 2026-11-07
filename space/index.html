@@ -229,7 +229,7 @@
     <div class="heat-wrap"><div id="missing-theme-b" class="plot heat"></div></div>
     </div>
 
-    <h2>Details and checks</h2>
+    <h2>Details and checks, missing concepts</h2>
 
     <details class="more" id="sec-missing-methods"><summary>Methods and definitions, missing concepts: e⁻⁵ cutoff, list rules, random 80, 50 most extreme, 50-doc filter, naming, theme coding</summary>
     <p class="note"><b>Lists.</b> Per model, all 65,536 concepts qualify, with no firing floor on the missing side. In Dolma, missing from rollouts: χ<sub>train</sub> ≥ e<sup>−5</sup> and χ<sub>rollout</sub> &lt; e<sup>−5</sup>. In rollouts, missing from Dolma: the reverse. Every concept fires somewhere in our Dolma sample, so missing means weak, not absent. Our sample holds at most about 41M of the 5.93T stage 1 tokens.</p>
@@ -266,6 +266,54 @@
 
     <details class="more" id="sec-missing-naming"><summary>Naming counts: new and reused names, sources of reused names, refused names</summary>
     <div id="missing-naming"></div>
+    </details>
+
+    <hr class="exp-sep">
+    <h2 class="exp-title">Most covered concepts: rollouts vs Dolma</h2>
+    <p class="note">Concepts ranked by χ within one set: Dolma train (39,949 docs) or one model's rollouts (7,985 docs). <b>Names are not yet checked against text.</b></p>
+
+    <div id="sec-coverage-top">
+    <h2>Top 10 concepts by coverage, Dolma and a model</h2>
+    <p class="note">"Stays": share of 100 reruns, each dropping 20% of docs, in which the concept stays in the top 10. <span id="coverage-jaccard"></span></p>
+    <label>Model <select id="coverage-model"></select></label>
+    <div class="cols">
+      <div><h3>Dolma train</h3><div id="coverage-top-train"></div></div>
+      <div><h3 id="coverage-top-model-title">Rollouts</h3><div id="coverage-top-model"></div></div>
+    </div>
+    </div>
+
+    <div id="sec-coverage-zero">
+    <h2>Concepts never firing in a model's rollouts (χ = 0)</h2>
+    <p class="note">Every concept fires in Dolma train. Orange: fires in rollouts outside the 7,985 compared, so its 0 comes from which docs were compared.</p>
+    <div id="coverage-zero-plot" class="plot short"></div>
+    </div>
+
+    <h2>Details and checks, coverage lists</h2>
+
+    <details class="more" id="sec-coverage-methods"><summary>Methods and definitions, coverage lists: top 10, χ = 0, bottom 10 above e⁻⁵, 100 reruns, outside-rollouts check, naming</summary>
+    <p class="note"><b>Lists.</b> Per set: top 10 by χ; every concept with χ = 0; bottom 10 by χ among χ ≥ e<sup>−5</sup>. Ties by concept id. Top and bottom 10 follow the CG paper (Sec. 4.2.1); concepts below e<sup>−5</sup> are the missing-concepts experiment above.</p>
+    <p class="note"><b>Stability.</b> 100 reruns per set, each keeping a random 80% of the same docs (CG paper App. B.3). A concept at χ = 0 cannot move in such reruns, since a subset of the docs cannot add firing, so χ = 0 is checked against the about 2,000 rollouts per model outside the compared docs.</p>
+    <p class="note"><b>Names.</b> Claude Opus 5.5 from up to 40 windows where the concept fires: Dolma text for Dolma's lists and for χ = 0 concepts, the model's rollouts for its top and bottom 10. Names are reused when one exists from the same kind of text, and are not scored. Design: <code>exp2_rollout_gap/design.md</code> G95-G100.</p>
+    </details>
+
+    <details class="more" id="sec-coverage-bottom"><summary>Bottom 10 concepts by coverage above e⁻⁵, per set (unstable: about 0.5% stay over reruns)</summary>
+    <p class="note">These concepts sit just above the cutoff, so a different sample of docs picks different ones. Shown for completeness only.</p>
+    <label>Set <select id="coverage-bottom-set"></select></label>
+    <div id="coverage-bottom"></div>
+    </details>
+
+    <details class="more" id="sec-coverage-zero-list"><summary>Every χ = 0 concept per model, with names and whether it fires in other rollouts</summary>
+    <label>Model <select id="coverage-zero-model"></select></label>
+    <p id="coverage-zero-count" class="note"></p>
+    <div id="coverage-zero-table" class="scrolly"></div>
+    </details>
+
+    <details class="more" id="sec-coverage-stability"><summary>Rerun stability and overlap with Dolma: share of each top and bottom 10 staying, Jaccard similarity</summary>
+    <div id="coverage-stability"></div>
+    </details>
+
+    <details class="more" id="sec-coverage-naming"><summary>Naming counts, coverage lists: new and reused names, names from under 40 firing docs</summary>
+    <div id="coverage-naming"></div>
     </details>
   </section>
   <section id="tab-concept" class="tab">

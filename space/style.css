@@ -88,3 +88,8 @@ details.name-more > summary { cursor: pointer; color: var(--muted); font-size: 0
 #tab-additional .cols > * { min-width: 0; }
 #tab-additional .cols table.diag td .nm { min-width: 0; }
 h2.exp-title { font-size: 1.25rem; margin-top: 8px; }
+/* Coverage lists (design.md G100): two steps checked with the dataviz validator, light and dark */
+:root { --cov-a: #6a4fb3; --cov-b: #d1601f; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --cov-a: #8b72d6; --cov-b: #d9763a; } }
+:root[data-theme="dark"] { --cov-a: #8b72d6; --cov-b: #d9763a; }
+hr.exp-sep { border: 0; border-top: 1px solid var(--line); margin: 36px 0 8px; }

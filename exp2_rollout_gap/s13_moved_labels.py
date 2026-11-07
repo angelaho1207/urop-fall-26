@@ -137,9 +137,9 @@ def count_inputs(requests):
 def send(requests, tag, bounds):
     """Guard, record the worst case as pending, send, then record the actual dollars (G51)."""
     worst = sum(claude_batch.worst_case(p, bounds[cid]) for cid, p in requests)
-    print(f"guard [{tag}]: spent ${spent():.2f} + worst case ${worst:.2f} for {len(requests)} requests (limit ${LIMIT_USD:.0f})", flush=True)
+    print(f"guard [{tag}]: spent ${spent():.2f} + worst case ${worst:.2f} for {len(requests)} requests (limit ${LIMIT_USD:.2f})", flush=True)
     if spent() + worst > LIMIT_USD:
-        raise SystemExit(f"stopped by the ${LIMIT_USD:.0f} guard before {tag}")
+        raise SystemExit(f"stopped by the ${LIMIT_USD:.2f} guard before {tag}")
     with open(OUT / "ledger.jsonl", "a") as f:
         f.write(json.dumps({"tag": tag, "usd": worst, "pending": True, "time": time.time()}) + "\n")
     outcomes = claude_batch.send(requests, OUT, tag)  # resubmits errored or expired once (N8)

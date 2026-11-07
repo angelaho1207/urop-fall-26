@@ -256,6 +256,12 @@ Change after G84 (2026-11-06, Angela: edit the Space without going through ORCD,
 |---|---|---|---|---|
 | G85 | Upload through Hugging Face's web upload page in Angela's Chrome session, as two Space commits: code `c360bb07`, data `a09046dc`. Files came from `git show` of commit `af20327` (LF endings) and a local run of `s23_space_named.py`. The G84 guards ran on the laptop first: static checks, remote code equal to `ad2ff58`, data differing only by the removed keys and `sources`. Afterwards the four remote hashes matched the local files, the file count stayed at 327, and the served page held the new tab name. Record: `results/full_post_space_tidy_check.json`. `sbatch/space_tidy.sbatch` is removed | Angela's request. A page edit needs no compute, and this route needs no token on the laptop | The ORCD job (needs a login and a queue for a static page). A token on the laptop (a new secret to manage for the same result) | Angela, 2026-11-06; G84 |
 
+Change after G85 (2026-11-06, Angela: rename to chi_rollout; written before the change uploads).
+
+| # | Choice | Reason | Alternatives rejected | Source |
+|---|---|---|---|---|
+| G86 | χ of a concept in a model's rollouts is called χ_rollout from now on: page labels, and the key `chi_rollout` in the Space file `exp2_named_lists.json`. `results/full_post_named_*.json` keep their committed key `chi_model`, and `s23_space_named.py` maps it to `chi_rollout`. Older rows here keep χ_g or χ_model for the same quantity | In the CG paper χ_model (Eq. 4) is performance weighted by activation, which unprompted rollouts cannot have. Ours is the paper's Eq. 2 coverage measured on rollouts | Rewriting committed results and older rows (changes the record of what ran, and adds nothing for a reader of the page) | Angela, 2026-11-06; CG paper Eq. 2, Eq. 4 |
+
 ## Qualitative results (written 2026-10-21, before the full run finished)
 | # | Choice | Reason | Alternatives rejected | Source |
 |---|---|---|---|---|

@@ -603,7 +603,7 @@ function namedTables(d) {
   // Selection counts (G83: no cost figures)
   const s = d.selection, u = d.counts, kv = (rows) => tableN(["", ""], rows.map(([a, b]) => [a, b]));
   document.getElementById("named-selection").innerHTML =
-    tableN(["model", "ranked (χ<sub>train</sub> ≥ e⁻⁵)", "missing (χ<sub>train</sub> &lt; e⁻⁵)", "per class (over, under)", "χ<sub>model</sub> = 0", "χ<sub>model</sub> &lt; e⁻⁵", "pass the 50-doc filter", "random draws kept from the earlier sample (over, under, middle)"],
+    tableN(["model", "ranked (χ<sub>train</sub> ≥ e⁻⁵)", "missing (χ<sub>train</sub> &lt; e⁻⁵)", "per class (over, under)", "χ<sub>rollout</sub> = 0", "χ<sub>rollout</sub> &lt; e⁻⁵", "pass the 50-doc filter", "random draws kept from the earlier sample (over, under, middle)"],
       NAMED_MODELS.map((g) => { const x = s.by_model[g]; return [esc(NAMED_MODEL_LABEL[g]), x.ranked_concepts.toLocaleString(), x.missing_chi_train.toLocaleString(), x.class_size.toLocaleString(), x.chi_zero_ranked, x.missing_from_rollouts_ranked.toLocaleString(), x.pass_filter.toLocaleString(), ["over", "under", "middle"].map((k) => x.kept_g62_draws[k]).join(", ")]; }))
     + "<h3>Firing docs of the extreme lists</h3>"
     + tableN(["model", "list", "median train docs", "median rollout docs", "concepts with 0 rollout docs"],
@@ -632,15 +632,15 @@ async function drawNamedLists() {
       .sort((a, b) => (a.class === "over" && b.class === "over" ? (b.r ?? -99) - (a.r ?? -99) : (a.r ?? -99) - (b.r ?? -99)));
     const noR = mine.filter((r) => r.r === null).length;
     document.getElementById("lists-count").textContent = `${shown.length} entries in the table, strongest first. The chart shows all of this model's entries` + (noR ? `, leaving out ${noR} with χ = 0 (r has no finite value).` : ".");
-    document.getElementById("lists-table").innerHTML = tableN(["concept", "class", "r", "r sd", "r 95% over reruns", "stays in class", "stays in list", "train docs", "rollout docs", "T1 docs", "V docs", "χ train", "χ model", "below e⁻⁵ in rollouts", "class without flagged docs", "in check", "Dolma name", "name source"],
-      shown.map((r) => [r.concept, r.class, fmt(r.r), fmt(r.r_sd), r.r_lo === null ? "–" : `${fmt(r.r_lo, 2)} to ${fmt(r.r_hi, 2)}`, fmt(r.stay_class, 2), fmt(r.stay_list, 2), r.train_docs.toLocaleString(), r.rollout_docs.toLocaleString(), r.n_T1.toLocaleString(), r.n_V.toLocaleString(), fmt(r.chi_train, 4), fmt(r.chi_model, 4), r.missing ? "yes" : "no", escN(r.class_noflag), r.in_check ? "yes" : "no", nameCell(r.name), escN(r.source)]));
+    document.getElementById("lists-table").innerHTML = tableN(["concept", "class", "r", "r sd", "r 95% over reruns", "stays in class", "stays in list", "train docs", "rollout docs", "T1 docs", "V docs", "χ train", "χ rollout", "below e⁻⁵ in rollouts", "class without flagged docs", "in check", "Dolma name", "name source"],
+      shown.map((r) => [r.concept, r.class, fmt(r.r), fmt(r.r_sd), r.r_lo === null ? "–" : `${fmt(r.r_lo, 2)} to ${fmt(r.r_hi, 2)}`, fmt(r.stay_class, 2), fmt(r.stay_list, 2), r.train_docs.toLocaleString(), r.rollout_docs.toLocaleString(), r.n_T1.toLocaleString(), r.n_V.toLocaleString(), fmt(r.chi_train, 4), fmt(r.chi_rollout, 4), r.missing ? "yes" : "no", escN(r.class_noflag), r.in_check ? "yes" : "no", nameCell(r.name), escN(r.source)]));
     const colors = { random: "--middle", extreme_filtered: "--accent", extreme_unfiltered: "--over" };
     const traces = Object.keys(NAMED_LIST_LABEL).map((k) => {
       const p = mine.filter((r) => r.list === k && r.r !== null);
       return { type: "scatter", mode: "markers", name: NAMED_LIST_LABEL[k], x: p.map((r) => r.r), y: p.map((r) => r.rollout_docs + 1), customdata: p.map((r) => r.rollout_docs), text: p.map((r) => `<b>concept ${r.concept}</b>, ${r.class}<br>${hoverN(r.name)}`), marker: { size: 7, color: css(colors[k]), opacity: 0.7 }, hovertemplate: "%{text}<br>r %{x:.2f}, %{customdata} rollout docs<extra></extra>" };
     });
     const L = layoutBase();
-    L.xaxis = { ...L.xaxis, title: "r = ln(χ model / χ train)" };
+    L.xaxis = { ...L.xaxis, title: "r = ln(χ rollout / χ train)" };
     L.yaxis = { ...L.yaxis, type: "log", title: "rollout firing docs + 1 (log scale)" };
     Plotly.react("lists-plot", traces, L, PLOT_CFG);
   };

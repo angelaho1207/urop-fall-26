@@ -42,7 +42,7 @@ def main():
             for side, entries in sides.items():
                 for x in entries:
                     n = extra[(g, x["concept"], list_name, side)]
-                    rows.append({"model": g, "list": list_name, "class": side, "concept": x["concept"], "r": x["r"], "class_noflag": x["class_noflag"], "chi_train": round(x["chi_train"], 5), "chi_model": round(x["chi_model"], 5),
+                    rows.append({"model": g, "list": list_name, "class": side, "concept": x["concept"], "r": x["r"], "class_noflag": x["class_noflag"], "chi_train": round(x["chi_train"], 5), "chi_rollout": round(x["chi_model"], 5),
                                  "missing": x["missing_from_rollouts"], "n_T1": x["n_T1"], "n_V": x["n_V"], "train_docs": x["n_fire_train"], "rollout_docs": x["n_fire_model"], "name": x["name"], "source": x["source"],
                                  "in_check": x["in_check"], "r_sd": n["r_sd"], "r_lo": n["r_p2_5"], "r_hi": n["r_p97_5"], "stay_class": n["share_stays_in_class"], "stay_list": n["share_stays_in_list"]})
     if len(rows) != sel["entries"]:

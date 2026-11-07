@@ -81,3 +81,10 @@ details.name-more > summary { cursor: pointer; color: var(--muted); font-size: 0
 #tab-rollouts .cols { align-items: start; }
 #tab-rollouts .cols > * { min-width: 0; }
 #tab-rollouts .cols table.diag td .nm { min-width: 0; }
+/* Additional experiments tab (exp2_rollout_gap/design.md G94) */
+.heat-wrap { overflow-x: auto; }
+.plot.heat { height: 430px; min-width: 760px; }
+#tab-additional .cols { align-items: start; }
+#tab-additional .cols > * { min-width: 0; }
+#tab-additional .cols table.diag td .nm { min-width: 0; }
+h2.exp-title { font-size: 1.25rem; margin-top: 8px; }

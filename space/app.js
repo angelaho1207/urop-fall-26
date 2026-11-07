@@ -680,6 +680,117 @@ async function drawRolloutsTab() {
   await drawSeries("data/rollouts_post.json", "post-gallery", "", "Curves");
 }
 
+// Additional experiments tab: missing concepts (design.md G87-G94). Data from s28_space_missing.py. Names and numbers only, no window text.
+const MISSING_GROUPS = { in_dolma_missing_rollouts: "In Dolma, missing from rollouts", in_rollouts_missing_dolma: "In rollouts, missing from Dolma" };
+const MISSING_LISTS = { random: "random 80", extreme_filtered: "50 most extreme, filtered", extreme_unfiltered: "50 most extreme, unfiltered" };
+const missingR = (r, group) => (r === null || r === undefined ? (group === "in_dolma_missing_rollouts" ? "−∞" : "+∞") : sgnN(r, 2));
+
+function drawMissingTop(rows) {
+  const select = document.getElementById("missing-model");
+  select.innerHTML = NAMED_MODELS.map((g) => `<option value="${g}">${esc(SET_LABEL[g])}</option>`).join("");
+  select.value = "instruct";
+  const table = (group) => tableN(["concept", "r", "Dolma docs", "rollout docs", "name"],
+    rows.filter((x) => x.model === select.value && x.direction === group && x.list === "extreme_filtered").slice(0, 10)
+      .map((x) => [x.concept, missingR(x.r, group), x.n_fire_train.toLocaleString(), x.n_fire_rollout.toLocaleString(), nameCell(x.name)]));
+  const draw = () => {
+    document.getElementById("missing-top-a").innerHTML = table("in_dolma_missing_rollouts");
+    document.getElementById("missing-top-b").innerHTML = table("in_rollouts_missing_dolma");
+  };
+  select.onchange = draw;
+  draw();
+}
+
+function drawMissingCounts(d) {
+  const groups = Object.keys(MISSING_GROUPS);
+  const top = Math.max(...groups.flatMap((g) => NAMED_MODELS.map((m) => d.by_model[m][g].members))) * 1.12;  // one x axis, so the panels compare
+  const labels = NAMED_MODELS.map((m) => SET_LABEL[m]);
+  groups.forEach((g, i) => {
+    const baseline = d.by_model.stage1[g].v_baseline_members;
+    const L = layoutBase();
+    L.margin = { l: 150, r: 20, t: 26, b: 42 };
+    L.barcornerradius = 4;
+    L.bargap = 0.3;
+    L.showlegend = false;
+    L.xaxis = { ...L.xaxis, title: "concepts", range: [0, top], tickformat: "," };
+    L.yaxis = { ...L.yaxis, autorange: "reversed", showgrid: false };
+    L.shapes = [{ type: "line", yref: "paper", y0: 0, y1: 1, x0: baseline, x1: baseline, line: { dash: "dash", width: 1.5, color: css("--fg") } }];
+    L.annotations = [{ x: baseline, y: 1, xref: "x", yref: "paper", yanchor: "bottom", showarrow: false, text: `held-out Dolma: ${baseline.toLocaleString()}`, font: { size: 12, color: css("--fg") } }];
+    Plotly.newPlot(i ? "missing-count-b" : "missing-count-a", [{ type: "bar", orientation: "h", y: labels, x: NAMED_MODELS.map((m) => d.by_model[m][g].members),
+      text: NAMED_MODELS.map((m) => d.by_model[m][g].members.toLocaleString()), textposition: "outside", cliponaxis: false, textfont: { color: css("--fg") },
+      marker: { color: css("--accent") }, hovertemplate: "%{y}: %{x:,} concepts<extra></extra>" }], L, PLOT_CFG);
+  });
+}
+
+function drawMissingThemes(d) {
+  const names = d.categories.map((c) => c.name);
+  const groups = Object.keys(MISSING_GROUPS);
+  const shareOf = (m, g, c) => d.themes[`${m}|${g}`].shares[c];
+  const mean = (c) => groups.flatMap((g) => NAMED_MODELS.map((m) => shareOf(m, g, c)[0])).reduce((a, b) => a + b, 0);
+  const order = [...names].sort((a, b) => (a === "Diffuse or unclear") - (b === "Diffuse or unclear") || mean(b) - mean(a));  // one order in both panels; unclear last
+  const labels = NAMED_MODELS.map((m) => SET_LABEL[m]);
+  groups.forEach((g, i) => {
+    const L = layoutBase();
+    L.margin = { l: 320, r: 10, t: 34, b: 10 };
+    L.xaxis = { ...L.xaxis, side: "top", showgrid: false, zeroline: false };
+    L.yaxis = { ...L.yaxis, autorange: "reversed", showgrid: false, zeroline: false };
+    Plotly.newPlot(i ? "missing-theme-b" : "missing-theme-a", [{ type: "heatmap", x: labels, y: order, zmin: 0, zmax: 0.5, showscale: false, xgap: 2, ygap: 2,
+      z: order.map((c) => NAMED_MODELS.map((m) => shareOf(m, g, c)[0])),
+      text: order.map((c) => NAMED_MODELS.map((m) => `${Math.round(100 * shareOf(m, g, c)[0])}%`)), texttemplate: "%{text}",
+      customdata: order.map((c) => NAMED_MODELS.map((m) => shareOf(m, g, c))),
+      colorscale: [[0, css("--bg")], [1, css("--accent")]],
+      hovertemplate: "%{y}<br>%{x}: %{text}, 95% interval %{customdata[1]:.0%} to %{customdata[2]:.0%}<extra></extra>" }], L, PLOT_CFG);
+  });
+}
+
+function missingTables(d) {
+  const names = d.categories.map((c) => c.name);
+  const groups = Object.keys(MISSING_GROUPS);
+  const pctN = (x) => (x === null || x === undefined ? "–" : `${Math.round(100 * x)}%`);
+  document.getElementById("missing-agreement").textContent = `Opus vs Sonnet: κ ${fmt(d.kappa_opus_vs_sonnet, 2)}, agreement ${pctN(d.agreement)}, ${d.concepts_themed.toLocaleString()} concepts.`;
+  document.getElementById("missing-theme-defs").innerHTML = tableN(["category", "definition"], d.categories.map((c) => [esc(c.name), esc(c.definition)]));
+  const cells = groups.flatMap((g) => NAMED_MODELS.map((m) => ({ g, m, t: d.themes[`${m}|${g}`] })));
+  const head = ["group", "model", "concepts", ...names.map(esc)];
+  document.getElementById("missing-theme-table").innerHTML = tableN(head, cells.map(({ g, m, t }) =>
+    [esc(MISSING_GROUPS[g]), esc(SET_LABEL[m]), t.concepts, ...names.map((c) => `${pctN(t.shares[c][0])}<br><span class="note">${pctN(t.shares[c][1])} to ${pctN(t.shares[c][2])}</span>`)]));
+  document.getElementById("missing-robust").innerHTML = tableN(["group", "model", "concepts → agreed → without", ...names.map(esc)], cells.map(({ g, m, t }) =>
+    [esc(MISSING_GROUPS[g]), esc(SET_LABEL[m]), `${t.concepts} → ${t.concepts_agreed} → ${t.concepts_without_v_agrees}`,
+      ...names.map((c) => `${pctN(t.shares[c][0])} → ${pctN(t.shares_agreed[c][0])} → ${pctN(t.shares_without_v_agrees[c][0])}`)]));
+  document.getElementById("missing-count-table").innerHTML = tableN(["group", "model", "concepts", "share of dictionary", "held-out Dolma baseline", "also marked by held-out Dolma", "χ<sub>rollout</sub> = 0", "pass 50-doc filter"],
+    groups.flatMap((g) => NAMED_MODELS.map((m) => { const b = d.by_model[m][g]; return [esc(MISSING_GROUPS[g]), esc(SET_LABEL[m]), b.members.toLocaleString(), `${(100 * b.share_of_dictionary).toFixed(1)}%`, b.v_baseline_members.toLocaleString(), b.members_v_agrees.toLocaleString(), b.members_chi_rollout_zero.toLocaleString(), b.members_pass_present_filter.toLocaleString()]; })));
+  document.getElementById("missing-garbled").innerHTML = tableN(["model", "docs flagged garbled", "all firing concepts", "random 80", "50 most extreme, unfiltered", "50 most extreme, filtered"],
+    NAMED_MODELS.map((m) => { const b = d.garbled[m]; return [esc(SET_LABEL[m]), pctN(b.share_docs_flagged), pctN(b.all_firing_concepts.median), pctN(b.random.median), pctN(b.extreme_unfiltered.median), pctN(b.extreme_filtered.median)]; }));
+  const s = d.selection, kv = (rows) => tableN(["", ""], rows);
+  document.getElementById("missing-naming").innerHTML = kv([["list entries", s.entries.toLocaleString()], ["distinct concepts", s.distinct_concepts.toLocaleString()], ["in Dolma, missing from rollouts", s.distinct_in_list_a.toLocaleString()], ["in rollouts, missing from Dolma", s.distinct_in_list_b.toLocaleString()],
+    ["new names from Dolma text", s.new_dolma_names.toLocaleString()], ["new names from rollouts", s.new_rollout_names.toLocaleString()], ["new names from under 40 firing docs", s.new_names_from_under_40_docs.toLocaleString()], ["names returned", `${d.names_returned.toLocaleString()} of ${d.names_planned.toLocaleString()}`],
+    ["names refused, left unnamed", (d.name_statuses.refusal || 0).toLocaleString()], ["list entries with no name", d.entries_without_name.toLocaleString()], ["names reused", s.reused_names.toLocaleString()]])
+    + "<h3>Sources of reused names</h3>" + kv(Object.entries(s.reused_by_source).map(([k, v]) => [esc(k), v]));
+}
+
+function missingListTable(rows) {
+  const m = document.getElementById("missing-list-model"), g = document.getElementById("missing-list-group"), k = document.getElementById("missing-list-kind");
+  m.innerHTML = NAMED_MODELS.map((x) => `<option value="${x}">${esc(SET_LABEL[x])}</option>`).join("");
+  g.innerHTML = Object.entries(MISSING_GROUPS).map(([x, v]) => `<option value="${x}">${esc(v)}</option>`).join("");
+  k.innerHTML = Object.entries(MISSING_LISTS).map(([x, v]) => `<option value="${x}">${esc(v)}</option>`).join("");
+  m.value = "instruct";
+  const draw = () => {
+    const shown = rows.filter((x) => x.model === m.value && x.direction === g.value && x.list === k.value);
+    document.getElementById("missing-list-count").textContent = `${shown.length} entries.`;
+    document.getElementById("missing-list-table").innerHTML = tableN(["concept", "r", "χ train", "χ rollout", "χ held-out Dolma", "Dolma docs", "rollout docs", "name", "name source"],
+      shown.map((x) => [x.concept, missingR(x.r, x.direction), fmt(x.chi_train, 4), fmt(x.chi_rollout, 4), fmt(x.chi_V, 4), x.n_fire_train.toLocaleString(), x.n_fire_rollout.toLocaleString(), nameCell(x.name), escN(x.name_source)]));
+  };
+  m.onchange = g.onchange = k.onchange = draw;
+  draw();
+}
+
+async function drawAdditionalTab() {
+  const [d, rows] = await Promise.all([load("data/exp2_missing.json"), load("data/exp2_missing_lists.json")]);
+  drawMissingTop(rows);
+  drawMissingCounts(d);
+  drawMissingThemes(d);
+  missingTables(d);
+  missingListTable(rows);
+}
+
 // G75, G79, G80: one tab per experiment; a hash may name a tab, a section (sec-<hash>) or a concept page. temp is the old name of rollouts.
 // A section inside dropdowns opens them, so old links still land on their result.
 async function route() {
@@ -694,7 +805,7 @@ async function route() {
   if (!drawn[tab]) {
     drawn[tab] = true;
     const steps = tab === "pile" ? [drawOverview, drawNoise, drawPatterns, drawTopics, drawTable]
-      : tab === "rollouts" ? [drawRolloutsTab] : [];
+      : tab === "rollouts" ? [drawRolloutsTab] : tab === "additional" ? [drawAdditionalTab] : [];
     for (const step of steps) await step().catch((e) => console.error(e));  // one failed chart leaves the others drawn
     if (section) section.scrollIntoView();
   }

@@ -14,6 +14,7 @@
   <nav>
     <a href="#pile" data-tab="pile">Dolma vs Pile (web text only) (OLD)</a>
     <a href="#rollouts" data-tab="rollouts">Dolma (pretraining data) vs pretrained, mid-trained and post-trained Olmo 3 rollouts</a>
+    <a href="#additional" data-tab="additional">Dolma vs Olmo 3 rollouts (additional experiments)</a>
   </nav>
 </header>
 <main>
@@ -194,6 +195,77 @@
     <p id="lists-count" class="note"></p>
     <div id="lists-plot" class="plot" style="height:420px"></div>
     <div id="lists-table" class="scrolly"></div>
+    </details>
+  </section>
+  <section id="tab-additional" class="tab">
+    <h2 class="exp-title">Missing concepts: rollouts vs Dolma</h2>
+    <p class="note">A concept is missing from a set when χ &lt; e<sup>−5</sup>, under 0.7% of the average concept. "Dolma" means our sample of 39,949 docs. <b>Names are not yet checked against text.</b></p>
+
+    <div id="sec-missing-concepts">
+    <h2>Most extreme missing concepts, per model</h2>
+    <p class="note">Top 10 by r = ln(χ<sub>rollout</sub> / χ<sub>train</sub>), among concepts firing in at least 50 docs where they are present. r = −∞: χ<sub>rollout</sub> = 0.</p>
+    <label>Model <select id="missing-model"></select></label>
+    <div class="cols">
+      <div><h3>In Dolma, missing from rollouts</h3><div id="missing-top-a"></div></div>
+      <div><h3>In rollouts, missing from Dolma</h3><div id="missing-top-b"></div></div>
+    </div>
+    </div>
+
+    <div id="sec-missing-counts">
+    <h2>Concepts missing per model, against held-out Dolma</h2>
+    <p class="note">Dashed line: the count from sampling alone, using held-out Dolma at the same 7,985 docs.</p>
+    <div class="cols">
+      <div><h3>In Dolma, missing from rollouts</h3><div id="missing-count-a" class="plot short"></div></div>
+      <div><h3>In rollouts, missing from Dolma</h3><div id="missing-count-b" class="plot short"></div></div>
+    </div>
+    </div>
+
+    <div id="sec-missing-themes">
+    <h2>Themes of missing concepts, per model</h2>
+    <p class="note">Share of 80 randomly drawn concepts per model. Describes these lists only, with no comparison to concepts in general.</p>
+    <h3>In Dolma, missing from rollouts</h3>
+    <div class="heat-wrap"><div id="missing-theme-a" class="plot heat"></div></div>
+    <h3>In rollouts, missing from Dolma</h3>
+    <div class="heat-wrap"><div id="missing-theme-b" class="plot heat"></div></div>
+    </div>
+
+    <h2>Details and checks</h2>
+
+    <details class="more" id="sec-missing-methods"><summary>Methods and definitions, missing concepts: e⁻⁵ cutoff, list rules, random 80, 50 most extreme, 50-doc filter, naming, theme coding</summary>
+    <p class="note"><b>Lists.</b> Per model, all 65,536 concepts qualify, with no firing floor on the missing side. In Dolma, missing from rollouts: χ<sub>train</sub> ≥ e<sup>−5</sup> and χ<sub>rollout</sub> &lt; e<sup>−5</sup>. In rollouts, missing from Dolma: the reverse. Every concept fires somewhere in our Dolma sample, so missing means weak, not absent. Our sample holds at most about 41M of the 5.93T stage 1 tokens.</p>
+    <p class="note"><b>Per model and group.</b> 80 random, unfiltered; 50 most extreme, unfiltered; 50 most extreme, filtered to at least 50 firing docs on the side where the concept is present. Most extreme uses r: lowest for concepts missing from rollouts, highest for concepts missing from Dolma.</p>
+    <p class="note"><b>Names.</b> Claude Opus 5.5 from up to 40 windows where the concept fires, every firing doc if fewer. Names are reused when one exists from the same kind of text, and are not scored.</p>
+    <p class="note"><b>Themes.</b> Opus writes the categories from the random draws' names without seeing model or group. Opus and Sonnet 5.5 then each assign every concept separately; shares use Opus. Design: <code>exp2_rollout_gap/design.md</code> G87-G94. Training data outside stage 1 is not in the reference, so stage 1 is the cleanest test of concepts missing from Dolma.</p>
+    </details>
+
+    <details class="more" id="sec-missing-lists"><summary>All 1,800 missing-concept entries: names, r, χ, firing docs, name source, filter by model, group and list</summary>
+    <label>Model <select id="missing-list-model"></select></label> <label>Group <select id="missing-list-group"></select></label> <label>List <select id="missing-list-kind"></select></label>
+    <p id="missing-list-count" class="note"></p>
+    <div id="missing-list-table" class="scrolly"></div>
+    </details>
+
+    <details class="more" id="sec-missing-theme-table"><summary>Theme definitions and shares with 95% intervals, per model and group; Opus vs Sonnet agreement (κ)</summary>
+    <p id="missing-agreement" class="stats"></p>
+    <div id="missing-theme-defs"></div>
+    <div id="missing-theme-table"></div>
+    </details>
+
+    <details class="more" id="sec-missing-robust"><summary>Theme robustness: shares on concepts both coders agreed on, and without concepts that held-out Dolma also marks missing</summary>
+    <p class="note">Each cell: main share → agreed only → without those concepts. The main result keeps every concept.</p>
+    <div id="missing-robust"></div>
+    </details>
+
+    <details class="more" id="sec-missing-count-table"><summary>Missing-concept counts: list sizes, share of dictionary, held-out Dolma baseline, χ_rollout = 0, concepts passing the 50-doc filter</summary>
+    <div id="missing-count-table"></div>
+    </details>
+
+    <details class="more" id="sec-missing-garbled"><summary>Garbled-text check: share of activation from garbled docs for concepts missing from Dolma</summary>
+    <p class="note">Each concept's share of its activation from flagged docs at the matched 7,985 docs. Medians over each list, against all firing concepts in that model. A list below "all firing concepts" draws less on garbled docs than a typical concept.</p>
+    <div id="missing-garbled"></div>
+    </details>
+
+    <details class="more" id="sec-missing-naming"><summary>Naming counts: new and reused names, sources of reused names, refused names</summary>
+    <div id="missing-naming"></div>
     </details>
   </section>
   <section id="tab-concept" class="tab">

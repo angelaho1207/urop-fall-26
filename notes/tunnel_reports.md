@@ -476,3 +476,7 @@ Angela asked to take away the key results section (G78). Stars stay; the status 
 ## 2026-11-05 02:45, Space: key results box removed, live
 
 Check passed with no console errors; upload result ok, code files only, no file removed (`results/full_post_space_named_nokey_check.json`). G78 done.
+
+## 2026-11-06 23:56, Exp 2 missing concepts: done (G87-G93)
+
+Written by the labels job, not checked by hand. Spent $13.74 of $24.81. Names 985 of 995 returned, 769 concepts themed, kappa 0.9255. Names and tables: `exp2_rollout_gap/results/full_post_missing_summary.md`.

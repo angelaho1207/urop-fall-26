@@ -1,0 +1,2241 @@
+{
+ "stopped": null,
+ "spent_usd": 13.74,
+ "limit_usd": 24.81,
+ "name_statuses": {
+  "ok": 985,
+  "refusal": 10
+ },
+ "names_returned": 985,
+ "names_planned": 995,
+ "entries_without_name": 17,
+ "categories": [
+  {
+   "name": "Programming code syntax and identifiers",
+   "definition": "Features that fire on tokens of general-purpose programming or shell code, such as keywords, operators used in code control flow, import/package paths, library, class, function and type names, and code-comment or docstring structure, excluding HTML/CSS markup and web URLs."
+  },
+  {
+   "name": "Web markup, styling and URLs",
+   "definition": "Features that fire on HTML/XML/SVG tags and attributes, CSS properties and values, DOM/web-page boilerplate code, or components of URLs, domains and web addresses."
+  },
+  {
+   "name": "Mathematical notation and quantitative problems",
+   "definition": "Features that fire on math expressions or math/quantitative word-problem language, including operators, operands, exponents, variables, coefficients, fractions, negative signs, and math-task vocabulary such as 'divided by', 'nearest integer', 'derivative' or 'Find'."
+  },
+  {
+   "name": "Repetition and sequence patterns",
+   "definition": "Features whose main trigger is position within a repetitive, periodic or enumerated sequence, such as number lists, repeated tokens or copied fragments, where the token is predictable from an established pattern rather than from its meaning."
+  },
+  {
+   "name": "Citations, references and bibliographic metadata",
+   "definition": "Features that fire on parts of academic, legal or patent references and document metadata, such as citation numbers and brackets, author-year separators, et al., DOIs, journal names, page and volume numbers, figure/section cross-references, dates in references, and tables of contents."
+  },
+  {
+   "name": "Legal, license and website boilerplate",
+   "definition": "Features that fire on formulaic boilerplate text, including software and content license wording, copyright and warranty disclaimers, terms-of-use phrasing, and recurring website interface or navigation labels such as 'Posts', 'Reply' or 'Advertisement'."
+  },
+  {
+   "name": "Scientific and biomedical terminology",
+   "definition": "Features that fire on technical vocabulary or word pieces from biology, medicine, chemistry, physics or materials science, such as disease, anatomy, gene, protein, species and physical-effect terms."
+  },
+  {
+   "name": "Named entities",
+   "definition": "Features that fire on proper names of specific people, places, organizations, companies, political groups or brands, including subword pieces that spell those names."
+  },
+  {
+   "name": "General-domain concepts in prose",
+   "definition": "Features that fire on topical or semantic word meanings in ordinary prose outside science, code, math and boilerplate, such as sports, politics, crime, law, media, history, everyday life, or particular grammatical and discourse functions of words."
+  },
+  {
+   "name": "Document structure and formatting boundaries",
+   "definition": "Features that fire on structural tokens marking boundaries or roles in text layout, such as newlines ending paragraphs or fields, headings, list markers, separators, metadata labels, Q&A, quiz and answer prompts, multiple-choice options, and assistant-response formatting."
+  },
+  {
+   "name": "Diffuse or unclear",
+   "definition": "Features whose descriptions call their activation diffuse, weak, nonspecific, noise-like, or tied to garbled text with no clear lexical or semantic theme."
+  }
+ ],
+ "concepts_themed": 769,
+ "kappa_opus_vs_sonnet": 0.9255,
+ "agreement": 0.9346,
+ "themes": {
+  "stage1|in_dolma_missing_rollouts": {
+   "model": "stage1",
+   "direction": "in_dolma_missing_rollouts",
+   "concepts": 80,
+   "shares": {
+    "Programming code syntax and identifiers": [
+     0.125,
+     0.0625,
+     0.2
+    ],
+    "Web markup, styling and URLs": [
+     0.0375,
+     0.0,
+     0.0875
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.075,
+     0.025,
+     0.1375
+    ],
+    "Repetition and sequence patterns": [
+     0.025,
+     0.0,
+     0.0625
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.175,
+     0.1,
+     0.2625
+    ],
+    "Legal, license and website boilerplate": [
+     0.0625,
+     0.0125,
+     0.125
+    ],
+    "Scientific and biomedical terminology": [
+     0.225,
+     0.1375,
+     0.325
+    ],
+    "Named entities": [
+     0.025,
+     0.0,
+     0.0625
+    ],
+    "General-domain concepts in prose": [
+     0.15,
+     0.075,
+     0.2375
+    ],
+    "Document structure and formatting boundaries": [
+     0.1,
+     0.0375,
+     0.175
+    ],
+    "Diffuse or unclear": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "concepts_agreed": 76,
+   "shares_agreed": {
+    "Programming code syntax and identifiers": [
+     0.1184,
+     0.1053,
+     0.1053
+    ],
+    "Web markup, styling and URLs": [
+     0.0395,
+     0.0395,
+     0.0395
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0658,
+     0.1184,
+     0.1184
+    ],
+    "Repetition and sequence patterns": [
+     0.0132,
+     0.0,
+     0.0
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.1842,
+     0.1974,
+     0.1974
+    ],
+    "Legal, license and website boilerplate": [
+     0.0658,
+     0.1447,
+     0.1447
+    ],
+    "Scientific and biomedical terminology": [
+     0.2368,
+     0.1842,
+     0.1842
+    ],
+    "Named entities": [
+     0.0263,
+     0.0263,
+     0.0263
+    ],
+    "General-domain concepts in prose": [
+     0.1579,
+     0.1316,
+     0.1316
+    ],
+    "Document structure and formatting boundaries": [
+     0.0921,
+     0.0526,
+     0.0526
+    ],
+    "Diffuse or unclear": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "concepts_without_v_agrees": 66,
+   "shares_without_v_agrees": {
+    "Programming code syntax and identifiers": [
+     0.0758,
+     0.0758,
+     0.0758
+    ],
+    "Web markup, styling and URLs": [
+     0.0152,
+     0.0152,
+     0.0152
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0758,
+     0.0909,
+     0.0909
+    ],
+    "Repetition and sequence patterns": [
+     0.0152,
+     0.0606,
+     0.0606
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.197,
+     0.0606,
+     0.0606
+    ],
+    "Legal, license and website boilerplate": [
+     0.0758,
+     0.1212,
+     0.1212
+    ],
+    "Scientific and biomedical terminology": [
+     0.2576,
+     0.3485,
+     0.3485
+    ],
+    "Named entities": [
+     0.0303,
+     0.0303,
+     0.0303
+    ],
+    "General-domain concepts in prose": [
+     0.1515,
+     0.0909,
+     0.0909
+    ],
+    "Document structure and formatting boundaries": [
+     0.1061,
+     0.1061,
+     0.1061
+    ],
+    "Diffuse or unclear": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "stage1|in_rollouts_missing_dolma": {
+   "model": "stage1",
+   "direction": "in_rollouts_missing_dolma",
+   "concepts": 79,
+   "shares": {
+    "Programming code syntax and identifiers": [
+     0.4937,
+     0.3797,
+     0.6076
+    ],
+    "Web markup, styling and URLs": [
+     0.2658,
+     0.1772,
+     0.3671
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0253,
+     0.0,
+     0.0633
+    ],
+    "Repetition and sequence patterns": [
+     0.038,
+     0.0,
+     0.0886
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Legal, license and website boilerplate": [
+     0.0506,
+     0.0127,
+     0.1013
+    ],
+    "Scientific and biomedical terminology": [
+     0.0253,
+     0.0,
+     0.0633
+    ],
+    "Named entities": [
+     0.0127,
+     0.0,
+     0.038
+    ],
+    "General-domain concepts in prose": [
+     0.038,
+     0.0,
+     0.0886
+    ],
+    "Document structure and formatting boundaries": [
+     0.0506,
+     0.0127,
+     0.1013
+    ],
+    "Diffuse or unclear": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "concepts_agreed": 75,
+   "shares_agreed": {
+    "Programming code syntax and identifiers": [
+     0.5067,
+     0.52,
+     0.52
+    ],
+    "Web markup, styling and URLs": [
+     0.2667,
+     0.24,
+     0.24
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0267,
+     0.04,
+     0.04
+    ],
+    "Repetition and sequence patterns": [
+     0.04,
+     0.0667,
+     0.0667
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Legal, license and website boilerplate": [
+     0.04,
+     0.0667,
+     0.0667
+    ],
+    "Scientific and biomedical terminology": [
+     0.0267,
+     0.04,
+     0.04
+    ],
+    "Named entities": [
+     0.0133,
+     0.0,
+     0.0
+    ],
+    "General-domain concepts in prose": [
+     0.0267,
+     0.0133,
+     0.0133
+    ],
+    "Document structure and formatting boundaries": [
+     0.0533,
+     0.0133,
+     0.0133
+    ],
+    "Diffuse or unclear": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "concepts_without_v_agrees": 48,
+   "shares_without_v_agrees": {
+    "Programming code syntax and identifiers": [
+     0.4167,
+     0.4375,
+     0.4375
+    ],
+    "Web markup, styling and URLs": [
+     0.375,
+     0.4167,
+     0.4167
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0417,
+     0.0208,
+     0.0208
+    ],
+    "Repetition and sequence patterns": [
+     0.0417,
+     0.0208,
+     0.0208
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Legal, license and website boilerplate": [
+     0.0417,
+     0.0208,
+     0.0208
+    ],
+    "Scientific and biomedical terminology": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Named entities": [
+     0.0208,
+     0.0208,
+     0.0208
+    ],
+    "General-domain concepts in prose": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Document structure and formatting boundaries": [
+     0.0625,
+     0.0625,
+     0.0625
+    ],
+    "Diffuse or unclear": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "main|in_dolma_missing_rollouts": {
+   "model": "main",
+   "direction": "in_dolma_missing_rollouts",
+   "concepts": 80,
+   "shares": {
+    "Programming code syntax and identifiers": [
+     0.2125,
+     0.125,
+     0.3
+    ],
+    "Web markup, styling and URLs": [
+     0.0375,
+     0.0,
+     0.0875
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0125,
+     0.0,
+     0.0375
+    ],
+    "Repetition and sequence patterns": [
+     0.0125,
+     0.0,
+     0.0375
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.125,
+     0.0625,
+     0.2
+    ],
+    "Legal, license and website boilerplate": [
+     0.0125,
+     0.0,
+     0.0375
+    ],
+    "Scientific and biomedical terminology": [
+     0.325,
+     0.225,
+     0.425
+    ],
+    "Named entities": [
+     0.075,
+     0.025,
+     0.1375
+    ],
+    "General-domain concepts in prose": [
+     0.1625,
+     0.0875,
+     0.25
+    ],
+    "Document structure and formatting boundaries": [
+     0.025,
+     0.0,
+     0.0625
+    ],
+    "Diffuse or unclear": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "concepts_agreed": 76,
+   "shares_agreed": {
+    "Programming code syntax and identifiers": [
+     0.2237,
+     0.1974,
+     0.1974
+    ],
+    "Web markup, styling and URLs": [
+     0.0395,
+     0.0395,
+     0.0395
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0132,
+     0.0263,
+     0.0263
+    ],
+    "Repetition and sequence patterns": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.1184,
+     0.1184,
+     0.1184
+    ],
+    "Legal, license and website boilerplate": [
+     0.0132,
+     0.0132,
+     0.0132
+    ],
+    "Scientific and biomedical terminology": [
+     0.3421,
+     0.3947,
+     0.3947
+    ],
+    "Named entities": [
+     0.0789,
+     0.0395,
+     0.0395
+    ],
+    "General-domain concepts in prose": [
+     0.1447,
+     0.1579,
+     0.1579
+    ],
+    "Document structure and formatting boundaries": [
+     0.0263,
+     0.0132,
+     0.0132
+    ],
+    "Diffuse or unclear": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "concepts_without_v_agrees": 59,
+   "shares_without_v_agrees": {
+    "Programming code syntax and identifiers": [
+     0.0508,
+     0.0678,
+     0.0678
+    ],
+    "Web markup, styling and URLs": [
+     0.0508,
+     0.0847,
+     0.0847
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0169,
+     0.0169,
+     0.0169
+    ],
+    "Repetition and sequence patterns": [
+     0.0169,
+     0.0339,
+     0.0339
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.1525,
+     0.1695,
+     0.1695
+    ],
+    "Legal, license and website boilerplate": [
+     0.0169,
+     0.0339,
+     0.0339
+    ],
+    "Scientific and biomedical terminology": [
+     0.3898,
+     0.2881,
+     0.2881
+    ],
+    "Named entities": [
+     0.0847,
+     0.1186,
+     0.1186
+    ],
+    "General-domain concepts in prose": [
+     0.1864,
+     0.1525,
+     0.1525
+    ],
+    "Document structure and formatting boundaries": [
+     0.0339,
+     0.0339,
+     0.0339
+    ],
+    "Diffuse or unclear": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "main|in_rollouts_missing_dolma": {
+   "model": "main",
+   "direction": "in_rollouts_missing_dolma",
+   "concepts": 80,
+   "shares": {
+    "Programming code syntax and identifiers": [
+     0.2,
+     0.1125,
+     0.2875
+    ],
+    "Web markup, styling and URLs": [
+     0.175,
+     0.1,
+     0.2625
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.2875,
+     0.1875,
+     0.3875
+    ],
+    "Repetition and sequence patterns": [
+     0.0875,
+     0.025,
+     0.15
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0125,
+     0.0,
+     0.0375
+    ],
+    "Legal, license and website boilerplate": [
+     0.025,
+     0.0,
+     0.0625
+    ],
+    "Scientific and biomedical terminology": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Named entities": [
+     0.0125,
+     0.0,
+     0.0375
+    ],
+    "General-domain concepts in prose": [
+     0.025,
+     0.0,
+     0.0625
+    ],
+    "Document structure and formatting boundaries": [
+     0.1625,
+     0.0875,
+     0.25
+    ],
+    "Diffuse or unclear": [
+     0.0125,
+     0.0,
+     0.0375
+    ]
+   },
+   "concepts_agreed": 74,
+   "shares_agreed": {
+    "Programming code syntax and identifiers": [
+     0.2027,
+     0.2297,
+     0.2297
+    ],
+    "Web markup, styling and URLs": [
+     0.1351,
+     0.1486,
+     0.1486
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.3108,
+     0.3108,
+     0.3108
+    ],
+    "Repetition and sequence patterns": [
+     0.0946,
+     0.1081,
+     0.1081
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0135,
+     0.027,
+     0.027
+    ],
+    "Legal, license and website boilerplate": [
+     0.027,
+     0.0,
+     0.0
+    ],
+    "Scientific and biomedical terminology": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Named entities": [
+     0.0135,
+     0.0135,
+     0.0135
+    ],
+    "General-domain concepts in prose": [
+     0.027,
+     0.0541,
+     0.0541
+    ],
+    "Document structure and formatting boundaries": [
+     0.1622,
+     0.1081,
+     0.1081
+    ],
+    "Diffuse or unclear": [
+     0.0135,
+     0.0,
+     0.0
+    ]
+   },
+   "concepts_without_v_agrees": 68,
+   "shares_without_v_agrees": {
+    "Programming code syntax and identifiers": [
+     0.1618,
+     0.2353,
+     0.2353
+    ],
+    "Web markup, styling and URLs": [
+     0.1765,
+     0.1765,
+     0.1765
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.3235,
+     0.2794,
+     0.2794
+    ],
+    "Repetition and sequence patterns": [
+     0.0882,
+     0.1029,
+     0.1029
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0147,
+     0.0294,
+     0.0294
+    ],
+    "Legal, license and website boilerplate": [
+     0.0294,
+     0.0441,
+     0.0441
+    ],
+    "Scientific and biomedical terminology": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Named entities": [
+     0.0147,
+     0.0,
+     0.0
+    ],
+    "General-domain concepts in prose": [
+     0.0147,
+     0.0147,
+     0.0147
+    ],
+    "Document structure and formatting boundaries": [
+     0.1618,
+     0.1176,
+     0.1176
+    ],
+    "Diffuse or unclear": [
+     0.0147,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "sft|in_dolma_missing_rollouts": {
+   "model": "sft",
+   "direction": "in_dolma_missing_rollouts",
+   "concepts": 79,
+   "shares": {
+    "Programming code syntax and identifiers": [
+     0.0633,
+     0.0127,
+     0.1266
+    ],
+    "Web markup, styling and URLs": [
+     0.0127,
+     0.0,
+     0.038
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Repetition and sequence patterns": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.1646,
+     0.0886,
+     0.2532
+    ],
+    "Legal, license and website boilerplate": [
+     0.0759,
+     0.0253,
+     0.1392
+    ],
+    "Scientific and biomedical terminology": [
+     0.2532,
+     0.1646,
+     0.3544
+    ],
+    "Named entities": [
+     0.1013,
+     0.038,
+     0.1772
+    ],
+    "General-domain concepts in prose": [
+     0.2532,
+     0.1646,
+     0.3544
+    ],
+    "Document structure and formatting boundaries": [
+     0.0633,
+     0.0127,
+     0.1266
+    ],
+    "Diffuse or unclear": [
+     0.0127,
+     0.0,
+     0.038
+    ]
+   },
+   "concepts_agreed": 75,
+   "shares_agreed": {
+    "Programming code syntax and identifiers": [
+     0.0667,
+     0.08,
+     0.08
+    ],
+    "Web markup, styling and URLs": [
+     0.0133,
+     0.0,
+     0.0
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Repetition and sequence patterns": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.1733,
+     0.16,
+     0.16
+    ],
+    "Legal, license and website boilerplate": [
+     0.08,
+     0.0933,
+     0.0933
+    ],
+    "Scientific and biomedical terminology": [
+     0.2667,
+     0.2667,
+     0.2667
+    ],
+    "Named entities": [
+     0.0933,
+     0.0933,
+     0.0933
+    ],
+    "General-domain concepts in prose": [
+     0.2267,
+     0.2133,
+     0.2133
+    ],
+    "Document structure and formatting boundaries": [
+     0.0667,
+     0.0933,
+     0.0933
+    ],
+    "Diffuse or unclear": [
+     0.0133,
+     0.0,
+     0.0
+    ]
+   },
+   "concepts_without_v_agrees": 71,
+   "shares_without_v_agrees": {
+    "Programming code syntax and identifiers": [
+     0.0563,
+     0.0563,
+     0.0563
+    ],
+    "Web markup, styling and URLs": [
+     0.0141,
+     0.0,
+     0.0
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Repetition and sequence patterns": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.1831,
+     0.169,
+     0.169
+    ],
+    "Legal, license and website boilerplate": [
+     0.0845,
+     0.0986,
+     0.0986
+    ],
+    "Scientific and biomedical terminology": [
+     0.2254,
+     0.2254,
+     0.2254
+    ],
+    "Named entities": [
+     0.0986,
+     0.0986,
+     0.0986
+    ],
+    "General-domain concepts in prose": [
+     0.2535,
+     0.2676,
+     0.2676
+    ],
+    "Document structure and formatting boundaries": [
+     0.0704,
+     0.0845,
+     0.0845
+    ],
+    "Diffuse or unclear": [
+     0.0141,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "sft|in_rollouts_missing_dolma": {
+   "model": "sft",
+   "direction": "in_rollouts_missing_dolma",
+   "concepts": 78,
+   "shares": {
+    "Programming code syntax and identifiers": [
+     0.1795,
+     0.1026,
+     0.2692
+    ],
+    "Web markup, styling and URLs": [
+     0.359,
+     0.2564,
+     0.4615
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.2308,
+     0.141,
+     0.3205
+    ],
+    "Repetition and sequence patterns": [
+     0.1026,
+     0.0385,
+     0.1795
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Legal, license and website boilerplate": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Scientific and biomedical terminology": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Named entities": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "General-domain concepts in prose": [
+     0.0256,
+     0.0,
+     0.0641
+    ],
+    "Document structure and formatting boundaries": [
+     0.0641,
+     0.0128,
+     0.1282
+    ],
+    "Diffuse or unclear": [
+     0.0385,
+     0.0,
+     0.0897
+    ]
+   },
+   "concepts_agreed": 74,
+   "shares_agreed": {
+    "Programming code syntax and identifiers": [
+     0.1757,
+     0.2027,
+     0.2027
+    ],
+    "Web markup, styling and URLs": [
+     0.3649,
+     0.3919,
+     0.3919
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.2297,
+     0.2838,
+     0.2838
+    ],
+    "Repetition and sequence patterns": [
+     0.0946,
+     0.0405,
+     0.0405
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Legal, license and website boilerplate": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Scientific and biomedical terminology": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Named entities": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "General-domain concepts in prose": [
+     0.027,
+     0.0405,
+     0.0405
+    ],
+    "Document structure and formatting boundaries": [
+     0.0676,
+     0.0135,
+     0.0135
+    ],
+    "Diffuse or unclear": [
+     0.0405,
+     0.027,
+     0.027
+    ]
+   },
+   "concepts_without_v_agrees": 72,
+   "shares_without_v_agrees": {
+    "Programming code syntax and identifiers": [
+     0.1667,
+     0.1667,
+     0.1667
+    ],
+    "Web markup, styling and URLs": [
+     0.3472,
+     0.2917,
+     0.2917
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.25,
+     0.2778,
+     0.2778
+    ],
+    "Repetition and sequence patterns": [
+     0.1111,
+     0.1389,
+     0.1389
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Legal, license and website boilerplate": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Scientific and biomedical terminology": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Named entities": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "General-domain concepts in prose": [
+     0.0139,
+     0.0,
+     0.0
+    ],
+    "Document structure and formatting boundaries": [
+     0.0694,
+     0.0556,
+     0.0556
+    ],
+    "Diffuse or unclear": [
+     0.0417,
+     0.0694,
+     0.0694
+    ]
+   }
+  },
+  "dpo|in_dolma_missing_rollouts": {
+   "model": "dpo",
+   "direction": "in_dolma_missing_rollouts",
+   "concepts": 80,
+   "shares": {
+    "Programming code syntax and identifiers": [
+     0.2,
+     0.1125,
+     0.2875
+    ],
+    "Web markup, styling and URLs": [
+     0.0125,
+     0.0,
+     0.0375
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Repetition and sequence patterns": [
+     0.0125,
+     0.0,
+     0.0375
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.1875,
+     0.1125,
+     0.275
+    ],
+    "Legal, license and website boilerplate": [
+     0.0875,
+     0.0375,
+     0.15
+    ],
+    "Scientific and biomedical terminology": [
+     0.1625,
+     0.0875,
+     0.25
+    ],
+    "Named entities": [
+     0.0625,
+     0.0125,
+     0.125
+    ],
+    "General-domain concepts in prose": [
+     0.2375,
+     0.15,
+     0.3375
+    ],
+    "Document structure and formatting boundaries": [
+     0.025,
+     0.0,
+     0.0625
+    ],
+    "Diffuse or unclear": [
+     0.0125,
+     0.0,
+     0.0375
+    ]
+   },
+   "concepts_agreed": 77,
+   "shares_agreed": {
+    "Programming code syntax and identifiers": [
+     0.2078,
+     0.1429,
+     0.1429
+    ],
+    "Web markup, styling and URLs": [
+     0.013,
+     0.026,
+     0.026
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Repetition and sequence patterns": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.1818,
+     0.1688,
+     0.1688
+    ],
+    "Legal, license and website boilerplate": [
+     0.0909,
+     0.1169,
+     0.1169
+    ],
+    "Scientific and biomedical terminology": [
+     0.1688,
+     0.2208,
+     0.2208
+    ],
+    "Named entities": [
+     0.0649,
+     0.0779,
+     0.0779
+    ],
+    "General-domain concepts in prose": [
+     0.2338,
+     0.2078,
+     0.2078
+    ],
+    "Document structure and formatting boundaries": [
+     0.026,
+     0.026,
+     0.026
+    ],
+    "Diffuse or unclear": [
+     0.013,
+     0.013,
+     0.013
+    ]
+   },
+   "concepts_without_v_agrees": 71,
+   "shares_without_v_agrees": {
+    "Programming code syntax and identifiers": [
+     0.1549,
+     0.1549,
+     0.1549
+    ],
+    "Web markup, styling and URLs": [
+     0.0141,
+     0.0282,
+     0.0282
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Repetition and sequence patterns": [
+     0.0141,
+     0.0,
+     0.0
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.1972,
+     0.1549,
+     0.1549
+    ],
+    "Legal, license and website boilerplate": [
+     0.0845,
+     0.0845,
+     0.0845
+    ],
+    "Scientific and biomedical terminology": [
+     0.169,
+     0.1408,
+     0.1408
+    ],
+    "Named entities": [
+     0.0704,
+     0.0563,
+     0.0563
+    ],
+    "General-domain concepts in prose": [
+     0.2676,
+     0.3662,
+     0.3662
+    ],
+    "Document structure and formatting boundaries": [
+     0.0282,
+     0.0141,
+     0.0141
+    ],
+    "Diffuse or unclear": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "dpo|in_rollouts_missing_dolma": {
+   "model": "dpo",
+   "direction": "in_rollouts_missing_dolma",
+   "concepts": 75,
+   "shares": {
+    "Programming code syntax and identifiers": [
+     0.3467,
+     0.24,
+     0.4533
+    ],
+    "Web markup, styling and URLs": [
+     0.2933,
+     0.2,
+     0.4
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.2,
+     0.1067,
+     0.2933
+    ],
+    "Repetition and sequence patterns": [
+     0.04,
+     0.0,
+     0.0933
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Legal, license and website boilerplate": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Scientific and biomedical terminology": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Named entities": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "General-domain concepts in prose": [
+     0.0267,
+     0.0,
+     0.0667
+    ],
+    "Document structure and formatting boundaries": [
+     0.0533,
+     0.0133,
+     0.1067
+    ],
+    "Diffuse or unclear": [
+     0.04,
+     0.0,
+     0.0933
+    ]
+   },
+   "concepts_agreed": 67,
+   "shares_agreed": {
+    "Programming code syntax and identifiers": [
+     0.3881,
+     0.3433,
+     0.3433
+    ],
+    "Web markup, styling and URLs": [
+     0.2687,
+     0.2687,
+     0.2687
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.209,
+     0.2537,
+     0.2537
+    ],
+    "Repetition and sequence patterns": [
+     0.0299,
+     0.0149,
+     0.0149
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Legal, license and website boilerplate": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Scientific and biomedical terminology": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Named entities": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "General-domain concepts in prose": [
+     0.0149,
+     0.0448,
+     0.0448
+    ],
+    "Document structure and formatting boundaries": [
+     0.0448,
+     0.0299,
+     0.0299
+    ],
+    "Diffuse or unclear": [
+     0.0448,
+     0.0448,
+     0.0448
+    ]
+   },
+   "concepts_without_v_agrees": 66,
+   "shares_without_v_agrees": {
+    "Programming code syntax and identifiers": [
+     0.3333,
+     0.2879,
+     0.2879
+    ],
+    "Web markup, styling and URLs": [
+     0.303,
+     0.3788,
+     0.3788
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.1818,
+     0.1364,
+     0.1364
+    ],
+    "Repetition and sequence patterns": [
+     0.0455,
+     0.0152,
+     0.0152
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Legal, license and website boilerplate": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Scientific and biomedical terminology": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Named entities": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "General-domain concepts in prose": [
+     0.0303,
+     0.0303,
+     0.0303
+    ],
+    "Document structure and formatting boundaries": [
+     0.0606,
+     0.0758,
+     0.0758
+    ],
+    "Diffuse or unclear": [
+     0.0455,
+     0.0758,
+     0.0758
+    ]
+   }
+  },
+  "instruct|in_dolma_missing_rollouts": {
+   "model": "instruct",
+   "direction": "in_dolma_missing_rollouts",
+   "concepts": 79,
+   "shares": {
+    "Programming code syntax and identifiers": [
+     0.1013,
+     0.038,
+     0.1772
+    ],
+    "Web markup, styling and URLs": [
+     0.038,
+     0.0,
+     0.0886
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0127,
+     0.0,
+     0.038
+    ],
+    "Repetition and sequence patterns": [
+     0.0127,
+     0.0,
+     0.038
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.1646,
+     0.0886,
+     0.2532
+    ],
+    "Legal, license and website boilerplate": [
+     0.0633,
+     0.0127,
+     0.1139
+    ],
+    "Scientific and biomedical terminology": [
+     0.2278,
+     0.1392,
+     0.3291
+    ],
+    "Named entities": [
+     0.1646,
+     0.0886,
+     0.2532
+    ],
+    "General-domain concepts in prose": [
+     0.1519,
+     0.0759,
+     0.2405
+    ],
+    "Document structure and formatting boundaries": [
+     0.0633,
+     0.0127,
+     0.1266
+    ],
+    "Diffuse or unclear": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "concepts_agreed": 71,
+   "shares_agreed": {
+    "Programming code syntax and identifiers": [
+     0.0986,
+     0.0986,
+     0.0986
+    ],
+    "Web markup, styling and URLs": [
+     0.0423,
+     0.0,
+     0.0
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0141,
+     0.0,
+     0.0
+    ],
+    "Repetition and sequence patterns": [
+     0.0141,
+     0.0,
+     0.0
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.1549,
+     0.169,
+     0.169
+    ],
+    "Legal, license and website boilerplate": [
+     0.0563,
+     0.0704,
+     0.0704
+    ],
+    "Scientific and biomedical terminology": [
+     0.2394,
+     0.338,
+     0.338
+    ],
+    "Named entities": [
+     0.169,
+     0.1127,
+     0.1127
+    ],
+    "General-domain concepts in prose": [
+     0.1549,
+     0.1972,
+     0.1972
+    ],
+    "Document structure and formatting boundaries": [
+     0.0563,
+     0.0141,
+     0.0141
+    ],
+    "Diffuse or unclear": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "concepts_without_v_agrees": 68,
+   "shares_without_v_agrees": {
+    "Programming code syntax and identifiers": [
+     0.0588,
+     0.0735,
+     0.0735
+    ],
+    "Web markup, styling and URLs": [
+     0.0147,
+     0.0147,
+     0.0147
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.0147,
+     0.0,
+     0.0
+    ],
+    "Repetition and sequence patterns": [
+     0.0147,
+     0.0294,
+     0.0294
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.1765,
+     0.1618,
+     0.1618
+    ],
+    "Legal, license and website boilerplate": [
+     0.0735,
+     0.0882,
+     0.0882
+    ],
+    "Scientific and biomedical terminology": [
+     0.2353,
+     0.2353,
+     0.2353
+    ],
+    "Named entities": [
+     0.1765,
+     0.1176,
+     0.1176
+    ],
+    "General-domain concepts in prose": [
+     0.1618,
+     0.2059,
+     0.2059
+    ],
+    "Document structure and formatting boundaries": [
+     0.0735,
+     0.0735,
+     0.0735
+    ],
+    "Diffuse or unclear": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "instruct|in_rollouts_missing_dolma": {
+   "model": "instruct",
+   "direction": "in_rollouts_missing_dolma",
+   "concepts": 76,
+   "shares": {
+    "Programming code syntax and identifiers": [
+     0.1711,
+     0.0921,
+     0.2632
+    ],
+    "Web markup, styling and URLs": [
+     0.2368,
+     0.1447,
+     0.3421
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.2632,
+     0.1711,
+     0.3553
+    ],
+    "Repetition and sequence patterns": [
+     0.0395,
+     0.0,
+     0.0921
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Legal, license and website boilerplate": [
+     0.0132,
+     0.0,
+     0.0395
+    ],
+    "Scientific and biomedical terminology": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Named entities": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "General-domain concepts in prose": [
+     0.0526,
+     0.0132,
+     0.1053
+    ],
+    "Document structure and formatting boundaries": [
+     0.2105,
+     0.1184,
+     0.3026
+    ],
+    "Diffuse or unclear": [
+     0.0132,
+     0.0,
+     0.0395
+    ]
+   },
+   "concepts_agreed": 71,
+   "shares_agreed": {
+    "Programming code syntax and identifiers": [
+     0.1549,
+     0.2254,
+     0.2254
+    ],
+    "Web markup, styling and URLs": [
+     0.2535,
+     0.2394,
+     0.2394
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.2676,
+     0.2676,
+     0.2676
+    ],
+    "Repetition and sequence patterns": [
+     0.0282,
+     0.0423,
+     0.0423
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Legal, license and website boilerplate": [
+     0.0141,
+     0.0282,
+     0.0282
+    ],
+    "Scientific and biomedical terminology": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Named entities": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "General-domain concepts in prose": [
+     0.0563,
+     0.0423,
+     0.0423
+    ],
+    "Document structure and formatting boundaries": [
+     0.2113,
+     0.1408,
+     0.1408
+    ],
+    "Diffuse or unclear": [
+     0.0141,
+     0.0141,
+     0.0141
+    ]
+   },
+   "concepts_without_v_agrees": 68,
+   "shares_without_v_agrees": {
+    "Programming code syntax and identifiers": [
+     0.1618,
+     0.2059,
+     0.2059
+    ],
+    "Web markup, styling and URLs": [
+     0.25,
+     0.2647,
+     0.2647
+    ],
+    "Mathematical notation and quantitative problems": [
+     0.2647,
+     0.2353,
+     0.2353
+    ],
+    "Repetition and sequence patterns": [
+     0.0441,
+     0.0735,
+     0.0735
+    ],
+    "Citations, references and bibliographic metadata": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Legal, license and website boilerplate": [
+     0.0147,
+     0.0147,
+     0.0147
+    ],
+    "Scientific and biomedical terminology": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Named entities": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "General-domain concepts in prose": [
+     0.0588,
+     0.0441,
+     0.0441
+    ],
+    "Document structure and formatting boundaries": [
+     0.1912,
+     0.1618,
+     0.1618
+    ],
+    "Diffuse or unclear": [
+     0.0147,
+     0.0,
+     0.0
+    ]
+   }
+  }
+ },
+ "usage": {
+  "nameTrain": {
+   "requests": 374,
+   "statuses": {
+    "ok": 374
+   },
+   "input_tokens": 1710959,
+   "output_tokens": 51067,
+   "usd": 3.9326,
+   "usd_per_request": 0.010515
+  },
+  "namerollout": {
+   "requests": 621,
+   "statuses": {
+    "ok": 611,
+    "refusal": 10
+   },
+   "input_tokens": 2448151,
+   "output_tokens": 80302,
+   "usd": 5.6993,
+   "usd_per_request": 0.009178
+  },
+  "scheme": {
+   "requests": 1,
+   "statuses": {
+    "ok": 1
+   },
+   "input_tokens": 86995,
+   "output_tokens": 1593,
+   "usd": 0.1899,
+   "usd_per_request": 0.1899
+  },
+  "assignopus": {
+   "requests": 769,
+   "statuses": {
+    "ok": 765,
+    "max_tokens": 4
+   },
+   "input_tokens": 1150021,
+   "output_tokens": 39234,
+   "usd": 2.6924,
+   "usd_per_request": 0.003501
+  },
+  "assignsonnet": {
+   "requests": 769,
+   "statuses": {
+    "ok": 769
+   },
+   "input_tokens": 1150021,
+   "output_tokens": 15809,
+   "usd": 1.2291,
+   "usd_per_request": 0.001598
+  }
+ },
+ "by_model": {
+  "stage1": {
+   "in_dolma_missing_rollouts": {
+    "members": 2468,
+    "share_of_dictionary": 0.0377,
+    "v_baseline_members": 1150,
+    "members_v_agrees": 564,
+    "members_chi_rollout_zero": 0,
+    "members_pass_present_filter": 2414,
+    "list_sizes": {
+     "random": 80,
+     "extreme_unfiltered": 50,
+     "extreme_filtered": 50
+    },
+    "median_firing_docs_present_side": {
+     "random": 248.0,
+     "extreme_unfiltered": 148.0,
+     "extreme_filtered": 148.0
+    }
+   },
+   "in_rollouts_missing_dolma": {
+    "members": 1001,
+    "share_of_dictionary": 0.0153,
+    "v_baseline_members": 872,
+    "members_v_agrees": 319,
+    "members_chi_rollout_zero": 0,
+    "members_pass_present_filter": 242,
+    "list_sizes": {
+     "random": 80,
+     "extreme_unfiltered": 50,
+     "extreme_filtered": 50
+    },
+    "median_firing_docs_present_side": {
+     "random": 29.0,
+     "extreme_unfiltered": 24.5,
+     "extreme_filtered": 73.0
+    }
+   }
+  },
+  "main": {
+   "in_dolma_missing_rollouts": {
+    "members": 2966,
+    "share_of_dictionary": 0.0453,
+    "v_baseline_members": 1150,
+    "members_v_agrees": 610,
+    "members_chi_rollout_zero": 2,
+    "members_pass_present_filter": 2889,
+    "list_sizes": {
+     "random": 80,
+     "extreme_unfiltered": 50,
+     "extreme_filtered": 50
+    },
+    "median_firing_docs_present_side": {
+     "random": 236.5,
+     "extreme_unfiltered": 124.0,
+     "extreme_filtered": 127.0
+    }
+   },
+   "in_rollouts_missing_dolma": {
+    "members": 2277,
+    "share_of_dictionary": 0.0347,
+    "v_baseline_members": 872,
+    "members_v_agrees": 377,
+    "members_chi_rollout_zero": 0,
+    "members_pass_present_filter": 1166,
+    "list_sizes": {
+     "random": 80,
+     "extreme_unfiltered": 50,
+     "extreme_filtered": 50
+    },
+    "median_firing_docs_present_side": {
+     "random": 47.5,
+     "extreme_unfiltered": 55.5,
+     "extreme_filtered": 127.0
+    }
+   }
+  },
+  "sft": {
+   "in_dolma_missing_rollouts": {
+    "members": 5770,
+    "share_of_dictionary": 0.088,
+    "v_baseline_members": 1150,
+    "members_v_agrees": 727,
+    "members_chi_rollout_zero": 15,
+    "members_pass_present_filter": 5691,
+    "list_sizes": {
+     "random": 80,
+     "extreme_unfiltered": 50,
+     "extreme_filtered": 50
+    },
+    "median_firing_docs_present_side": {
+     "random": 377.0,
+     "extreme_unfiltered": 212.0,
+     "extreme_filtered": 269.5
+    }
+   },
+   "in_rollouts_missing_dolma": {
+    "members": 2229,
+    "share_of_dictionary": 0.034,
+    "v_baseline_members": 872,
+    "members_v_agrees": 327,
+    "members_chi_rollout_zero": 0,
+    "members_pass_present_filter": 1042,
+    "list_sizes": {
+     "random": 80,
+     "extreme_unfiltered": 50,
+     "extreme_filtered": 50
+    },
+    "median_firing_docs_present_side": {
+     "random": 40.0,
+     "extreme_unfiltered": 97.5,
+     "extreme_filtered": 165.5
+    }
+   }
+  },
+  "dpo": {
+   "in_dolma_missing_rollouts": {
+    "members": 4693,
+    "share_of_dictionary": 0.0716,
+    "v_baseline_members": 1150,
+    "members_v_agrees": 650,
+    "members_chi_rollout_zero": 4,
+    "members_pass_present_filter": 4613,
+    "list_sizes": {
+     "random": 80,
+     "extreme_unfiltered": 50,
+     "extreme_filtered": 50
+    },
+    "median_firing_docs_present_side": {
+     "random": 341.5,
+     "extreme_unfiltered": 696.5,
+     "extreme_filtered": 733.5
+    }
+   },
+   "in_rollouts_missing_dolma": {
+    "members": 2428,
+    "share_of_dictionary": 0.037,
+    "v_baseline_members": 872,
+    "members_v_agrees": 381,
+    "members_chi_rollout_zero": 0,
+    "members_pass_present_filter": 1462,
+    "list_sizes": {
+     "random": 80,
+     "extreme_unfiltered": 50,
+     "extreme_filtered": 50
+    },
+    "median_firing_docs_present_side": {
+     "random": 57.0,
+     "extreme_unfiltered": 38.5,
+     "extreme_filtered": 106.0
+    }
+   }
+  },
+  "instruct": {
+   "in_dolma_missing_rollouts": {
+    "members": 4948,
+    "share_of_dictionary": 0.0755,
+    "v_baseline_members": 1150,
+    "members_v_agrees": 675,
+    "members_chi_rollout_zero": 8,
+    "members_pass_present_filter": 4867,
+    "list_sizes": {
+     "random": 80,
+     "extreme_unfiltered": 50,
+     "extreme_filtered": 50
+    },
+    "median_firing_docs_present_side": {
+     "random": 280.5,
+     "extreme_unfiltered": 403.0,
+     "extreme_filtered": 426.5
+    }
+   },
+   "in_rollouts_missing_dolma": {
+    "members": 2499,
+    "share_of_dictionary": 0.0381,
+    "v_baseline_members": 872,
+    "members_v_agrees": 394,
+    "members_chi_rollout_zero": 0,
+    "members_pass_present_filter": 1384,
+    "list_sizes": {
+     "random": 80,
+     "extreme_unfiltered": 50,
+     "extreme_filtered": 50
+    },
+    "median_firing_docs_present_side": {
+     "random": 51.0,
+     "extreme_unfiltered": 36.5,
+     "extreme_filtered": 125.0
+    }
+   }
+  }
+ },
+ "garbled": {
+  "stage1": {
+   "docs": 7985,
+   "docs_flagged": 1750,
+   "share_docs_flagged": 0.2192,
+   "docs_without_nll": 1,
+   "all_firing_concepts": {
+    "n": 65344,
+    "q25": 0.0778,
+    "median": 0.1572,
+    "q75": 0.2381
+   },
+   "random": {
+    "n": 80,
+    "q25": 0.0141,
+    "median": 0.0562,
+    "q75": 0.1254
+   },
+   "extreme_unfiltered": {
+    "n": 50,
+    "q25": 0.0026,
+    "median": 0.0167,
+    "q75": 0.0694
+   },
+   "extreme_filtered": {
+    "n": 50,
+    "q25": 0.0442,
+    "median": 0.0598,
+    "q75": 0.1372
+   }
+  },
+  "main": {
+   "docs": 7985,
+   "docs_flagged": 1637,
+   "share_docs_flagged": 0.205,
+   "docs_without_nll": 10,
+   "all_firing_concepts": {
+    "n": 65467,
+    "q25": 0.059,
+    "median": 0.1439,
+    "q75": 0.2382
+   },
+   "random": {
+    "n": 80,
+    "q25": 0.0054,
+    "median": 0.0284,
+    "q75": 0.0807
+   },
+   "extreme_unfiltered": {
+    "n": 50,
+    "q25": 0.0018,
+    "median": 0.0311,
+    "q75": 0.1272
+   },
+   "extreme_filtered": {
+    "n": 50,
+    "q25": 0.0131,
+    "median": 0.0517,
+    "q75": 0.1214
+   }
+  },
+  "sft": {
+   "docs": 7985,
+   "docs_flagged": 1854,
+   "share_docs_flagged": 0.2322,
+   "docs_without_nll": 82,
+   "all_firing_concepts": {
+    "n": 65265,
+    "q25": 0.0932,
+    "median": 0.1814,
+    "q75": 0.3027
+   },
+   "random": {
+    "n": 80,
+    "q25": 0.0365,
+    "median": 0.1124,
+    "q75": 0.2453
+   },
+   "extreme_unfiltered": {
+    "n": 50,
+    "q25": 0.0134,
+    "median": 0.0884,
+    "q75": 0.2391
+   },
+   "extreme_filtered": {
+    "n": 50,
+    "q25": 0.0746,
+    "median": 0.1231,
+    "q75": 0.2441
+   }
+  },
+  "dpo": {
+   "docs": 7985,
+   "docs_flagged": 1945,
+   "share_docs_flagged": 0.2436,
+   "docs_without_nll": 170,
+   "all_firing_concepts": {
+    "n": 65490,
+    "q25": 0.0937,
+    "median": 0.1803,
+    "q75": 0.3027
+   },
+   "random": {
+    "n": 80,
+    "q25": 0.0505,
+    "median": 0.1697,
+    "q75": 0.3267
+   },
+   "extreme_unfiltered": {
+    "n": 50,
+    "q25": 0.0126,
+    "median": 0.1226,
+    "q75": 0.206
+   },
+   "extreme_filtered": {
+    "n": 50,
+    "q25": 0.0873,
+    "median": 0.1595,
+    "q75": 0.2472
+   }
+  },
+  "instruct": {
+   "docs": 7985,
+   "docs_flagged": 660,
+   "share_docs_flagged": 0.0827,
+   "docs_without_nll": 143,
+   "all_firing_concepts": {
+    "n": 65441,
+    "q25": 0.0049,
+    "median": 0.034,
+    "q75": 0.0904
+   },
+   "random": {
+    "n": 80,
+    "q25": 0.0,
+    "median": 0.0,
+    "q75": 0.0439
+   },
+   "extreme_unfiltered": {
+    "n": 50,
+    "q25": 0.0,
+    "median": 0.0054,
+    "q75": 0.0826
+   },
+   "extreme_filtered": {
+    "n": 50,
+    "q25": 0.011,
+    "median": 0.0308,
+    "q75": 0.1276
+   }
+  }
+ }
+}

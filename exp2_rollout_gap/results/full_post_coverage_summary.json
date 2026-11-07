@@ -1,0 +1,110 @@
+{
+ "stopped": null,
+ "spent_usd": 4.93,
+ "limit_usd": 11.14,
+ "name_statuses": {
+  "ok": 586
+ },
+ "entries_without_name": 0,
+ "docs": {
+  "train": 39949,
+  "stage1": 7985,
+  "main": 7985,
+  "sft": 7985,
+  "dpo": 7985,
+  "instruct": 7985
+ },
+ "zero_counts": {
+  "train": 0,
+  "stage1": 192,
+  "main": 69,
+  "sft": 271,
+  "dpo": 46,
+  "instruct": 95
+ },
+ "zero_fire_outside_matched": {
+  "stage1": 85,
+  "main": 27,
+  "sft": 95,
+  "dpo": 7,
+  "instruct": 25
+ },
+ "mean_share_staying": {
+  "train": {
+   "top": 0.963,
+   "bottom": 0.006
+  },
+  "stage1": {
+   "top": 1.0,
+   "bottom": 0.006
+  },
+  "main": {
+   "top": 1.0,
+   "bottom": 0.002
+  },
+  "sft": {
+   "top": 1.0,
+   "bottom": 0.004
+  },
+  "dpo": {
+   "top": 1.0,
+   "bottom": 0.004
+  },
+  "instruct": {
+   "top": 0.966,
+   "bottom": 0.002
+  }
+ },
+ "rebuilt_lists_differ": {
+  "train": [],
+  "stage1": [],
+  "main": [],
+  "sft": [],
+  "dpo": [],
+  "instruct": []
+ },
+ "jaccard_with_dolma_train": {
+  "stage1": {
+   "top": 0.6667,
+   "bottom": 0.0
+  },
+  "main": {
+   "top": 0.5385,
+   "bottom": 0.0
+  },
+  "sft": {
+   "top": 0.3333,
+   "bottom": 0.0
+  },
+  "dpo": {
+   "top": 0.5385,
+   "bottom": 0.0
+  },
+  "instruct": {
+   "top": 0.5385,
+   "bottom": 0.0
+  }
+ },
+ "usage": {
+  "nameTrain": {
+   "requests": 536,
+   "statuses": {
+    "ok": 536
+   },
+   "input_tokens": 1707535,
+   "output_tokens": 105433,
+   "usd": 4.4694,
+   "usd_per_request": 0.008338
+  },
+  "namerollout": {
+   "requests": 50,
+   "statuses": {
+    "ok": 50
+   },
+   "input_tokens": 187607,
+   "output_tokens": 8468,
+   "usd": 0.4599,
+   "usd_per_request": 0.009198
+  }
+ }
+}

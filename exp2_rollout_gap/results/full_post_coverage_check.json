@@ -1,0 +1,47 @@
+{
+ "spent_before_usd": 0,
+ "limit_usd": 11.14,
+ "names_to_send": 586,
+ "new_dolma": 536,
+ "new_rollout": 50,
+ "reused_names": 51,
+ "names_without_firing_doc": 0,
+ "names_from_under_40_windows": 441,
+ "list_sizes": {
+  "train": {
+   "top": 10,
+   "zero": 0,
+   "bottom": 10
+  },
+  "stage1": {
+   "top": 10,
+   "zero": 192,
+   "bottom": 10
+  },
+  "main": {
+   "top": 10,
+   "zero": 69,
+   "bottom": 10
+  },
+  "sft": {
+   "top": 10,
+   "zero": 271,
+   "bottom": 10
+  },
+  "dpo": {
+   "top": 10,
+   "zero": 46,
+   "bottom": 10
+  },
+  "instruct": {
+   "top": 10,
+   "zero": 95,
+   "bottom": 10
+  }
+ },
+ "expected_total_usd": 5.67,
+ "highest_spent_plus_worst_usd": 10.03,
+ "failures": 0,
+ "first_failures": [],
+ "date_of_check": "2026-11-07 18:18"
+}

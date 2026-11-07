@@ -480,3 +480,7 @@ Check passed with no console errors; upload result ok, code files only, no file 
 ## 2026-11-06 23:56, Exp 2 missing concepts: done (G87-G93)
 
 Written by the labels job, not checked by hand. Spent $13.74 of $24.81. Names 985 of 995 returned, 769 concepts themed, kappa 0.9255. Names and tables: `exp2_rollout_gap/results/full_post_missing_summary.md`.
+
+## 2026-11-07 18:25, Exp 2 coverage lists: done (G95-G99)
+
+Written by the job, not checked by hand. Spent $4.93 of $11.14. Mean share of each list staying over 100 reruns: {'train': {'top': 0.963, 'bottom': 0.006}, 'stage1': {'top': 1.0, 'bottom': 0.006}, 'main': {'top': 1.0, 'bottom': 0.002}, 'sft': {'top': 1.0, 'bottom': 0.004}, 'dpo': {'top': 1.0, 'bottom': 0.004}, 'instruct': {'top': 0.966, 'bottom': 0.002}}. Jaccard with Dolma train: {'stage1': {'top': 0.6667, 'bottom': 0.0}, 'main': {'top': 0.5385, 'bottom': 0.0}, 'sft': {'top': 0.3333, 'bottom': 0.0}, 'dpo': {'top': 0.5385, 'bottom': 0.0}, 'instruct': {'top': 0.5385, 'bottom': 0.0}}. Names and tables: `exp2_rollout_gap/results/full_post_coverage_summary.md`.

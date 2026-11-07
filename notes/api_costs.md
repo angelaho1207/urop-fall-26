@@ -10,6 +10,7 @@ Every paid API run, for reimbursement. Dollars come from each run's token counts
 | 2026-11-01 | Exp 2 moved concepts (G47-G53) | Names, quizzes and judge for 61 concepts, plus the quiz resend | Opus 5.5, Sonnet 5.5 | 9.74 | `exp2_rollout_gap/results/full_post_moved_summary.json`; pool `exp2/full_post/labels/moved/ledger.jsonl` |
 | 2026-11-05 | Exp 2 names per model and class (G62-G73) | Dolma names of selected concepts, rollout names and quizzes of the check | Opus 5.5, Sonnet 5.5 | 28.47 | `exp2_rollout_gap/results/full_post_named_summary.json`, pool `exp2/full_post/labels/named/ledger.jsonl` |
 | 2026-11-06 | Exp 2 missing concepts (G87-G93) | Names of missing concepts in both directions, theme scheme and assignments | Opus 5.5, Sonnet 5.5 | 13.74 | `exp2_rollout_gap/results/full_post_missing_summary.json`, pool `exp2/full_post/labels/missing/ledger.jsonl` |
-| | **Total** | | | **77.64** | |
+| 2026-11-07 | Exp 2 coverage lists (G95-G99) | Names of the top 10, bottom 10 and chi = 0 concepts of Dolma train and each model | Opus 5.5 | 4.93 | `exp2_rollout_gap/results/full_post_coverage_summary.json`, pool `exp2/full_post/labels/coverage/ledger.jsonl` |
+| | **Total** | | | **82.57** | |
 
 Pool paths are under `/orcd/pool/005/angela_h/`.

@@ -1,0 +1,22 @@
+{
+ "spent_before_usd": 0,
+ "limit_usd": 24.81,
+ "names_to_send": 995,
+ "new_dolma": 374,
+ "new_rollout": 621,
+ "reused_names": 206,
+ "names_without_firing_doc": 0,
+ "names_from_under_40_windows": 253,
+ "concepts_to_theme": 778,
+ "worst_usd_per_name": 0.0259,
+ "worst_usd_scheme": 0.259,
+ "worst_usd_per_assignment": {
+  "sonnet": 0.0037,
+  "opus": 0.00741
+ },
+ "expected_total_usd": 15.77,
+ "highest_spent_plus_worst_usd": 19.47,
+ "failures": 0,
+ "first_failures": [],
+ "date_of_check": "2026-11-06 23:06"
+}

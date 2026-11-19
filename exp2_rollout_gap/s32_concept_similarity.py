@@ -1,8 +1,9 @@
 """Concept similarity: decoder-cosine neighbours, and whether concepts move with their neighbours (design.md G101-G104). CPU, $0.
 
-Usage: python s32_concept_similarity.py
-Reads the SAE's W_dec (pinned revision), DATA/full_post/distribution.parquet and notes/name_cache.json. Writes
-DATA/full_post/similarity/neighbours.npz and results/full_post_similarity_summary.{json,md} (ids, names, numbers).
+Usage: python s32_concept_similarity.py [decoder|embed]
+Reads the SAE's W_dec (pinned revision), or with `embed` the G117 concept vectors, DATA/full_post/distribution.parquet and
+notes/name_cache.json. Writes DATA/full_post/similarity[_embed]/neighbours.npz and
+results/full_post[_embed]_similarity_summary.{json,md} (ids, names, numbers; G118).
 """
 import json
 
@@ -26,6 +27,15 @@ def neighbours(w, k=K, chunk=2048):
         ids[s:s + chunk] = np.take_along_axis(top, order, axis=1)
         cos[s:s + chunk] = np.take_along_axis(sims, ids[s:s + chunk], axis=1)
     return ids, cos
+
+
+def source(argv):
+    """G118: which similarity to use, from the first argument: decoder cosine (G101, default) or window embeddings (G117).
+    Returns (name, folder under DATA/full_post, results prefix)."""
+    src = argv[1] if len(argv) > 1 else "decoder"
+    if src not in ("decoder", "embed"):
+        raise SystemExit("argument: decoder or embed")
+    return src, "similarity" if src == "decoder" else "similarity_embed", "full_post" if src == "decoder" else "full_post_embed"
 
 
 def rank_u(order, n):
@@ -77,6 +87,8 @@ def nearest_ranked(nbr):
 
 
 def main():
+    import sys
+
     import settings  # first: puts Exp 1 on the path and sets HF_HOME
     import config
     import pandas as pd
@@ -87,12 +99,16 @@ def main():
     from s12_moved_windows import SETS
     from s19_named_select import classify
 
-    root = snapshot_download(config.SAE_REPO, revision=config.SAE_REVISION, allow_patterns=[f"{config.SAE_ID}/*"])
-    with safe_open(f"{root}/{config.SAE_ID}/sae_weights.safetensors", "np") as f:
-        w = f.get_tensor("W_dec").astype(np.float32)  # (65,536 concepts, 4,096), as Exp 1 N15
-    ids, cos = neighbours(w)
-    out_dir = settings.DATA / "full_post" / "similarity"
+    src, folder, prefix = source(sys.argv)
+    out_dir = settings.DATA / "full_post" / folder
     out_dir.mkdir(parents=True, exist_ok=True)
+    if src == "decoder":
+        root = snapshot_download(config.SAE_REPO, revision=config.SAE_REVISION, allow_patterns=[f"{config.SAE_ID}/*"])
+        with safe_open(f"{root}/{config.SAE_ID}/sae_weights.safetensors", "np") as f:
+            w = f.get_tensor("W_dec").astype(np.float32)  # (65,536 concepts, 4,096), as Exp 1 N15
+    else:
+        w = np.load(out_dir / "concept_vectors.npy")  # G117
+    ids, cos = neighbours(w)
     np.savez_compressed(out_dir / "neighbours.npz", ids=ids, cos=cos)
     print("neighbours done", flush=True)
 
@@ -106,7 +122,8 @@ def main():
     named = [(c, int(ids[c, 0])) for c in range(n) if name(c) and name(ids[c, 0])]
     summary["named_neighbour_pairs"] = len(named)
     head = "| concept | neighbour | cosine | concept name | neighbour name |\n|---|---|---|---|---|\n"
-    md = ["# Concept similarity (design.md G101-G104)\n\nDecoder-cosine neighbours of all 65,536 concepts. Names are cached names, not checked against text.\n",
+    what = "Decoder-cosine neighbours" if src == "decoder" else "Window-embedding neighbours (G114-G118)"
+    md = [f"# Concept similarity (design.md G101-G104)\n\n{what} of all 65,536 concepts. Names are cached names, not checked against text.\n",
           f"\n## Nearest-neighbour pairs where both concepts are named ({len(named)})\n\n{head}"]
     md += [f"| {a} | {b} | {cos[a, 0]:.3f} | {name(a)} | {name(b)} |\n" for a, b in named]
     for i, s in enumerate(["V"] + SETS):
@@ -125,8 +142,8 @@ def main():
             pairs = [(c, nn1[c], cos[c, first[c]]) for c in np.flatnonzero((cls == "under") & (nn1 >= 0)) if cls[nn1[c]] == "over" and name(c) and name(nn1[c])]
             md.append(f"\n## {s}: under concepts whose nearest ranked neighbour is over, both named ({len(pairs)})\n\n{head}")
             md += [f"| {a} | {b} | {x:.3f} | {name(a)} | {name(b)} |\n" for a, b, x in pairs]
-    (settings.RESULTS / "full_post_similarity_summary.json").write_text(json.dumps(summary, indent=1))
-    (settings.RESULTS / "full_post_similarity_summary.md").write_text("".join(md))
+    (settings.RESULTS / f"{prefix}_similarity_summary.json").write_text(json.dumps(summary, indent=1))
+    (settings.RESULTS / f"{prefix}_similarity_summary.md").write_text("".join(md))
     print(json.dumps({k: v for k, v in summary.items() if k != "sets"}, indent=1))
 
 

@@ -1,9 +1,9 @@
 """Concept clusters: spectral clustering of the top-11 decoder-neighbour graph, and whether classes concentrate in clusters
 (design.md G105-G108). CPU, $0.
 
-Usage: python s33_concept_clusters.py
-Reads DATA/full_post/similarity/neighbours.npz (s32), DATA/full_post/distribution.parquet and notes/name_cache.json. Writes
-DATA/full_post/similarity/clusters.npz and results/full_post_clusters_summary.{json,md} (ids, names, numbers).
+Usage: python s33_concept_clusters.py [decoder|embed]
+Reads DATA/full_post/similarity[_embed]/neighbours.npz (s32; argument decoder or embed, G118), DATA/full_post/distribution.parquet and notes/name_cache.json. Writes
+clusters.npz next to it and results/full_post[_embed]_clusters_summary.{json,md} (ids, names, numbers).
 """
 import json
 
@@ -95,6 +95,8 @@ def permuted(labels, cls, ranked, chi_train, rng, n_perm=N_PERM, bin_size=BIN):
 
 
 def main():
+    import sys
+
     import settings  # first: puts Exp 1 on the path and sets HF_HOME
     import config
     import pandas as pd
@@ -102,12 +104,15 @@ def main():
     import name_cache
     from s12_moved_windows import SETS
     from s19_named_select import classify
+    from s32_concept_similarity import source
 
-    z = np.load(settings.DATA / "full_post" / "similarity" / "neighbours.npz")
+    _, folder, prefix = source(sys.argv)
+
+    z = np.load(settings.DATA / "full_post" / folder / "neighbours.npz")
     w, no_mutual = knn_graph(z["ids"], z["cos"])
     n = w.shape[0]
     labels, k, lam, ari, n_comp, big = cluster_graph(w)
-    np.savez_compressed(settings.DATA / "full_post" / "similarity" / "clusters.npz", labels=labels)
+    np.savez_compressed(settings.DATA / "full_post" / folder / "clusters.npz", labels=labels)
     print("clusters done: K", k, "components", n_comp, flush=True)
 
     table = pd.read_parquet(settings.DATA / "full_post" / "distribution.parquet")
@@ -118,7 +123,7 @@ def main():
     summary = {"concepts": n, "no_mutual_neighbour": len(no_mutual), "no_mutual_neighbour_ids": no_mutual.tolist(), "components": int(n_comp), "largest_component": int(len(big)),
                "k_spectral": k, "k_at_cap": k == K_MAX, "eigenvalues_first_101": lam.round(5).tolist(), "ari_seeds_vs_seed0": ari,
                "clusters": int(len(cl_sizes)), "cluster_size_quantiles_10_50_90_max": np.percentile(cl_sizes, [10, 50, 90, 100]).tolist(), "sets": {}}
-    md = [f"# Concept clusters (design.md G105-G108)\n\nK = {k} spectral clusters on the largest component ({len(big):,} concepts), plus {len(cl_sizes) - k} small components; "
+    md = [f"# Concept clusters (design.md G105-G108)\n\nNeighbour graph from `{folder}` (G118). K = {k} spectral clusters on the largest component ({len(big):,} concepts), plus {len(cl_sizes) - k} small components; "
           f"{len(no_mutual)} concepts with no mutual top-11 neighbour (ids in the JSON). Adjusted Rand index of 9 more k-means seeds against seed 0: {ari}. Names are cached names, not checked against text.\n"]
     for i, s in enumerate(["V"] + SETS):
         _, cls, order = classify(chi_train, table[f"chi_{s}"].to_numpy())
@@ -136,8 +141,8 @@ def main():
             for c in np.argsort(-excess, kind="stable")[:10]:
                 members = [m for m in np.flatnonzero(labels == c) if name(m)][:10]
                 md.append(f"| {c} | {cl_sizes[c]} | {n_ranked[c]} | {int(round(excess[c] + 0.1 * n_ranked[c]))} | {excess[c]:.1f} | {'<br>'.join(f'{m}: {name(m)[:140]}' for m in members) or '–'} |\n")
-    (settings.RESULTS / "full_post_clusters_summary.json").write_text(json.dumps(summary, indent=1))
-    (settings.RESULTS / "full_post_clusters_summary.md").write_text("".join(md))
+    (settings.RESULTS / f"{prefix}_clusters_summary.json").write_text(json.dumps(summary, indent=1))
+    (settings.RESULTS / f"{prefix}_clusters_summary.md").write_text("".join(md))
     print(json.dumps({key: v for key, v in summary.items() if key not in ("sets", "no_mutual_neighbour_ids", "eigenvalues_first_101")}, indent=1))
 
 

@@ -1,9 +1,9 @@
 """Concept tree: repeated splitting (pieces, else spectral K = 2) of the top-11 decoder-neighbour graph, and where under- and over-represented
 concepts concentrate (design.md G110-G112). CPU, $0.
 
-Usage: python s35_concept_tree.py
-Reads DATA/full_post/similarity/neighbours.npz (s32), DATA/full_post/distribution.parquet and notes/name_cache.json. Writes
-DATA/full_post/similarity/tree.npz and results/full_post_tree_summary.{json,md} (ids, names, numbers).
+Usage: python s35_concept_tree.py [decoder|embed]
+Reads DATA/full_post/similarity[_embed]/neighbours.npz (s32; argument decoder or embed, G118), DATA/full_post/distribution.parquet and notes/name_cache.json. Writes
+tree.npz next to it and results/full_post[_embed]_tree_summary.{json,md} (ids, names, numbers).
 """
 import json
 
@@ -102,6 +102,8 @@ def path(g, groups):
 
 
 def main():
+    import sys
+
     import settings  # first: puts Exp 1 on the path and sets HF_HOME
     import config
     import pandas as pd
@@ -109,11 +111,14 @@ def main():
     import name_cache
     from s12_moved_windows import SETS
     from s19_named_select import classify
+    from s32_concept_similarity import source
 
-    z = np.load(settings.DATA / "full_post" / "similarity" / "neighbours.npz")
+    _, folder, prefix = source(sys.argv)
+
+    z = np.load(settings.DATA / "full_post" / folder / "neighbours.npz")
     w, _ = knn_graph(z["ids"], z["cos"])
     levels, groups = build_tree(w)
-    np.savez_compressed(settings.DATA / "full_post" / "similarity" / "tree.npz", levels=levels)
+    np.savez_compressed(settings.DATA / "full_post" / folder / "tree.npz", levels=levels)
     print("tree done:", {d: int(len(np.unique(levels[d][levels[d] >= 0]))) for d in range(DEPTH + 1)}, flush=True)
 
     table = pd.read_parquet(settings.DATA / "full_post" / "distribution.parquet")
@@ -123,7 +128,7 @@ def main():
     deepest = np.array([col[col >= 0][-1] for col in levels.T])  # each concept's leaf
     summary = {"depth": DEPTH, "min_split": MIN_SPLIT, "groups": {str(g): v for g, v in groups.items()},
                "groups_per_depth": {d: int(len(np.unique(levels[d][levels[d] >= 0]))) for d in range(DEPTH + 1)}, "sets": {}}
-    md = ["# Concept tree (design.md G110-G112)\n\nRepeated splitting (separate pieces, else spectral K = 2) of the top-11 decoder-neighbour graph. Groups are numbered from the root (0); paths list group ids from the root. "
+    md = [f"# Concept tree (design.md G110-G112)\n\nRepeated splitting (separate pieces, else spectral K = 2) of the top-11 neighbour graph from `{folder}` (G118). Groups are numbered from the root (0); paths list group ids from the root. "
           "A group exceeds when its share is above the 97.5th percentile of 100 frequency-matched permutations (about 2.5% expected by chance). Names are cached names, not checked against text.\n",
           "\n## Groups per depth\n\n| depth | " + " | ".join(str(d) for d in range(DEPTH + 1)) + " |\n" + "|---" * (DEPTH + 1) + "|---|\n| groups | " + " | ".join(str(v) for v in summary["groups_per_depth"].values()) + " |\n"]
     for i, s in enumerate(["V"] + SETS):
@@ -144,8 +149,8 @@ def main():
                 md.append(f"| {g} | {v['depth']} | {' → '.join(map(str, path(g, groups)))} | {groups[g]['size']} | {v['ranked']} | {v[side]['count']} | {v[side]['share']} | {v[side]['null_p975']} | "
                           + ("<br>".join(f"{m}: {name(m)}" for m in members) or "–") + " |\n")
     summary["leaf_sizes_10_50_90_max"] = np.percentile(np.bincount(deepest)[np.unique(deepest)], [10, 50, 90, 100]).tolist()
-    (settings.RESULTS / "full_post_tree_summary.json").write_text(json.dumps(summary))
-    (settings.RESULTS / "full_post_tree_summary.md").write_text("".join(md))
+    (settings.RESULTS / f"{prefix}_tree_summary.json").write_text(json.dumps(summary))
+    (settings.RESULTS / f"{prefix}_tree_summary.md").write_text("".join(md))
     print(json.dumps({k: summary[k] for k in ("groups_per_depth", "leaf_sizes_10_50_90_max")}, indent=1))
 
 

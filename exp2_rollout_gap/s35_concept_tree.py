@@ -125,7 +125,7 @@ def main():
                "groups_per_depth": {d: int(len(np.unique(levels[d][levels[d] >= 0]))) for d in range(DEPTH + 1)}, "sets": {}}
     md = ["# Concept tree (design.md G110-G112)\n\nRepeated splitting (separate pieces, else spectral K = 2) of the top-11 decoder-neighbour graph. Groups are numbered from the root (0); paths list group ids from the root. "
           "A group exceeds when its share is above the 97.5th percentile of 100 frequency-matched permutations (about 2.5% expected by chance). Names are cached names, not checked against text.\n",
-          "\n## Groups per depth\n\n| depth | " + " | ".join(str(d) for d in range(DEPTH + 1)) + " |\n|---" * (DEPTH + 2) + "|\n| groups | " + " | ".join(str(v) for v in summary["groups_per_depth"].values()) + " |\n"]
+          "\n## Groups per depth\n\n| depth | " + " | ".join(str(d) for d in range(DEPTH + 1)) + " |\n" + "|---" * (DEPTH + 1) + "|---|\n| groups | " + " | ".join(str(v) for v in summary["groups_per_depth"].values()) + " |\n"]
     for i, s in enumerate(["V"] + SETS):
         _, cls, order = classify(chi_train, table[f"chi_{s}"].to_numpy())
         enr, per_depth = enrichment(levels, cls, np.sort(order), chi_train, np.random.default_rng([config.SEED, 111, i]))

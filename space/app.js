@@ -872,6 +872,68 @@ async function drawAdditionalTab() {
   await drawCoverageSection();
 }
 
+// SAE concept similarity and grouping tab (design.md G101-G109). Data from s34_space_similarity.py. Names and numbers only.
+const SIM_SETS = ["V", ...NAMED_MODELS];
+
+function simDots(divId, rows, xTitle, xRange) {  // rows: [{name, color, values: [{value, ci}] per set}]
+  const labels = SIM_SETS.map((s) => SET_LABEL[s]);
+  const traces = rows.map((row, j) => ({
+    type: "scatter", mode: "markers", name: row.name, x: row.values.map((v) => v.value), y: SIM_SETS.map((_, i) => i + (j ? 0.15 : -0.15)),
+    marker: { size: 10, color: css(row.color) }, customdata: row.values.map((v, i) => [labels[i], v.ci[0], v.ci[1]]),
+    error_x: { type: "data", symmetric: false, array: row.values.map((v) => Math.max(0, v.ci[1] - v.value)), arrayminus: row.values.map((v) => Math.max(0, v.value - v.ci[0])), color: css(row.color), thickness: 1.5 },
+    hovertemplate: `%{customdata[0]}, ${row.name}: %{x:.3f} [%{customdata[1]:.3f}, %{customdata[2]:.3f}]<extra></extra>` }));
+  const L = layoutBase();
+  L.margin = { l: 170, r: 20, t: 10, b: 70 };
+  L.legend = { orientation: "h", y: -0.32, x: 0 };
+  L.xaxis = { ...L.xaxis, title: xTitle, range: xRange };
+  L.yaxis = { ...L.yaxis, tickvals: SIM_SETS.map((_, i) => i), ticktext: labels, autorange: "reversed" };
+  return Plotly.newPlot(divId, traces, L, PLOT_CFG);
+}
+
+function simKeyResults(d) {
+  const pick = (key, sub) => SIM_SETS.map((s) => { const x = sub ? d.sets[s][key][sub] : d.sets[s][key]; return { value: x.rho ?? x.share, ci: x.ci95 }; });
+  simDots("sim-comove", [{ name: "nearest decoder neighbours", color: "--cov-a", values: pick("comove_neighbours") },
+    { name: "random concepts, frequency-matched", color: "--cov-b", values: pick("comove_random") }], "Spearman ρ, concept r vs neighbours' mean r", [-0.05, 1]);
+  simDots("sim-swap", [{ name: "nearest decoder neighbour", color: "--cov-a", values: pick("substitution_neighbour", "under_to_over") },
+    { name: "random concept, frequency-matched", color: "--cov-b", values: pick("substitution_random", "under_to_over") }], "share of under concepts whose neighbour is over", [0, 0.25]);
+  const lam = d.clusters.eigenvalues_first_101, k = d.clusters.k_spectral;
+  const sizes = Object.values(d.cluster_members).map((c) => c.size.toLocaleString());
+  document.getElementById("sim-eigen-note").textContent = `Eigenvalues of the concept graph rise smoothly; the only clear gap is after the 2nd, so the standard rule picks ${k} clusters (${sizes.join(" and ")} concepts). Concepts shade into each other rather than forming separate groups.`;
+  const L = layoutBase();
+  L.margin = { l: 70, r: 20, t: 10, b: 50 };
+  L.showlegend = false;
+  L.xaxis = { ...L.xaxis, title: "eigenvalue number (1 = smallest)" };
+  L.yaxis = { ...L.yaxis, title: "eigenvalue, normalized Laplacian" };
+  L.shapes = [{ type: "line", x0: k + 0.5, x1: k + 0.5, yref: "paper", y0: 0, y1: 1, line: { dash: "dash", width: 1.5, color: css("--fg") } }];
+  L.annotations = [{ x: k + 0.5, y: 1, xref: "x", yref: "paper", xanchor: "left", yanchor: "top", showarrow: false, text: ` largest gap: ${k} clusters`, font: { size: 12, color: css("--fg") } }];
+  return Plotly.newPlot("sim-eigen", [{ type: "scatter", mode: "lines+markers", x: lam.map((_, i) => i + 1), y: lam, line: { color: css("--accent"), width: 2 }, marker: { size: 5, color: css("--accent") },
+    hovertemplate: "eigenvalue %{x}: %{y:.4f}<extra></extra>" }], L, PLOT_CFG);
+}
+
+function simTables(d) {
+  const c = d.name_check.counts;
+  document.getElementById("sim-namecheck-note").textContent = d.name_check.method;
+  document.getElementById("sim-namecheck").innerHTML = tableN(["pairs", "related", "loosely related", "unrelated"],
+    [["nearest decoder neighbours", c.neighbour.related, c.neighbour.loose, c.neighbour.unrelated], ["random named concepts", c.random.related, c.random.loose, c.random.unrelated]]);
+  const pairTable = (rows) => tableN(["concept", "neighbour", "cosine", "concept name", "neighbour name"], rows.map(([a, b, x, na, nb]) => [a, b, fmt(x, 3), nameCell(na), nameCell(nb)]));
+  document.getElementById("sim-pairs").innerHTML = pairTable(d.named_pairs);
+  document.getElementById("sim-swaps").innerHTML = NAMED_MODELS.map((g) => { const rows = d.under_over_pairs[g] || []; return `<h3>${esc(SET_LABEL[g])} (${rows.length})</h3>` + (rows.length ? pairTable(rows) : '<p class="note">none with both named</p>'); }).join("");
+  const cl = d.clusters, pct = (x) => `${(100 * x).toFixed(1)}%`;
+  document.getElementById("sim-clusters").innerHTML =
+    `<p class="note">Graph: ${cl.components} connected component. Adjusted Rand index of 9 more k-means seeds against seed 0: ${cl.ari_seeds_vs_seed0.join(", ")}. Reading of the split from named members: context and structure features vs word-level features (not checked against text).</p>`
+    + Object.entries(d.cluster_members).map(([id, m]) => `<h3>Cluster ${id}: ${m.size.toLocaleString()} concepts</h3>` + tableN(["concept", "name"], m.named.map(([cid, nm]) => [cid, nameCell(nm)]))).join("")
+    + "<h3>Same-class share within the two clusters (chance about 10%)</h3>"
+    + tableN(["set", "under", "under, permuted baseline", "over", "over, permuted baseline"], SIM_SETS.map((s) => { const x = cl.sets[s]; return [esc(SET_LABEL[s]), pct(x.same_class_share.under), `${pct(x.permuted.under.mean)} (${pct(x.permuted.under.range95[0])} to ${pct(x.permuted.under.range95[1])})`, pct(x.same_class_share.over), `${pct(x.permuted.over.mean)} (${pct(x.permuted.over.range95[0])} to ${pct(x.permuted.over.range95[1])})`]; }));
+  document.getElementById("sim-mutual").textContent = `${cl.no_mutual_neighbour} concepts with no mutual top-11 neighbour (kept in the clustering; saved for naming later): ${cl.no_mutual_neighbour_ids.join(", ")}.`;
+  document.getElementById("sim-cosine").innerHTML = tableN(["neighbour", "10th percentile", "median", "90th percentile"], Object.entries(d.cosine_quantiles).map(([k, q]) => [esc(k.replace("_", " ")), ...q.map((x) => fmt(x, 3))]));
+}
+
+async function drawSimilarityTab() {
+  const d = await load("data/exp2_similarity.json");
+  simTables(d);
+  await simKeyResults(d);
+}
+
 // G75, G79, G80: one tab per experiment; a hash may name a tab, a section (sec-<hash>) or a concept page. temp is the old name of rollouts.
 // A section inside dropdowns opens them, so old links still land on their result.
 async function route() {
@@ -886,7 +948,7 @@ async function route() {
   if (!drawn[tab]) {
     drawn[tab] = true;
     const steps = tab === "pile" ? [drawOverview, drawNoise, drawPatterns, drawTopics, drawTable]
-      : tab === "rollouts" ? [drawRolloutsTab] : tab === "additional" ? [drawAdditionalTab] : [];
+      : tab === "rollouts" ? [drawRolloutsTab] : tab === "additional" ? [drawAdditionalTab] : tab === "similarity" ? [drawSimilarityTab] : [];
     for (const step of steps) await step().catch((e) => console.error(e));  // one failed chart leaves the others drawn
     if (section) section.scrollIntoView();
   }

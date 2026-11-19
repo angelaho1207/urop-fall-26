@@ -15,6 +15,7 @@
     <a href="#pile" data-tab="pile">Dolma vs Pile (web text only) (OLD)</a>
     <a href="#rollouts" data-tab="rollouts">Dolma (pretraining data) vs pretrained, mid-trained and post-trained Olmo 3 rollouts</a>
     <a href="#additional" data-tab="additional">Dolma vs Olmo 3 rollouts (additional experiments)</a>
+    <a href="#similarity" data-tab="similarity">SAE Concept Similarity &amp; Grouping</a>
   </nav>
 </header>
 <main>
@@ -314,6 +315,62 @@
 
     <details class="more" id="sec-coverage-naming"><summary>Naming counts, coverage lists: new and reused names, names from under 40 firing docs</summary>
     <div id="coverage-naming"></div>
+    </details>
+  </section>
+  <section id="tab-similarity" class="tab">
+    <p class="note">Similarity of two SAE concepts = cosine of their decoder directions, for all 65,536 concepts; each concept's 11 nearest concepts are its neighbours. "Under" and "over" are each model's lowest and highest 10% by r = ln(χ<sub>rollout</sub> / χ<sub>train</sub>).</p>
+
+    <div id="sec-sim-comove">
+    <h2>Concepts move with their nearest neighbours</h2>
+    <p class="note">Rank correlation between a concept's r and its neighbours' mean r. Held-out Dolma shows sampling noise alone; random concepts are matched in frequency.</p>
+    <div id="sim-comove" class="plot short"></div>
+    </div>
+
+    <div id="sec-sim-swap">
+    <h2>Similar concepts rarely take each other's place</h2>
+    <p class="note">Share of under-represented concepts whose nearest neighbour is over-represented. Chance is about 10%.</p>
+    <div id="sim-swap" class="plot short"></div>
+    </div>
+
+    <div id="sec-sim-eigen">
+    <h2>No clear clusters beyond one 2-way split</h2>
+    <p class="note" id="sim-eigen-note"></p>
+    <div id="sim-eigen" class="plot short"></div>
+    </div>
+
+    <h2>Details and checks, concept similarity</h2>
+
+    <details class="more" id="sec-sim-methods"><summary>Methods and definitions, concept similarity: decoder cosine, 11 neighbours, co-movement test, swap test, spectral clustering, eigengap</summary>
+    <p class="note"><b>Similarity.</b> Cosine of the SAE's decoder rows (<code>W_dec</code>), as Exp 1 found nearest neighbours. Each concept keeps its 11 nearest other concepts (11 ≈ ln 65,536).</p>
+    <p class="note"><b>Co-movement.</b> u = rank of r among concepts with χ<sub>train</sub> ≥ e<sup>−5</sup>, scaled to 0-1; Spearman ρ between u and the mean u of the concept's ranked neighbours, 1,000 bootstrap resamples. Baselines: held-out Dolma in place of the model, and 11 random concepts within ±500 χ<sub>train</sub> ranks in place of the neighbours.</p>
+    <p class="note"><b>Swap.</b> Among under concepts, the share whose nearest ranked neighbour is over (and the reverse), same baselines. A high share would mean a near-duplicate direction took the concept's place ("feature absorption", Chanin et al. 2024).</p>
+    <p class="note"><b>Clusters.</b> Graph linking each concept to its 11 neighbours, weighted by cosine; normalized spectral clustering (Ng, Jordan and Weiss 2002), as Li et al. (2024) cluster SAE features; number of clusters by the largest eigengap among the first 100 eigenvalues (von Luxburg 2007). Design: <code>exp2_rollout_gap/design.md</code> G101-G109.</p>
+    </details>
+
+    <details class="more" id="sec-sim-namecheck"><summary>Blind name check: are nearest neighbours related by their names? 100 neighbour pairs vs 100 random pairs</summary>
+    <p class="note" id="sim-namecheck-note"></p>
+    <div id="sim-namecheck"></div>
+    </details>
+
+    <details class="more" id="sec-sim-pairs"><summary>Named nearest-neighbour pairs: concept, nearest neighbour, cosine and both names (403 pairs)</summary>
+    <div id="sim-pairs" class="scrolly"></div>
+    </details>
+
+    <details class="more" id="sec-sim-swaps"><summary>Under-represented concepts whose nearest neighbour is over-represented, both named, per model</summary>
+    <div id="sim-swaps"></div>
+    </details>
+
+    <details class="more" id="sec-sim-clusters"><summary>The two clusters: sizes, named members, seed agreement, and the same-class test at K = 2</summary>
+    <div id="sim-clusters"></div>
+    </details>
+
+    <details class="more" id="sec-sim-mutual"><summary>Mutual-neighbour check and the 374 concepts with no mutual top-11 neighbour (ids)</summary>
+    <p class="note">96 of the 100 rated nearest-neighbour pairs are in each other's top 11. A synthetic test showed a graph of mutual links only splits clean clusters apart, so clustering uses every link.</p>
+    <p class="note" id="sim-mutual"></p>
+    </details>
+
+    <details class="more" id="sec-sim-cosine"><summary>Decoder cosine of the 1st and 11th nearest neighbour: 10th, 50th and 90th percentiles</summary>
+    <div id="sim-cosine"></div>
     </details>
   </section>
   <section id="tab-concept" class="tab">

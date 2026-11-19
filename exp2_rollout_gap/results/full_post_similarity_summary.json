@@ -1,0 +1,345 @@
+{
+ "k": 11,
+ "window": 500,
+ "bootstrap": 1000,
+ "concepts": 65536,
+ "sets": {
+  "V": {
+   "comove_neighbours": {
+    "rho": 0.3909,
+    "ci95": [
+     0.3832,
+     0.3987
+    ],
+    "concepts": 55569
+   },
+   "comove_random": {
+    "rho": 0.0123,
+    "ci95": [
+     0.0033,
+     0.0209
+    ],
+    "concepts": 55569
+   },
+   "substitution_neighbour": {
+    "under_to_over": {
+     "share": 0.1172,
+     "ci95": [
+      0.1084,
+      0.1254
+     ],
+     "concepts": 5556
+    },
+    "over_to_under": {
+     "share": 0.1118,
+     "ci95": [
+      0.104,
+      0.1199
+     ],
+     "concepts": 5556
+    }
+   },
+   "substitution_random": {
+    "under_to_over": {
+     "share": 0.1938,
+     "ci95": [
+      0.1836,
+      0.2048
+     ],
+     "concepts": 5556
+    },
+    "over_to_under": {
+     "share": 0.1994,
+     "ci95": [
+      0.1892,
+      0.2099
+     ],
+     "concepts": 5556
+    }
+   }
+  },
+  "stage1": {
+   "comove_neighbours": {
+    "rho": 0.7215,
+    "ci95": [
+     0.7167,
+     0.7261
+    ],
+    "concepts": 55569
+   },
+   "comove_random": {
+    "rho": 0.0292,
+    "ci95": [
+     0.021,
+     0.0384
+    ],
+    "concepts": 55569
+   },
+   "substitution_neighbour": {
+    "under_to_over": {
+     "share": 0.0351,
+     "ci95": [
+      0.0306,
+      0.0398
+     ],
+     "concepts": 5556
+    },
+    "over_to_under": {
+     "share": 0.0225,
+     "ci95": [
+      0.0184,
+      0.0266
+     ],
+     "concepts": 5556
+    }
+   },
+   "substitution_random": {
+    "under_to_over": {
+     "share": 0.1388,
+     "ci95": [
+      0.1294,
+      0.1478
+     ],
+     "concepts": 5556
+    },
+    "over_to_under": {
+     "share": 0.1303,
+     "ci95": [
+      0.1215,
+      0.1398
+     ],
+     "concepts": 5556
+    }
+   }
+  },
+  "main": {
+   "comove_neighbours": {
+    "rho": 0.7533,
+    "ci95": [
+     0.749,
+     0.7575
+    ],
+    "concepts": 55569
+   },
+   "comove_random": {
+    "rho": 0.0202,
+    "ci95": [
+     0.0124,
+     0.0289
+    ],
+    "concepts": 55569
+   },
+   "substitution_neighbour": {
+    "under_to_over": {
+     "share": 0.0173,
+     "ci95": [
+      0.0139,
+      0.0211
+     ],
+     "concepts": 5556
+    },
+    "over_to_under": {
+     "share": 0.0128,
+     "ci95": [
+      0.0099,
+      0.0157
+     ],
+     "concepts": 5556
+    }
+   },
+   "substitution_random": {
+    "under_to_over": {
+     "share": 0.1147,
+     "ci95": [
+      0.1067,
+      0.1233
+     ],
+     "concepts": 5556
+    },
+    "over_to_under": {
+     "share": 0.122,
+     "ci95": [
+      0.1132,
+      0.1303
+     ],
+     "concepts": 5556
+    }
+   }
+  },
+  "sft": {
+   "comove_neighbours": {
+    "rho": 0.7796,
+    "ci95": [
+     0.7756,
+     0.7834
+    ],
+    "concepts": 55569
+   },
+   "comove_random": {
+    "rho": 0.0352,
+    "ci95": [
+     0.0267,
+     0.0433
+    ],
+    "concepts": 55569
+   },
+   "substitution_neighbour": {
+    "under_to_over": {
+     "share": 0.0113,
+     "ci95": [
+      0.0086,
+      0.0142
+     ],
+     "concepts": 5556
+    },
+    "over_to_under": {
+     "share": 0.0063,
+     "ci95": [
+      0.0043,
+      0.0086
+     ],
+     "concepts": 5556
+    }
+   },
+   "substitution_random": {
+    "under_to_over": {
+     "share": 0.1127,
+     "ci95": [
+      0.1037,
+      0.1211
+     ],
+     "concepts": 5556
+    },
+    "over_to_under": {
+     "share": 0.1107,
+     "ci95": [
+      0.1029,
+      0.119
+     ],
+     "concepts": 5556
+    }
+   }
+  },
+  "dpo": {
+   "comove_neighbours": {
+    "rho": 0.7726,
+    "ci95": [
+     0.7685,
+     0.7768
+    ],
+    "concepts": 55569
+   },
+   "comove_random": {
+    "rho": 0.0291,
+    "ci95": [
+     0.0206,
+     0.0379
+    ],
+    "concepts": 55569
+   },
+   "substitution_neighbour": {
+    "under_to_over": {
+     "share": 0.0128,
+     "ci95": [
+      0.0101,
+      0.0157
+     ],
+     "concepts": 5556
+    },
+    "over_to_under": {
+     "share": 0.0103,
+     "ci95": [
+      0.0079,
+      0.013
+     ],
+     "concepts": 5556
+    }
+   },
+   "substitution_random": {
+    "under_to_over": {
+     "share": 0.1183,
+     "ci95": [
+      0.11,
+      0.1272
+     ],
+     "concepts": 5556
+    },
+    "over_to_under": {
+     "share": 0.1231,
+     "ci95": [
+      0.1146,
+      0.1319
+     ],
+     "concepts": 5556
+    }
+   }
+  },
+  "instruct": {
+   "comove_neighbours": {
+    "rho": 0.7798,
+    "ci95": [
+     0.776,
+     0.7837
+    ],
+    "concepts": 55569
+   },
+   "comove_random": {
+    "rho": 0.0095,
+    "ci95": [
+     0.0013,
+     0.0179
+    ],
+    "concepts": 55569
+   },
+   "substitution_neighbour": {
+    "under_to_over": {
+     "share": 0.0122,
+     "ci95": [
+      0.0095,
+      0.0151
+     ],
+     "concepts": 5556
+    },
+    "over_to_under": {
+     "share": 0.0121,
+     "ci95": [
+      0.0094,
+      0.0153
+     ],
+     "concepts": 5556
+    }
+   },
+   "substitution_random": {
+    "under_to_over": {
+     "share": 0.1154,
+     "ci95": [
+      0.1071,
+      0.1242
+     ],
+     "concepts": 5556
+    },
+    "over_to_under": {
+     "share": 0.1195,
+     "ci95": [
+      0.1111,
+      0.1283
+     ],
+     "concepts": 5556
+    }
+   }
+  }
+ },
+ "cosine_quantiles_10_50_90": {
+  "neighbour_1": [
+   0.1287,
+   0.1792,
+   0.2715
+  ],
+  "neighbour_11": [
+   0.0804,
+   0.1028,
+   0.1343
+  ]
+ },
+ "named_neighbour_pairs": 403
+}

@@ -93,3 +93,5 @@ h2.exp-title { font-size: 1.25rem; margin-top: 8px; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --cov-a: #8b72d6; --cov-b: #d9763a; } }
 :root[data-theme="dark"] { --cov-a: #8b72d6; --cov-b: #d9763a; }
 hr.exp-sep { border: 0; border-top: 1px solid var(--line); margin: 36px 0 8px; }
+.takeaways { max-width: 900px; margin: 6px 0 22px; padding-left: 22px; line-height: 1.45; }
+.takeaways li { margin: 4px 0; }

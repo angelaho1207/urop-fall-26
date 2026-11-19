@@ -898,7 +898,7 @@ function simKeyResults(d) {
     { name: "random concept, frequency-matched", color: "--cov-b", values: pick("substitution_random", "under_to_over") }], "share of under concepts whose neighbour is over", [0, 0.25]);
   const lam = d.clusters.eigenvalues_first_101, k = d.clusters.k_spectral;
   const sizes = Object.values(d.cluster_members).map((c) => c.size.toLocaleString());
-  document.getElementById("sim-eigen-note").textContent = `Eigenvalues of the concept graph rise smoothly; the only clear gap is after the 2nd, so the standard rule picks ${k} clusters (${sizes.join(" and ")} concepts). Concepts shade into each other rather than forming separate groups.`;
+  document.getElementById("sim-eigen-note").textContent = `First 101 eigenvalues of the concept graph; the dashed line marks the largest gap among 2 or more clusters, which the standard rule uses to pick ${k} clusters (${sizes.join(" and ")} concepts).`;
   const L = layoutBase();
   L.margin = { l: 70, r: 20, t: 10, b: 50 };
   L.showlegend = false;

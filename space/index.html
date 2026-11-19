@@ -324,18 +324,33 @@
     <h2>Concepts move with their nearest neighbours</h2>
     <p class="note">Rank correlation between a concept's r and its neighbours' mean r. Held-out Dolma shows sampling noise alone; random concepts are matched in frequency.</p>
     <div id="sim-comove" class="plot short"></div>
+    <ul class="takeaways">
+      <li>Each dot asks: when a concept's frequency changes from Dolma to a model's rollouts (r), do its 11 most similar concepts change the same way? The score is a rank correlation (Spearman ρ): 1 means they always move together, 0 means unrelated.</li>
+      <li>All five Olmo 3 models score ρ = 0.72-0.78 (mid-trained lowest at 0.72, SFT and Instruct highest at 0.78). Random concepts with the same training frequency score 0.01-0.04, so the link comes from similarity, not frequency.</li>
+      <li>Held-out Dolma, which involves no model and shows only sampling noise, scores 0.39. Similar concepts share some noise, and the models' co-movement is about twice that.</li>
+    </ul>
     </div>
 
     <div id="sec-sim-swap">
     <h2>Similar concepts rarely take each other's place</h2>
-    <p class="note">Share of under-represented concepts whose nearest neighbour is over-represented. Chance is about 10%.</p>
+    <p class="note">Share of under-represented concepts whose nearest neighbour is over-represented, against random concepts of matched training frequency.</p>
     <div id="sim-swap" class="plot short"></div>
+    <ul class="takeaways">
+      <li>If a model replaced a concept with a near-duplicate, the concept would be under-represented and its most similar concept over-represented. Each dot is the share of under-represented concepts where that happens.</li>
+      <li>It happens for 3.5% of under concepts in the mid-trained model, 1.7% in the pretrained model and 1.1-1.3% in the post-trained models, against 11-14% when the partner is a random concept of the same training frequency.</li>
+      <li>Similar concepts mostly rise or fall together (chart above), so one taking another's place is rare.</li>
+    </ul>
     </div>
 
     <div id="sec-sim-eigen">
     <h2>No clear clusters beyond one 2-way split</h2>
     <p class="note" id="sim-eigen-note"></p>
     <div id="sim-eigen" class="plot short"></div>
+    <ul class="takeaways">
+      <li>Each concept is linked to its 11 most similar concepts, and the curve shows this graph's eigenvalues. A large jump after the K-th eigenvalue would mean the concepts fall into K well-separated groups.</li>
+      <li>Among 2 or more groups, the largest jump is after the 2nd eigenvalue (0.078 to 0.111), only slightly larger than the next (0.111 to 0.137); past that, eigenvalues climb in small steps to 0.357 at the 101st. Splitting in two gives groups of 45,406 and 20,130 concepts.</li>
+      <li>Gap concepts are spread evenly over the two groups: about 10% of an under concept's group-mates are also under, the same as with shuffled labels (10.1%). Over concepts reach 10.4-10.8% in the post-trained models against 10.2% shuffled, less than one percentage point higher.</li>
+    </ul>
     </div>
 
     <h2>Details and checks, concept similarity</h2>

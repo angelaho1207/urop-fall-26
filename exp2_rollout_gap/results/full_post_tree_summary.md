@@ -5,16 +5,7 @@ Repeated splitting (separate pieces, else spectral K = 2) of the top-11 decoder-
 ## Groups per depth
 
 | depth | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
-|--- |
-|--- |
-|--- |
-|--- |
-|--- |
-|--- |
-|--- |
-|--- |
-|--- |
-|---|
+|---|---|---|---|---|---|---|---|---|---|
 | groups | 1 | 2 | 4 | 8 | 16 | 32 | 60 | 108 | 183 |
 
 ## V: groups exceeding the permutation null, per depth

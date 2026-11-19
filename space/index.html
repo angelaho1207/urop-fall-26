@@ -353,6 +353,17 @@
     </ul>
     </div>
 
+    <div id="sec-sim-tree">
+    <h2>Gap concepts gather in parts of the concept tree, and so does noise</h2>
+    <p class="note">The concept graph is split in two again and again, down to depth 8 (183 groups at that depth). At each level, a group is "above the null" when its share of under- (or over-) represented concepts beats 97.5% of 100 shuffles that keep each concept's training frequency. Depths 1-4 have only 2-16 groups, so their percentages jump in large steps.</p>
+    <div class="cols"><div id="tree-under" class="plot tree"></div><div id="tree-over" class="plot tree"></div></div>
+    <ul class="takeaways">
+      <li>If gap concepts were scattered at random, about 2.5% of groups would be above the null. At depth 8, 23-25% of groups are above it for under-represented concepts and 22-28% for over-represented concepts, in every model.</li>
+      <li>Held-out Dolma, which involves no model, already reaches 18% (under) and 17% (over), so most of this clustering comes from similar concepts sharing sampling noise (as in the co-movement chart). The models add 4-11 percentage points on top.</li>
+      <li>Over-represented groups are more model-specific: at depth 8, 4-9 of the 36-46 over groups per model are also above the null in held-out Dolma, against 12-16 of the 37-41 under groups.</li>
+    </ul>
+    </div>
+
     <h2>Details and checks, concept similarity</h2>
 
     <details class="more" id="sec-sim-methods"><summary>Methods and definitions, concept similarity: decoder cosine, 11 neighbours, co-movement test, swap test, spectral clustering, eigengap</summary>
@@ -386,6 +397,22 @@
 
     <details class="more" id="sec-sim-cosine"><summary>Decoder cosine of the 1st and 11th nearest neighbour: 10th, 50th and 90th percentiles</summary>
     <div id="sim-cosine"></div>
+    </details>
+    <details class="more" id="sec-tree-methods"><summary>Methods, concept tree: repeated 2-way splitting, stopping rule, frequency-matched shuffle test</summary>
+    <p class="note"><b>Tree.</b> Starting from all 65,536 concepts, each group of the 11-neighbour graph is split in two by spectral clustering (Shi and Malik 2000), down to depth 8; a group whose links fall into separate pieces splits into those pieces instead, and groups under 22 concepts are not split.</p>
+    <p class="note"><b>Test.</b> For each group with at least 10 ranked concepts, the share that are under (or over) is compared with 100 shuffles of the labels within bins of 1,000 concepts of similar training frequency; a group is above the null when its share beats the 97.5th percentile. Held-out Dolma in place of a model shows the noise level. Design: <code>exp2_rollout_gap/design.md</code> G110-G113.</p>
+    </details>
+
+    <details class="more" id="sec-tree-depths"><summary>Concept tree: number of groups per depth and group sizes</summary>
+    <div id="tree-depths"></div>
+    </details>
+
+    <details class="more" id="sec-tree-overlap"><summary>Concept tree: how many of each model's groups above the null are also above it in held-out Dolma, per depth</summary>
+    <div id="tree-overlap"></div>
+    </details>
+
+    <details class="more" id="sec-tree-top"><summary>Concept tree: groups with the most under- and over-represented concepts per model, with named members</summary>
+    <div id="tree-top" class="scrolly"></div>
     </details>
   </section>
   <section id="tab-concept" class="tab">

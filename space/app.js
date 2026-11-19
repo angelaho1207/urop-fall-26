@@ -928,10 +928,51 @@ function simTables(d) {
   document.getElementById("sim-cosine").innerHTML = tableN(["neighbour", "10th percentile", "median", "90th percentile"], Object.entries(d.cosine_quantiles).map(([k, q]) => [esc(k.replace("_", " ")), ...q.map((x) => fmt(x, 3))]));
 }
 
+// Concept tree section (design.md G110-G113). Data from s36_space_tree.py. Names and numbers only.
+function treeCharts(t) {
+  const depths = t.per_depth.V.slice(1).map((x) => x.depth);
+  return Promise.all(["under", "over"].map((side) => {
+    const traces = SIM_SETS.map((s) => ({
+      type: "scatter", mode: "lines+markers", name: SET_LABEL[s], x: depths, y: t.per_depth[s].slice(1).map((x) => 100 * x[`${side}_exceeding`] / x.tested),
+      customdata: t.per_depth[s].slice(1).map((x) => [x[`${side}_exceeding`], x.tested]),
+      line: { color: css(GEN_COLOR[s]), width: 2, dash: s === "V" ? "dot" : "solid" }, marker: { size: 6, color: css(GEN_COLOR[s]) },
+      hovertemplate: `${SET_LABEL[s]}, depth %{x}: %{customdata[0]} of %{customdata[1]} groups (%{y:.1f}%)<extra></extra>` }));
+    const L = layoutBase();
+    L.margin = { l: 60, r: 10, t: 30, b: 130 };
+    L.title = { text: `${side}-represented concepts`, font: { size: 14 } };
+    L.legend = { orientation: "h", y: -0.3, x: 0 };
+    L.xaxis = { ...L.xaxis, title: "tree depth (1 = first split)", dtick: 1 };
+    L.yaxis = { ...L.yaxis, title: "% of groups above the null", range: [0, 55] };
+    L.shapes = [{ type: "line", xref: "paper", x0: 0, x1: 1, y0: 2.5, y1: 2.5, line: { dash: "dash", width: 1.5, color: css("--fg") } }];
+    L.annotations = [{ xref: "paper", x: 1, y: 2.5, xanchor: "right", yanchor: "bottom", showarrow: false, text: "chance 2.5%", font: { size: 11, color: css("--fg") } }];
+    return Plotly.newPlot(`tree-${side}`, traces, L, PLOT_CFG);
+  }));
+}
+
+function treeTables(t) {
+  const q = t.leaf_sizes_10_50_90_max.map((x) => Math.round(x).toLocaleString());
+  document.getElementById("tree-depths").innerHTML = `<p class="note">${t.groups_total} groups in all: ${t.splits.spectral} split by spectral clustering, ${t.splits.pieces} split into unlinked pieces, the rest not split (under ${t.min_split} concepts or depth ${t.depth}). Concepts per bottom group: 10th percentile ${q[0]}, median ${q[1]}, 90th percentile ${q[2]}, largest ${q[3]}.</p>`
+    + tableN(["depth", ...Object.keys(t.groups_per_depth)], [["groups", ...Object.values(t.groups_per_depth)], ["tested (≥ 10 ranked concepts)", ...t.per_depth.V.map((x) => x.tested)]]);
+  const depths = t.overlap_with_V[NAMED_MODELS[0]].map((x) => x.depth);
+  document.getElementById("tree-overlap").innerHTML = ["under", "over"].map((side) => `<h3>${side}-represented: groups above the null in the model that are also above it in held-out Dolma</h3>`
+    + tableN(["model", ...depths.map((d) => `depth ${d}`)], NAMED_MODELS.map((g) => [esc(SET_LABEL[g]), ...t.overlap_with_V[g].map((x) => `${x[`${side}_also_V`]} of ${x[`${side}_model`]}`)]))).join("");
+  const members = (named) => named.map(([id, nm]) => `${id}: ${esc(shortName(nm))}${nm.length >= 140 && shortName(nm) === nm ? "…" : ""}`).join("<br>") || "–";
+  document.getElementById("tree-top").innerHTML = NAMED_MODELS.map((g) => ["under", "over"].map((side) => `<h3>${esc(SET_LABEL[g])}: 10 groups with the largest excess of ${side}-represented concepts</h3>`
+    + tableN(["group", "depth", "path from the root", "concepts", "ranked", side, "share", "null 97.5%", "named members (up to 10)"],
+      (t.top_groups[g]?.[side] || []).map((x) => [x.group, x.depth, esc(x.path), x.size.toLocaleString(), x.ranked.toLocaleString(), x.count, pct(x.share), pct(x.null_p975), `<span class="nm">${members(x.named)}</span>`]))).join("")).join("");
+}
+
+async function drawTreeSection() {
+  const t = await load("data/exp2_tree.json");
+  treeTables(t);
+  await treeCharts(t);
+}
+
 async function drawSimilarityTab() {
   const d = await load("data/exp2_similarity.json");
   simTables(d);
   await simKeyResults(d);
+  await drawTreeSection();
 }
 
 // G75, G79, G80: one tab per experiment; a hash may name a tab, a section (sec-<hash>) or a concept page. temp is the old name of rollouts.

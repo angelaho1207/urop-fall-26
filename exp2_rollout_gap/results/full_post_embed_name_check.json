@@ -1,0 +1,2497 @@
+{
+ "method": "G120: blind first pass by Claude in a separate agent that saw only the one-sentence names (shortName). related = same or overlapping pattern; loose = same broad type; unrelated = otherwise. Each name typed topic (tied to a subject, genre, language or kind of document) or token (not tied to one kind of document). Unblinded by matching name pairs to the committed nearest-neighbour table (100 of 200 matched). Decoder ratings are from the earlier G101 pass; decoder types from this pass. One rater, names not checked against text. Items: full_post_embed_name_check_blind.json (embedding), full_post_similarity_name_check.json (decoder).",
+ "counts": {
+  "embedding": {
+   "neighbour": {
+    "all": {
+     "unrelated": 20,
+     "loose": 23,
+     "related": 57
+    },
+    "both topic": {
+     "loose": 5,
+     "related": 31
+    },
+    "mixed": {
+     "unrelated": 12,
+     "related": 8,
+     "loose": 8
+    },
+    "both token": {
+     "unrelated": 8,
+     "loose": 10,
+     "related": 18
+    }
+   },
+   "random": {
+    "all": {
+     "unrelated": 89,
+     "loose": 10,
+     "related": 1
+    },
+    "both topic": {
+     "unrelated": 21,
+     "loose": 5
+    },
+    "mixed": {
+     "unrelated": 49,
+     "loose": 1
+    },
+    "both token": {
+     "unrelated": 19,
+     "loose": 4,
+     "related": 1
+    }
+   }
+  },
+  "decoder": {
+   "neighbour": {
+    "all": {
+     "loose": 27,
+     "related": 50,
+     "unrelated": 23
+    },
+    "both topic": {
+     "loose": 12,
+     "related": 26,
+     "unrelated": 5
+    },
+    "mixed": {
+     "related": 6,
+     "unrelated": 9,
+     "loose": 9
+    },
+    "both token": {
+     "related": 18,
+     "unrelated": 9,
+     "loose": 6
+    }
+   },
+   "random": {
+    "all": {
+     "unrelated": 86,
+     "loose": 12,
+     "related": 2
+    },
+    "both topic": {
+     "unrelated": 28,
+     "loose": 5
+    },
+    "mixed": {
+     "unrelated": 45,
+     "loose": 4,
+     "related": 1
+    },
+    "both token": {
+     "loose": 3,
+     "unrelated": 13,
+     "related": 1
+    }
+   }
+  }
+ },
+ "embedding_items": [
+  {
+   "item": 0,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 1,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 2,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 3,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 4,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 5,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 6,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 7,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 8,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 9,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 10,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 11,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 12,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 13,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 14,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 15,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 16,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 17,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 18,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 19,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 20,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 21,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 22,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 23,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 24,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 25,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 26,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 27,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 28,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 29,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 30,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 31,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 32,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 33,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 34,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 35,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 36,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 37,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 38,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 39,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 40,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 41,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 42,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 43,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 44,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 45,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 46,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 47,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 48,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 49,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 50,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 51,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 52,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 53,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 54,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 55,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 56,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 57,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 58,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 59,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 60,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 61,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 62,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 63,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 64,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 65,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 66,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 67,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 68,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 69,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 70,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 71,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 72,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 73,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 74,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 75,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 76,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 77,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 78,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 79,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 80,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 81,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 82,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 83,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 84,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 85,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 86,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 87,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 88,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 89,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 90,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 91,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 92,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 93,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 94,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 95,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 96,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 97,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 98,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 99,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 100,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 101,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 102,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 103,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 104,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 105,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 106,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 107,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 108,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 109,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 110,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 111,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 112,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 113,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 114,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 115,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 116,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 117,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 118,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 119,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 120,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 121,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 122,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 123,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 124,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 125,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 126,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 127,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 128,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 129,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 130,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 131,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 132,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 133,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 134,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 135,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 136,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 137,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 138,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 139,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 140,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 141,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 142,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 143,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 144,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 145,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 146,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 147,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 148,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 149,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 150,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 151,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 152,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 153,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 154,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 155,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 156,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 157,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 158,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 159,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 160,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 161,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 162,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 163,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 164,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 165,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 166,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 167,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 168,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 169,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 170,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 171,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 172,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 173,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 174,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 175,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 176,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 177,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 178,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 179,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 180,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 181,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 182,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 183,
+   "rating": "related",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 184,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 185,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 186,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 187,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 188,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 189,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 190,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 191,
+   "rating": "loose",
+   "type_a": "token",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 192,
+   "rating": "unrelated",
+   "type_a": "token",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 193,
+   "rating": "loose",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "random"
+  },
+  {
+   "item": 194,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 195,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 196,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  },
+  {
+   "item": 197,
+   "rating": "related",
+   "type_a": "topic",
+   "type_b": "topic",
+   "kind": "neighbour"
+  },
+  {
+   "item": 198,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "neighbour"
+  },
+  {
+   "item": 199,
+   "rating": "unrelated",
+   "type_a": "topic",
+   "type_b": "token",
+   "kind": "random"
+  }
+ ],
+ "decoder_types": [
+  {
+   "item": 0,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 1,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 2,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 3,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 4,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 5,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 6,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 7,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 8,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 9,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 10,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 11,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 12,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 13,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 14,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 15,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 16,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 17,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 18,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 19,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 20,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 21,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 22,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 23,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 24,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 25,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 26,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 27,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 28,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 29,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 30,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 31,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 32,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 33,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 34,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 35,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 36,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 37,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 38,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 39,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 40,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 41,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 42,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 43,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 44,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 45,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 46,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 47,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 48,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 49,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 50,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 51,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 52,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 53,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 54,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 55,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 56,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 57,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 58,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 59,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 60,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 61,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 62,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 63,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 64,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 65,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 66,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 67,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 68,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 69,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 70,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 71,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 72,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 73,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 74,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 75,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 76,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 77,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 78,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 79,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 80,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 81,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 82,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 83,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 84,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 85,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 86,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 87,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 88,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 89,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 90,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 91,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 92,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 93,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 94,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 95,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 96,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 97,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 98,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 99,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 100,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 101,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 102,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 103,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 104,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 105,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 106,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 107,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 108,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 109,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 110,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 111,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 112,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 113,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 114,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 115,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 116,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 117,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 118,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 119,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 120,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 121,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 122,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 123,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 124,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 125,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 126,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 127,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 128,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 129,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 130,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 131,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 132,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 133,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 134,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 135,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 136,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 137,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 138,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 139,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 140,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 141,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 142,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 143,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 144,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 145,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 146,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 147,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 148,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 149,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 150,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 151,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 152,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 153,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 154,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 155,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 156,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 157,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 158,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 159,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 160,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 161,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 162,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 163,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 164,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 165,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 166,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 167,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 168,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 169,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 170,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 171,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 172,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 173,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 174,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 175,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 176,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 177,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 178,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 179,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 180,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 181,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 182,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 183,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 184,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 185,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 186,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 187,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 188,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 189,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 190,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 191,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 192,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 193,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 194,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 195,
+   "type_a": "topic",
+   "type_b": "topic"
+  },
+  {
+   "item": 196,
+   "type_a": "topic",
+   "type_b": "token"
+  },
+  {
+   "item": 197,
+   "type_a": "token",
+   "type_b": "topic"
+  },
+  {
+   "item": 198,
+   "type_a": "token",
+   "type_b": "token"
+  },
+  {
+   "item": 199,
+   "type_a": "token",
+   "type_b": "token"
+  }
+ ]
+}

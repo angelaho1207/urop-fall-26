@@ -1,0 +1,1002 @@
+[
+{
+"item": 0,
+"name_a": "Names of organizations and institutions, mostly government agencies, departments, and official bodies (e.g., USDA, NASA, Centers for Disease Control, Bureau of Land Management, police, ministry, commissioner), including acronym pieces and the final words of multi-word agency names. Activation is strongest on the head or last word of the agency name.",
+"name_b": "The opening parenthesis (sometimes with a quote mark, \"the\", or \"or\") that comes right after a full multi-word name or term and introduces its abbreviation or short-form definition, e.g. \"Social Security Administration (SSA)\"."
+},
+{
+"item": 1,
+"name_a": "The word \"Pittsburgh\" (city, university, sports teams such as the Steelers/Penguins), firing most strongly on the full city name and more weakly on the \"Pitt\" subword in related names (Pitt, Pittsfield, Pitts, pitt.edu, Brad Pitt).",
+"name_b": "The name \"Carnegie\", either as the whole token or the \"egie\" piece after \"Carn\", especially as the start of an institution's name (Carnegie Mellon University, Carnegie Hall, Carnegie Institution or Endowment). It also fires weakly on other \"egie\" word endings."
+},
+{
+"item": 2,
+"name_a": "Class and type names for programming objects, mainly UI menu items and views. Activation peaks on \"(MenuItem\" inside Android's onOptionsItemSelected(MenuItem item) signature and is strong on \"android.view.MenuItem\" imports and getItemId. It is weaker on related types such as AdapterView, ItemStack, JMenuItem, ToolStripMenuItem and (Message, which usually appear in import lines or method parameters.",
+"name_b": "Mostly the word \"list\" after determiners like \"this\", \"the\", or \"the above\". The strongest activations fall on \"this\" in the MIT license phrase \"The above copyright notice and this permission notice\", and weaker ones on \"this\" when it refers to the current document or agreement."
+},
+{
+"item": 3,
+"name_a": "The head word (often the final subword of a name) of a noun phrase acting as the subject at the start of a new sentence or paragraph, usually a definite or anaphoric re-mention of an entity already introduced (e.g. 'The report', 'The currency', a surname, a team or country), right before its verb.",
+"name_b": "Content words (mostly nouns and adjectives) that are semantically out of place or unpredictable for their context. It fires most strongly in incoherent, machine-spun or SEO-spam word salad, such as garbled academic or casino/pharma filler text. It also fires weakly on blanks in fill-in-the-blank exercises and on odd word fragments in noisy text."
+},
+{
+"item": 4,
+"name_a": "Names of organizations and institutions, mostly government agencies, departments, and official bodies (e.g., USDA, NASA, Centers for Disease Control, Bureau of Land Management, police, ministry, commissioner), including acronym pieces and the final words of multi-word agency names. Activation is strongest on the head or last word of the agency name.",
+"name_b": "Ranges, most often year or date spans like 1945-1948 or 1830 and 1860. It fires on the separator (hyphen, en dash, \"to\") and the end-point number that closes the span. It is strongest on dash-joined year ranges, and weaker on page or chapter ranges, times, and decades such as 1950s."
+},
+{
+"item": 5,
+"name_a": "Fires on the denominator or divisor in a division expression, i.e. the number or variable right after '/', '÷' or a '\\frac' denominator brace. It is strongest when the divisor is negative, as in '/ (-5)', '÷ -6' or '/ -4'. Weak activations also appear on scattered ordinary prose and code tokens.",
+"name_b": "Weak, diffuse feature that most consistently fires on \"who\" (and sometimes the following verb such as \"loves\" or \"uses\") right after \"directly left of the person\" in zebra/Einstein-style logic-puzzle clues. It marks where the second referent of a positional relation begins to be specified. It also fires on code tokens that open an argument or value, such as getElementById(' or =\"@ in XML attributes, which is the strongest case."
+},
+{
+"item": 6,
+"name_a": "Tokens inside conventional, formulaic multi-word phrases and collocations (e.g. “have to do with”, “a long way to go”, “shadow of its former glory”, “years of experience”, “rather than”, “means that”, “contrary to what one might expect”). Activation is strongest on the predictable continuation words that complete a stock expression. Many of the marked tokens are the function words (prepositions, articles, auxiliaries) that glue these phrases together, rather than any particular content word.",
+"name_b": "Opening delimiters and leading tokens of control-flow and template/preprocessor directives in code, especially block-closing ones such as {% endif %}, #endif, End If, {{end}}, and <?php tags, along with the indentation whitespace before keywords like else, ensure and end. Activation is strongest on template tags ({%, {{) that close conditional blocks."
+},
+{
+"item": 7,
+"name_a": "The operand or object that completes a mathematical or computational relation, i.e. the variable, noun or pronoun after words like \"divided by\", \"less than\", \"to the\", \"of\" or \"divides\". It appears mostly in math problems and code, marking the end of an expression or argument slot such as \"5 ÷ m\", \"divisible by tot\", \"from 0 to x\" or \"the average edge weight\".",
+"name_b": "Single-letter variable names (or variable-like identifiers such as x, n, k, f) within math expressions or equations, especially the first variable in a condition or equation following words like \"such that\" or \"solve\"."
+},
+{
+"item": 8,
+"name_a": "Words that set the scope or domain of a topic, typically temporal spans (history, period, over time, twentieth century, a hundred years), geographic or national ranges (world, global, American, British, Africa), or academic subject areas (science, programming, literature, politics). Activation is strongest on phrases spelling out wide breadth, such as 'from all over the world' or 'the whole history of the universe'.",
+"name_b": "Nouns for a gathered group or assortment of items, chiefly \"collection\"/\"collections\", plus related words such as selection, compilation, catalog, archive, library, range, variety, collector, treasure, and curated. Activation is strongest for \"collection\" itself, especially for museum, library or artist collections and in the phrase \"collection of\"."
+},
+{
+"item": 9,
+"name_a": "The \".annotation\" package segment in Java import statements (e.g. org.springframework.beans.factory.annotation, javax.servlet.annotation, androidx.annotation), and occasionally similar namespace segments like PHP \"\\Annotation\". Activation is strongest in Spring and javax imports. Unrelated tokens such as table-of-contents dot leaders fire only very weakly.",
+"name_b": "The final class name in Java import statements that bring in annotation types (e.g. Spring's Service/Controller/RestController/RequestMapping, JPA's Entity, Lombok's Data/NoArgsConstructor, JUnit's RunWith, WebServlet), which are later used as @-annotations. It fires most strongly on '.RunWith'. Rare weak activations appear on word endings in ordinary prose."
+},
+{
+"item": 10,
+"name_a": "Tokens that end or complete a phrase which is a repeat of an earlier one in the context. Typical cases are repeated lines, list items, boilerplate and refrains (e.g. \"Invalid Input\", \"Show more\", \"Monthly Budget\", \"lived a method\", repeated numbers or units). The feature is predicting the final word of a copy. Activation is strongest in highly repetitive text and grows with the number of repetitions.",
+"name_b": "Line breaks, closing brackets/tags and separators that end an item in a repeated, list-like or tabular structure, such as code lines, table cells, list entries or repeated phrases. Activation is strongest where the same pattern is about to repeat."
+},
+{
+"item": 11,
+"name_a": "Names of software libraries, modules, packages, and their types or classes, mostly inside import/use/crate statements in code (e.g. pandas, pd, PIL, pathlib, serde_json, regex). It often fires on the later sub-token of a compound library name (bitarray, pybedtools, openpyxl) and sometimes on product or tool names mentioned in prose.",
+"name_b": "Words naming infrastructure, utilities, public services and institutions that serve a locality or community (government services, post/mail, courthouses, police, hospitals, railways, wastewater, outlets, area codes, banks and companies operating in a town), plus phrases describing what connects to or supplies a place (e.g., 'railway reached Putney', 'blood supply from the artery'). Activation is strongest in local-geography or civic-amenity contexts."
+},
+{
+"item": 12,
+"name_a": "Highly predictable tokens inside fixed, boilerplate sequences, mostly in code: \"ServletException\" after \"throws\" in Java servlet methods, \".openapi\" in package paths like com.intellij.openapi, and \".protocol\" in location.protocol or web3j.protocol. It also fires on \"eiusmod\" in Lorem ipsum placeholder text. Activation is strongest where the token is nearly certain from context.",
+"name_b": "HTTP request type tokens in web code, strongest on \"HttpServletRequest\" (in javax.servlet.http imports or as a servlet method parameter), with weaker activation on related request/context/session types (Request, HttpContext, HttpSession) and other framework parameter types such as JoinPoint, Model and CancellationToken. Non-code text is near zero."
+},
+{
+"item": 13,
+"name_a": "Multiplication and product concepts. It fires most strongly on \"product of\", on \"multiply… together\", and on × signs or equals signs in products such as \"1 × 2 × 3 =\" and \"Z1 Z3 = Z2 Z4\". It fires more weakly on related operations and terms like ratio, divided by, *= and Cartesian product, and faintly on unrelated tokens.",
+"name_b": "Self-referential words a text uses to point to itself, usually after \"this/the/our/in the\": paper, article, thesis, report, work, book, document, disclosure, application, publication, and the adverbs herein, here, and \"the following\". Strongest on \"herein\" in patent and legal boilerplate (\"described herein\")."
+},
+{
+"item": 14,
+"name_a": "A weak, diffuse feature firing on structural and symbolic tokens rather than words. The most common triggers are the final digit of four-digit years (often in citations like \"(Author, 201X)\" or bibliographic dates), closing parentheses and brackets, and assorted symbols such as &, $, #, |$, and censor marks like *@. The strongest activations are on unusual symbol sequences, such as OCR-garbled \"()\" and censored profanity.",
+"name_b": "A diffuse, low-specificity feature that fires mostly on unpredictable tokens in noisy or garbled text: OCR junk, mojibake, random alphanumeric codes and serial numbers, unit letters stuck to numbers, odd single characters or scripts, and gene or sequence strings. It also fires weakly on ordinary punctuation and line breaks in plain prose, which suggests it tracks high-surprise or out-of-distribution tokens rather than any one meaning."
+},
+{
+"item": 15,
+"name_a": "Names of TV, radio and media programs, along with talk-show hosts and broadcasters (e.g. Oprah, Tucker Carlson, Matt Lauer, Trevor Noah, Wendy Williams Show). It fires mostly on the final or distinguishing word of the title or name, and on generic media words like \"show\", \"program\", \"podcast\" and \"programme\".",
+"name_b": "Tokens tied to conditional or boolean logic: conditions, comparisons, and checks that evaluate to true or false, such as if-statement comparisons, stop criteria, true/false values, and outcomes. These appear mostly in code and technical or mathematical text. The strongest activation is on the phrase \"condition turns into False\"."
+},
+{
+"item": 16,
+"name_a": "The word \"html\" as a markup/code token, mainly the root <html> tag that opens an HTML document (usually right after <!DOCTYPE html>), plus the ```html code-fence language label and related mentions like \"html.parser\" or html in CSS selectors.",
+"name_b": "The first item in a pair or short list of symbols, mostly single-letter variables or arguments in math and code, that is about to be followed by a comma, 'and', or hyphen and a matching second item (x, y; a, b; k, v; S, T; P and Q). It also fires on paired names like east-west, Mars and Jupiter, and Clinton-Trump."
+},
+{
+"item": 17,
+"name_a": "Fires mid-sequence where an arbitrary, hard-to-predict continuation follows. It is strongest on digit chunks inside long numeric identifiers in URLs, DOIs and article IDs. It also fires on decimal points before long fractional numbers (unit conversions) and weakly on spaces or punctuation just before a list item, number or parenthetical.",
+"name_b": "Highly predictable continuation tokens in fixed formulaic or templated text. The strongest case is \"Circuit\" after an ordinal in U.S. Court of Appeals names (5th/Fourth Circuit). Weaker cases include the hyphen or digits inside DOI and ISSN codes, \"Destination\" after \"Choose\", \"Asked\" after a user name in Q&A listings, \"_wallet\" after \"account_balance\", and table markup."
+},
+{
+"item": 18,
+"name_a": "Class-name tokens at the end of Java import statements, especially string and text utility classes (StringUtils, TextUtils, Strings), with weaker firing on other utility or type classes like BigDecimal and FileUtils. Activation elsewhere is faint and scattered.",
+"name_b": "The '=\"' token joining an HTML/XML attribute name to its quoted value, firing most strongly after 'class' (also 'style', 'cref', 'className'). Weak activations appear on similar connectors that introduce a value or argument, such as '={', '(\\'', '->', '= new', and some prepositions or articles in prose."
+},
+{
+"item": 19,
+"name_a": "Marks the point where a statistic's clause wraps up, usually the word \"line\"/\"level\" in \"(at or below) the poverty line\" or the comma that follows. Activation is strongest on \"poverty line,\" right before another percentage figure. The same feature fires weakly on clause-ending commas after other percentage or statistic statements (e.g., \"X% of voters think ... is hot,\" \"not expected,\").",
+"name_b": "Line breaks (sometimes with trailing punctuation like '.', ')', '},' or a ' %' field delimiter) that end a metadata field, mostly an author affiliation or address line ending in a city/country, institution name, email, ISSN/DOI or venue name. They appear in academic paper headers and bibliographic records, where the next line starts another author, affiliation or section."
+},
+{
+"item": 20,
+"name_a": "The word \"City\" as the final part of a multi-word place or team name (e.g., Kansas City, Salt Lake City, Manchester City, Vatican City). It fires most strongly for Kansas City, and occasionally on the abbreviation \"KC\".",
+"name_b": "Sentence-ending punctuation (period, often fused with a paragraph break, or a closing parenthesis or bracket) at the end of a paragraph or section. It fires most strongly in scientific and methods-style writing, where the next text starts a new section, heading or step, such as Results or a methods subheading."
+},
+{
+"item": 21,
+"name_a": "Fires most strongly in code on the object, method or accessor tokens that begin a call issuing a command or request to a client, database or network service (e.g. conn.Do(\"SET\"…), $this->client->get, sendRequest, sql.Sql_dql(\"select…\"), Driver.Execute, safeRedisCommand). These calls typically take a string command or URL argument. Weaker, diffuse activations appear on function words, punctuation and line breaks in boilerplate or templated text such as form fields, metadata headers and repository notices.",
+"name_b": "Punctuation and connectors inside taxonomic author citations that follow scientific species names, such as the comma or space before the year, the closing parenthesis or period after an abbreviated author name, and joiners like '&', 'et', or 'ex'. It fires weakly on similar separators in ordinary author-year literature citations."
+},
+{
+"item": 22,
+"name_a": "Tokens inside dense, low-predictability symbolic or non-prose sequences: numbers in lists/tables/arrays, code arguments, math subscripts, hex/byte strings, random hashes, URL encodings, mojibake and emoji/unusual-character runs. It responds most strongly to individual elements of repetitive structured data (digits, commas, separators) and to garbled or rare-script characters. It is only weakly active on ordinary prose.",
+"name_b": "A diffuse, low-specificity feature that fires mostly on unpredictable tokens in noisy or garbled text: OCR junk, mojibake, random alphanumeric codes and serial numbers, unit letters stuck to numbers, odd single characters or scripts, and gene or sequence strings. It also fires weakly on ordinary punctuation and line breaks in plain prose, which suggests it tracks high-surprise or out-of-distribution tokens rather than any one meaning."
+},
+{
+"item": 23,
+"name_a": "Mostly physics, chemistry and other technical terms, with \"electron\" firing most strongly (also electron density, spin, photon, quarks, charge, bonding, DFT). Weak activations land on word-piece fragments in scientific or technical contexts, such as the inner parts of words, acronyms and names.",
+"name_b": "The \"i\" token completing \"Fermi\", firing most strongly in solid-state physics terms like Fermi energy, level and surface, with weaker activation on the noun that follows (energy, level, function). Weaker activation also appears on related physics terms such as chemical/formal potential, E_F, HOMO/LUMO, Feynman and Debye. Faint activations on newlines in lists and spec sheets are noise."
+},
+{
+"item": 24,
+"name_a": "Names of people or organizations serving as the source or speaker of a quotation, statement, or claim, especially surnames in speech attributions (e.g. \"X said\", \"says X\", \"X added\"). The name and the following reporting verb are both marked, with the strongest activation on the final part of the name.",
+"name_b": "The first token of a speaker's or subject's name (usually a surname, often split into subword pieces) appearing right after a quotation or clause boundary, typically in quote attributions like '\" X said' or 'said X'. Activation is strongest on the opening subword of unusual surnames and weaker on titles or generic roles such as 'the official' or 'spokesman'."
+},
+{
+"item": 25,
+"name_a": "Words or values describing a hidden, concealed, disabled, or inactive state, such as hidden, none, off, concealed, collapsed, blank, false/true flags, or protected. These appear in both prose and code/CSS property settings, and are strongest for 'display: none' and 'hidden'.",
+"name_b": "The token right after a display/visibility/style property name, usually an assignment or separator such as ':', ' = '', '=\"', '.set' or '(View'. It is strongest for CSS/JS 'display: ' and '.style.display = ''. It also fires weakly on whatever follows the word 'display' in prose."
+},
+{
+"item": 26,
+"name_a": "A diffuse feature with weak activation on many ordinary mid-sequence tokens, such as function words, list items, dates and phone-number digits. It fires most strongly inside arithmetic or mathematical expressions, peaking on operators like ÷ and minus, parentheses and numeric operands (e.g., \"÷ 2 - ( 8 - 6 )\", \"+(-3)\", \"C/360\").",
+"name_b": "Highly predictable, formulaic continuation tokens, mostly function words that complete a common collocation or template. The clearest case is \"are\" after sentence-initial \"There\". Others include \"with\" after \"adorned\" or \"sprinkled\", \"to\" in \"From X to Y\", \"as\" in \"sort of as\", and fixed endings like Korean \"합니다\". These often appear in boilerplate or spammy web text."
+},
+{
+"item": 27,
+"name_a": "Commas in postal addresses and institutional affiliations that come right after a city or locality name and come before the larger region (state, province, country) or the postal code.",
+"name_b": "City names and the state/country parts that follow them in place references. It fires hardest in formal postal addresses and academic affiliation lines, on the city, its commas, the state or province abbreviation and the postal-code start, e.g. 'Santa Rosa, CA 954' or 'Columbia, Missouri'. It is weaker on cities mentioned inside ordinary sentences."
+},
+{
+"item": 28,
+"name_a": "Repeated separator or operator tokens inside chains of three or more items, usually the second or later \" +\" in a running sum. It also fires on other repeated joiners such as *, x, /, commas, spaces and LaTeX \\right)\\left(. Activation tends to grow the longer the sequence of repeated operations runs.",
+"name_b": "Arithmetic or binary operator tokens (mostly '+', also '-', '*', '%') that continue a chain of operations. Activation peaks on the second operator in an expression like 'a + b + c' and fades on later ones. It fires weakly on analogous repeated separators in sequences, such as spaces between numbers or a repeated 'to' or 'and'."
+},
+{
+"item": 29,
+"name_a": "Website and document boilerplate around the main content, such as navigation links (\"Skip to main content\", \"Jump to: navigation\"), repository and download notices, citation prompts (\"To cite this version:\", \"Cite this article as\"), copyright, license and publisher terms, metadata fields and dates, and share or sign-up text. Activation is strongest on repository and citation phrases.",
+"name_b": "Separators and connective words inside boilerplate web and repository text, such as headers, footers, metadata labels and attribution lines (\"published by\", \"brought to you by\", \"Part of\", \"downloaded from\", \"General rights\", \"Server:\"). Activation falls on the newline, colon or preposition right after a label or stock phrase, just before its value or the next section. It is strongest on \"by\" in attribution lines like \"open access by\"."
+},
+{
+"item": 30,
+"name_a": "Institutional affiliation text, typically in author bylines of academic papers. It fires on words like University, Department of, Institute, School and College, on the commas and parentheses that separate parts of the affiliation, and on the address details that follow (city, state, postal code, P.O. Box). This holds across English, Spanish, Portuguese and French forms (Universidad/Université, Instituto, Laboratoire).",
+"name_b": "In code, the separator between a function's first argument and the next one, peaking on the comma and opening quote just before a file-open mode string (e.g. open(file, \"w\"), fopen(path, \"rb\")). It responds more weakly to argument-separating commas and delimiters in other calls, especially ones that set modes or options."
+},
+{
+"item": 31,
+"name_a": "Fires on string-length functions in code, most strongly on C/PHP \"strlen\" and also on \"len\", \"nchar\", \".length\" and \"LEN\", including when they show up in garbled text. It also fires weakly on long runs of dashes in markdown table separator rows and on a few scattered code tokens.",
+"name_b": "Separator or lead-in tokens in structured lists, sequences, equations and numbered answer options (commas, spaces, \"=\", \".\\n\\n\", \"$\\\\\") that come right before the next item. That next item is usually a number or math value."
+},
+{
+"item": 32,
+"name_a": "The predicate or evaluative word that comments on a preceding subject or topic, typically right after it or after 'is/was'. It fires most strongly on passive participles saying a situation is complicated, hampered, fuelled or obscured, often followed by 'by'. It also fires on intensifying or additive transitions such as 'Adding to the drama', 'further' and 'even gloomier'. Most other hits are weak, on ordinary copulas and adjectives like 'is', 'consistent' and 'noteworthy'.",
+"name_b": "Newline and indentation tokens that end a Python traceback frame header ('File \"...\", line N, in <function/module>'), just before the indented source code line. Activation is strongest right after the function name (or 'module>'). Other code and table whitespace gets only weak activation."
+},
+{
+"item": 33,
+"name_a": "The subject at the start of a conditional clause: determiners, pronouns or nouns (\"the\", \"a\", \"this\", \"any\") right after \"If\", \"when\", \"where\" or \"unless\". These mostly appear in boilerplate license, copyright and instruction text. Weaker hits include \"copy of\" in license phrases.",
+"name_b": "A weak, diffuse feature of news-article structure. It fires mostly at boundaries between a headline or lede and the body: the period or line break ending an opening sentence (\".⏎⏎\"), the first word of the next paragraph, and dateline, byline or source punctuation such as \"(\", \":\" and \"|\". Activation is strongest within lede sentences that report an event with place and time details (\"at an event at… Tuesday night.\")."
+},
+{
+"item": 34,
+"name_a": "Tokens made of underscores (e.g. \"_\", \"___\", \"._\", \" __\", \"|_|\"), which serve as blanks, separators or identifier prefixes. They usually sit in garbled, mixed-language or code-like text and often come right before an identifier or word.",
+"name_b": "A diffuse, low-specificity feature. It fires most strongly on separators between items in enumerations, especially commas and \"%,\" in lists of specs, terms or categories. It also fires weakly on mid-phrase fragments that lead into a predictable continuation: subword pieces of names and acronyms (GR-AC-O, AB-USE, 0xAB) and function words (of, an, a, which)."
+},
+{
+"item": 35,
+"name_a": "The verb \"divide(s)\" in the number-theory sense of divisibility (\"a divides b\"), strongest when it sits between two quantities in a math statement. Weak activation on related phrasing like \"divisible by\" and on scattered separators such as table pipes.",
+"name_b": "Lowercase consonant-cluster abbreviation fragments inside dotted package or domain paths, peaking on \"dt\" in Eclipse names like org.eclipse.jdt or jsdt (also \"st\", \"nd\", \"sc\"). Activations elsewhere on ordinary words and punctuation are weak and look like noise."
+},
+{
+"item": 36,
+"name_a": "The object noun (almost always \"file\", sometimes \"work\") right after \"you may not use this\" in software license boilerplate, mainly the Apache 2.0 header. Weak, sporadic activations appear on unrelated tokens elsewhere.",
+"name_b": "The determiner \"this\" right after \"use\" in licensing or permission language, overwhelmingly the Apache License boilerplate \"you may not use this file except in compliance\". It is strongest when the use is restricted and weaker in permissive \"free to use this\" or other usage-terms contexts."
+},
+{
+"item": 37,
+"name_a": "Arguments of C socket API calls (accept, connect, bind), especially the comma and the cast to (struct sockaddr *)& before the address variable. It also fires weakly on scattered tokens in code and prose.",
+"name_b": "The pointer asterisk directly after \"void\" in C/C++ code (void*, void *, (void *)), marking a generic void pointer type; other tokens are only weakly active."
+},
+{
+"item": 38,
+"name_a": "The opening argument or parameter token right after a function or operator name, typically a merged token like \"(x\", \"(n\", or \"<T\" that starts the argument list in math notation (f(x), a(n), P(S)) or code (function parameters, generic type parameters). Subscripts and indices right after a symbol also fire, more weakly.",
+"name_b": "The argument or subscript token right after a function or variable name in math and code notation, most often an opening bracket fused with a variable, as in f(x, a(n, R(t, x_i, row[i. It marks the start of a function's argument list or an index."
+},
+{
+"item": 39,
+"name_a": "Expository news-style prose. Activation peaks on the core clause of a sentence that introduces who did what, most often at the start of a new sentence or paragraph. Typical spans are the subject (a named person, organization or \"The former couple\"), the main verb, and the source-attribution phrasing that follows. Examples include \"The attorney for … says in court papers\", \"According to a report produced by\", \"announced the split with\" and \"trimmed its … ownership in\". Function words linking these elements (to, the, in, of, commas) are also marked, while scattered weak activations appear elsewhere.",
+"name_b": "Sentence-ending punctuation (mostly a period, often fused with paragraph breaks '.⏎⏎') that closes an opening or lead sentence of a news, press-release or abstract-style text, right before the next sentence elaborates on it. Strongest after news-lead statements with attribution (e.g., 'officials said Friday', 'announced Tuesday')."
+},
+{
+"item": 40,
+"name_a": "The standalone digit \"0\" used as a numeric value, most often in code and math (return values, function arguments, comparisons, assignments, binary 0/1 outcomes). Activation is strongest where 0 is a result or output value, as in \"returns 0\" or \"print(0)\".",
+"name_b": "Comparison and relational operators, strongest for symbolic inequality operators (>, <, >=, <=) in code conditionals and math, weaker for LaTeX forms (\\leq, \\geq, &gt;), word equivalents (above, below, exceeds, between, within, at least), and breadcrumb '>' separators."
+},
+{
+"item": 41,
+"name_a": "An opening parenthesis placed right after a Latin scientific (binomial/genus) name. It typically introduces the naming authority (e.g. \"(L.)\", \"(Greene)\", \"(Linnaeus, 1758)\") or a higher taxon such as order or family (e.g. \"(Coleoptera: ...)\"). Activation is strongest when an author citation follows, including after \"Species Authority:\".",
+"name_b": "Punctuation and connectors inside taxonomic author citations that follow scientific species names, such as the comma or space before the year, the closing parenthesis or period after an abbreviated author name, and joiners like '&', 'et', or 'ex'. It fires weakly on similar separators in ordinary author-year literature citations."
+},
+{
+"item": 42,
+"name_a": "Names of media companies, TV channels, streaming platforms, studios and publishers that air or produce content (e.g., Netflix, HBO, Starz, ITV, A&E, BBC 4, Warner Bros. Pictures). Activation peaks on the final or distinguishing token of the name, often after 'on the', 'by' or before a possessive 's. There is weaker activation on other organization acronyms such as NASDAQ, DARPA and NASA.",
+"name_b": "Tokens tied to TV shows, films and other screen entertainment, peaking on words like series/show/TV shows, show titles (Downton Abbey, Profiler, Maid In India, Homecoming, telenovela) and the descriptive phrases that introduce them (\"is a comedy web series where\", \"is a 1988 film that\"). Weak, scattered activations occur elsewhere."
+},
+{
+"item": 43,
+"name_a": "Tokens that complete a highly predictable, often formulaic multi-word term or template: boilerplate phrases (Open Access Publications, Open Content Licence, maxPaginationLinks), set phrases (without replacement, length decreasing), terms repeated from earlier context (Nota do Pedido), and function words or punctuation that continue a standard construction.",
+"name_b": "Diffuse, low-level activation across scientific and technical expository prose. It peaks on phrases describing how something works or what it does, especially biological mechanisms and causal roles (e.g., \"genome-wide control of gene expression\", \"alter regulatory function\", \"play a critical role\", \"responsible for\", \"pathogens that can cause\", \"other physiological functions\"). Function words in these explanatory clauses also fire, such as \"which are\", \"they are\", \"to\" and \"of the\"."
+},
+{
+"item": 44,
+"name_a": "Continuation tokens inside institutional names and postal addresses, especially in academic affiliation lines. The strongest cases are German or other European compound words and street names, such as -straße, -universität and -medizin. It also fires on nouns ending institution names (Center, Institute, University, Technology), on postal codes and phone digits, and on the word \"version\" in \"Citation for published version\".",
+"name_b": "Separators between parts of postal or affiliation addresses (commas, newlines, the spaces after them, and country-code prefixes like \"N-\" or \"CZ-\"). Activation is strongest at the separator that comes right after a street address or PO box, just before the postal code."
+},
+{
+"item": 45,
+"name_a": "Weak, diffuse feature that mostly fires on prepositions linking a noun or verb to what follows, especially Latin/Romance-like \"p\"-words (par, por, per, pers, prom, porcelain) and also by, through, of, for. It is strongest on French \"par\" and Spanish \"por\" meaning \"by/via\". There are occasional weak hits on word fragments and paragraph breaks.",
+"name_b": "Paragraph breaks (double newlines, often joined with a period, colon, question mark or closing bold **) that end a heading or intro sentence and come just before a new section's body. Activation is strongest at transitions into medical case-report narratives, such as after 'Case presentation', '**Case Report**', or 'we describe a case…', right before text like 'A 54-year-old female…'."
+},
+{
+"item": 46,
+"name_a": "Fires mostly on the space token right after \"F. Supp.\" in legal case citations, just before the page or series number (e.g. \"F. Supp. 1081\", \"F. Supp. 2d\"). It also responds weakly to other separators or function words that come right before a reference, number or math expression, such as commas in author lists, \" $\", \" \\(\" and \"vs.\".",
+"name_b": "The standalone space token that comes just before a number, overwhelmingly the page number in a legal citation, sitting between the reporter abbreviation and the page (e.g. 'F. Supp.', 'U.S.', 'N.E.', 'Mo.', 'FR'). It also fires weakly on spaces before numbers in measurements or conversions."
+},
+{
+"item": 47,
+"name_a": "Weak and diffuse activations, peaking on the idea of conditionality: things that vary with or depend on circumstances. Typical triggers are “conditional logic” with :if, “depend on”, “condition-dependent”, “tailored to”, “different”/“various”/“split strategies”, and content that displays differently on desktop vs. mobile or at specific times. The many low-level activations on scattered function words, code and math tokens appear to be noise.",
+"name_b": "Conditional and control-flow keywords, chiefly \"if\"/\"If\" opening a condition in code (if statements, for, match, cfg) and in prose (\"If I...\", \"what if\", \"Check if\"), plus related condition-like words such as \"場合\", \"Where\", \"as soon as\" and \"after\". Activation is strongest on code constructs (for loops, match, cfg, if blocks)."
+},
+{
+"item": 48,
+"name_a": "The \"#endif\" preprocessor directive, strongest when it closes a header include guard at the very end of a C/C++ header file. Activation is weaker for mid-file #endif closing #ifdef/#else blocks and for template \"endif\" keywords in PHP or Django. Scattered weak hits on ordinary prose tokens are noise.",
+"name_b": "A diffuse feature that is strongest on tokens inside mathematical expressions, such as fraction slashes and numerators (\"1/7\", \")/\"), derivative notation \"y'(\", small numbers in exponents like ^{-1}, and LaTeX braces. It fires weakly on other structured or formulaic text: the parenthesis before an issue number in citations (\"55(3)\"), \"contrib\" in wiki edit logs, list separators and line breaks, and function words in garbled spam text."
+},
+{
+"item": 49,
+"name_a": "The final digit of a publication year in an academic citation (e.g. the \"6\" completing \"201\" in \"Smith et al. 2016\"), occasionally with the closing punctuation. The feature also fires weakly on other closing citation markers, such as reference numbers and closing brackets.",
+"name_b": "Author surnames in academic citations, firing mainly on the final subword pieces of the name and on the \"et al.\" that follows it. These typically appear in parenthetical or inline references such as \"(Smith et al., 2010)\" and \"Smith and Jones (1994)\". It fires weakly on other proper names."
+},
+{
+"item": 50,
+"name_a": "Fires most strongly on \".W\" in the legal case citation \"S.W.3d\" (South Western Reporter). It fires weakly on the \">⏎\" closing an HTML <thead> tag before <tr>, and faintly on scattered unrelated tokens.",
+"name_b": "The final token of a function, method, command or operator name right before its arguments are applied, usually the last subword of an identifier right before an opening parenthesis (e.g. make_feed_request(, url_for(, add(). This also covers math functions and operators acting on operands (f(x), ReLU(x), \\div, ->, *()."
+},
+{
+"item": 51,
+"name_a": "Highly predictable continuation tokens in fixed formulaic or templated text. The strongest case is \"Circuit\" after an ordinal in U.S. Court of Appeals names (5th/Fourth Circuit). Weaker cases include the hyphen or digits inside DOI and ISSN codes, \"Destination\" after \"Choose\", \"Asked\" after a user name in Q&A listings, \"_wallet\" after \"account_balance\", and table markup.",
+"name_b": "Fires on the token right before a year number, most often the space, slash, dot, hyphen or opening parenthesis that separates the year from the month or day in dates (e.g. \"May 2016\", \"9/23/2015\", \"08.03.2022\", \"(2015)\"). It also fires on year-prefix tokens like \"201\", \"202\" and \"200\", including inside identifiers and URLs. The feature predicts that a four-digit year comes next."
+},
+{
+"item": 52,
+"name_a": "Relational/classifying adjectives (often ending in -al, -ic, -ical, -ological) placed before a noun to specify its domain or type (e.g., financial, legal, optical, emotional, medicinal, political), including word-piece suffixes that complete such adjectives.",
+"name_b": "The \" org\" token right after \"import\" in Java import statements (start of org.* package paths like org.springframework, org.apache), strongest in runs of consecutive org imports, especially near the end of the import block."
+},
+{
+"item": 53,
+"name_a": "Speech and attribution verbs (mostly \"said\", also says/told/wrote/added/reports), plus the pronoun or speaker right before them, that credit a quote or reported statement to its source. Activation is strongest for \"said\" right after a closing quotation and a speaker's name or pronoun in news-style quotes, and weaker in narrative fiction or for other reporting verbs.",
+"name_b": "The first token of a speaker's or subject's name (usually a surname, often split into subword pieces) appearing right after a quotation or clause boundary, typically in quote attributions like '\" X said' or 'said X'. Activation is strongest on the opening subword of unusual surnames and weaker on titles or generic roles such as 'the official' or 'spokesman'."
+},
+{
+"item": 54,
+"name_a": "Diffuse feature centered on operators and structural tokens in math and code, mostly binary operators (especially minus, also plus, equals, ==, /, times) that join operands within an expression, plus delimiters such as colons after 'question', docstring indentation and separators. It fires on the token that links two parts of a formula or statement.",
+"name_b": "Binary operators and similar connectors (+, -, ^, *, %, ==, ->, :) placed right after a variable or operand in code and math expressions, marking the point where a second operand follows."
+},
+{
+"item": 55,
+"name_a": "The head noun of a clause's grammatical subject, right before its verb (e.g. 'officials talk', 'Google will add', 'the FBI has been'). Activation is strongest for named organizations, institutions, governments and companies acting as agents (Supreme Court, Google, Sony, MTV, Fed, Congress). It also fires on generic subject nouns such as customers, consumers, God, money and teeth.",
+"name_b": "A diffuse, low-level feature that activates across long runs of ordinary content tokens in factual prose rather than on any specific word. It is strongest in news-style reporting, such as statements of who announced, found or did something, attributions like 'a professor of… at… College', and statistics like '98 live births'. It fires weakly and sporadically on nouns and function words in general expository text, and barely at all in code or metadata."
+},
+{
+"item": 56,
+"name_a": "The word \"Unless\" that opens the \"Unless required by applicable law or agreed to in writing\" clause of Apache License 2.0 boilerplate in code comment headers, right after the license URL line. Activation is near-zero elsewhere (weakly on an unrelated noun like \"air\").",
+"name_b": "The '#' character used as a CSS/jQuery ID selector prefix (e.g. div #id, querySelector(\"#…\"), $(\"#…\")), often fused with a preceding quote, parenthesis, or space, right before an element ID name. It fires most strongly in CSS selector contexts and weakly on stray '#' or other tokens."
+},
+{
+"item": 57,
+"name_a": "Individual operand tokens (variable names, numbers, symbols, list elements) inside code, math, or formal/structured notation, especially items in sequences or expressions that follow operators, separators, or assignment signs. Activation is weak and spread out rather than tied to any particular word.",
+"name_b": "A weak, diffuse pattern centered on short symbolic tokens in structured or technical text. Most often these are single-letter variables, indices, subscripts, exponents or numbers inside LaTeX formulas, equations and code arguments (e.g. e^{-t}, n m, uf.join(5, 6)). It also fires on formatting fragments such as table tags and on highly predictable completions in boilerplate text (New Zealand, skip to navigation)."
+},
+{
+"item": 58,
+"name_a": "The tag name \"title\" inside a closing </title> tag, mostly in HTML document heads. It fires most strongly when a normal <title>…</title> page title is being closed. It is weaker for XML book records or malformed markup, and only faint on unrelated punctuation and words.",
+"name_b": "Boundary tokens that close a title, name, or header-like field in structured or semi-structured text. These are mostly newlines (often double) right after a page/article/namespace/class title or metadata value. Closing HTML tags, quotes, braces, file extensions/domains, and the ' on' after an author name in code headers also fire. The activation marks the end of a label just before new content begins."
+},
+{
+"item": 59,
+"name_a": "First-person pronouns (mainly \"we\", plus \"We\", \"our\", \"us\", \"I\") used by authors to introduce their own work in scientific or technical writing, such as abstracts and papers. They usually begin a clause stating what the authors did, propose, or present, and often follow framing phrases like \"In this study,\", \"Herein,\", or \"To address this,\".",
+"name_b": "A diffuse, low-specificity feature that fires weakly across many tokens in varied contexts (prose, code, citations, headings). It is somewhat denser at the start of documents or sections, such as titles, bylines, headers, SQL/C++ code and citation lists, and on content nouns, proper-name fragments, and year/date pieces (e.g. '201', date commas). It has no clear single semantic meaning."
+},
+{
+"item": 60,
+"name_a": "Package-name tokens in Java import statements, strongest by far for \".junit\" right after \"org\" (import org.junit...). It fires more weakly on other test frameworks (testng, plain junit) and on \"lombok\" after \"import\". Activations on ordinary prose are near zero.",
+"name_b": "The final dotted class-name token in Java/C# import statements, chiefly annotation types. It fires most strongly on \".Test\" in JUnit/TestNG test imports (e.g. org.junit.Test) and more weakly on Spring stereotype annotations (.Service, .Component, .Controller, .Repository, .Configuration)."
+},
+{
+"item": 61,
+"name_a": "The last token of a person's name, most often the surname after a first name or title, strongest for well-known political leaders (President Obama/Trump/Biden, Roosevelt). When the surname is split into pieces, the final subword fires (e.g. Gorbache-v, Hickenlo-oper), usually where the name is the subject about to say or do something.",
+"name_b": "Titles, offices and role nouns for people (President, Minister, Prime Minister, CEO, director, chief, Gov., Queen, coach), typically right before a person's name. Activation is strongest for political leadership titles such as President, Prime Minister and Gov."
+},
+{
+"item": 62,
+"name_a": "Punctuation or spacing immediately following a weekday name in date headers/timestamps (the comma after \"Monday\", \"Friday\", etc., or the space after \"Tuesday,\"), typically right before the day/month in blog or article dateline metadata; weakly also \"Posted on\"/\"Updated:\" lead-ins to dates.",
+"name_b": "Components of calendar dates in post/article timestamps and headers, mainly the month name or abbreviation, day number, separators, and final year digit that follow a weekday or day number."
+},
+{
+"item": 63,
+"name_a": "Separators (commas, newlines, spaces, \" in\", \" (\") that come right after the name of an institution, department, organization or address component, marking the boundary to the next part of an affiliation or address line (e.g. \"Department of X, University of Y, City, Country\"). Activation is strongest after university and department names in academic author affiliations.",
+"name_b": "Names of academic and research institutional units in author affiliations and bios, especially subunits like \"Department of\", \"School of\", \"Laboratory\", \"Institute\" or \"Center\" (including non-English forms), plus the field names and \"University\" that follow. Activation is highest on the unit word itself, such as \"Department\" or \"School\", and on the following \"of\", particularly in paper headers listing affiliations."
+},
+{
+"item": 64,
+"name_a": "Code annotations, attributes and decorators that modify following declarations, such as Java @Subscribe (strongest), Rust #[derive(...)], #[allow], #[test], Blade @if and mentions of decorators. Weaker activations fall on boilerplate page and document metadata labels, e.g. 'Skip to content/navigation', 'Corresponding author', 'Open Access', 'Opinion' and 'Location', plus similar header or structural tokens in code.",
+"name_b": "Weak, diffuse feature centered on formal name-and-title contexts such as academic signature blocks, author lists, approval pages and job descriptions. It fires on the punctuation and line breaks separating a person's name from credentials (\", PhD\", \"Ph.D.⏎\"), on affiliation markers, and on job titles or roles (professor, Director, Attorney, Editorial Board). Scattered activations elsewhere are faint."
+},
+{
+"item": 65,
+"name_a": "Fires most strongly inside PHP strict-standards warnings of the form \"X::method(args) should be compatible with Y::method(args)\". The peaks are on \"with\", the parent class name, \"::\", the method name and the argument list. It also fires strongly on \".ops\" in code identifiers (bpy.ops, org.ops4j). There is weak, diffuse activation on scattered tokens in code, error messages and noisy or spammy text.",
+"name_b": "Segments of file system paths and URLs, particularly server directory paths in PHP/CMS error messages (e.g., /wp-content/plugins/, /sites/all/modules/, /themes/), with the strongest activation on the directory components after the site root. Weak, scattered activations also appear on other code-like or technical identifiers."
+},
+{
+"item": 66,
+"name_a": "Structural boundary tokens in scraped web pages, mainly double newlines and colons, separators or », that close boilerplate such as navigation, breadcrumbs, dates, bylines and tag or category labels just before a title or the main content starts.",
+"name_b": "Components of calendar dates in post/article timestamps and headers, mainly the month name or abbreviation, day number, separators, and final year digit that follow a weekday or day number."
+},
+{
+"item": 67,
+"name_a": "Newline tokens (often fused with punctuation such as ')', ':', '.', '>') that end short lines in structured, non-prose boilerplate such as metadata fields, web page headers and navigation, citation and publication info, contact lists, and table/markup rows, marking the boundary between one field or label and the next.",
+"name_b": "The final word or token of a short noun phrase that ends a parenthetical, appositive, or list item, i.e. the token immediately before a closing parenthesis, comma, dash, or period, such as \"(the loop)\", \"(3.6 m)\", \"Google Chrome,\" or \"de facto standard,\". It marks the completion of an inserted or clarifying phrase."
+},
+{
+"item": 68,
+"name_a": "The \".http\" package segment in code paths, especially Java imports of javax.servlet.http (strongest), plus org.springframework.http, django.http and req.http in VCL. Other package segments (.entity, .core) and miscellaneous tokens like list-bullet spaces fire only weakly.",
+"name_b": "HTTP request type tokens in web code, strongest on \"HttpServletRequest\" (in javax.servlet.http imports or as a servlet method parameter), with weaker activation on related request/context/session types (Request, HttpContext, HttpSession) and other framework parameter types such as JoinPoint, Model and CancellationToken. Non-code text is near zero."
+},
+{
+"item": 69,
+"name_a": "The word \"clot\" (blood clot, clotting, clots, including split tokens like \"cl\"/\"ots\"/\"ot\"), with weaker firing on related coagulation terms such as thrombus/thrombo- and scab. It is strongest in medical contexts about blood clots blocking vessels or about the clotting process.",
+"name_b": "Nouns that name a quantity or numeric value, mostly monetary: amount, sum, cost, price, total, figure, value, number (also Italian/Portuguese equivalents like Subtotale and Valor). They fire most strongly on \"sum\"/\"amount\" in financial contexts such as \"a sum of money\" or \"principal amount\", and weakly on physical quantities like weight, distance and force."
+},
+{
+"item": 70,
+"name_a": "The \"ISHED\" suffix completing the all-caps word \"PUBLISHED\" (and \"FINISHED\") in article or record metadata headers, typically followed by a colon and a date. Other tokens fire only weakly and show no clear pattern.",
+"name_b": "The word \"cotton\" and its subword piece \"otton\" (also the Chinese 棉), which fires even when the fragment shows up in garbled or nonsensical text. Weak, scattered activations also appear on list-marker bold \"**\", periods and a few other tokens."
+},
+{
+"item": 71,
+"name_a": "Android/Java \"Context\" objects in code: the Context type and its context variable (field declarations like \"private Context context;\", constructor parameters, calls passing context). It is weaker on context-like stand-ins such as passing \"this\" or getActivity(), Application, env, plugin, request, and imports of android.content.Context. Activation peaks on declared Context fields and variable names.",
+"name_b": "The Java/Android type name \"Context\", usually fused with an opening parenthesis as \"(Context\", that begins a method or constructor parameter list (e.g. public Foo(Context context)) or appears in calls like getSystemService(Context.X). Weaker activation goes to \" Context\" as a later parameter and to similar framework types (Activity, Application, Environment, WebDriver, Project) in parameter position. Rare faint hits on unrelated prose tokens are noise."
+},
+{
+"item": 72,
+"name_a": "Words or word-pieces starting with the letter \"A\" (either case), including names, acronyms, and ordinary words. Capitalized onsets and acronyms such as AME, AMZN and A. tend to be strongest, and continuation pieces are weaker.",
+"name_b": "Tokens within lists of person names, mostly author bylines of academic papers and citations. It fires on first names, initials, surname fragments and the separating commas or affiliation markers, and is strongest in the middle of long comma-separated author lists."
+},
+{
+"item": 73,
+"name_a": "Tokens that act as separators or filler inside tabular, grid-like or column-aligned layouts. Typical cases are whitespace padding between columns, table cell tags (<td>), LaTeX alignment and spacing commands (&, \\quad), dashed separator lines, and numbers or labels arranged in grids. Activation is strongest on aligned numbers and spacing in ASCII layouts and on repeated delimiter runs.",
+"name_b": "Structural and formatting tokens inside tabular or grid-like layouts, such as cell separators (|, &, <td>), row starts after newlines, alignment whitespace runs, and dotted or dashed filler in markdown, HTML and LaTeX tables or matrices and ASCII-art blocks. Activation is strongest at the start of a new row or line within these structures."
+},
+{
+"item": 74,
+"name_a": "Numbers in running text, whether written as digits or words (cardinal or ordinal), that give a count, quantity, amount, percentage or ranking. The leading number of a phrase activates most, and statistics such as sports tallies activate strongest.",
+"name_b": "Phrases in news-style sports recaps describing athletes’ or teams’ performance and results. The strongest cases are box-score statistics and outcomes such as “led a balanced attack with a game-high 14 points,” “scored nine runs in the fifth inning” and “winless in two matches.” Much weaker activation appears on similar report-style quantity or condition words in weather and nutrition text, such as clouds, rains and carbs."
+},
+{
+"item": 75,
+"name_a": "The determiner \"this\" right after \"use\" in licensing or permission language, overwhelmingly the Apache License boilerplate \"you may not use this file except in compliance\". It is strongest when the use is restricted and weaker in permissive \"free to use this\" or other usage-terms contexts.",
+"name_b": "The object noun (almost always \"file\", sometimes \"work\") right after \"you may not use this\" in software license boilerplate, mainly the Apache 2.0 header. Weak, sporadic activations appear on unrelated tokens elsewhere."
+},
+{
+"item": 76,
+"name_a": "Arguments within setsockopt() calls in socket code (socket fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof), firing most strongly on the separating commas. Elsewhere it gives only weak, scattered activations on mid-phrase tokens and word fragments.",
+"name_b": "Words about creative authorship and composing, especially writing and composing music and songs (songwriter, composer, writing music, song-writing), plus related terms for writers, playwrights, designers, and creators. Activation is strongest for music and song writing."
+},
+{
+"item": 77,
+"name_a": "The token right before a verdict is given, such as a yes/no, true/false, or correct/incorrect answer. It fires on \"Answer:\", \"Output:\", \"The answer is\", \"is\" before \"false/wrong\", code comments like \"//\" before true/false, and opening parentheses before \"False\". It anticipates an upcoming binary judgment.",
+"name_b": "Concepts of inequality, negation and logical comparison. It peaks on the \"!=\" (not-equal) operator and its \"not equal to\" definitions, and also fires on related tokens such as xor, ≠, symmetric difference, and true/false or yes/no answers. Weaker activations appear around answer statements (\"the answer is\"), table separators and conditional logic in code or math."
+},
+{
+"item": 78,
+"name_a": "A diffuse, position-based feature rather than a semantic one. It fires on structural transition tokens that end one unit or set up the next, most often in synthetic, math-heavy or code-like text. Typical triggers are sentence-final periods, closing parentheses and \"$.\" at the end of clauses or formulas. It also fires on \"=\", \":\" and spaces that come right before a number, answer or expression (\"Answer:\", \"Output:\", \"= \"). Occasional function words or verbs that bridge into the next value (\"means\", \"has\", \"with\") also activate it.",
+"name_b": "Tokens in math/code/reasoning text that come just before a number, especially a minus sign or negative marker (\"-\", \"负\") and the spaces, parentheses or table separators preceding numeric values in calculations and comparisons. The strongest response is on a leading minus at the start of a line giving a negative result."
+},
+{
+"item": 79,
+"name_a": "Tokens in code and command-line text that end an argument, string or path, mostly closing quotation marks (often fused with ')', ',' or ';'), closing brackets, file extensions like .zip/.yaml/.diff, and line-continuation whitespace. They fire where a literal or argument finishes and the next argument or code resumes.",
+"name_b": "Tokens right after a shell text-processing command name (sed, grep, awk, tr, head, curl, echo, perl) that open its arguments: option flags like -e, -E, -i, -n and the opening quote ' or \" (or '{) that starts an inline script or regex. Strongest on the flag plus quote that begins a sed substitution expression."
+},
+{
+"item": 80,
+"name_a": "Words in instructions to express, write, rewrite or convert something into a particular representation, mostly in math contexts. The strongest tokens are the prepositions and nouns naming the target form, as in \"in the form of\", \"in terms of\", \"into … form\" and \"written as\". Words like \"expression\", \"write\" and \"using\" also fire, and the target is often a notation or format such as standard, polar or scientific form.",
+"name_b": "The dash that begins a command-line option or test operator in shell code (e.g. -f, -z, -e, -ne, -rf), firing most strongly on file/string test flags right after \"if [\" and on \"!\" negation. It also responds weakly to other conditional-check prefixes in code such as os.path, .is/is_, IsObject and empty() inside if statements."
+},
+{
+"item": 81,
+"name_a": "A weak, diffuse pattern. It fires most strongly in repetitive, structured text such as matrices, HTML tables, coordinate lists, subscripts, author-affiliation numbers and phone numbers. The marked token usually repeats or continues an element seen earlier in the sequence (e.g. repeated matrix entries, \"1a\", \">C</td>\", \"blow\", \"(1,0)\"). Elsewhere, scattered ordinary content words get low activations.",
+"name_b": "The base quantity or denominator in a rate or ratio expression, typically a round number (100, 1,000, 10,000, 1) or unit word (dollar, thousand, kW) following \"per\", \"for every\", \"each\", or \"/\". Strongest on \"100\" in phrases like \"for every 100 people\" or \"per 100 grams\"."
+},
+{
+"item": 82,
+"name_a": "A weak, diffuse feature with no single trigger. It fires on continuation tokens inside multi-word titles, terms and set phrases, mostly the connecting words and word endings. The clearest cases are paper or article titles, including their URL-slug forms: \"of\", \"for\", \"in\", \"-of\", and suffixes like \"ulsion\", \"ICS\" and \"ATION\". It also fires on the final pieces of fixed compounds and collocations, such as Ku Klux \"Klan\", word \"processing\", risk \"factors\" and \"frictionless\". Occasional weak hits appear on code, math notation and non-English text.",
+"name_b": "A diffuse, mostly weak feature with no single clear trigger. It fires most strongly on connective and function words inside formal expository sentences, such as prepositions, \"was\", \"and\", commas and colons (e.g. \"Until the 19th century, geometry was the foundation of mathematics\"). It also often fires on tokens within phrases or titles that repeat text seen earlier in the context, such as duplicated headlines, captions and repeated report lines."
+},
+{
+"item": 83,
+"name_a": "Terms for natural selection and related evolutionary or shaping forces, strongest on \"selection\" and \"selecting for\", also firing on fitness, selective force, adaptation, competition, reinforcement and similar mechanism and pressure words that favor or filter outcomes.",
+"name_b": "The \"Override\" in Java's @Override annotation. It fires most strongly when the annotation sits inside an anonymous inner class created inline, such as new View.OnClickListener() { or new Runnable() {. It is weaker on ordinary class-level method overrides like toString or onCreate."
+},
+{
+"item": 84,
+"name_a": "The word \"revision\" (and variants like Revision, revisions, rev, _revision), especially as a document/version-control label such as wiki page headers \"Revision as of…\", revision history, or version numbers. Strongest when capitalized at line start in metadata.",
+"name_b": "Numeric digits that are results or specified quantities, firing most strongly on the number right after a minus sign (negative results of arithmetic, e.g. \"= -9\"), and also on counts in formatting constraints (\"must have 6 sections\", \"exactly 2 bullet points\"), with weak activity on surrounding instruction words."
+},
+{
+"item": 85,
+"name_a": "The verb \"divide(s)\" in the number-theory sense of divisibility (\"a divides b\"), strongest when it sits between two quantities in a math statement. Weak activation on related phrasing like \"divisible by\" and on scattered separators such as table pipes.",
+"name_b": "Weak, diffuse activations on function words, punctuation and clause boundaries in expository or scientific prose. The feature fires most strongly where the text introduces, names or defines a novel kind of thing, as in phrases like \"known as … a new type of … that is so new and special\", \"a new type of organism\" and \"such a 'liquid glass' … has not yet been explored\"."
+},
+{
+"item": 86,
+"name_a": "The method name in UI popup/notification calls, overwhelmingly Android's \"Toast.makeText\" (strongest), and more weakly similar calls such as \"JOptionPane.showMessageDialog\" and \"Snackbar.make\". These show a short user-facing message. Other activations, such as \"text\" in LaTeX \\textsuperscript, are faint and scattered.",
+"name_b": "The \".LENGTH\" token in Android Toast/Snackbar duration constants (Toast.LENGTH_SHORT/LONG, Snackbar.LENGTH_SHORT) in Java code; weakly also similar static constant prefixes like JOptionPane.PLAIN_MESSAGE."
+},
+{
+"item": 87,
+"name_a": "Terms for web or app routing and addressing, such as routing, route, navigation, url/uri, path, location, link, address, permalink, pages and controllers. They mostly appear in software, web-development and config contexts. Activation is strongest on \"routing\"/\"route\"/\"navigation\"; there are weak spillovers to other routes (road Route 60, iptables nat, Spanish 'ruta').",
+"name_b": "Names of people or organizations serving as the source or speaker of a quotation, statement, or claim, especially surnames in speech attributions (e.g. \"X said\", \"says X\", \"X added\"). The name and the following reporting verb are both marked, with the strongest activation on the final part of the name."
+},
+{
+"item": 88,
+"name_a": "A diffuse, weak feature tied to document structure in encyclopedic or wiki-style text. It fires most strongly on wiki boilerplate and lead-sentence phrasing (\"From The … Wiki⏎⏎The\", \"Not to be confused with\", \"also known as\", \"Jump to navigation / search\"). More commonly it fires weakly on transitions between sections: sentence-final periods followed by paragraph breaks, header and title boundaries, and the first token after a heading.",
+"name_b": "The conjunction \"or\" in the legal boilerplate phrase \"express(ed) or implied\", firing most strongly in Apache License headers (\"WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied\"). It fires more weakly in other warranty or endorsement disclaimers, and faintly on similar paired-adjective conjunctions (\"verbal and written\")."
+},
+{
+"item": 89,
+"name_a": "Words for generosity (generous, generously, generosity, the \"ously\" of \"Generously\"), strongest in sponsor/donor acknowledgments such as \"Hosting generously sponsored by\" or \"thanks to the generosity of\". There is weak, scattered firing on other tokens, such as list-indent spaces and adverbs.",
+"name_b": "The word \"Foundation\" as part of an organization's name (e.g., Apache Software, OEIS, Linux, Wikimedia, Python Software Foundation). It fires most strongly on \"Apache Software Foundation\" in license header boilerplate in source code, and weakly elsewhere, including the lowercase \"foundation\" in URLs and email domains."
+},
+{
+"item": 90,
+"name_a": "Anonymous function or lambda definitions in code, mainly the JavaScript \"function\" keyword used as an expression (assigned to a variable, passed as an argument, or wrapped in parentheses as an IIFE). It also fires on the following \"()\" and opening brace, on arrow \"=>\" syntax, and on analogues like lambda, λ, Perl sub/eval blocks and Lisp let. Activation is strongest for \"(function\" right after an opening parenthesis.",
+"name_b": "Tokens that begin a function definition in code, especially right after an assignment or key (\"=\" or \":\"). This covers the keyword \"function\" in JavaScript, Python \"lambda\", and the opening parenthesis of an arrow function. It fires most strongly on \"function\" used as an object property value or assigned expression. Weaker activations appear on method signatures such as \"(self\" and \"constructor\"."
+},
+{
+"item": 91,
+"name_a": "Final letters of abbreviations naming legal codes or technical standards, most often state administrative and regulatory codes cited before section numbers (RCW, KAR, NCAC, CCR, NYCRR, N.J.A.C., CSR) and the 'CS' in PKCS. These tokens complete the acronym just before a following number or identifier. A few weak cases are other tokens that come right before a number or code.",
+"name_b": "The first number or code segment in a hierarchical reference or identifier, such as section, rule, figure and chapter numbers (\"§ 5.360\", \"Section 2.3\", \"Fig. 15.8\"), classification codes (patent, JEL, MSC, OCIS), version numbers and phone or room codes. It typically falls on the leading part just before a period, slash or hyphen separator."
+},
+{
+"item": 92,
+"name_a": "Tokens in multiple-choice quiz/test text where the correct answer is about to be revealed: answer labels like \"Answer:\", \"the correct option is\", \"Option\" and \"【答案】\", the line break after the last listed choice, and the separators in answer keys (e.g. \"3.\", \"B)\", \"6~10\"), all of which come right before an answer letter or value.",
+"name_b": "Answer selections and option labels, i.e. letters, Roman numerals, numbers or Yes/No given as the chosen answer, especially in answer keys (\"1.D 2.C\", \"Answer: B.\", \"I, III and V\"). It is strongest on letter choices that follow a question number or an \"Answer:\" label. Weaker activation appears on other enumerated list items and indexed values."
+},
+{
+"item": 93,
+"name_a": "The word \"liability\"/\"liabilities\" in legal disclaimer boilerplate, especially after \"damages or other\" in software license or indemnity clauses. It fires weakly on unrelated tokens such as \"weight\" in \"weight loss\" and sentence punctuation.",
+"name_b": "The word \"in\" (often followed by \"any\") right after \"arising\"/\"related\"/\"or\" in legal liability disclaimers, as in \"arising in connection with\" or \"arising in any way\". It also fires weakly on a few random tokens that continue a phrase."
+},
+{
+"item": 94,
+"name_a": "Tokens immediately before the answer to a computed numeric result (GCD, min, common factor, output), such as '=', ':', 'is', or a trailing space, where the model is about to state the resulting value.",
+"name_b": "The word \"affair(s)\" (incl. French \"affaire\", \"Public/Home Affairs\", \"state of affairs\", love affair, all-day affair) is the strongest trigger. Weaker hits go to near-synonyms for general domains or concerns after a modifier, such as matters, issues, business, relations and things."
+},
+{
+"item": 95,
+"name_a": "Formatting and structural tokens in tables, code, and other structured text: row-ending pipes plus newlines, indentation and alignment whitespace, line breaks, and separators that mark cell, line, or column boundaries ahead of the next aligned item.",
+"name_b": "Vertical bar / pipe characters (\"|\", and similar box-drawing verticals like ⎢ or ║) used as separators or borders in tables, ASCII diagrams, comment boxes, matrices, and website navigation/metadata strips. Activation is strongest inside ASCII-art diagrams and grids with many aligned bars, and weaker for single inline separators."
+},
+{
+"item": 96,
+"name_a": "Fires on the noun that names the authority or governing document in legal, licensing and copyright boilerplate. It peaks on \"License\" in the Apache phrase \"in compliance with the License\". It is also strong on \"author\", \"publisher\" and \"terms\" in phrases like \"without the consent of the author\" and \"consult the publisher's version\". It fires weakly on other words in similar permission or usage text.",
+"name_b": "Weak, diffuse feature centered on word pieces and words tied to promises and binding commitments: strongest on the \"issory\" in \"promissory\", and also firing on \"promise\"/\"promised\", \"covenants\", \"note\" in the debt sense, \"obligor\", and \"Projected\". It also fires on the fragments \"ord\" in \"primordium\" and \"ory\" in \"Promontory\", apparently because they resemble the spelling of \"prom-\" words. Scattered low activations elsewhere, on newlines after boilerplate, parentheses and similar tokens, look like noise."
+},
+{
+"item": 97,
+"name_a": "Runs of whitespace (spaces or tabs) used for indentation or alignment, especially at the beginning of a line after a newline in formatted text, code, addresses, or documents. There is weaker activation on a few scattered tokens in boilerplate or structured text, such as \"should\" in \"Correspondence should be addressed\".",
+"name_b": "The subword token \"vik\" inside proper names, mostly Scandinavian/Nordic surnames, places and companies (Sandvik, Jorvik, Jarvik, Dalvik, Ludvik). Strongest on \"Dalvik\"."
+},
+{
+"item": 98,
+"name_a": "The noun that follows \"Supplementary/Supplemental/Supporting/Additional\" in scientific-paper boilerplate, e.g. \"information\", \"material\", \"data\" or \"file\". It is strongest in \"Supplementary data are available at…\" notices and weak on scattered unrelated tokens.",
+"name_b": "The noun completing a 'supplementary/supplemental/supporting ___' phrase in academic papers, such as material, information, file or materials, often as a section heading. It peaks on 'Material' right after 'Supplemental/Supplementary', and occasionally fires weakly on similar appended-section headings like Appendices or Related Files."
+},
+{
+"item": 99,
+"name_a": "The offset and blur length values (e.g. \"2px 8px\", \"0 10px\") in CSS box-shadow and text-shadow declarations, peaking on the space between values and on the final \"px\". It responds weakly to other multi-value numeric arguments such as padding/margin shorthand or comma-separated function arguments.",
+"name_b": "Tokens that repeat or continue a pattern just established in the context: duplicated words or phrases (\"cries and cries\", \"unite, unite\", \"many, many\", \"oh, oh\", \"end goal after the end goal\"), runs of the same symbol or character (\"- - - -\", dot leaders, \"9999\", \"WOOOOO\"), and parallel list or sequence items (page numbers 1 2 3, \"45µl, 55µl\", \"H + H\", \"\\cdot\"). Activation is strongest on clear repeats of a preceding token."
+},
+{
+"item": 100,
+"name_a": "City names and the state/country parts that follow them in place references. It fires hardest in formal postal addresses and academic affiliation lines, on the city, its commas, the state or province abbreviation and the postal-code start, e.g. 'Santa Rosa, CA 954' or 'Columbia, Missouri'. It is weaker on cities mentioned inside ordinary sentences.",
+"name_b": "Location and institutional affiliation context: tokens in phrases giving where someone or something is based, such as prepositions (in, at, of, from) and names of places, universities, institutes, departments, or organizations, especially right after a person's name or role (e.g., 'professor at UC Davis', 'in Toms River', 'in the city')."
+},
+{
+"item": 101,
+"name_a": "The word \"enterprise(s)\" (and cross-lingual equivalents like 企业, empres-), meaning a business or organization. It is strongest in the corporate IT/software sense of large organizations (enterprise applications, enterprise IT, Enterprise plan) and weaker for general business ventures, social enterprises, or company names.",
+"name_b": "Promotional, corporate or marketing-style language about benefits and value, such as verbs like help, enhance, deliver, streamline, reduce and drive, and phrases like achieve business goals, productivity, performance, customer satisfaction or reduced costs. Activation is strongest in value-proposition phrases describing what a product, service or technology enables users to achieve."
+},
+{
+"item": 102,
+"name_a": "Line breaks (mostly double newlines, sometimes fused with ')', '/', or '>' as in '<thead>⏎') that separate fields in boilerplate metadata of repository records and paper cover pages, e.g. after a URL, DOI, handle, or 'Link back to DTU Orbit' and just before the next label such as 'Citation (APA):', 'Final published version:' or 'Rights / License:'. Weaker hits fall on similar label words like 'Full'.",
+"name_b": "Multiplication and product concepts. It fires most strongly on \"product of\", on \"multiply… together\", and on × signs or equals signs in products such as \"1 × 2 × 3 =\" and \"Z1 Z3 = Z2 Z4\". It fires more weakly on related operations and terms like ratio, divided by, *= and Cartesian product, and faintly on unrelated tokens."
+},
+{
+"item": 103,
+"name_a": "Stray whitespace tokens (a lone space, or spaces plus a newline) at line or paragraph starts after line breaks, marking a section or content shift. Whitespace-only lines in Markdown and code fire most strongly.",
+"name_b": "Code handling web requests and responses, especially XMLHttpRequest, fetch and requests. It fires most on property accesses and checks of the request state: .onload, .open, .status, status_code, 'state change', and the 'if (' that checks the response. There is weak, diffuse activation on other attribute accesses (.length, .type) and on connective words in technical prose."
+},
+{
+"item": 104,
+"name_a": "Stray whitespace tokens (a lone space, or spaces plus a newline) at line or paragraph starts after line breaks, marking a section or content shift. Whitespace-only lines in Markdown and code fire most strongly.",
+"name_b": "Leading whitespace or indentation tokens at the start of a line, right after a newline, usually preceding indented content such as code lines, table-of-contents subsections (e.g. \"2.1\"), list items or continuation lines. Strongest for indented subsection entries in tables of contents and nested code. Occasionally fires on other line-initial markers (bullets, dashes, quotes) or trailing spaces before a newline."
+},
+{
+"item": 105,
+"name_a": "Statements describing what will happen as a promise, reassurance or expected consequence (e.g. \"then we will display it\", \"assured that improved wages would\", \"all would be well\", \"an attempt will be remade\"). Activation is strongest on future and modal constructions (will, 'll, would, be) and the clause they introduce, often after a condition or a verb of assurance; most other tokens fire only weakly.",
+"name_b": "Tokens at the start of JavaScript DOM/jQuery statements, mainly the jQuery selector call \"$(\" (also \"$('#\", \"$.\", \"jQuery\"), plus global browser objects like \"document\"/\"window\" and methods such as \".getElementById\"/\".querySelector\". Activation is strongest on \"$(\" at the beginning of a line, as in $(document).ready or $(function)."
+},
+{
+"item": 106,
+"name_a": "Noun phrases naming the object or subject area of study or understanding, mostly in scientific and academic prose. They typically follow verbs or nouns like investigate, understand, insight into, shed light on, probe of, or knowledge of (e.g. 'the functions of phytohormones in…', 'an early stage of primate evolution'). Activation spans the whole object phrase, often including its internal 'of'/'in' links.",
+"name_b": "The \"#endif\" preprocessor directive, strongest when it closes a header include guard at the very end of a C/C++ header file. Activation is weaker for mid-file #endif closing #ifdef/#else blocks and for template \"endif\" keywords in PHP or Django. Scattered weak hits on ordinary prose tokens are noise."
+},
+{
+"item": 107,
+"name_a": "A diffuse, low-level feature that activates across long runs of ordinary content tokens in factual prose rather than on any specific word. It is strongest in news-style reporting, such as statements of who announced, found or did something, attributions like 'a professor of… at… College', and statistics like '98 live births'. It fires weakly and sporadically on nouns and function words in general expository text, and barely at all in code or metadata.",
+"name_b": "Diffuse, low-strength activation on the content of embedded verb-phrase complements that spell out an intended action, purpose or effect. These tokens typically follow a setup word such as \"to\", \"of\", \"through\", \"efforts\", \"willingness\" or \"help\". Examples include \"to provide users with\", \"efforts to develop a field-based test\", \"to figure out how to make\" and \"how climate change will affect sea level\". The strongest activations fall on the verbs and objects in the middle of these purpose or goal clauses."
+},
+{
+"item": 108,
+"name_a": "Weak, diffuse activation on economic and resource-flow language: supply, demand, capacity, production and quantity. It peaks on words like \"supply\", \"capacity\" and \"production\", on shortages, and on phrases such as \"exceed supply\", \"as much as possible\" and \"produces more than\". It also fires lightly on surrounding context about acquiring, distributing or scaling up amounts of goods, energy or resources.",
+"name_b": "Tokens at structural breaks in web text, usually right after a paragraph break, where the main prose stops and boilerplate or navigation takes over. Typical cases are section headers, labels with colons, calls to action and link text. Examples include \"Click here to…\", \"Related Stories\", \"READ:\", \"Note:\", \"Contact Us\", \"Spoiler alert\" and \"Continued on page\". Activation is strongest on promotional or cross-reference phrases that redirect the reader."
+},
+{
+"item": 109,
+"name_a": "Methods-section language in scientific papers and abstracts. It fires on the transition into describing study design, participants, materials and procedures, such as \"Methods\", \"Patients were investigated by\", \"N = 121\", \"was assessed via\", \"were available\", and \"is obtained by\". It also catches sentence boundaries and section headers (INTRODUCTION, METHODS, Materials and Methods) that lead into these descriptions. Activation is strongest at the start of methodological statements about subjects, data sources and procedures.",
+"name_b": "Sentence-ending punctuation (period, often fused with a paragraph break, or a closing parenthesis or bracket) at the end of a paragraph or section. It fires most strongly in scientific and methods-style writing, where the next text starts a new section, heading or step, such as Results or a methods subheading."
+},
+{
+"item": 110,
+"name_a": "The \"McG\" prefix of Scottish/Irish surnames (McGee, McGraw, McGowan, McGinn, etc.), firing on the \" McG\" token or on the \"G\" right after \"Mc\"; weak activation on similar Mc-/MG tokens.",
+"name_b": "Discourse transitions right after a statement ends, especially after an enumerated list (\"A, B and C\"). Activation falls on the closing period or line break and the opening words of the next sentence or clause, such as \"The\", \"It\", \"This\", \"For example,\" or \"Out of these three\". These openers often refer back to or elaborate on what came before. Activation is weak and diffuse."
+},
+{
+"item": 111,
+"name_a": "Volume numbers in bibliographic or serial citations: the word \"volume\"/\"Vol.\" and especially the number (plus surrounding period, space, comma) that follows it. Weaker activation for similar part, season, issue, edition, or book numbers in a sequence, and for the word \"volume\" meaning a book.",
+"name_b": "The token right before a year, mostly the space, \"(\", or \":\" separating the year from preceding text, plus sometimes the year's first digits (e.g. \"199\", \"201\"). It is strongest in citations and publication data such as author/publisher lists and dates."
+},
+{
+"item": 112,
+"name_a": "Separators between consecutive entries in academic citation lists, chiefly the semicolon after a year in author–year in-text citations (e.g. \"Smith et al., 2005; Jones, 2007\"), where activation is strongest. Weaker activation falls on commas, \"and\" or \"&\" between cited works or authors, and occasionally on words leading into a cited author name.",
+"name_b": "In academic citations, the space, opening parenthesis, or bracket right after an author name (e.g. \"et al.,\" or \"Smith and Jones\") together with the first digits of the publication year that follows (\"200\", \"199\", \"201\"). In short, the point where an author name gives way to the citation year. Activation is highest in lists of several references."
+},
+{
+"item": 113,
+"name_a": "The word \"histone\", with activation peaking on the \"one\"/\"ones\" piece that completes it (\"hist\" weaker). Histone names such as H3, H4, H2B and H2AX, and nucleosomes, also activate moderately in chromatin and epigenetics contexts. Other protein words fire only weakly.",
+"name_b": "Epigenetic and post-translational modification terms from molecular biology, especially histone/DNA chemical marks. Activation is strongest on \"modifications\" after \"histone\" and on the parts of \"acetylation\" and \"methylation\". It also fires on histone residue labels like the 3 and 4 in H3 and H4 and K4. Weaker activations appear on related chromatin and enzyme terms such as deubiquitination, corepressor, ChIP-seq, remodeling and neddylation."
+},
+{
+"item": 114,
+"name_a": "The word \"In\" (sometimes with a following \"the\"/\"a\") at the start of a sentence or paragraph, opening an introductory prepositional or transitional phrase such as \"In fact\", \"In this case\", \"In a paper\". It activates most strongly right after a period or line break. Lowercase mid-sentence \"in\" and other sentence openers like \"After\" activate only weakly.",
+"name_b": "Word pieces in compound scientific terms for physical effects that couple one quantity or stimulus to another, such as magneto-, thermo-electric, piezo-resistive, photo-refractive, electro-optic, and voltage-operated. Typically the connecting or middle fragment (e.g. \"eto\", \"oe\", \"ores\") fires, along with property words like resistivity, resistance and coefficient."
+},
+{
+"item": 115,
+"name_a": "City and town names (and other place names), with activation strongest on the final token completing the name (e.g. 'sburgh', 'sha', 'Angeles') and sometimes the comma after it in datelines or addresses. Weak firing on other proper nouns or generic place words like 'city'.",
+"name_b": "Word-final suffix tokens (\"ic\", \"onal\", \"agonal\", \"edral\") that complete crystal-system names (monoclinic, triclinic, orthorhombic, tetragonal, hexagonal, rhombohedral) in crystallography and materials-science text, firing most strongly after \"crystallizes in\". It fires weakly on the related word \"group\" in \"space group\" and only faintly on scattered unrelated tokens such as day numbers in \"Submitted on\" dates."
+},
+{
+"item": 116,
+"name_a": "The \"Kle\"/\"Kl\" letter sequence, mostly in surnames like Klein, Kleijn, Kline, Kleinke and other proper names (Kleene, Klebsiella, Kleavor). It fires on the \" Kle\"/\" Klein\" token or on the suffix that follows a split-off K (\"lein\", \"line\", \"le\"), and is strongest in author citations and personal names.",
+"name_b": "Punctuation, newlines, and connectors that come right after a person's name (usually an author name or initial) in bylines, citations, and reference lists, marking where the name ends and the next element begins: commas, periods after initials, '.,', ' (' before a year, ' and', 'et al', semicolons, and line breaks before an affiliation or title. Activation is strongest after abbreviated initials in reference entries."
+},
+{
+"item": 117,
+"name_a": "Hyphen/minus/dash characters and tokens naming them, usually as literal symbols in code strings, math, identifiers or separators (e.g. '-', \"--\", -*-, minus sign). The strongest hits are words for such punctuation (\"hyphens\", \"hyphenated\", \"underscores\"), with weaker hits on related naming conventions like snake_case and camelCase.",
+"name_b": "Subword suffix pieces completing technical names inside code, URLs, and config filenames, most strongly \"-ci\" in CI service names such as travis-ci and gitlab-ci, and weakly \"ypi\" in pypi. Isolated filler tokens in technical text activate only faintly."
+},
+{
+"item": 118,
+"name_a": "The equals sign plus opening quote (=\", =', =\\\") right after a \"style\" attribute in HTML/JS code, where inline CSS declarations are about to begin. Weaker on similar spots that open CSS values (.style, .css(', style.color = \").",
+"name_b": "CSS property names and their colons inside style declarations, especially inline HTML style=\"...\" attributes (width, height, display, color, font-size, background-color, border, position). Values and units such as px get weaker activation, and the first property right after style=\" activates most strongly. Similar styling or attribute keywords in other code (color, align, height) get weak activation."
+},
+{
+"item": 119,
+"name_a": "Mainly the \"al\" in \"et al.\" within academic author-year citations (strongest inside parenthetical references); weak activations on other predictable continuation tokens in structured/formatted text such as LaTeX backslashes, HTML table tags, section numbers in tables of contents, and abbreviation periods.",
+"name_b": "The \"Answer\" label (and its colon) placed after the lettered options of a multiple-choice question, right before the correct letter is given. It also fires more weakly on \"Question\" labels and on scattered tokens in synthetic, quiz-like or explanatory text."
+},
+{
+"item": 120,
+"name_a": "Strongest on the hyphen or comma joining paired litigant role labels in legal case captions (e.g. 'Defendant-Appellant', 'Contemnor-Appellant', 'Defendant, Appellant'). It fires weakly on connective tokens in formulaic or boilerplate text, where the next word is highly predictable. Examples include the '?' line break after 'Still have questions', the 'weight' in 'weight loss', 'Do not' and 'Member, IEEE'.",
+"name_b": "Names of academic and research institutional units in author affiliations and bios, especially subunits like \"Department of\", \"School of\", \"Laboratory\", \"Institute\" or \"Center\" (including non-English forms), plus the field names and \"University\" that follow. Activation is highest on the unit word itself, such as \"Department\" or \"School\", and on the following \"of\", particularly in paper headers listing affiliations."
+},
+{
+"item": 121,
+"name_a": "Prepositions and prepositional phrases that introduce a topic, meaning \"concerning/with regard to\" (e.g., \"as to\", \"with respect to\", \"in regard to\", \"in relation to\", \"about\", \"regarding\", \"of\"). The strongest activations fall on the topic-introducing word itself, especially \"to\" in \"as to\" and \"respect\"/\"relation\".",
+"name_b": "The definite article \"the\"/\"The\", mostly right after a verb or preposition (e.g. \"of the\", \"in the\", \"request the\") and often in formal, legal, academic or instructional prose. It also fires on sentence-initial \"The\" starting a new paragraph, such as \"The following...\". There are rare weak hits on non-article tokens."
+},
+{
+"item": 122,
+"name_a": "Python traceback headers. Activation peaks on \"back\" in \"Traceback\", on the closing \"):\" of \"(most recent call last):\", and on the following indented \"File\" and its opening quote. Weak activation appears on other code/error contexts such as comment markers, imports and \"Trace\" in stack trace.",
+"name_b": "Words about creative authorship and composing, especially writing and composing music and songs (songwriter, composer, writing music, song-writing), plus related terms for writers, playwrights, designers, and creators. Activation is strongest for music and song writing."
+},
+{
+"item": 123,
+"name_a": "Shell output redirection operators (>, >>, >&2) that send a command's output into a file or stream, usually right after an echo/cat string. Weaker hits are other output-directing constructs such as Python's print(..., file=), fputs(..., stdout), pipes, and file-creation commands like touch.",
+"name_b": "Shell I/O redirection syntax, chiefly the '>' operator (also '<', '>>', '&>', '2>&1') and redirect targets such as '/dev/null'. The strongest activations are on '>' or '>/' directly before /dev/null. Weaker activations fall on related command-line tokens like dd's if=/of=, file descriptor numbers, and output-file arguments."
+},
+{
+"item": 124,
+"name_a": "Long runs of dot leaders (and similar filler like underscores or ellipses) that sit between an entry title and its page number, as in tables of contents or form fields. Activation is strongest on the first leader chunk after the title and drops on later chunks. Weaker activation appears on other separators between a label and its value, such as a <td> cell before a page number or a blank line after \"Leave a Reply\".",
+"name_b": "Dot leaders (runs of periods/ellipses, sometimes spaces or table cell tags) that fill the gap between an entry title and its page number in tables of contents, indexes and similar listings. Activation is strongest on the final dot tokens just before the page number."
+},
+{
+"item": 125,
+"name_a": "The \".go\" token appended to an identifier, firing hardest on Go source filenames (e.g. parser.go, app.go) and also on \".go\" fragments inside URLs and domains (google, gov). Weaker activation on other file extensions like \".hs\" and on stray dot or symbol tokens in code.",
+"name_b": "Tokens in formal document metadata and front-matter boilerplate, such as author bylines and affiliations, addresses, submission and acceptance dates, \"Key words\" and \"Corresponding author\" labels, DOIs and ID numbers, and case or bill numbers. Often the token is the line break that separates a header field from the following text, or the punctuation within these reference strings. A weaker, similar response appears for news datelines and name and score formatting."
+},
+{
+"item": 126,
+"name_a": "Tokens inside institutional affiliation and address strings, typically from academic paper author headers. The strongest activations fall on the commas, connectors (\"of\", \"and\") and words like \"University\", \"Department\" and \"Centre\" that join nested units (lab, department, university, city). Weaker activation appears on similar organization-name text in prose.",
+"name_b": "Tokens that complete or continue the names of institutions and organizations, mostly research bodies, universities, academies, labs and government agencies (e.g. 'Academy of Sciences', 'CNRS', 'NASA', 'Fraunhofer Institute'). They typically appear in author affiliations, addresses and URLs. Activation is strongest on the later parts of these multi-token names and their acronyms."
+},
+{
+"item": 127,
+"name_a": "Expository news-style prose. Activation peaks on the core clause of a sentence that introduces who did what, most often at the start of a new sentence or paragraph. Typical spans are the subject (a named person, organization or \"The former couple\"), the main verb, and the source-attribution phrasing that follows. Examples include \"The attorney for … says in court papers\", \"According to a report produced by\", \"announced the split with\" and \"trimmed its … ownership in\". Function words linking these elements (to, the, in, of, commas) are also marked, while scattered weak activations appear elsewhere.",
+"name_b": "No clear semantic theme; the feature fires on tokens that sit inside a fixed multi-token unit and are completed by what follows. These include subword pieces of identifiers, names and abbreviations (e.g. _FORCE in a constant name, the 'al' in 'Foal Eagle', '.g' in 'e.g.', 'sunshine' in a username). It also fires on whitespace indentation runs and on words in templated or spammy phrases."
+},
+{
+"item": 128,
+"name_a": "The word \"vein\" and the related root \"ven-\" (venous, intravenous, venepuncture). Activation is strongest for anatomical blood vessels, especially \"venous\", and weaker for figurative uses like \"in this vein\" or \"in your veins\". It also fires weakly on other vascular and lymphatic terms (lymphatic, capillary, portal, phlebo-).",
+"name_b": "Middle-to-late terms of a descending sequence, mainly the low exponents (especially ^2, also ^3) and linear 'x' terms in polynomials written in decreasing-degree order, with strongest activation on the squared term. Weaker hits on other countdowns (5×4×3, 23…11, five/four/three) and indented rows of ASCII patterns that step down line by line."
+},
+{
+"item": 129,
+"name_a": "Mostly weak, diffuse activation on technical and code text. It is strongest on CPU/assembly instruction mnemonics such as LD BC, ADD and NOP. Weaker activations hit command names, keywords and identifier fragments in code, shell commands and technical docs (e.g. rm, ssh, let, Dim, GET).",
+"name_b": "HTML form markup, strongest on the opening \"<\" of a new tag and on tag/attribute names like label, div and class=\"form-group\"/\"control-label\" in nested form-group/label/input structures. Weaker, scattered activations fall on structural or transitional tokens in technical prose (colons before a breakdown, \"for\", \"(\", \"from\")."
+},
+{
+"item": 130,
+"name_a": "Mid-path segments inside highly predictable technical identifiers, chiefly \".bind\" in Java/Spring package imports (org.springframework.web.bind.annotation, javax.xml.bind) and socket .bind calls. Also matches \"/latest\" in AWS documentation URLs, header names like <iomanip>, and acronym fragments (HTLV, AFJROTC). Weak activity on whitespace and newlines in templated bid listings and on ordinary function words.",
+"name_b": "Fires most strongly on the \".bind\" segment of Java import paths (org.springframework.web.bind, javax.xml.bind) and on \".HttpServlet\" in javax.servlet.http, i.e. a package segment within repeated import statements. Weaker activations occur on the optional-plural marker \"(s\" in form-style labels (Genre(s), Subject(s), Programme(s)) and on separators in repetitive boilerplate lists (semicolons in OEIS link lists, list dashes)."
+},
+{
+"item": 131,
+"name_a": "A diffuse, position-based feature with no single lexical trigger. It fires on tokens that sit just before, or inside, a specific identifying detail. Typical cases are separators and determiners leading into a name, institution, value or date: \" -\" before an author's affiliation or a location, \"the\" after \"funded by\", table <td> cells, \"=\" before a number, and year or date digits. It also fires on parts of proper names or codes.",
+"name_b": "A diffuse feature that fires on function words and punctuation at clause boundaries where a statement continues into a qualifying or elaborating segment. Typical triggers are prepositions (of, to, at, per), conditionals (if), an opening parenthesis, \"e.g.,\" or a colon or newline. It shows up mostly in technical writing and code comments (\"as per input convention\", \"Use actual weighting if known\", \"(e.g., ...\"), but also on stray tokens in noisy or garbled text."
+},
+{
+"item": 132,
+"name_a": "Tokens that end the fixed boilerplate or UI text of scraped web pages, such as \"Jump to navigation, search\", review/bid counts on freelance sites, \"Need Help\", \"accept rate: %\", \"Google Scholar\", timestamps, HAL IDs and \".com\" in emails. They typically come right before a line break and the start of the page's actual content.",
+"name_b": "The word \"reply\"/\"replies\" (often split into subword pieces like \"ply\"/\"plies\") in web forum, blog, and mailing-list boilerplate UI text. Activation is strongest by far for \"ply\" in Blogger \"noreply@blogger.com\" email addresses, and weak for similar interface labels (improve this answer, edit, talk, CrossRef)."
+},
+{
+"item": 133,
+"name_a": "Tokens inside a repeated identifier that the model can predict by copying earlier context, most strongly the first subword pieces of custom package or namespace names in Java/C#/PHP import statements (e.g. com.<<.g>>em, se.<<.f>>idde, org.<<.d>>avidlin). Weaker activations fall on other repeated code identifiers, indentation, and recurring boilerplate or list patterns.",
+"name_b": "A separator plus the first fragment of an unusual or custom name that gets broken into pieces, such as a dot plus the opening letters of an uncommon Java package segment after \"import com\"/\"org\" (e.g. \".plan\", \".y\", \".m\"), or a slash or dot plus the start of a URL path or domain. It also fires weakly on the backslash of \\textsuperscript in affiliation lists."
+},
+{
+"item": 134,
+"name_a": "Source attribution in news-style text: marks the cited person or organization behind a claim, firing most strongly on phrases like \"according to [the police / the Ministry of Defence / a spokesman]\" and \"\\\", she said\". It also activates more weakly on related cues such as agency and institution names (UN agency, ICE, National Ocean Service), job titles (secretary-general, spokesman), reporting verbs (say, said), and citation brackets or parentheses.",
+"name_b": "Spans of news-report prose, most strongly local incident and disaster reporting (accidents, fires, shootings, storm damage, attacks), where officials or investigators describe what happened and what was affected. Activation peaks on the narrative clause right after a paragraph break, such as \"Investigators say the accident involved a truck and two cars\". Elsewhere it gives weak, diffuse activation on ordinary factual reporting."
+},
+{
+"item": 135,
+"name_a": "CSS and style-sheet code, chiefly property names (margin, padding, border, font-size, background, color) along with their colons, values and semicolons inside selector braces. The strongest activations are on layout and spacing properties like margin and border. It fires weakly on similar layout or formatting terms in prose and other code, such as size, margins, font and time listings.",
+"name_b": "Function words and punctuation that come right after a topic's subject or title is introduced, usually at the start of a definition or description (\"X is a…\", \"X refers to…\", \"X has…\", a comma or period closing the first descriptive clause). It fires on the verbs, relative pronouns, commas and periods that build an expository opening sentence about a named entity or term, often one just given as a heading."
+},
+{
+"item": 136,
+"name_a": "Fires most strongly on the \".bind\" segment of Java import paths (org.springframework.web.bind, javax.xml.bind) and on \".HttpServlet\" in javax.servlet.http, i.e. a package segment within repeated import statements. Weaker activations occur on the optional-plural marker \"(s\" in form-style labels (Genre(s), Subject(s), Programme(s)) and on separators in repetitive boilerplate lists (semicolons in OEIS link lists, list dashes).",
+"name_b": "Mid-path segments inside highly predictable technical identifiers, chiefly \".bind\" in Java/Spring package imports (org.springframework.web.bind.annotation, javax.xml.bind) and socket .bind calls. Also matches \"/latest\" in AWS documentation URLs, header names like <iomanip>, and acronym fragments (HTLV, AFJROTC). Weak activity on whitespace and newlines in templated bid listings and on ordinary function words."
+},
+{
+"item": 137,
+"name_a": "Weak, diffuse activation on tokens inside repetitive, list-like or unstructured text that isn't ordinary prose: number and symbol sequences, code and URL fragments, keyword-stuffed tags, garbled spaced-out letters, line breaks in lists or verse, and math notation. It is strongest on repeated or sequential patterns such as \"b b b 1 2 3\", strings of underscores and dots, and runs of numbers.",
+"name_b": "A diffuse, low-specificity feature that fires mostly on unpredictable tokens in noisy or garbled text: OCR junk, mojibake, random alphanumeric codes and serial numbers, unit letters stuck to numbers, odd single characters or scripts, and gene or sequence strings. It also fires weakly on ordinary punctuation and line breaks in plain prose, which suggests it tracks high-surprise or out-of-distribution tokens rather than any one meaning."
+},
+{
+"item": 138,
+"name_a": "Separator tokens (spaces, newlines, double newlines, \">\\n\" in HTML tables, pipes, dashes) placed between items of a repetitive, predictable sequence, such as numbered pagination (1 2 3 4), number or year runs, alphabet indexes, figure labels, answer options, list entries, and table rows/cells. Activation is strongest deep inside long runs of structured, enumerated content.",
+"name_b": "Items in the middle of an enumerated or sequential list, typically after the first one or two. These are often successive numbers, letters, ordinals, months or coordinate components (y, z). Activation is strongest deep in predictable progressions like 1, 2, 3, 4 or A B C D…, and weaker for loose comma lists of related nouns such as countries, games or chemical classes."
+},
+{
+"item": 139,
+"name_a": "Leading whitespace or indentation tokens at the start of a line, right after a newline, usually preceding indented content such as code lines, table-of-contents subsections (e.g. \"2.1\"), list items or continuation lines. Strongest for indented subsection entries in tables of contents and nested code. Occasionally fires on other line-initial markers (bullets, dashes, quotes) or trailing spaces before a newline.",
+"name_b": "The first token of a direct object or argument: a determiner, opening quote or parenthesis, or the first piece of a multi-token name or identifier. It typically follows a verb, preposition, or function call (e.g. print(lst, open TEST, into conf, the + noun). Activation is weak and diffuse, and is somewhat stronger for code identifiers and function arguments."
+},
+{
+"item": 140,
+"name_a": "The word \"cut\" and its inflections (cuts, cutting, Cut) in any sense: literal slicing, reducing costs or amounts, phrasal verbs (cut off/down/back), idioms (cutting-edge, cut corners), and even as part of names or compounds.",
+"name_b": "The final digit of a year in a full date, typically a dateline or header at the top of a blog post, article or archive page (e.g. \"Tuesday, May 8, 201[2]\"). It fires most strongly when the date begins with a weekday name. There is weak activation on spaces after titles."
+},
+{
+"item": 141,
+"name_a": "Separators between author names in academic author lists and citations. These are usually commas, but also semicolons, \"and\", \"et\" (as in \"et al.\"), and punctuation fused with a closing bracket or period (\"},\", \".;\", \"),\", \".,\"). Activation is strongest for commas that follow an affiliation superscript in paper bylines.",
+"name_b": "Tokens within lists of person names, mostly author bylines of academic papers and citations. It fires on first names, initials, surname fragments and the separating commas or affiliation markers, and is strongest in the middle of long comma-separated author lists."
+},
+{
+"item": 142,
+"name_a": "Highly predictable tokens inside fixed, boilerplate sequences, mostly in code: \"ServletException\" after \"throws\" in Java servlet methods, \".openapi\" in package paths like com.intellij.openapi, and \".protocol\" in location.protocol or web3j.protocol. It also fires on \"eiusmod\" in Lorem ipsum placeholder text. Activation is strongest where the token is nearly certain from context.",
+"name_b": "A single long whitespace token (a run of many spaces or tabs) used as padding or indentation. It shows up in code, tables, logs, ASCII art and garbled or noisy text, often right after a newline or a word and before more whitespace or content."
+},
+{
+"item": 143,
+"name_a": "Sentence-ending punctuation (periods, often merged with paragraph breaks or closing parentheses) in formal academic, scientific, or legal expository prose, marking a boundary just before a new sentence or section. Discourse connectives that open the following sentence (e.g. \"That is\", \"however\", \"but\") and the first token after the break sometimes activate weakly.",
+"name_b": "Structural and formatting punctuation in document scaffolding. It fires most on periods in abbreviations and section numbers (\"Fig.\", \"Jan.\", \"1. Introduction\", \"12.1.1\") and on commas between citation numbers (\"[7, 8]\", \"{1,2}\"). It also fires on bullet-list leading spaces, section headers (\"Abstract\", \"INTRODUCTION\", \"Index Terms\"), superscript markup and boilerplate like \"advertisement\" or \"navigation\"."
+},
+{
+"item": 144,
+"name_a": "Strongest on the \"(name\" token, and to a lesser degree the following \"=\", in ORM column annotations in code (@Column(name=…), @JoinColumn(name =…)). Otherwise it gives only faint, diffuse activation. The most frequent weak cases are the indentation space before bullet (•) or numbered list items and line breaks inside lists. It also fires faintly on scattered words such as \"Casinos\" and \"DirectX\".",
+"name_b": "Street-level postal address components, mostly in academic affiliation or contact blocks. The strongest signal is on \"PO Box\"/\"P.O. Box\" and its number; street numbers, street-type words (Boulevard, place de, Drive, Bank) and nearby postcode digits, commas and hyphens also fire. Weak activations appear on fragments of place names and other non-address text."
+},
+{
+"item": 145,
+"name_a": "Restrictive or exclusive focus words, mainly \"only\" (strongest when \"Only\" starts a sentence, e.g. \"Only those\" or \"Only now\"). They also fire on the determiner or quantifier that follows, such as \"only the\" or \"only a few\". Activation is weaker on related limiting or exceptive words like \"except\", \"unless\", \"not until\", \"even\" and \"anything but\".",
+"name_b": "A token that repeats one appearing just before it in a highly repetitive sequence (lists, loops, degenerate or glitchy text). It is strongest on placeholder, empty or negative values such as null, NaN, None, False, Empty, wrong and error."
+},
+{
+"item": 146,
+"name_a": "Tokens that come right before a web address or file reference, mostly the URL prefix itself (\"http\", \"://\", \"www\", \"<\"), especially after phrases like \"at\", \"see\" or \"online at\" in license and contact boilerplate. It also fires weakly on punctuation or connectives that precede a new item.",
+"name_b": "Boundaries between clauses, sentences or code blocks: sentence-ending periods, closing brackets/semicolons, newlines and markdown fences, plus the first word or two of the next sentence or clause (The, This, If you, When you, For). Activation is highest where a statement or code block ends and a new one begins."
+},
+{
+"item": 147,
+"name_a": "Subject-field words or word fragments, often abbreviated or split into subword tokens, within the names of academic journals, scientific societies, conferences and research departments in citations and affiliations (e.g. \"Immun\", \"Micro\", \"Astr\", \"Endocrin\"), especially the discipline term that follows \"Journal of\", \"Frontiers in\" or \"and\".",
+"name_b": "Separators and lead-ins inside lists of causes, conditions, diseases or factors. Fires on commas, 'and'/'or', 'such as', 'including', 'caused by' and 'signs of', and sometimes on the first word of the next item, at points where another item is about to follow. The lists are mostly medical, causal or diagnostic (e.g., 'caused by X, Y, or Z'; 'such as A, B and C')."
+},
+{
+"item": 148,
+"name_a": "Organization or institution names, often abbreviated, used as domain names in email addresses and URLs. The strongest cases are the part right after \"@\" in academic or research emails (kit, unipr, u-psud, tudelft, mit, inpe), with weaker activation on website domain parts and institution acronyms in credits.",
+"name_b": "Subword tokens that begin or form part of a multi-token word, where the next token completes it (e.g. \"space\" + \"walk\", \"vapor\" + \"izers\"). They often appear at the start of a sentence. The pattern is noisy: one case is a preposition leading into a hyphenated compound."
+},
+{
+"item": 149,
+"name_a": "Function words, chiefly \"of\", directly following a plural noun and introducing its complement, as in \"warranties of\", \"Schools of\", \"degrees of\", \"quantities of\". Activation peaks on the license boilerplate \"WARRANTIES OF\" and the comment-prefix tokens on the next line. Other prepositions and connectives after nouns or verbs fire only weakly.",
+"name_b": "The word \"indirect\" in its various forms (indirect, indirectly, INDIRECT, or the \"irect\" piece of a split \"Ind-irect\"). It often appears in contrast with \"direct\" (\"directly or indirectly\", \"direct and indirect\"). There is also a weaker, constant activation on the backslash that opens a LaTeX command right after a display-math \"\\[\" line break."
+},
+{
+"item": 150,
+"name_a": "Long runs of whitespace (spaces or tabs) used as padding inside decorative comment boxes, ASCII banners, or tables, typically between border characters such as /* */, #, * or |. Activation is strongest for very long blank fills in comment-header borders. A few weak hits land on ordinary words or tags.",
+"name_b": "Diffuse, weak activation on words that start or carry a contrasting, concessive, or qualifying clause, i.e. a caveat or limitation on what came before. Typical carriers are \"but\", \"even though\", \"although\", \"however\" and \"while\". Hedges and negations also fire, such as \"can be a challenge\", \"not going to\", \"possibly\", \"mainly\" and \"I would never say that\". Peaks fall on the connective and the following few words, as in \"but will not be\", \"but please keep in mind that\" and \"even though we remain\"."
+},
+{
+"item": 151,
+"name_a": "The subword \"toc\" (or \"oc\" after T), strongest as the middle of \"oxytocin\" and in \"toc\" as a table-of-contents marker (e.g. {:toc}, toc = false, @[toc]); weaker for tocopherol, Tocqueville, Tocantins, and TOC.",
+"name_b": "Function words and predicate phrases directly following a named scientific entity (often a molecule, hormone, or chemical such as ATP, insulin, dopamine, or hydrogen) that describe its role or function, e.g. \"is the key\", \"works as a regulatory molecule\", \"can be used as a\", \"responsible for\", \"played a role\". Activation is weaker on scattered subword tokens inside technical names and acronyms."
+},
+{
+"item": 152,
+"name_a": "The property or field name part of a setter method in code (the token(s) right after \"set\", e.g. setNeighbours, setId, setReduction), plus its parameter type and name. Weaker hits land on other method or field names and assignment parts of property setters.",
+"name_b": "Tokens that start the next item in a list of conditions or requirements, mostly in boilerplate legal, copyright, licensing and disclaimer text (\"provided that X and that Y…\"). The strongest activations fall on clause-linking words such as \"that\", \"and\", \"and the\" and commas, and on list bullets or dashes that begin a further stipulation."
+},
+{
+"item": 153,
+"name_a": "Delimiter or boundary tokens that end a label or segment just before new content begins. The strongest are enumeration punctuation after list or option labels, such as the \")\" in \"(a)\" or \"(iii)\" and the \".\" in \"1.\" or \"A.\". Others are paragraph breaks after headings and spaces, slashes or braces that come right before a number or expression. Weaker activations fall on function words and adverb suffixes in garbled or spammy text.",
+"name_b": "Final class-name segments in Java import statements that name annotations (Spring, Lombok, JPA, Servlet, ButterKnife), especially Spring's \".Autowired\", which fires strongly every time. Other annotation imports such as .Component, .Column and .AllArgsConstructor give weak activations. Non-import text produces only rare, faint hits."
+},
+{
+"item": 154,
+"name_a": "The pronoun \"it\" after \"modify\" in the boilerplate free-software license phrase \"you can redistribute it and/or modify it under the terms of...\" (GNU GPL/LGPL, Perl license headers). Other weak activations are scattered, unrelated tokens.",
+"name_b": "The \"/or\" token in the phrase \"redistribute it and/or modify it\" from free-software license boilerplate (GPL/LGPL/Perl headers); other tokens fire only weakly."
+},
+{
+"item": 155,
+"name_a": "Words naming behaviors, emotions, drives and physiological or psychological functions of organisms (feeding, eating, aggression, mood, motivation, fear, appetite, learning, memory, libido, responses), mostly in scientific or biomedical writing. The strongest hits are terms for behavioral and motivational processes. Weaker hits include cited author names in psychology and biology papers.",
+"name_b": "The second element of a hyphenated compound modifier (e.g., \"-solving\", \"-energy\", \"-gas\", \"-quality\"), i.e., the hyphen-prefixed token joining a word to the preceding word to form a compound adjective/noun modifier, usually before a head noun; weak scattered activations on other modifiers."
+},
+{
+"item": 156,
+"name_a": "Whitespace/formatting tokens marking structural breaks between sections, mostly runs of multiple newlines (often with indentation or trailing punctuation) separating code blocks or paragraphs. Longer runs of blank lines, especially at the end of a document or before a new code or section header, activate most strongly. Odd or duplicated punctuation at boundaries (stray periods, quotes, commas) activates weakly.",
+"name_b": "Whitespace-only tokens, mostly runs of several newlines (often with indentation spaces or tabs), that form blank gaps between sections of code or documents. Activation grows with the length of the run, so long stretches of consecutive blank lines fire most strongly."
+},
+{
+"item": 157,
+"name_a": "Speech and attribution markers in reported speech or news style: verbs of saying (said, added, reported, wrote, explained), the speaker or source named near a quote (he, she, Moscow, the report), and source nouns such as statement, release, interview, survey or papers. They mostly appear just after a quotation or claim, or in 'according to' constructions. The strongest activations are on 'said' and on source nouns like 'report', 'statement' and 'release'.",
+"name_b": "The preposition completing a source-attribution phrase, mainly \"to\" in \"According to\" and also \"per\" in \"As per\" or Dutch \"volgens\". It is strongest when \"According to\" opens a sentence and introduces a named source such as a person, organization or publication, and weaker after a lowercase mid-sentence \"according\"."
+},
+{
+"item": 158,
+"name_a": "Expository news-style prose. Activation peaks on the core clause of a sentence that introduces who did what, most often at the start of a new sentence or paragraph. Typical spans are the subject (a named person, organization or \"The former couple\"), the main verb, and the source-attribution phrasing that follows. Examples include \"The attorney for … says in court papers\", \"According to a report produced by\", \"announced the split with\" and \"trimmed its … ownership in\". Function words linking these elements (to, the, in, of, commas) are also marked, while scattered weak activations appear elsewhere.",
+"name_b": "The word \"File\" that opens a frame line in a Python traceback or stack trace (File \"path\", line N, in ...), usually right after \"Traceback (most recent call last):\" or a previous frame. Activation is strongest for later frames that follow code lines."
+},
+{
+"item": 159,
+"name_a": "Timestamp and date fields in structured or machine output, firing most strongly on the size/date/time columns of Unix directory listings (ls -l), such as \"40 Apr 20 13:03\". It also responds to clock times (hh:mm:ss), the spaces between date parts and times, and year fragments like \"200\". Activations on ordinary prose are weak and scattered.",
+"name_b": "Whitespace or separator tokens (and the small number that follows) between fields in tabular, machine-generated text such as ls -l listings, process tables, DNS records, logs and version/download tables. It fires most strongly on the link-count number right after Unix permission strings (e.g. \"drwxr-xr-x 2\"). There is weak, scattered activation on other delimiters and punctuation."
+},
+{
+"item": 160,
+"name_a": "The \"#endif\" preprocessor directive, strongest when it closes a header include guard at the very end of a C/C++ header file. Activation is weaker for mid-file #endif closing #ifdef/#else blocks and for template \"endif\" keywords in PHP or Django. Scattered weak hits on ordinary prose tokens are noise.",
+"name_b": "Function words (mostly prepositions like \"by\", \"from\", \"with\", \"of\", \"according to\", or verbs like \"said\"/\"says\") that come right before the mention of a person, group, or source. They fire where the text is about to name who said, did, made, or supplied something."
+},
+{
+"item": 161,
+"name_a": "The word \"Chicago\" (including subword pieces like \"icago\"/\"AGO\") in any context: the city, institutions, teams, the musical, and especially the Chicago citation style. Weak activation on related items like \"Bulls\" or other city names.",
+"name_b": "Words naming an institution, organizational unit, program, service or facility (e.g. Extension, Institute, Department, Lab, Centre, office, programs, services), often the head noun or acronym tail of an organization's name, plus nearby text describing what the organization offers or does."
+},
+{
+"item": 162,
+"name_a": "Location-related words, mainly \"where\" (and somewhere/anywhere/wherever), plus the clause that follows them, such as \"where the physician holds their\" or \"Where are they\". Activation is strongest on \"Where\" opening direct or indirect questions about a place (\"Where can I\", \"where to go with\"). It is weaker on locative relative clauses and on other wh-question phrases.",
+"name_b": "The \" id\" attribute name inside HTML opening tags (strongest right after \"<div\", especially for top-level container divs in body); weak sporadic activation on a few function words or bold markers in prose."
+},
+{
+"item": 163,
+"name_a": "Separator tokens (colons, equals signs, opening quotes or braces, spaces) right after a property, parameter or field name and just before its value is written, especially color values in CSS, plotting and code (e.g. 'color:', \"col = '\", 'background-color: #'). It also fires more weakly on the space before a number in prose.",
+"name_b": "Language about self-perception, ego and status: people regarding themselves as superior, in charge or entitled, plus related notions of power, dominance, hierarchy, arrogance and ambition. The strongest cases are explicit attitude phrases such as \"a superior attitude towards\" and \"see themselves as in charge.\" Weaker hits are scattered words about self-regard, confidence or how one thinks of oneself."
+},
+{
+"item": 164,
+"name_a": "Mainly the bit-width number inside C/C++ fixed-size integer type names (the \"32\", \"16\", \"8\" in int32_t/uint32_t/uint16_t/uint8_t), plus other type-specifier tokens such as long, size, ull, int and float. Weaker activations land on the space after the dash before a username in Stack Exchange comment signatures (\"– Name date\").",
+"name_b": "Commas in postal addresses and institutional affiliations that come right after a city or locality name and come before the larger region (state, province, country) or the postal code."
+},
+{
+"item": 165,
+"name_a": "Closing delimiters of code or template blocks, often merged with the newlines after them. The strongest case by far is PHP's closing tag \"?>\", especially when it ends a script. Weaker activations come from other closers such as Jinja/Django \"%}\", Handlebars \"}}\", code-fence backticks, triple quotes and XML declaration endings. There are scattered faint activations on ordinary prose words.",
+"name_b": "Opening delimiters that switch from literal text or markup into embedded code or expressions: PHP open tags (<?php) inside HTML, JSX braces ({) inside markup, and interpolation/placeholder markers in template strings (${, #{, {, {{, <%=, %, $). Strongest for <?php after HTML and JSX { inside elements."
+},
+{
+"item": 166,
+"name_a": "Separators and items in enumerations of alternative values, chiefly \"or\", commas, \"and\", and slashes in phrases like \"X or Y\", \"A, B, or C\", or \"either 1 or 8\". It is strongest in chemical or math definitions that list allowed substituents or values, such as \"represent hydrogen or methyl\" or \"K = ℂ or K = ℝ\". It also fires weakly on the listed options themselves.",
+"name_b": "The \"iggs\" token completing the name \"Higgs\", firing most strongly in particle-physics contexts (Higgs boson, field, doublet, mass). It fires weakly for other \"-iggs\" surnames (Myers-Briggs, Griggs, Riggs), and there is faint, scattered noise on unrelated tokens."
+},
+{
+"item": 167,
+"name_a": "The main verb or predicate, plus the words right after it, in titles, headings and questions, especially after \"How to\", \"What is\" or \"Is it possible\". It fires most strongly on action verbs that state the task or topic (filter, evaluate, replace, use, represent, administer).",
+"name_b": "Mostly fragments of biochemical signaling-molecule names, firing most strongly on \"AMP\" in cyclic AMP / cAMP, with weaker hits on related cyclic-nucleotide pathway terms. Related terms include GMP, c-di-GMP, phosphate, AMPK, PDE, adrenergic, second messenger, forskolin and theophylline. Weak, scattered activations also occur on lookalike acronyms (GMP certification, Accelerated Mobile Pages) and on paragraph breaks."
+},
+{
+"item": 168,
+"name_a": "Double-newline paragraph-break tokens, typically with leading whitespace or punctuation fused in, that come right after a sentence or line ends and before a new paragraph, heading or code block. Activation is strongest when a space is fused before the break (\" ⏎⏎\") or the break falls after a math or code line.",
+"name_b": "Sentence-final punctuation fused with newline(s) (e.g. \".\\n\\n\", \"].\\n\\n\") marking the end of a paragraph, mostly in academic/scientific abstracts or papers, right before a new paragraph, section, or metadata begins."
+},
+{
+"item": 169,
+"name_a": "Mostly titles or role labels that follow a person's name, particularly judicial designations such as the \"J\" in \"Davis, J.\" and \"Judge\" in court citations, plus \"Chair\", \"Editor\" and \"Secretary\". Weaker hits fall on the last digit of years in dates and on list or structural punctuation.",
+"name_b": "Mostly the word \"Judge\" used as a title next to a person's name, especially in legal and court documents (\"Signed by Judge X\", \"TANNENWALD, Judge:\"). It also fires weakly on similar role labels attached to names, such as \"Director\", \"J.\", and \"God\", with occasional faint noise on unrelated tokens."
+},
+{
+"item": 170,
+"name_a": "The final tab character in a run of leading indentation, i.e. the last whitespace token just before a line's content, mostly in code and structured data (JSON, XML/HTML, LaTeX, scripts). It fires most strongly on deeper or continuation indentation. A weaker version fires on single spaces or table cells (\"<td\") that come right before a new item or value.",
+"name_b": "Boundary tokens that close a self-contained block of boilerplate or header text, such as a license/copyright notice, file header comment, promo/signup blurb or disclaimer, just before new content begins. These are typically end punctuation fused with newlines ('.⏎⏎', ')⏎⏎', '⏎⏎') or comment-closing markers ('#⏎', '**⏎', \"'''\"). A few weaker hits fall on ordinary mid-sentence words."
+},
+{
+"item": 171,
+"name_a": "Ordinal numbers within street addresses, especially the floor or street number such as \"Fifth\" or the suffixes \"th\", \"nd\", \"rd\" and \"st\" after a digit. Activation is far strongest on \"Fifth\" in the Free Software Foundation address (\"51 Franklin Street, Fifth Floor\"). Activations outside addresses are weak.",
+"name_b": "The subject of a reading-comprehension question, the word right after \"What is/was\" or \"of\". It is usually \"the\" or the noun it introduces, such as author, user, speaker, text or number, and is strongest for the person whose views are asked about (\"the author's…\", \"the user's…\")."
+},
+{
+"item": 172,
+"name_a": "Journalistic news-story prose, strongest on attribution and narrative-reporting phrases (e.g., ',” said X while attending…', 'he concluded, as reported by', 'shared:', 'Reportedly,') and clauses describing what a public figure did or is doing in celebrity, sports and news reports. Activation is weak and diffuse on other tokens.",
+"name_b": "A diffuse, weakly-firing feature with no single trigger token. It is strongest in biographical or news-style passages about a specific named person, often a celebrity, such as Bowie, Madonna (\"Madge\"), Kanye West or Obsidian. There it fires on the person's name, possessives, and pronouns or phrases referring to them and their circle (\"his crew\", \"her father\", \"you\"). Elsewhere it shows only scattered low activations on function words and punctuation."
+},
+{
+"item": 173,
+"name_a": "Tokens that repeat or mirror an earlier token within a parallel, list-like or symmetric structure (e.g., the second item in a pair like \"t1[1] == t2[1]\", \"eddie smith and joan smith\", \"opposite face\", repeated values in parallel lines or code). The activation falls on the copied element that completes the parallel pattern.",
+"name_b": "Weak, diffuse activation on structural boundary tokens in formatted or code-like text: line breaks, closing brackets/braces followed by newlines, indentation whitespace, list numbering periods, table row tags, and the first token starting a new line, field, or list item. It marks the point where one structural unit ends and the next begins."
+},
+{
+"item": 174,
+"name_a": "Words and word pieces expressing permanence, endlessness or long duration (eternal, enduring, perpetual, lasting, perennial, timeless, immortal, endless, infinite, lifelong). \"Eternal\" fires most strongly, and related mortality and age terms fire weakly.",
+"name_b": "Language describing transitions, contrasts or changes between two states, phases, categories or forms (e.g. \"from liquid to plasma\", \"transition from first form to the second\", \"wet-to-dry\", \"chaotic or non-chaotic\", \"transformed into\"), mostly in scientific or technical text. It fires most strongly on the connecting words (from, to, into, between, and/or, non-) and on the names of the contrasted states."
+},
+{
+"item": 175,
+"name_a": "Whitespace, newlines, and structural delimiters (pipes, ampersands, backslashes, comment slashes, table cells) within spatially laid-out text such as ASCII diagrams, tables, LaTeX arrays/matrices, and figure labels. Activation is strongest on padding spaces and line breaks that align columns or box borders in multi-line 2D layouts.",
+"name_b": "Structural and formatting tokens inside tabular or grid-like layouts, such as cell separators (|, &, <td>), row starts after newlines, alignment whitespace runs, and dotted or dashed filler in markdown, HTML and LaTeX tables or matrices and ASCII-art blocks. Activation is strongest at the start of a new row or line within these structures."
+},
+{
+"item": 176,
+"name_a": "Line breaks (and trailing markers like *, }, superscript-number syntax) right after the author-name list in academic paper headers, marking the transition to the affiliation block (Department, University, \\textsuperscript{1}, \"Affiliations:\") or to the abstract. Weaker activations occur on similar header and metadata breaks.",
+"name_b": "Footnote and affiliation markers (superscript numbers, letters, asterisks, daggers, or LaTeX superscripts) that start a line after an author list in academic papers, introducing institutional affiliations or author notes. Weaker activation on similar note markers and on words like \"Department\" that begin an affiliation line."
+},
+{
+"item": 177,
+"name_a": "A diffuse feature firing on mid-clause tokens (function words like 'and', 'of', 'to', 'him', verbs, and punctuation) where the sentence continues an action. It is strongest in classical Chinese biographical text and fires broadly on historical or biographical narrative about officials, emperors and generals, and on translated Chinese web-novel prose. It shows weak, scattered activation elsewhere, including scientific text, code and citations.",
+"name_b": "Tokens in East Asian (mainly Chinese) contexts: historical dynasties, figures, names, place names, romanized Chinese/Japanese words and their glosses, classical poetry and imagery, cultural items (food, calligraphy, gardens), and xianxia-style translated fiction. Peaks fall on Chinese historical and biographical descriptions and romanized names."
+},
+{
+"item": 178,
+"name_a": "The noun right after a verb or modifier in short UI/share-button boilerplate and technical noun compounds, strongest on \"article\" in \"Share article via email\". It also fires weakly on \"link\" in \"Copy link\" and on compound heads like \"security updates\" and \"module development\".",
+"name_b": "The division slash (or decimal point / LaTeX \\frac separator) inside a fractional number, especially in fractional exponents like ^(1/2), ^{1/4}, ** 0.5 for roots; weaker on plain fractions like 1/4 in lists."
+},
+{
+"item": 179,
+"name_a": "Words for people or channels that covertly or confidentially supply information, such as sources, informants, contacts, tips/tip-offs, whistleblowers, undercover/double agents, and anonymous reports. Activation is strongest on \"informant\" and \"tip-off\".",
+"name_b": "The \"www\" subdomain token right after \"http://\" in URLs, firing most strongly in XML namespace URLs like xmlns=\"http://www.w3.org/2000/svg\" in SVG/HTML code. It fires more weakly on other URL hosts (googleapis, jquery's \"code\") and faintly on random tokens in code comments."
+},
+{
+"item": 180,
+"name_a": "A diffuse, weak feature of scientific and technical expository prose (abstracts, papers, explanations in physics, materials science, biology, and math). It fires on scattered tokens within explanatory sentences: function words (the, of, that, is, with), clause-ending punctuation, and key technical nouns or phrases such as range, distance, phase transition and temperature dependence. It peaks on phrases describing physical quantities, conditions, or findings.",
+"name_b": "Language describing transitions, contrasts or changes between two states, phases, categories or forms (e.g. \"from liquid to plasma\", \"transition from first form to the second\", \"wet-to-dry\", \"chaotic or non-chaotic\", \"transformed into\"), mostly in scientific or technical text. It fires most strongly on the connecting words (from, to, into, between, and/or, non-) and on the names of the contrasted states."
+},
+{
+"item": 181,
+"name_a": "Section/chapter numbering and identifier tokens in structured references: digits and separators in chapter/section numbers, LaTeX \\label{sec:intro}/{s1} keys, figure filenames, DOIs, URL path IDs, and index codes. Peaks on the number or key that names a section or item (e.g. the \"1\" in \\label{s1}).",
+"name_b": "Sentence boundaries inside memorized boilerplate legal and license text, peaking on the period and following space after \"contributor license agreements\" in the Apache license header (just before \"See the NOTICE file\"). Weaker activations appear at similar points in other stock phrases, such as the journal \"page charges.\" disclaimer and other license wording."
+},
+{
+"item": 182,
+"name_a": "Tokens containing the dollar sign \"$\" in any role: currency amounts, LaTeX math delimiters, shell prompts, and variable sigils in code (PHP, Perl, R, Rust macros, template ${...}). Activation runs highest for code and shell uses such as R's \"\\$\" accessor, Perl comments, terminal prompts and PHP variables, and is weaker for plain currency and math.",
+"name_b": "A diffuse, mostly positional pattern rather than a semantic one. It fires on tokens sitting inside a fixed, highly predictable structure, where the next token is strongly constrained. These include separators inside phone numbers, the first halves of split compounds or set phrases (\"game\" before \"pad\", \"in order\" before \"to\", \"w\" in \"w/w\", \"Program\" before \"Coordinator\"), and double newlines after section titles or headings in technical and academic documents."
+},
+{
+"item": 183,
+"name_a": "Words that open a hypothesis or setup statement, chiefly mathematical problem/proof language like \"Suppose\", \"Let\", \"Consider\", \"Assume\", usually at the start of a sentence before variable definitions (strongest for \"Suppose\"). Weak activations also appear on similar statement- or block-opening tokens such as code declarations (var, auto, public) and HTML <thead>.",
+"name_b": "Words that open a hypothesis or setup in mathematical/technical writing, chiefly \"Let\" (as in \"Let X be…\"), plus \"Suppose\", \"Assume\", \"Consider\", \"If\". They typically come at the start of a sentence or clause and introduce variables or premises. Activation is strongest for \"let/suppose\" right before a definition."
+},
+{
+"item": 184,
+"name_a": "Fires on the subword \"ember\" (and close variants such as \"umber\", \"ober\", \"amber\", \"bers\", \"bars\") as a piece inside words or names, e.g. Ember, dismember, November/September, Pemberi, and surnames like Kemberly. It is strongest when \"ember\" sits mid-word in an unusual or foreign name.",
+"name_b": "Footnote and affiliation markers (superscript numbers, letters, asterisks, daggers, or LaTeX superscripts) that start a line after an author list in academic papers, introducing institutional affiliations or author notes. Weaker activation on similar note markers and on words like \"Department\" that begin an affiliation line."
+},
+{
+"item": 185,
+"name_a": "Grammatical particles, case endings and inflectional suffixes in non-English text, especially Japanese particles (に, と), Korean postpositions (에, 로, 으로) and case or verb endings in agglutinative and inflected languages (Azerbaijani, Turkish, Russian, Latin). Activation is strongest on Japanese に and Korean 에.",
+"name_b": "The finite verb right after a sentence's subject, nearly always a form of \"have\" (has/have/had), mostly as a perfect-tense auxiliary (\"has found\", \"have been\") but also as possessive \"has the right\". Sometimes it is a form of \"be\" or a following \"been\". The strongest cases follow subjects like \"I\", \"this study/research\" or \"the undersigned\" in reporting or formal contexts."
+},
+{
+"item": 186,
+"name_a": "A diffuse feature found in expository, advisory or policy-style prose about practices and processes, such as healthcare, management, public engagement and wellbeing. It fires on words that name means or approaches for achieving an outcome: nouns like methods, measures, steps, ways, tool, factors, involvement, engagement and communication, and action verbs like help, create, streamline, enhance, implementing and focusing. It also fires on nearby function words like \"to\", \"in\" and commas within those purpose and benefit statements. Activations are strongest on terms for participation and engagement and on tools.",
+"name_b": "A standalone space token that sits right before a number (a year, address number, ID, count, time, percentage, list index), usually following a comma, colon, dash, slash or the end of a name or title. It also fires on the leading space before bullet points or list items in metadata-like text such as citations, addresses, dates and listings."
+},
+{
+"item": 187,
+"name_a": "The word \"reasonable\" and its variants (\"reasonably\", the \"able\" in \"Reasonable\"), most often in legal, contractual or policy phrases such as \"reasonable doubt\", \"reasonable efforts/steps\", \"reasonable adjustments\" and \"reasonably believe\". It fires weakly on related evaluative words like \"fair\" and \"equal\".",
+"name_b": "Weak, diffuse activation in tense or alarming narrative contexts, peaking on words describing fear, panic, worry or desperation (e.g. 'Panicking I began to try', 'heart dropped as she', 'feared', 'desperate') and on the reaction clauses around them. Elsewhere it fires faintly on function words, commas and verbs in emergencies, illness or death, urgent waiting or rushing."
+},
+{
+"item": 188,
+"name_a": "Indentation whitespace at the start of the code line in a Python traceback, right after a 'File \"...\", line N, in func' header line (sometimes extending to the first keyword like raise/return or an '='). Weak activations on scattered punctuation and function words elsewhere.",
+"name_b": "Prepositional phrases and their referent objects after words like warranty, conflict of interest, liability, or correspondence. The feature fires on the relational preposition (regarding, as to, in relation to, concerning, about, for) and the following demonstrative and noun naming what the statement covers (this paper, these data, its licenses). It is strongest in boilerplate disclaimers and declarations."
+},
+{
+"item": 189,
+"name_a": "Nouns that name a particular item or position within an ordered mathematical structure, chiefly \"term\" (also element, entry, series, numbers, side). It fires most strongly after ordinal or index phrases like \"nth\", \"12th\", \"3rd\" or \"the 5th\", as in \"nth term of a sequence\" or \"5th entry in row 12\". It also fires weakly on unrelated tokens in math or technical text.",
+"name_b": "Delimiter or lead-in tokens (colons, spaces, brackets, braces, \"=\", \"of\", \"such as\") right before an enumerated list or sequence begins, most often a sequence of numbers (series, arrays, number lists)."
+},
+{
+"item": 190,
+"name_a": "Final class-name segments in Java import statements that name annotations (Spring, Lombok, JPA, Servlet, ButterKnife), especially Spring's \".Autowired\", which fires strongly every time. Other annotation imports such as .Component, .Column and .AllArgsConstructor give weak activations. Non-import text produces only rare, faint hits.",
+"name_b": "Induction/copying: fires on a word or subword that repeats one appearing earlier in the same text (names, acronyms, terms, numbers, code strings), usually at the start of the repeated phrase, where it can be predicted by copying the earlier occurrence."
+},
+{
+"item": 191,
+"name_a": "A diffuse, low-specificity feature that fires mostly on unpredictable tokens in noisy or garbled text: OCR junk, mojibake, random alphanumeric codes and serial numbers, unit letters stuck to numbers, odd single characters or scripts, and gene or sequence strings. It also fires weakly on ordinary punctuation and line breaks in plain prose, which suggests it tracks high-surprise or out-of-distribution tokens rather than any one meaning.",
+"name_b": "Weak, diffuse activation on tokens inside repetitive, list-like or unstructured text that isn't ordinary prose: number and symbol sequences, code and URL fragments, keyword-stuffed tags, garbled spaced-out letters, line breaks in lists or verse, and math notation. It is strongest on repeated or sequential patterns such as \"b b b 1 2 3\", strings of underscores and dots, and runs of numbers."
+},
+{
+"item": 192,
+"name_a": "Separator or connector tokens at the boundary between two parallel segments, marking where a second item, alias, gloss or field begins. Typical cases are opening parentheses before an explanation or alternate name, pipes, slashes, dashes, '#', ':', '; also' and 'or the'. Some hits also fall at the start of the next element in code, IDs, URLs or lists.",
+"name_b": "Words describing violent or physical events, motion, destruction and natural disasters: crashes, explosions, floods, plummeting, firing, attacks, collapse, ruins, projectiles. It is strongest on dramatic falling or impact sequences (e.g. a plane plummeting onto a house, crash landings). It also fires weakly on surrounding action verbs, connectives and some unrelated nouns."
+},
+{
+"item": 193,
+"name_a": "Tokens naming the input or object that an operation is applied to, most often function parameters and argument variables in code (e.g. (array, (a, b, value, string, text, data, number). It also fires in prose for the thing being acted on or entered, such as \"a given integer\", \"the amount in\", \"a set of\", \"enter a number\", and \"the substrate\".",
+"name_b": "The word \"gradient\" in color/graphics contexts, firing most strongly on \"-gradient\" in CSS \"linear-gradient(\" and SVG gradient IDs. It fires weakly on other gradient mentions (SVG gradients, radial gradients) and barely on unrelated code tokens."
+},
+{
+"item": 194,
+"name_a": "The tag name \"body\" inside an HTML closing tag (</body>), usually just before </html> at the end of a document. Other closing-tag names (main, div, container) fire weakly, and scattered unrelated tokens barely fire.",
+"name_b": "Tokens that close a structured block: HTML/XML closing-tag openers \"</\" (especially after nested elements like </tr>, </tbody>, </div>), the brace after LaTeX \\end, final closing braces of code classes/functions, and \"End\"/#endregion. Also weakly fires on boundary text after a section ends (e.g., \"Leave a Reply\", list labels)."
+},
+{
+"item": 195,
+"name_a": "Variable symbols (mostly x, also y, n, X, etc.) in algebraic expressions, firing most strongly when the variable directly follows a numeric coefficient, as in the middle term of a polynomial (e.g. the x in \"3x\" within x² + 3x + 5). Occasionally fires on other math symbols after a coefficient or operator, such as sin, cos, ^ or exponents.",
+"name_b": "Numeric coefficients or constants in polynomial or algebraic expressions, mainly the third-position term after a plus or minus sign (e.g., the \"6\" in x³ − 4x² + 6x). It fires most strongly on the coefficient of the linear x term in cubic polynomials. Weaker activation appears on other numbers within sums or sequences."
+},
+{
+"item": 196,
+"name_a": "Separators and markers that follow an author's name in a paper's author list, such as commas, \"and\", affiliation numbers, symbols like *, †, §, and the closing braces or $ of superscript markup. Activation is strongest on the comma or closing token right after the affiliation superscripts.",
+"name_b": "Words expressing decline or worsening of a condition or quality, peaking on the stem \"deterior\" (deteriorate, deteriorating, deterioration). Weaker activation on near-synonyms like degradation, degrade, decline, worsening, erode, disintegrate and detrimental."
+},
+{
+"item": 197,
+"name_a": "The argument or subscript token right after a function or variable name in math and code notation, most often an opening bracket fused with a variable, as in f(x, a(n, R(t, x_i, row[i. It marks the start of a function's argument list or an index.",
+"name_b": "The opening argument or parameter token right after a function or operator name, typically a merged token like \"(x\", \"(n\", or \"<T\" that starts the argument list in math notation (f(x), a(n), P(S)) or code (function parameters, generic type parameters). Subscripts and indices right after a symbol also fire, more weakly."
+},
+{
+"item": 198,
+"name_a": "Tokens in East Asian (mainly Chinese) contexts: historical dynasties, figures, names, place names, romanized Chinese/Japanese words and their glosses, classical poetry and imagery, cultural items (food, calligraphy, gardens), and xianxia-style translated fiction. Peaks fall on Chinese historical and biographical descriptions and romanized names.",
+"name_b": "A diffuse feature firing on mid-clause tokens (function words like 'and', 'of', 'to', 'him', verbs, and punctuation) where the sentence continues an action. It is strongest in classical Chinese biographical text and fires broadly on historical or biographical narrative about officials, emperors and generals, and on translated Chinese web-novel prose. It shows weak, scattered activation elsewhere, including scientific text, code and citations."
+},
+{
+"item": 199,
+"name_a": "The \"/wp\" path segment (WordPress) in URLs and file paths, usually right after a domain or directory and before \"-content\", \"-includes\" or \"-json\". Weaker on standalone \"wp\"/\"WP\" tokens (e.g., \"wpb-js-composer\" CSS classes) and other URL path segments like \"/media\", \"/node\" and \"/product\".",
+"name_b": "Mostly function words and delimiters in the middle of a phrase or clause, such as articles, prepositions, auxiliaries, \"to\", \"including/like/without\", and colons or bullets in spec lists. Each typically sits just before the content word or value that completes the phrase (e.g. \"even the [largest]\", \"forgets to [wear]\", \"Power Assist: [5 levels]\"). The feature seems to mark connective tokens that anticipate a following complement rather than any specific meaning."
+}
+]

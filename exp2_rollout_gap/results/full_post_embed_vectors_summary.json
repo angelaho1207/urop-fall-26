@@ -1,0 +1,16 @@
+{
+ "model": "Qwen/Qwen3-Embedding-8B",
+ "revision": "1d8ad4ca9b3dd8059ad90a75d4983776a23d44af",
+ "windows": 2162715,
+ "pairs": 2574447,
+ "tokens": 73346408,
+ "tokens_10_50_90_max": [
+  33.0,
+  33.0,
+  36.0,
+  97.0
+ ],
+ "truncated": 0,
+ "gpu": "NVIDIA L40S",
+ "seconds_this_job": 7416
+}

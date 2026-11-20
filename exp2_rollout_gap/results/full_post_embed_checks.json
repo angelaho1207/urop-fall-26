@@ -1,0 +1,35 @@
+{
+ "windows_per_concept_10_50_90": [
+  40.0,
+  40.0,
+  40.0
+ ],
+ "embed_cosine_10_50_90": {
+  "neighbour_1": [
+   0.5203,
+   0.7432,
+   0.9056
+  ],
+  "neighbour_11": [
+   0.4456,
+   0.6358,
+   0.812
+  ]
+ },
+ "embedding_neighbours": {
+  "pairs": 720896,
+  "share_with_a_shared_doc": 0.7611,
+  "mean_jaccard": 0.0753
+ },
+ "decoder_neighbours": {
+  "pairs": 720896,
+  "share_with_a_shared_doc": 0.3118,
+  "mean_jaccard": 0.0173
+ },
+ "random_frequency_matched": {
+  "pairs": 720896,
+  "share_with_a_shared_doc": 0.0643,
+  "mean_jaccard": 0.0012
+ },
+ "embedding_neighbours_also_decoder_neighbours": 0.0474
+}

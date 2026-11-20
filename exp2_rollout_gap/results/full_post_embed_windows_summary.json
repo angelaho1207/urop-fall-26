@@ -1,0 +1,16 @@
+{
+ "docs": 39949,
+ "concepts": 65536,
+ "concepts_without_window": 0,
+ "pairs": 2574447,
+ "distinct_windows": 2162715,
+ "windows_per_concept_10_50_90": [
+  40.0,
+  40.0,
+  40.0
+ ],
+ "concepts_under_40": 3164,
+ "concepts_with_1": 4,
+ "concepts_under_5": 22,
+ "seconds": 472
+}

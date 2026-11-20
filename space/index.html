@@ -364,6 +364,51 @@
     </ul>
     </div>
 
+    <div id="sec-emb">
+    <h2>A second similarity measure: text embeddings of where each concept fires</h2>
+    <p class="note">Each concept's 40 Dolma training docs where it fires most give 40 short windows (32 tokens around the peak). Qwen3-Embedding-8B turns each window into a vector, the 40 vectors are averaged, and two concepts are similar when these averages point the same way. Decoder cosine (above) compares what the SAE writes into the model; this compares the kinds of text a concept fires in. Each concept again keeps its 11 nearest concepts.</p>
+
+    <div id="sec-emb-comove">
+    <h3>Embedding neighbours move together as much as decoder neighbours, but share more noise</h3>
+    <div id="emb-comove" class="plot short"></div>
+    <ul class="takeaways">
+      <li>Same test as the first chart on this tab, with each concept's 11 nearest embedding neighbours in place of its decoder neighbours. All five models score ρ = 0.72-0.78 with either measure; random concepts of the same training frequency score 0.01-0.04.</li>
+      <li>Held-out Dolma, which shows only sampling noise, rises from 0.39 (decoder) to 0.56 (embedding). Embedding neighbours often peak in the same documents: 76% of neighbour pairs share at least one of their 40 top docs, against 31% of decoder pairs and 6% of random pairs, and concepts counted in the same docs share sampling noise.</li>
+      <li>So the models' co-movement beyond noise is smaller with embeddings (0.16-0.22 above held-out Dolma) than with decoder cosine (0.33-0.39). The two measures pick different neighbours: under 5% of embedding neighbours are also decoder neighbours.</li>
+    </ul>
+    </div>
+
+    <div id="sec-emb-halves">
+    <h3>Split in two, the embedding graph separates code and lists from prose, and the models lean to code and lists</h3>
+    <div class="cols"><div id="emb-halves-over" class="plot tree"></div><div id="emb-halves-under" class="plot tree"></div></div>
+    <ul class="takeaways">
+      <li>Split in two by spectral clustering (as the decoder graph above), the embedding graph gives 20,117 concepts whose named members are mostly code, list separators and document structure, and 45,419 mostly in ordinary prose. These labels come from names, not checked against text.</li>
+      <li>In every model, 28-33% of the code-and-lists half is over-represented (the dashed line is the 10% expected overall) and 2-4% of the prose half; under-represented concepts go the other way, 12-13% of the prose half and 3-5% of the code-and-lists half.</li>
+      <li>Held-out Dolma has more of both in the code-and-lists half (20% under, 17% over), so that half is noisier, but noise raises both sides while the models raise only over. The decoder graph's two halves showed no such lean.</li>
+    </ul>
+    </div>
+
+    <div id="sec-emb-groups">
+    <h3>Two groups: list-like and repetitive text rises only after stage 1; scientific prose is low from stage 1 on</h3>
+    <div class="cols"><div id="emb-group-over" class="plot tree"></div><div id="emb-group-under" class="plot tree"></div></div>
+    <ul class="takeaways">
+      <li>Groups picked by a fixed rule: among the pretrained model's 10 tree groups with the largest excess (dropdown below), the one with the highest share; that model's bar is therefore the selected one. Group 13's named members are separators between list items, tokens that repeat a pattern just set up and positions before a number. Group 279's are citation markers, pieces of biochemical names and methods text in scientific papers.</li>
+      <li>Group 13: 55-71% over-represented in the pretrained and post-trained models, but 16% at the end of stage 1 and 13% in held-out Dolma. The rise falls between the end of stage 1 and the final base model, the step that adds the stage 2 and 3 data (dolmino, longmino), which the Dolma reference leaves out.</li>
+      <li>Group 279: 37% under-represented already at the end of stage 1, 36% in the pretrained model and 25-30% after post-training, against 17% in held-out Dolma. Rollouts rarely read like scientific papers, a large part of Dolma (olmOCR science PDFs are 13.6% of stage 1 tokens).</li>
+    </ul>
+    </div>
+
+    <div id="sec-emb-namecheck">
+    <h3>By their names, embedding neighbours are related more often for topic concepts</h3>
+    <div id="emb-namecheck" class="plot short"></div>
+    <ul class="takeaways">
+      <li>The blind check from the decoder dropdown, repeated: a rater saw only the one-sentence names of 100 nearest-neighbour pairs mixed with 100 random pairs. Each concept was also typed as topic (tied to one kind of document, such as code or chemistry) or token (punctuation, positions or formatting found in any text).</li>
+      <li>Overall 57 of 100 embedding pairs were rated related, against 50 of 100 decoder pairs; random pairs got 1 and 2. When both concepts are topic concepts, 31 of 36 embedding pairs are related (86%) against 26 of 43 decoder pairs (60%).</li>
+      <li>For two token concepts the measures are close (18 of 36 and 18 of 33), so the expected weakness of embeddings on token concepts did not show. One rater (Claude), names not checked against text, 24-43 pairs per type.</li>
+    </ul>
+    </div>
+    </div>
+
     <h2>Details and checks, concept similarity</h2>
 
     <details class="more" id="sec-sim-methods"><summary>Methods and definitions, concept similarity: decoder cosine, 11 neighbours, co-movement test, swap test, spectral clustering, eigengap</summary>
@@ -413,6 +458,44 @@
 
     <details class="more" id="sec-tree-top"><summary>Concept tree: groups with the most under- and over-represented concepts per model, with named members</summary>
     <div id="tree-top" class="scrolly"></div>
+    </details>
+    <h2>Details and checks, embedding similarity</h2>
+
+    <details class="more" id="sec-emb-methods"><summary>Methods, embedding similarity: top 40 docs per concept, 32-token windows, Qwen3-Embedding-8B, mean removal</summary>
+    <div id="emb-methods"></div>
+    </details>
+
+    <details class="more" id="sec-emb-shared"><summary>Shared top docs: how often embedding neighbours, decoder neighbours and random concepts fire most in the same Dolma docs</summary>
+    <div id="emb-shared"></div>
+    </details>
+
+    <details class="more" id="sec-emb-swap"><summary>Swap test with embedding neighbours: under-represented concepts whose nearest neighbour is over-represented</summary>
+    <div id="emb-swap"></div>
+    </details>
+
+    <details class="more" id="sec-emb-namecheck-table"><summary>Blind name check, embedding vs decoder neighbours: related, loose and unrelated counts by pair type</summary>
+    <p class="note" id="emb-namecheck-method"></p>
+    <div id="emb-namecheck-table"></div>
+    </details>
+
+    <details class="more" id="sec-emb-halves-table"><summary>The two halves of the embedding graph: named members and the same-class test at K = 2</summary>
+    <div id="emb-halves-table"></div>
+    </details>
+
+    <details class="more" id="sec-emb-tree"><summary>Concept tree on the embedding graph: groups above the null per depth, and overlap with held-out Dolma</summary>
+    <div id="emb-tree"></div>
+    </details>
+
+    <details class="more" id="sec-emb-tree-top"><summary>Concept tree on the embedding graph: groups with the most under- and over-represented concepts per model, with named members</summary>
+    <div id="emb-tree-top" class="scrolly"></div>
+    </details>
+
+    <details class="more" id="sec-emb-pairs"><summary>Named nearest-neighbour pairs, embedding similarity: concept, nearest neighbour, cosine and both names</summary>
+    <div id="emb-pairs" class="scrolly"></div>
+    </details>
+
+    <details class="more" id="sec-emb-cosine"><summary>Embedding cosine of the 1st and 11th nearest neighbour: 10th, 50th and 90th percentiles, with decoder cosine for comparison</summary>
+    <div id="emb-cosine"></div>
     </details>
   </section>
   <section id="tab-concept" class="tab">

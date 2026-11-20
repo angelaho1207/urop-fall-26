@@ -878,7 +878,7 @@ const SIM_SETS = ["V", ...NAMED_MODELS];
 function simDots(divId, rows, xTitle, xRange) {  // rows: [{name, color, values: [{value, ci}] per set}]
   const labels = SIM_SETS.map((s) => SET_LABEL[s]);
   const traces = rows.map((row, j) => ({
-    type: "scatter", mode: "markers", name: row.name, x: row.values.map((v) => v.value), y: SIM_SETS.map((_, i) => i + (j ? 0.15 : -0.15)),
+    type: "scatter", mode: "markers", name: row.name, x: row.values.map((v) => v.value), y: SIM_SETS.map((_, i) => i + (rows.length > 1 ? -0.15 + 0.3 * j / (rows.length - 1) : 0)),
     marker: { size: 10, color: css(row.color) }, customdata: row.values.map((v, i) => [labels[i], v.ci[0], v.ci[1]]),
     error_x: { type: "data", symmetric: false, array: row.values.map((v) => Math.max(0, v.ci[1] - v.value)), arrayminus: row.values.map((v) => Math.max(0, v.value - v.ci[0])), color: css(row.color), thickness: 1.5 },
     hovertemplate: `%{customdata[0]}, ${row.name}: %{x:.3f} [%{customdata[1]:.3f}, %{customdata[2]:.3f}]<extra></extra>` }));
@@ -949,15 +949,15 @@ function treeCharts(t) {
   }));
 }
 
-function treeTables(t) {
+function treeTables(t, prefix = "tree") {
   const q = t.leaf_sizes_10_50_90_max.map((x) => Math.round(x).toLocaleString());
-  document.getElementById("tree-depths").innerHTML = `<p class="note">${t.groups_total} groups in all: ${t.splits.spectral} split by spectral clustering, ${t.splits.pieces} split into unlinked pieces, the rest not split (under ${t.min_split} concepts or depth ${t.depth}). Concepts per bottom group: 10th percentile ${q[0]}, median ${q[1]}, 90th percentile ${q[2]}, largest ${q[3]}.</p>`
+  document.getElementById(`${prefix}-depths`).innerHTML = `<p class="note">${t.groups_total} groups in all: ${t.splits.spectral} split by spectral clustering, ${t.splits.pieces} split into unlinked pieces, the rest not split (under ${t.min_split} concepts or depth ${t.depth}). Concepts per bottom group: 10th percentile ${q[0]}, median ${q[1]}, 90th percentile ${q[2]}, largest ${q[3]}.</p>`
     + tableN(["depth", ...Object.keys(t.groups_per_depth)], [["groups", ...Object.values(t.groups_per_depth)], ["tested (≥ 10 ranked concepts)", ...t.per_depth.V.map((x) => x.tested)]]);
   const depths = t.overlap_with_V[NAMED_MODELS[0]].map((x) => x.depth);
-  document.getElementById("tree-overlap").innerHTML = ["under", "over"].map((side) => `<h3>${side}-represented: groups above the null in the model that are also above it in held-out Dolma</h3>`
+  document.getElementById(`${prefix}-overlap`).innerHTML = ["under", "over"].map((side) => `<h3>${side}-represented: groups above the null in the model that are also above it in held-out Dolma</h3>`
     + tableN(["model", ...depths.map((d) => `depth ${d}`)], NAMED_MODELS.map((g) => [esc(SET_LABEL[g]), ...t.overlap_with_V[g].map((x) => `${x[`${side}_also_V`]} of ${x[`${side}_model`]}`)]))).join("");
   const members = (named) => named.map(([id, nm]) => `${id}: ${esc(shortName(nm))}${nm.length >= 140 && shortName(nm) === nm ? "…" : ""}`).join("<br>") || "–";
-  document.getElementById("tree-top").innerHTML = NAMED_MODELS.map((g) => ["under", "over"].map((side) => `<h3>${esc(SET_LABEL[g])}: 10 groups with the largest excess of ${side}-represented concepts</h3>`
+  document.getElementById(`${prefix}-top`).innerHTML = NAMED_MODELS.map((g) => ["under", "over"].map((side) => `<h3>${esc(SET_LABEL[g])}: 10 groups with the largest excess of ${side}-represented concepts</h3>`
     + tableN(["group", "depth", "path from the root", "concepts", "ranked", side, "share", "null 97.5%", "named members (up to 10)"],
       (t.top_groups[g]?.[side] || []).map((x) => [x.group, x.depth, esc(x.path), x.size.toLocaleString(), x.ranked.toLocaleString(), x.count, pct(x.share), pct(x.null_p975), `<span class="nm">${members(x.named)}</span>`]))).join("")).join("");
 }
@@ -968,11 +968,98 @@ async function drawTreeSection() {
   await treeCharts(t);
 }
 
+// Embedding similarity section (design.md G114-G121). Data from s40_space_embed.py. Names and numbers only.
+function embBars(divId, title, yTitle, traces, yMax) {
+  const L = layoutBase();
+  L.margin = { l: 85, r: 10, t: 30, b: 120 };
+  L.title = { text: title, font: { size: 14 } };
+  L.barmode = "group";
+  L.legend = { orientation: "h", y: -0.35, x: 0 };
+  L.xaxis = { ...L.xaxis, tickangle: -30 };
+  L.yaxis = { ...L.yaxis, title: yTitle, range: [0, yMax] };
+  L.shapes = [{ type: "line", xref: "paper", x0: 0, x1: 1, y0: 10, y1: 10, line: { dash: "dash", width: 1.5, color: css("--fg") } }];
+  return Plotly.newPlot(divId, traces, L, PLOT_CFG);
+}
+
+function embCharts(d) {
+  const labels = SIM_SETS.map((s) => SET_LABEL[s]);
+  const pick = (measure, key) => SIM_SETS.map((s) => { const x = d.sets[s][measure][key]; return { value: x.rho, ci: x.ci95 }; });
+  const charts = [simDots("emb-comove", [{ name: "nearest decoder neighbours", color: "--middle", values: pick("decoder", "comove_neighbours") },
+    { name: "nearest embedding neighbours", color: "--cov-a", values: pick("embedding", "comove_neighbours") },
+    { name: "random concepts, frequency-matched", color: "--cov-b", values: pick("embedding", "comove_random") }], "Spearman ρ, concept r vs neighbours' mean r", [-0.05, 1])];
+  const halfName = { 2: `code, lists and structure (${d.halves[2].size.toLocaleString()} concepts)`, 1: `prose (${d.halves[1].size.toLocaleString()} concepts)` };
+  for (const side of ["over", "under"]) {
+    const traces = [2, 1].map((g, j) => ({ type: "bar", name: halfName[g], x: labels, y: SIM_SETS.map((s) => 100 * d.halves[g].shares[s][side]),
+      marker: { color: css(j ? "--middle" : "--cov-a") }, hovertemplate: `%{x}, ${halfName[g]}: %{y:.1f}% ${side}<extra></extra>` }));
+    charts.push(embBars(`emb-halves-${side}`, `${side}-represented concepts in each half`, "% of the half's ranked concepts", traces, 40));
+  }
+  for (const side of ["over", "under"]) {
+    const g = d.spotlight[side];
+    const trace = { type: "bar", x: labels, y: SIM_SETS.map((s) => 100 * g.shares[s][side]), marker: { color: SIM_SETS.map((s) => css(GEN_COLOR[s])) },
+      text: SIM_SETS.map((s) => `${Math.round(100 * g.shares[s][side])}%`), textposition: "outside", hovertemplate: `%{x}: %{y:.1f}% ${side}<extra></extra>`, showlegend: false };
+    charts.push(embBars(`emb-group-${side}`, `group ${g.group} (${g.ranked.toLocaleString()} ranked concepts): ${side}-represented`, "% of the group's ranked concepts", [trace], 80));
+  }
+  const types = ["both topic", "mixed", "both token"], c = d.name_check.counts;
+  const nc = ["decoder", "embedding"].map((m) => {
+    const row = types.map((ty) => { const x = c[m].neighbour[ty]; return [x.related || 0, (x.related || 0) + (x.loose || 0) + (x.unrelated || 0)]; });
+    return { type: "bar", orientation: "h", name: `${m} neighbours`, y: types, x: row.map(([r, n]) => 100 * r / n), text: row.map(([r, n]) => `${r} of ${n}`), textposition: "outside",
+      marker: { color: css(m === "decoder" ? "--middle" : "--cov-a") }, hovertemplate: `${m} neighbours, %{y}: %{text} related (%{x:.0f}%)<extra></extra>` };
+  });
+  const L = layoutBase();
+  L.margin = { l: 100, r: 40, t: 10, b: 70 };
+  L.barmode = "group";
+  L.legend = { orientation: "h", y: -0.3, x: 0 };
+  L.xaxis = { ...L.xaxis, title: "% of nearest-neighbour pairs rated related", range: [0, 100] };
+  L.yaxis = { ...L.yaxis, autorange: "reversed" };
+  charts.push(Plotly.newPlot("emb-namecheck", nc, L, PLOT_CFG));
+  return Promise.all(charts);
+}
+
+function embTables(d) {
+  const r = d.run, q = r.tokens_10_50_90_max, pct1 = (x) => `${(100 * x).toFixed(1)}%`;
+  document.getElementById("emb-methods").innerHTML = `<p class="note"><b>Windows.</b> For each of the ${r.concepts.toLocaleString()} concepts, the 40 Dolma training docs (of ${r.docs.toLocaleString()}) where its peak activation is highest, or every doc it fires in if fewer (${r.concepts_under_40.toLocaleString()} concepts have fewer than 40, ${r.concepts_under_5} fewer than 5, ${r.concepts_with_1} only 1). One window per doc: 32 tokens starting 16 before the peak, as Exp 1's examples. ${r.pairs.toLocaleString()} concept-window pairs, ${r.distinct_windows.toLocaleString()} distinct windows.</p>`
+    + `<p class="note"><b>Embedding.</b> <code>${esc(r.model)}</code> at revision <code>${esc(r.revision.slice(0, 12))}</code>; windows as documents with no instruction, last-token pooling, unit length, as on the model card. Windows are ${q[1]} Qwen tokens at the median (longest ${q[3]}); ${r.truncated} cut at 128. Concept vector = mean of its windows' embeddings, minus the mean over all concepts (Mu and Viswanath 2018), scaled to unit length.</p>`
+    + `<p class="note"><b>Analyses.</b> The same code as the decoder sections above (11 neighbours, co-movement, swap test, spectral clustering, tree), with the same seeds and baselines. Design: <code>exp2_rollout_gap/design.md</code> G114-G121.</p>`;
+  const sd = d.shared_docs;
+  document.getElementById("emb-shared").innerHTML = `<p class="note">For each concept and each of its 11 neighbours: do the two concepts' top-40 Dolma docs overlap? Concepts counted in the same docs share sampling noise in χ. Only ${pct1(sd.embedding_neighbours_also_decoder_neighbours)} of embedding neighbours are also decoder neighbours.</p>`
+    + tableN(["pairs", "share with at least one shared top doc", "mean Jaccard of top docs"], [["embedding neighbours", sd.embedding_neighbours], ["decoder neighbours", sd.decoder_neighbours], ["random concepts, frequency-matched", sd.random_frequency_matched]]
+      .map(([k, x]) => [k, pct1(x.share_with_a_shared_doc), fmt(x.mean_jaccard, 4)]));
+  document.getElementById("emb-swap").innerHTML = tableN(["set", "under → over, embedding neighbour", "under → over, decoder neighbour", "under → over, random", "over → under, embedding neighbour", "over → under, random"],
+    SIM_SETS.map((s) => { const e = d.sets[s].embedding, x = d.sets[s].decoder; return [esc(SET_LABEL[s]), pct1(e.substitution_neighbour.under_to_over.share), pct1(x.substitution_neighbour.under_to_over.share),
+      pct1(e.substitution_random.under_to_over.share), pct1(e.substitution_neighbour.over_to_under.share), pct1(e.substitution_random.over_to_under.share)]; }));
+  const c = d.name_check.counts, cell = (x) => `${x.related || 0} / ${x.loose || 0} / ${x.unrelated || 0}`;
+  document.getElementById("emb-namecheck-method").textContent = d.name_check.method;
+  document.getElementById("emb-namecheck-table").innerHTML = tableN(["pairs (related / loose / unrelated)", "all", "both topic", "mixed", "both token"],
+    [["embedding", "neighbour"], ["embedding", "random"], ["decoder", "neighbour"], ["decoder", "random"]].map(([m, k]) => [`${m}, ${k === "neighbour" ? "nearest neighbours" : "random pairs"}`,
+      ...["all", "both topic", "mixed", "both token"].map((ty) => cell(c[m][k][ty]))]));
+  document.getElementById("emb-halves-table").innerHTML = `<p class="note">Adjusted Rand index of 9 more k-means seeds against seed 0: ${d.ari_seeds_vs_seed0.join(", ")}. The halves' labels come from their named members (not checked against text); the members below are the first 10 named by concept id.</p>`
+    + Object.values(d.half_members).map((m) => `<h3>${m.size.toLocaleString()} concepts</h3>` + tableN(["concept", "name"], m.named.map(([cid, nm]) => [cid, nameCell(nm)]))).join("")
+    + "<h3>Same-class share within the two halves (shuffled labels give about 10%)</h3>"
+    + tableN(["set", "under, embedding", "under, decoder", "over, embedding", "over, decoder", "over, shuffled (embedding)"], SIM_SETS.map((s) => { const e = d.same_class[s].embedding, x = d.same_class[s].decoder;
+      return [esc(SET_LABEL[s]), pct1(e.same_class_share.under), pct1(x.same_class_share.under), pct1(e.same_class_share.over), pct1(x.same_class_share.over), pct1(e.permuted.over.mean)]; }));
+  const t = d.tree;
+  document.getElementById("emb-tree").innerHTML = '<div id="emb-tree-depths"></div><div id="emb-tree-overlap"></div><h3>Percent of tested groups above the null, per depth</h3>'
+    + ["under", "over"].map((side) => tableN([`${side}-represented`, ...t.per_depth.V.slice(1).map((x) => `depth ${x.depth}`)],
+      SIM_SETS.map((s) => [esc(SET_LABEL[s]), ...t.per_depth[s].slice(1).map((x) => `${(100 * x[`${side}_exceeding`] / x.tested).toFixed(1)}%`)]))).join("");
+  treeTables(t, "emb-tree");
+  const pairTable = (rows) => tableN(["concept", "neighbour", "cosine", "concept name", "neighbour name"], rows.map(([a, b, x, na, nb]) => [a, b, fmt(x, 3), nameCell(na), nameCell(nb)]));
+  document.getElementById("emb-pairs").innerHTML = `<p class="note">${d.named_pairs.length} pairs where both concepts are named.</p>` + pairTable(d.named_pairs);
+  document.getElementById("emb-cosine").innerHTML = tableN(["measure, neighbour", "10th percentile", "median", "90th percentile"],
+    ["embedding", "decoder"].flatMap((m) => Object.entries(d.cosine_quantiles[m]).map(([k, qq]) => [`${m}, ${esc(k.replace("_", " "))}`, ...qq.map((x) => fmt(x, 3))])));
+}
+
+async function drawEmbedSection() {
+  const d = await load("data/exp2_embed.json");
+  embTables(d);
+  await embCharts(d);
+}
+
 async function drawSimilarityTab() {
   const d = await load("data/exp2_similarity.json");
   simTables(d);
   await simKeyResults(d);
   await drawTreeSection();
+  await drawEmbedSection();
 }
 
 // G75, G79, G80: one tab per experiment; a hash may name a tab, a section (sec-<hash>) or a concept page. temp is the old name of rollouts.

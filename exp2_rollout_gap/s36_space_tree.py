@@ -27,16 +27,21 @@ def top_groups(path):
     return out
 
 
-def main():
-    s = json.loads((R / "full_post_tree_summary.json").read_text(encoding="utf-8"))
+def tree_data(prefix):
+    """The tree section's data from results/{prefix}_tree_summary.{json,md} (prefix full_post or full_post_embed, G118)."""
+    s = json.loads((R / f"{prefix}_tree_summary.json").read_text(encoding="utf-8"))
     exceeding = lambda st, side, d: {g for g, v in s["sets"][st]["groups"].items() if v["depth"] == d and v[side]["exceeds"]}  # noqa: E731
     overlap = {st: [{"depth": d, **{f"{side}_{k}": n for side in ("under", "over") for k, n in
                                     (("model", len(exceeding(st, side, d))), ("also_V", len(exceeding(st, side, d) & exceeding("V", side, d))))}}
                     for d in range(1, s["depth"] + 1)] for st in s["sets"] if st != "V"}
-    out = {"sources": ["results/full_post_tree_summary.json", "results/full_post_tree_summary.md"], "depth": s["depth"], "min_split": s["min_split"],
+    return {"sources": [f"results/{prefix}_tree_summary.json", f"results/{prefix}_tree_summary.md"], "depth": s["depth"], "min_split": s["min_split"],
            "groups_per_depth": s["groups_per_depth"], "leaf_sizes_10_50_90_max": s["leaf_sizes_10_50_90_max"],
            "splits": {k: sum(v["split"] == k for v in s["groups"].values()) for k in ("spectral", "pieces")}, "groups_total": len(s["groups"]),
-           "per_depth": {st: v["per_depth"] for st, v in s["sets"].items()}, "overlap_with_V": overlap, "top_groups": top_groups(R / "full_post_tree_summary.md")}
+           "per_depth": {st: v["per_depth"] for st, v in s["sets"].items()}, "overlap_with_V": overlap, "top_groups": top_groups(R / f"{prefix}_tree_summary.md")}
+
+
+def main():
+    out = tree_data("full_post")
     SPACE.mkdir(parents=True, exist_ok=True)
     (SPACE / "exp2_tree.json").write_text(json.dumps(out, ensure_ascii=False), encoding="utf-8")
     print("top groups", {m: {k: len(v) for k, v in x.items()} for m, x in out["top_groups"].items()}, "splits", out["splits"], "bytes", (SPACE / "exp2_tree.json").stat().st_size)

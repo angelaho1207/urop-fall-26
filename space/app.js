@@ -245,8 +245,8 @@ function shortName(text) {
 
 // Exp 2 rollouts tab (exp2_rollout_gap/design.md G10-G28, G61, G70-G84). Visible results are drawn on load; plots inside a dropdown are drawn
 // the first time it opens (G82). Data: s05_space.py (curves), s17_space_diag.py (diagnostics), s23_space_named.py (names).
-const SET_LABEL = { V: "held-out Dolma (V)", stage1: "mid-trained (stage1)", main: "pretrained (main)", sft: "post-trained (SFT)", dpo: "post-trained (DPO)", instruct: "post-trained (Instruct)" };
-const GEN_LABEL = { stage1: "mid-trained (stage1-step1413814)", main: "pretrained (main)", sft: "post-trained (Olmo-3-7B-Instruct-SFT)", dpo: "post-trained (Olmo-3-7B-Instruct-DPO)", instruct: "post-trained (Olmo-3-7B-Instruct)" };
+const SET_LABEL = { V: "held-out Dolma (V)", stage1: "end of stage 1 (stage1)", main: "pretrained (main)", sft: "post-trained (SFT)", dpo: "post-trained (DPO)", instruct: "post-trained (Instruct)" };
+const GEN_LABEL = { stage1: "end of stage 1 (stage1-step1413814)", main: "pretrained (main)", sft: "post-trained (Olmo-3-7B-Instruct-SFT)", dpo: "post-trained (Olmo-3-7B-Instruct-DPO)", instruct: "post-trained (Olmo-3-7B-Instruct)" };
 const GEN_COLOR = { V: "--middle", stage1: "--under", main: "--over", sft: "--sft", dpo: "--dpo", instruct: "--instruct" };
 const NAMED_MODELS = ["stage1", "main", "sft", "dpo", "instruct"];
 const PLOT_CFG = { responsive: true, displaylogo: false };

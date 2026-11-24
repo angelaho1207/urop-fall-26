@@ -325,9 +325,9 @@
     <p class="note">Rank correlation between a concept's r and its neighbours' mean r. Held-out Dolma shows sampling noise alone; random concepts are matched in frequency.</p>
     <div id="sim-comove" class="plot short"></div>
     <ul class="takeaways">
-      <li>Each dot asks: when a concept's frequency changes from Dolma to a model's rollouts (r), do its 11 most similar concepts change the same way? The score is a rank correlation (Spearman ρ): 1 means they always move together, 0 means unrelated.</li>
-      <li>All five Olmo 3 models score ρ = 0.72-0.78 (end of stage 1 lowest at 0.72, SFT and Instruct highest at 0.78). Random concepts with the same training frequency score 0.01-0.04, so the link comes from similarity, not frequency.</li>
-      <li>Held-out Dolma, which involves no model and shows only sampling noise, scores 0.39. Similar concepts share some noise, and the models' co-movement is about twice that.</li>
+      <li>Each dot shows how closely a concept's change in frequency from Dolma to a model's rollouts (r) tracks the changes of its 11 most similar concepts (Spearman ρ: 1 = always together, 0 = unrelated).</li>
+      <li>Similar concepts move together in all five models (ρ = 0.72-0.78), and random concepts of the same training frequency do not (ρ = 0.01-0.04).</li>
+      <li>Held-out Dolma, which shows sampling noise alone, reaches 0.39, so the models' co-movement is about twice what noise produces.</li>
     </ul>
     </div>
 
@@ -336,9 +336,8 @@
     <p class="note">Share of under-represented concepts whose nearest neighbour is over-represented, against random concepts of matched training frequency.</p>
     <div id="sim-swap" class="plot short"></div>
     <ul class="takeaways">
-      <li>If a model replaced a concept with a near-duplicate, the concept would be under-represented and its most similar concept over-represented. Each dot is the share of under-represented concepts where that happens.</li>
-      <li>It happens for 3.5% of under concepts in the end-of-stage-1 checkpoint, 1.7% in the pretrained model and 1.1-1.3% in the post-trained models, against 11-14% when the partner is a random concept of the same training frequency.</li>
-      <li>Similar concepts mostly rise or fall together (chart above), so one taking another's place is rare.</li>
+      <li>Each dot is the share of under-represented concepts whose most similar concept is over-represented, the pattern a model swapping a concept for a near-duplicate would leave.</li>
+      <li>Swaps are rare: 1.1-3.5% of under concepts in the models, against 11-14% for random partners of the same training frequency.</li>
     </ul>
     </div>
 
@@ -347,9 +346,9 @@
     <p class="note" id="sim-eigen-note"></p>
     <div id="sim-eigen" class="plot short"></div>
     <ul class="takeaways">
-      <li>Each concept is linked to its 11 most similar concepts, and the curve shows this graph's eigenvalues. A large jump after the K-th eigenvalue would mean the concepts fall into K well-separated groups.</li>
-      <li>Among 2 or more groups, the largest jump is after the 2nd eigenvalue (0.078 to 0.111), only slightly larger than the next (0.111 to 0.137); past that, eigenvalues climb in small steps to 0.357 at the 101st. Splitting in two gives groups of 45,406 and 20,130 concepts.</li>
-      <li>Gap concepts are spread evenly over the two groups: about 10% of an under concept's group-mates are also under, the same as with shuffled labels (10.1%). Over concepts reach 10.4-10.8% in the post-trained models against 10.2% shuffled, less than one percentage point higher.</li>
+      <li>A large jump after the K-th eigenvalue of the concept graph would mean the concepts fall into K separate groups.</li>
+      <li>The largest jump, after the 2nd eigenvalue, is barely bigger than the next ones, so the concepts have no clear cluster structure.</li>
+      <li>Gap concepts are spread evenly over the two halves of that split: about 10% of an under concept's half is also under, the same as with shuffled labels.</li>
     </ul>
     </div>
 
@@ -358,9 +357,9 @@
     <p class="note">The concept graph is split in two again and again, down to depth 8 (183 groups at that depth). At each level, a group is "above the null" when its share of under- (or over-) represented concepts beats 97.5% of 100 shuffles that keep each concept's training frequency. Depths 1-4 have only 2-16 groups, so their percentages jump in large steps.</p>
     <div class="cols"><div id="tree-under" class="plot tree"></div><div id="tree-over" class="plot tree"></div></div>
     <ul class="takeaways">
-      <li>If gap concepts were scattered at random, about 2.5% of groups would be above the null. At depth 8, 23-25% of groups are above it for under-represented concepts and 22-28% for over-represented concepts, in every model.</li>
-      <li>Held-out Dolma, which involves no model, already reaches 18% (under) and 17% (over), so most of this clustering comes from similar concepts sharing sampling noise (as in the co-movement chart). The models add 4-11 percentage points on top.</li>
-      <li>Over-represented groups are more model-specific: at depth 8, 4-9 of the 36-46 over groups per model are also above the null in held-out Dolma, against 12-16 of the 37-41 under groups.</li>
+      <li>At depth 8, 22-28% of groups hold more gap concepts than shuffling predicts, in every model, against 2.5% expected by chance.</li>
+      <li>Held-out Dolma already reaches 17-18%, so most of this clustering is shared sampling noise, and the models add 4-11 percentage points.</li>
+      <li>Over-represented groups are more specific to the models: 4-9 of 36-46 over groups also appear in held-out Dolma, against 12-16 of 37-41 under groups.</li>
     </ul>
     </div>
 
@@ -372,9 +371,9 @@
     <h3>Embedding neighbours move together as much as decoder neighbours, but share more noise</h3>
     <div id="emb-comove" class="plot short"></div>
     <ul class="takeaways">
-      <li>Same test as the first chart on this tab, with each concept's 11 nearest embedding neighbours in place of its decoder neighbours. All five models score ρ = 0.72-0.78 with either measure; random concepts of the same training frequency score 0.01-0.04.</li>
-      <li>Held-out Dolma, which shows only sampling noise, rises from 0.39 (decoder) to 0.56 (embedding). Embedding neighbours often peak in the same documents: 76% of neighbour pairs share at least one of their 40 top docs, against 31% of decoder pairs and 6% of random pairs, and concepts counted in the same docs share sampling noise.</li>
-      <li>So the models' co-movement beyond noise is smaller with embeddings (0.16-0.22 above held-out Dolma) than with decoder cosine (0.33-0.39). The two measures pick different neighbours: under 5% of embedding neighbours are also decoder neighbours.</li>
+      <li>With embedding neighbours, the models' co-movement stays at ρ = 0.72-0.78, the same as with decoder neighbours.</li>
+      <li>Held-out Dolma's noise level rises from 0.39 to 0.56, because embedding neighbours often peak in the same documents (76% of pairs share a top doc, against 31% for decoder pairs).</li>
+      <li>So the co-movement beyond noise is smaller with embeddings: 0.16-0.22 above held-out Dolma, against 0.33-0.39 with decoder cosine.</li>
     </ul>
     </div>
 
@@ -382,9 +381,9 @@
     <h3>Split in two, the embedding graph separates code and lists from prose, and the models lean to code and lists</h3>
     <div class="cols"><div id="emb-halves-over" class="plot tree"></div><div id="emb-halves-under" class="plot tree"></div></div>
     <ul class="takeaways">
-      <li>Split in two by spectral clustering (as the decoder graph above), the embedding graph gives 20,117 concepts whose named members are mostly code, list separators and document structure, and 45,419 mostly in ordinary prose. These labels come from names, not checked against text.</li>
-      <li>In every model, 28-33% of the code-and-lists half is over-represented (the dashed line is the 10% expected overall) and 2-4% of the prose half; under-represented concepts go the other way, 12-13% of the prose half and 3-5% of the code-and-lists half.</li>
-      <li>Held-out Dolma has more of both in the code-and-lists half (20% under, 17% over), so that half is noisier, but noise raises both sides while the models raise only over. The decoder graph's two halves showed no such lean.</li>
+      <li>Split in two, the embedding graph separates code, list and structure concepts (20,117) from prose concepts (45,419), judging by their names.</li>
+      <li>Rollouts lean toward code and lists: in every model, 28-33% of the code-and-lists half is over-represented, against 2-4% of the prose half and 10% overall.</li>
+      <li>Held-out Dolma raises both under (20%) and over (17%) in the code-and-lists half, the mark of noise, while the models raise only over.</li>
     </ul>
     </div>
 
@@ -392,9 +391,9 @@
     <h3>Two groups: list-like and repetitive text rises only after stage 1; scientific prose is low from stage 1 on</h3>
     <div class="cols"><div id="emb-group-over" class="plot tree"></div><div id="emb-group-under" class="plot tree"></div></div>
     <ul class="takeaways">
-      <li>Groups picked by a fixed rule: among the pretrained model's 10 tree groups with the largest excess (dropdown below), the one with the highest share; that model's bar is therefore the selected one. Group 13's named members are separators between list items, tokens that repeat a pattern just set up and positions before a number. Group 279's are citation markers, pieces of biochemical names and methods text in scientific papers.</li>
-      <li>Group 13: 55-71% over-represented in the pretrained and post-trained models, but 16% at the end of stage 1 and 13% in held-out Dolma. The rise falls between the end of stage 1 and the final base model, the step that adds the stage 2 and 3 data (dolmino, longmino), which the Dolma reference leaves out.</li>
-      <li>Group 279: 37% under-represented already at the end of stage 1, 36% in the pretrained model and 25-30% after post-training, against 17% in held-out Dolma. Rollouts rarely read like scientific papers, a large part of Dolma (olmOCR science PDFs are 13.6% of stage 1 tokens).</li>
+      <li>Group 13 holds list separators and tokens that repeat a pattern; group 279 holds scientific-paper text such as citations, chemical names and methods (each picked by a fixed rule from the pretrained model's top groups).</li>
+      <li>Group 13 is 55-71% over-represented from the pretrained model on, but 16% at the end of stage 1 (13% in held-out Dolma), so the shift arrives with the stage 2-3 training data.</li>
+      <li>Group 279 is 25-37% under-represented in every model, already at the end of stage 1, against 17% in held-out Dolma: rollouts rarely read like scientific papers.</li>
     </ul>
     </div>
 
@@ -402,9 +401,8 @@
     <h3>By their names, embedding neighbours are related more often for topic concepts</h3>
     <div id="emb-namecheck" class="plot short"></div>
     <ul class="takeaways">
-      <li>The blind check from the decoder dropdown, repeated: a rater saw only the one-sentence names of 100 nearest-neighbour pairs mixed with 100 random pairs. Each concept was also typed as topic (tied to one kind of document, such as code or chemistry) or token (punctuation, positions or formatting found in any text).</li>
-      <li>Overall 57 of 100 embedding pairs were rated related, against 50 of 100 decoder pairs; random pairs got 1 and 2. When both concepts are topic concepts, 31 of 36 embedding pairs are related (86%) against 26 of 43 decoder pairs (60%).</li>
-      <li>For two token concepts the measures are close (18 of 36 and 18 of 33), so the expected weakness of embeddings on token concepts did not show. One rater (Claude), names not checked against text, 24-43 pairs per type.</li>
+      <li>One rater judged from names alone whether nearest-neighbour pairs are related, and typed each concept as topic (tied to one kind of document) or token (found in any text).</li>
+      <li>Embedding neighbours are related more often for topic concepts (86% vs 60% for decoder neighbours) and about as often for token concepts (50% vs 55%).</li>
     </ul>
     </div>
     </div>
